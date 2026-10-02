@@ -17,13 +17,20 @@
 // they're the answer to "what should I add next".
 //
 // The server builds the catalog (prisma/queries.ts → listSkillCatalog); this
-// owns the search filter and the optimistic add/remove.
+// owns the filters (./SkillFilters) and the optimistic add/remove.
 
 import { useMemo, useOptimistic, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 
 import type { CatalogSkill, SkillCatalog } from '@/types/profile';
 import { SkillSection } from './SkillSection';
+import {
+  EMPTY_FILTERS,
+  SkillFilters,
+  applySkillFilters,
+  hasActiveFilters,
+  type SkillFilterState,
+} from './SkillFilters';
 
 export interface SkillCatalogBrowserProps {
   catalog: SkillCatalog;
@@ -34,7 +41,7 @@ type Move = { slug: string; to: 'MINE' | 'AVAILABLE' };
 
 export function SkillCatalogBrowser({ catalog }: SkillCatalogBrowserProps) {
   const router = useRouter();
-  const [query, setQuery] = useState('');
+  const [filters, setFilters] = useState<SkillFilterState>(EMPTY_FILTERS);
   const [error, setError] = useState<string | null>(null);
   const [pendingSlugs, setPendingSlugs] = useState<Set<string>>(new Set());
 
@@ -56,14 +63,29 @@ export function SkillCatalogBrowser({ catalog }: SkillCatalogBrowserProps) {
     [sections],
   );
 
-  const recommended = useMemo(() => filter(sections.recommended, query), [sections, query]);
-  const filtered = useMemo(() => filter(all, query), [all, query]);
+  const filtered = useMemo(() => applySkillFilters(all, filters), [all, filters]);
 
-  // Counted across both lists: a skill sitting on the recommended shelf is
-  // still a search hit, and saying "3 of 46" while showing four cards reads as
-  // a bug.
-  const total = all.length + sections.recommended.length;
-  const matches = filtered.length + recommended.length;
+  // The shelf is every unclaimed skill the recommender ranked, so a status
+  // filter makes no sense against it: "Certified" would empty it and "Not
+  // added" would just restate it. Search and category still apply, so a
+  // category filter narrows the shelf alongside the catalog.
+  const statusFiltered = filters.status !== 'ALL';
+  const recommended = useMemo(
+    () => applySkillFilters(sections.recommended, { ...filters, status: 'ALL' }),
+    [sections.recommended, filters],
+  );
+  const showShelf = sections.recommended.length > 0 && !statusFiltered;
+
+  // The denominator is ALWAYS the whole vocabulary, shelf included. Deriving
+  // it from what's currently rendered instead made the "All" pill count drop
+  // from 46 to 40 the moment a status filter hid the shelf, which reads as the
+  // catalog shrinking. The numerator does follow what's on screen, so a skill
+  // on the shelf counts as a match while the shelf is visible.
+  const everything = useMemo(
+    () => [...all, ...sections.recommended],
+    [all, sections.recommended],
+  );
+  const matches = filtered.length + (showShelf ? recommended.length : 0);
 
   function mutate(slug: string, action: 'add' | 'remove') {
     setError(null);
@@ -110,21 +132,12 @@ export function SkillCatalogBrowser({ catalog }: SkillCatalogBrowserProps) {
   return (
     <div className="flex flex-col gap-10">
       <div className="flex flex-col gap-2">
-        <input
-          type="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search skills — name, category, or description"
-          aria-label="Search skills"
-          // bg-white explicitly: the page is tinted now, and an input with no
-          // fill would take the tint and stop reading as something you type in.
-          className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm outline-none focus:border-zinc-900 dark:border-surface-border dark:bg-surface dark:focus:border-zinc-50"
+        <SkillFilters
+          filters={filters}
+          onChange={setFilters}
+          skills={everything}
+          matches={matches}
         />
-        {query.trim() && (
-          <p aria-live="polite" className="text-xs text-zinc-500 dark:text-zinc-400">
-            {matches} of {total} skills match “{query.trim()}”
-          </p>
-        )}
         {error && (
           <p role="alert" className="text-xs text-red-700 dark:text-red-400">
             {error}
@@ -135,12 +148,12 @@ export function SkillCatalogBrowser({ catalog }: SkillCatalogBrowserProps) {
       {/* Only rendered once there's something to base it on: with no skills
           claimed, every suggestion would be arbitrary, and an empty shelf
           above the catalog is worse than no shelf. */}
-      {sections.recommended.length > 0 && (
+      {showShelf && (
         <SkillSection
           title="Recommended for You"
           blurb="Goes with what you already have — the same careers and listings ask for both."
           skills={recommended}
-          emptyMessage="No suggestions match your search."
+          emptyMessage="No suggestions match these filters."
           onAdd={(slug) => mutate(slug, 'add')}
           pendingSlugs={pendingSlugs}
         />
@@ -151,7 +164,9 @@ export function SkillCatalogBrowser({ catalog }: SkillCatalogBrowserProps) {
         blurb="Add one to claim it, or jump straight to its quiz to certify it. Anything on the shelf above is listed there instead of here, so no skill appears twice."
         skills={filtered}
         emptyMessage={
-          query.trim() ? 'No skills match your search.' : 'No skills in the catalog yet.'
+          hasActiveFilters(filters)
+            ? 'No skills match these filters.'
+            : 'No skills in the catalog yet.'
         }
         onAdd={(slug) => mutate(slug, 'add')}
         onRemove={(slug) => mutate(slug, 'remove')}
@@ -206,16 +221,5 @@ function rebucket(catalog: SkillCatalog, move: Move): SkillCatalog {
 function byCategoryThenName(skills: CatalogSkill[]): CatalogSkill[] {
   return [...skills].sort(
     (a, b) => (a.category ?? '').localeCompare(b.category ?? '') || a.name.localeCompare(b.name),
-  );
-}
-
-function filter(skills: CatalogSkill[], query: string): CatalogSkill[] {
-  const needle = query.trim().toLowerCase();
-  if (!needle) return skills;
-
-  return skills.filter((skill) =>
-    `${skill.name} ${skill.category ?? ''} ${skill.description ?? ''}`
-      .toLowerCase()
-      .includes(needle),
   );
 }
