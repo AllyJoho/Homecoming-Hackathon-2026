@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "sql",
+    "name": "SQL",
+    "category": "Data",
+    "description": "Querying and shaping data in relational databases."
+  },
+  {
+    "slug": "python",
+    "name": "Python",
+    "category": "Data",
+    "description": "General-purpose scripting, analysis, and automation."
+  },
+  {
+    "slug": "data-viz",
+    "name": "Data Visualization",
+    "category": "Data",
+    "description": "Turning data into charts people can actually read."
+  },
+  {
+    "slug": "html-css",
+    "name": "HTML & CSS",
+    "category": "Web Dev",
+    "description": "Structure and styling for the web."
+  },
+  {
+    "slug": "javascript",
+    "name": "JavaScript",
+    "category": "Web Dev",
+    "description": "The language of the browser, and of Node on the server."
+  },
+  {
+    "slug": "react",
+    "name": "React",
+    "category": "Web Dev",
+    "description": "Component-based UI development."
+  },
+  {
+    "slug": "public-speaking",
+    "name": "Public Speaking",
+    "category": "Communication",
+    "description": "Presenting ideas clearly to an audience."
+  },
+  {
+    "slug": "technical-writing",
+    "name": "Technical Writing",
+    "category": "Communication",
+    "description": "Documentation and written explanation of technical work."
+  }
+]

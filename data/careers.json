@@ -1,0 +1,52 @@
+[
+  {
+    "slug": "data-analyst",
+    "title": "Data Analyst",
+    "field": "Data",
+    "description": "Answers business questions with data and communicates the findings.",
+    "skills": [
+      { "skill": "sql", "weight": 5 },
+      { "skill": "data-viz", "weight": 4 },
+      { "skill": "python", "weight": 3 },
+      { "skill": "technical-writing", "weight": 3 },
+      { "skill": "public-speaking", "weight": 2 }
+    ]
+  },
+  {
+    "slug": "frontend-engineer",
+    "title": "Frontend Engineer",
+    "field": "Web Dev",
+    "description": "Builds the interfaces people interact with.",
+    "skills": [
+      { "skill": "javascript", "weight": 5 },
+      { "skill": "react", "weight": 5 },
+      { "skill": "html-css", "weight": 4 },
+      { "skill": "technical-writing", "weight": 2 }
+    ]
+  },
+  {
+    "slug": "fullstack-engineer",
+    "title": "Full-Stack Engineer",
+    "field": "Web Dev",
+    "description": "Works across the UI, the server, and the database.",
+    "skills": [
+      { "skill": "javascript", "weight": 5 },
+      { "skill": "react", "weight": 4 },
+      { "skill": "sql", "weight": 4 },
+      { "skill": "html-css", "weight": 3 },
+      { "skill": "python", "weight": 2 }
+    ]
+  },
+  {
+    "slug": "technical-writer",
+    "title": "Technical Writer",
+    "field": "Communication",
+    "description": "Explains technical systems in writing for the people who use them.",
+    "skills": [
+      { "skill": "technical-writing", "weight": 5 },
+      { "skill": "html-css", "weight": 3 },
+      { "skill": "public-speaking", "weight": 3 },
+      { "skill": "sql", "weight": 2 }
+    ]
+  }
+]

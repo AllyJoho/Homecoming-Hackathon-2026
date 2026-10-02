@@ -1,0 +1,38 @@
+{
+  "skill": "sql",
+  "questions": [
+    {
+      "prompt": "Which clause filters rows before any grouping happens?",
+      "options": ["WHERE", "HAVING", "ORDER BY", "LIMIT"],
+      "correctIndex": 0,
+      "difficulty": "BEGINNER",
+      "explanation": "WHERE filters individual rows; HAVING filters groups after GROUP BY."
+    },
+    {
+      "prompt": "Which JOIN keeps every row from the left table even with no match on the right?",
+      "options": ["INNER JOIN", "LEFT JOIN", "CROSS JOIN", "RIGHT JOIN"],
+      "correctIndex": 1,
+      "difficulty": "BEGINNER",
+      "explanation": "LEFT JOIN preserves all left-hand rows, filling unmatched right columns with NULL."
+    },
+    {
+      "prompt": "What does COUNT(column) do differently from COUNT(*)?",
+      "options": [
+        "Nothing, they are identical",
+        "It skips NULLs in that column",
+        "It counts distinct values only",
+        "It errors on an empty table"
+      ],
+      "correctIndex": 1,
+      "difficulty": "INTERMEDIATE",
+      "explanation": "COUNT(column) ignores NULLs, while COUNT(*) counts every row."
+    },
+    {
+      "prompt": "Which window function assigns 1, 2, 2, 4 to a tied ranking?",
+      "options": ["ROW_NUMBER()", "DENSE_RANK()", "RANK()", "NTILE(4)"],
+      "correctIndex": 2,
+      "difficulty": "ADVANCED",
+      "explanation": "RANK() leaves gaps after ties; DENSE_RANK() would give 1, 2, 2, 3."
+    }
+  ]
+}

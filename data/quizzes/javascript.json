@@ -1,0 +1,38 @@
+{
+  "skill": "javascript",
+  "questions": [
+    {
+      "prompt": "Which declaration creates a block-scoped variable that cannot be reassigned?",
+      "options": ["var", "let", "const", "function"],
+      "correctIndex": 2,
+      "difficulty": "BEGINNER",
+      "explanation": "const is block-scoped and cannot be reassigned, though objects it holds stay mutable."
+    },
+    {
+      "prompt": "What does typeof null return?",
+      "options": ["\"null\"", "\"object\"", "\"undefined\"", "\"boolean\""],
+      "correctIndex": 1,
+      "difficulty": "INTERMEDIATE",
+      "explanation": "A long-standing quirk: typeof null is \"object\"."
+    },
+    {
+      "prompt": "Which comparison avoids type coercion?",
+      "options": ["==", "===", "=", "!="],
+      "correctIndex": 1,
+      "difficulty": "BEGINNER",
+      "explanation": "=== compares value and type without coercing."
+    },
+    {
+      "prompt": "In the event loop, which runs first after the current synchronous code?",
+      "options": [
+        "setTimeout callback",
+        "A resolved promise's .then",
+        "setInterval callback",
+        "requestAnimationFrame"
+      ],
+      "correctIndex": 1,
+      "difficulty": "ADVANCED",
+      "explanation": "Promise callbacks are microtasks and drain before macrotasks like setTimeout."
+    }
+  ]
+}
