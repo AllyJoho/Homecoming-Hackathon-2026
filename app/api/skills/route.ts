@@ -6,7 +6,7 @@
 
 import { NextResponse } from 'next/server';
 import { getSessionUser, unauthorized } from '@/lib/auth/session';
-import { addUserSkill, removeUserSkill } from '@/lib/db/queries';
+import { addUserSkill, removeUserSkill } from '@/prisma/queries';
 
 export async function POST(request: Request) {
   const user = await getSessionUser();

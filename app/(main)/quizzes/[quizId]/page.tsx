@@ -4,13 +4,14 @@
 // keeps the answer key out of the page payload.
 
 import { notFound } from 'next/navigation';
-import { loadQuiz, toPublicQuiz } from '@/lib/quiz/loadQuiz';
+import { loadQuiz } from '@/prisma/queries';
+import { toPublicQuiz } from '@/lib/quiz/publicQuiz';
 import { QuizRunner } from '@/components/quiz/QuizRunner';
 
 export default async function QuizPage({ params }: { params: Promise<{ quizId: string }> }) {
   const { quizId } = await params;
 
-  const quiz = loadQuiz(quizId);
+  const quiz = await loadQuiz(quizId);
   if (!quiz) notFound();
 
   return (

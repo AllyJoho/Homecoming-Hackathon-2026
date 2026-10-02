@@ -8,8 +8,7 @@
 import { NextResponse } from 'next/server';
 import type { AnswerSheet } from '@/types/quiz';
 import { getSessionUser, unauthorized } from '@/lib/auth/session';
-import { recordAttempt } from '@/lib/db/queries';
-import { loadQuiz } from '@/lib/quiz/loadQuiz';
+import { loadQuiz, recordAttempt } from '@/prisma/queries';
 import { scoreQuiz } from '@/lib/quiz/scoring';
 
 export async function POST(request: Request, { params }: { params: Promise<{ quizId: string }> }) {
@@ -17,7 +16,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ qui
   if (!user) return unauthorized();
   const { quizId } = await params;
 
-  const quiz = loadQuiz(quizId);
+  const quiz = await loadQuiz(quizId);
   if (!quiz) {
     return NextResponse.json({ error: `No quiz named "${quizId}".` }, { status: 404 });
   }

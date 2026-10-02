@@ -13,8 +13,7 @@ import type { AnswerSheet } from '@/types/quiz';
 import { MODEL, aiEnabled, anthropic } from '@/lib/ai/client';
 import { FEEDBACK_SYSTEM_PROMPT } from '@/lib/ai/prompts';
 import { getSessionUser, unauthorized } from '@/lib/auth/session';
-import { getAttempt } from '@/lib/db/queries';
-import { loadQuiz } from '@/lib/quiz/loadQuiz';
+import { getAttempt, loadQuiz } from '@/prisma/queries';
 import { scoreQuiz } from '@/lib/quiz/scoring';
 
 export async function POST(
@@ -35,7 +34,16 @@ export async function POST(
     return NextResponse.json({ error: 'Attempt not found.' }, { status: 404 });
   }
 
-  const quiz = loadQuiz(attempt.quizId);
+  // quizId is null for an attempt generated from the Question bank rather than
+  // an authored JSON quiz — there's no answer key to re-grade against.
+  if (!attempt.quizId) {
+    return NextResponse.json(
+      { error: 'This attempt did not come from an authored quiz.' },
+      { status: 409 },
+    );
+  }
+
+  const quiz = await loadQuiz(attempt.quizId);
   if (!quiz) {
     return NextResponse.json({ error: 'The quiz for this attempt is gone.' }, { status: 410 });
   }

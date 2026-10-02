@@ -3,47 +3,55 @@ generator client {
   output   = "../lib/generated/prisma"
 }
 
+// Prisma 7 takes no `url` here: the migrate/seed URL lives in prisma.config.ts
+// and the runtime connection is opened by the driver adapter in lib/db/client.ts.
 datasource db {
   provider = "postgresql"
 }
 
-// ──────────────────────────────────────────────────────────────────────────────
-// Quizzes themselves are NOT in the database — they live as JSON in
-// data/quizzes/ and are referenced by their file-stem id (e.g. "javascript").
-// Only user-generated data is stored here. That keeps authoring a new quiz to
-// "add a JSON file" with no migration.
-// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────
+// People
+// ──────────────────────────────────────────────
 
 model User {
-  id    String @id @default(cuid())
-  name  String
-  email String @unique
-
+  id             String          @id @default(cuid())
+  email          String          @unique
+  name           String?
+  createdAt      DateTime        @default(now())
   skills         UserSkill[]
-  attempts       QuizAttempt[]
+  attempts       Attempt[]
   certifications Certification[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("users")
 }
 
-/// Canonical skill vocabulary. Seeded from lib/profile/skills.ts so that
-/// "JS", "Javascript" and "ECMAScript" all collapse to one row — the AI
-/// recommender gets clean input instead of free text.
+// ──────────────────────────────────────────────
+// Skills
+// ──────────────────────────────────────────────
+
+// The canonical skill vocabulary. Seeded from lib/profile/skills.ts so that
+// "JS", "Javascript" and "ECMAScript" all collapse to one row — the quiz,
+// job-listing and AI-prompt code all refer to skills by these slugs.
 model Skill {
-  id       String  @id @default(cuid())
-  slug     String  @unique // "javascript", "sql", "react"
-  name     String // display form: "JavaScript"
-  category String? // "language", "framework", "tool", …
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  name        String
+  // Nullable because the canonical vocabulary classifies by kind
+  // ("language", "framework", "tool"), while careers group by field
+  // ("Data", "Web Dev") — not every row has one.
+  category    String?
+  description String?
 
-  users UserSkill[]
-
-  @@map("skills")
+  quizzes        Quiz[]
+  questions      Question[]
+  users          UserSkill[]
+  attempts       Attempt[]
+  certifications Certification[]
+  careerSkills   CareerSkill[]
+  jobSkills      JobSkill[]
 }
 
-/// Join row: this user has this skill, and here's where it came from.
+// Join row: this user has this skill, and here's where it came from. Passing a
+// quiz upgrades an existing SELF_REPORTED row to QUIZ, which is what the
+// recommender weights more heavily.
 model UserSkill {
   id      String      @id @default(cuid())
   userId  String
@@ -56,7 +64,6 @@ model UserSkill {
   createdAt DateTime @default(now())
 
   @@unique([userId, skillId])
-  @@map("user_skills")
 }
 
 enum SkillSource {
@@ -64,44 +71,178 @@ enum SkillSource {
   QUIZ // proven by passing a quiz
 }
 
-/// One submitted quiz. `answers` is the raw submission kept as JSON so grading
-/// can be re-run (or explained by AI) later without re-taking the quiz.
-model QuizAttempt {
-  id     String @id @default(cuid())
-  userId String
-  quizId String // file stem in data/quizzes/
+// ──────────────────────────────────────────────
+// Quizzes
+// ──────────────────────────────────────────────
 
-  score   Int // percentage, 0–100
-  passed  Boolean
-  answers Json // Record<questionId, Answer>
+// Quizzes and their questions are CONTENT, authored as JSON in data/quizzes/
+// and loaded into these tables by prisma/seed.ts. The seed replaces them
+// wholesale on every run, which is why Attempt.quizId and Certification.quizId
+// are plain strings rather than foreign keys — re-seeding content must never
+// cascade into a user's earned history.
 
-  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  certification Certification? // set only when `passed`
+model Quiz {
+  id               String @id // file stem in data/quizzes/, e.g. "sql"
+  title            String
+  description      String
+  passingScore     Int // percent needed to pass, 0-100
+  timeLimitSeconds Int? // optional countdown; not enforced server-side
+  skillId          String
+  skill            Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
-  completedAt DateTime @default(now())
+  questions Question[]
 
-  @@index([userId, quizId])
-  @@map("quiz_attempts")
+  @@index([skillId])
 }
 
-/// Awarded automatically by the submit route when an attempt passes. One per
-/// attempt, so re-taking a passed quiz mints a new certificate rather than
-/// mutating the old one.
+model Question {
+  id      String @id // authored id from the JSON, e.g. "sql-1" — this is the
+  //                    key the client's answer sheet is keyed by, so it has to
+  //                    survive the round trip unchanged.
+  quizId  String
+  quiz    Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  skillId String
+  skill   Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  order       Int // authored position within the quiz
+  type        QuestionType
+  prompt      String
+  points      Int          @default(1)
+  explanation String?
+  difficulty  String? // "BEGINNER" | "INTERMEDIATE" | "ADVANCED"
+  reviewed    Boolean      @default(false) // only reviewed ones count for certification
+
+  // The answer key. Which columns are populated depends on `type`:
+  //   MULTIPLE_CHOICE → options + correctOptionId
+  //   MULTI_SELECT    → options + correctOptionIds
+  //   TRUE_FALSE      → correctAnswer
+  //   SHORT_ANSWER    → acceptedAnswers
+  options          Json? // [{ id, text }] — the choices shown to the user
+  correctOptionId  String?
+  correctOptionIds String[]
+  correctAnswer    Boolean?
+  acceptedAnswers  String[]
+
+  @@index([quizId, order])
+  @@index([skillId, difficulty])
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  MULTI_SELECT
+  TRUE_FALSE
+  SHORT_ANSWER
+}
+
+// ──────────────────────────────────────────────
+// Attempts & certifications
+// ──────────────────────────────────────────────
+
+model Attempt {
+  id      String  @id @default(cuid())
+  userId  String
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillId String
+  skill   Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  // Which authored quiz produced this attempt: the JSON file stem in
+  // data/quizzes/. Null for an attempt generated from the Question bank.
+  quizId  String?
+
+  level     String // tier attempted
+  score     Int // percent
+  passed    Boolean
+  answers   Json? // per-question record, handy for review/analytics
+  createdAt DateTime @default(now())
+
+  certification Certification?
+
+  @@index([userId, skillId])
+  @@index([userId, quizId])
+}
+
+// One certification per user per skill: passing a higher tier upgrades the
+// existing row rather than minting a second certificate, so a profile reads as
+// one credential per skill.
 model Certification {
-  id        String @id @default(cuid())
-  userId    String
-  attemptId String @unique
-  quizId    String
+  id      String @id @default(cuid())
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillId String
+  skill   Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
-  title     String // "JavaScript Fundamentals"
-  score     Int
-  shareSlug String @unique @default(cuid()) // public URL at /certificates/[certId]
+  // The attempt that earned the current level. Optional so a certification can
+  // outlive a pruned attempt; unique so an attempt can't back two of them.
+  attemptId String?  @unique
+  attempt   Attempt? @relation(fields: [attemptId], references: [id], onDelete: SetNull)
 
-  user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  attempt QuizAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  quizId String? // authored quiz that earned it, when it came from one
+  title  String // "JavaScript Fundamentals"
+  level  String // highest level passed
+  score  Int // percent on the passing attempt
 
-  issuedAt DateTime @default(now())
+  // Public URL at /certificates/[certId]. Separate from `id` so ids stay
+  // unguessable even once a certificate is shared.
+  shareSlug String @unique @default(cuid())
 
+  earnedAt DateTime @default(now())
+
+  @@unique([userId, skillId]) // upsert when they pass a higher tier
   @@index([userId])
-  @@map("certifications")
+}
+
+// ──────────────────────────────────────────────
+// Careers
+// ──────────────────────────────────────────────
+
+model Career {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  title        String
+  field        String
+  description  String?
+  careerSkills CareerSkill[]
+}
+
+model CareerSkill {
+  careerId String
+  career   Career @relation(fields: [careerId], references: [id], onDelete: Cascade)
+  skillId  String
+  skill    Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  weight   Int // 1-5 importance
+
+  @@id([careerId, skillId])
+}
+
+// ──────────────────────────────────────────────
+// Jobs
+// ──────────────────────────────────────────────
+
+// Also content: authored in data/jobs/listings.json and replaced wholesale by
+// the seed. JobMatch.jobId coming back from the model is joined against these
+// rows in code, not by a foreign key.
+model Job {
+  id          String  @id // "job-001"
+  title       String
+  company     String
+  location    String
+  remote      Boolean @default(false)
+  level       String // "internship" | "entry" | "mid" | "senior"
+  salaryRange String?
+  description String
+  url         String?
+
+  skills JobSkill[]
+}
+
+model JobSkill {
+  jobId    String
+  job      Job     @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  skillId  String
+  skill    Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  // Splits the two authored lists: required vs nice-to-have. Required overlap
+  // is weighted double when shortlisting.
+  required Boolean
+
+  @@id([jobId, skillId])
+  @@index([skillId])
 }

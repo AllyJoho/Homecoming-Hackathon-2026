@@ -1,6 +1,7 @@
 // @/types/quiz.ts
-// The quiz content model. Quizzes are authored as JSON in data/quizzes/ and
-// validated against these types when loaded — see @/lib/quiz/loadQuiz.
+// The quiz content model. Quizzes are authored as JSON in data/quizzes/,
+// seeded into Postgres by prisma/seed.ts, and rebuilt into these types by the
+// loaders in @/prisma/queries.
 //
 // `Question` is a discriminated union on `type`. That one decision drives three
 // other files: QuestionRenderer picks a component by it, grading.ts picks a
