@@ -30,6 +30,7 @@ export default async function CertificatePage({
         holderName={certification.holderName}
         title={certification.title}
         score={certification.score}
+        level={certification.level}
         issuedAt={certification.issuedAt}
       />
       <div className="flex justify-center">

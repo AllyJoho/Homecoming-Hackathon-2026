@@ -16,7 +16,7 @@ export function QuizCard({ quiz, earned }: QuizCardProps) {
   return (
     <Card
       title={quiz.title}
-      action={earned ? <Tag tone="success">Earned</Tag> : <Tag>{quiz.passingScore}% to pass</Tag>}
+      action={earned ? <Tag tone="success">Earned</Tag> : undefined}
     >
       <p className="text-sm text-zinc-600 dark:text-zinc-400">{quiz.description}</p>
       <p className="mt-3 text-xs text-zinc-500 dark:text-zinc-500">
