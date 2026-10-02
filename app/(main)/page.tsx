@@ -1,5 +1,6 @@
 // @/app/(main)/page.tsx
-// Home: the student's skills and the certificates they've earned.
+// Home: the student's skills, the certificates they've earned, and every quiz
+// they can take.
 //
 // A server component, so the profile is read directly from the database — no
 // loading state, no client fetch. The two interactive pieces (AddSkillForm,
@@ -8,10 +9,12 @@
 import Link from 'next/link';
 import { requireSessionUser } from '@/lib/auth/session';
 import { buildProfile } from '@/lib/profile/buildProfile';
+import { listQuizzes } from '@/lib/quiz/loadQuiz';
 import { AddSkillForm } from '@/components/skills/AddSkillForm';
 import { SkillList } from '@/components/skills/SkillList';
 import { CertList } from '@/components/certifications/CertList';
-import { Button, Card } from '@/components/ui';
+import { QuizCard } from '@/components/quiz/QuizCard';
+import { Card } from '@/components/ui';
 
 export default async function HomePage() {
   const user = await requireSessionUser();
@@ -21,6 +24,16 @@ export default async function HomePage() {
   // would be a genuine inconsistency.
   if (!profile) throw new Error(`No profile for session user ${user.id}`);
 
+  // Retaking a passed quiz mints a new certificate (one per attempt), so keep
+  // only the newest per quiz. getProfile sorts newest-first, so the first one
+  // seen for each quizId wins.
+  const certifications = profile.certifications.filter(
+    (cert, i, all) => all.findIndex((other) => other.quizId === cert.quizId) === i,
+  );
+
+  const quizzes = listQuizzes();
+  const earned = new Set(certifications.map((cert) => cert.quizId));
+
   return (
     <div className="flex flex-col gap-8">
       <div>
@@ -28,7 +41,7 @@ export default async function HomePage() {
           Hi, {profile.name.split(' ')[0]}
         </h1>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-          {profile.certifications.length > 0
+          {certifications.length > 0
             ? 'Your matches update as you earn more certificates.'
             : 'Add the skills you have, then prove them with a quiz.'}
         </p>
@@ -37,10 +50,14 @@ export default async function HomePage() {
       <Card
         title="Your skills"
         action={
-          <Link href="/quizzes">
-            <Button size="sm" variant="secondary">
-              Prove a skill
-            </Button>
+          // A styled Link rather than <Link><Button/></Link>: a button inside a
+          // link is invalid HTML and gives keyboard users two tab stops.
+          // Copy your Button's `secondary` + `sm` classes here so they match.
+          <Link
+            href="#quizzes"
+            className="rounded-lg border border-zinc-200 px-3 py-1.5 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-50 dark:hover:bg-zinc-900"
+          >
+            Prove a skill
           </Link>
         }
         footer={<AddSkillForm />}
@@ -61,7 +78,20 @@ export default async function HomePage() {
             See job matches
           </Link>
         </div>
-        <CertList certifications={profile.certifications} />
+        <CertList certifications={certifications} />
+      </section>
+
+      <section id="quizzes" className="flex scroll-mt-6 flex-col gap-4">
+        <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">Quizzes</h2>
+        {quizzes.length === 0 ? (
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">No quizzes available yet.</p>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2">
+            {quizzes.map((quiz) => (
+              <QuizCard key={quiz.id} quiz={quiz} earned={earned.has(quiz.id)} />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
