@@ -29,8 +29,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ qui
 
   const result = scoreQuiz(quiz, answers);
 
-  // One transaction: the attempt, its certificate, and the QUIZ-sourced skill
-  // credit. Every completed attempt earns a certificate — the level varies.
+  // One transaction: the attempt and, if the score reaches a certificate
+  // level, the certificate and the QUIZ-sourced skill credit.
   const { attempt, certification } = await recordAttempt({
     userId: user.id,
     quiz,

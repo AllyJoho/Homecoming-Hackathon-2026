@@ -207,10 +207,9 @@ model Question {
 /// Mirrors the TS union in lib/quiz/levels.ts — the names must match exactly.
 /// A compile-time check in prisma/queries.ts fails the build if they drift.
 enum ProficiencyLevel {
-  Beginner
-  Intermediate
+  Foundational
   Proficient
-  Advanced
+  Expert
 }
 
 enum QuestionType {
@@ -236,7 +235,7 @@ model Attempt {
   // data/quizzes/. Null for an attempt generated from the Question bank.
   quizId  String?
 
-  level     ProficiencyLevel // derived from score — see lib/quiz/levels.ts
+  level     ProficiencyLevel? // derived from score; null = below the certificate threshold
   score     Int // percent
   answers   Json? // per-question record, handy for review/analytics
   createdAt DateTime @default(now())

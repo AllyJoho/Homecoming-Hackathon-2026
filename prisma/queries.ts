@@ -326,12 +326,13 @@ export async function saveResumeSkills(
 // ── Attempts & certificates ──────────────────────────────────────────────────
 
 /**
- * Store a graded attempt, award its certificate, and credit the skill — all in
- * one transaction, so a user can never end up with a certificate whose attempt
- * is missing (or vice versa).
+ * Store a graded attempt and, when it reaches a certificate level, award the
+ * certificate and credit the skill — all in one transaction, so a user can
+ * never end up with a certificate whose attempt is missing (or vice versa).
  *
- * There is no pass/fail: every completed attempt earns a certificate, and the
- * proficiency level derived from the score is what varies.
+ * An attempt below the certificate threshold (see @/lib/quiz/levels) is still
+ * stored, so the results page and coaching can re-grade it, but it earns
+ * nothing.
  */
 export async function recordAttempt(args: {
   userId: string;
@@ -365,8 +366,11 @@ export async function recordAttempt(args: {
       },
     });
 
-    // Completing a quiz upgrades the skill's provenance: a self-reported skill
-    // becomes QUIZ-backed. The level, not the source, is the strength signal.
+    const level = result.level;
+    if (!level) return { attempt, certification: null };
+
+    // Certifying upgrades the skill's provenance: a self-reported skill becomes
+    // QUIZ-backed. The level, not the source, is the strength signal.
     await tx.userSkill.upsert({
       where: { userId_skillId: { userId, skillId: skill.id } },
       update: { source: 'QUIZ' },
@@ -389,7 +393,7 @@ export async function recordAttempt(args: {
               attemptId: attempt.id,
               quizId: quiz.id,
               title: quiz.title,
-              level: result.level,
+              level,
               score: result.score,
               earnedAt: new Date(),
             },
@@ -399,7 +403,7 @@ export async function recordAttempt(args: {
               attemptId: attempt.id,
               quizId: quiz.id,
               title: quiz.title,
-              level: result.level,
+              level,
               score: result.score,
             },
           });

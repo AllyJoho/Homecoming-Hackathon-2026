@@ -11,6 +11,10 @@ import type { QuestionProps } from './index';
 
 export function OrderLines({ question, answer, onChange, disabled }: QuestionProps<'order_lines'>) {
   const byId = new Map(question.lines.map((line) => [line.id, line]));
+  // Indented lines mean nested code, where the monospace alignment is part of
+  // the answer. Everything else (most of these are process steps written as
+  // sentences) reads better in the body font.
+  const isCode = question.lines.some((line) => /^\s/.test(line.text));
   const order = answer?.lineIds ?? question.lines.map((line) => line.id);
 
   function move(from: number, to: number) {
@@ -30,14 +34,18 @@ export function OrderLines({ question, answer, onChange, disabled }: QuestionPro
             key={id}
             className="flex items-center gap-2 rounded-lg border border-zinc-200 bg-zinc-50 py-1.5 pl-3 pr-1.5 dark:border-zinc-800 dark:bg-zinc-900"
           >
-            <span className="w-5 shrink-0 text-right text-xs tabular-nums text-zinc-400 dark:text-zinc-600">
+            <span className="w-5 shrink-0 self-start pt-1 text-right text-xs tabular-nums text-zinc-400 dark:text-zinc-600">
               {i + 1}
             </span>
-            {/* whitespace-pre keeps authored indentation, which is part of
-                the answer for nested code. */}
-            <code className="min-w-0 flex-1 overflow-x-auto whitespace-pre font-mono text-sm">
+            {/* pre-wrap keeps authored indentation but still wraps, so a long
+                step can't push the arrows off a narrow screen. */}
+            <span
+              className={`min-w-0 flex-1 whitespace-pre-wrap break-words py-0.5 text-sm ${
+                isCode ? 'font-mono' : ''
+              }`}
+            >
               {byId.get(id)?.text}
-            </code>
+            </span>
             <button
               type="button"
               onClick={() => move(i, i - 1)}
