@@ -1,0 +1,33 @@
+# Container and volume names all derive from COMPOSE_PROJECT_NAME in .env.
+
+services:
+  db:
+    image: postgres:16
+    container_name: ${COMPOSE_PROJECT_NAME}-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    # 5433 on the host, not 5432: that keeps this out of the way of any other
+    # local Postgres already holding the default port.
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db_data:
+# To migrate using this file:
+# Start it:  npm run db:up
+# Then, on your machine rather than inside docker:
+#   npx prisma migrate dev --name your_migration_name
+# When done: npm run db:down
+#
+# DATABASE_URL points at localhost and stays there. Nothing runs the app in
+# docker, so there is no container hostname to swap it back to.
