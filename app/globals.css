@@ -56,8 +56,12 @@
   --color-surface: var(--surface);
   --color-surface-raised: var(--surface-raised);
   --color-surface-border: var(--surface-border);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Helvetica is a system font, not loaded by layout.tsx: it ships with
+     macOS and iOS. Windows doesn't have it, so Arial (metrically matched to
+     Helvetica) stands in there. */
+  --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: var(--font-app-mono);
+  --font-display: var(--font-app-display);
 }
 
 /* Syntax colours for components/quiz/CodeBlock. Prism emits `token <kind>`
@@ -96,10 +100,17 @@
 .code-block .token.class-name { color: var(--code-function); }
 .code-block .token.punctuation { color: var(--code-punctuation); }
 
+/* A touch above the 16px default. A percentage, not px, so a visitor's own
+   browser text-size setting still scales it. Tailwind sizes are rem-based, so
+   text, spacing and controls all grow together. */
+html {
+  font-size: 125%; /* 20px */
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  /* Was a hardcoded Arial stack, which ignored the Geist faces the root layout
+  /* Was a hardcoded Arial stack, which ignored the fonts the root layout
      already loads. */
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
