@@ -22,7 +22,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
   return (
     <>
       <header className="border-b border-zinc-200 dark:border-zinc-800">
-        <nav className="mx-auto flex h-14 w-full max-w-4xl items-center gap-6 px-6">
+        <nav className="mx-auto flex h-14 w-full max-w-6xl items-center gap-6 px-6">
           <Link href="/" className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
             {APP_NAME}
           </Link>
@@ -45,7 +45,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
         </nav>
       </header>
 
-      <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">{children}</main>
+      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">{children}</main>
     </>
   );
 }

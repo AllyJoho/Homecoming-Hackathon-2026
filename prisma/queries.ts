@@ -4,7 +4,12 @@
 // award-a-certificate transaction can't be half-copied into two routes.
 
 import type { AnswerSheet, Question, Quiz, QuizOption, QuizResult } from '@/types/quiz';
-import type { Certification, Profile, ProfileSkill } from '@/types/profile';
+import type {
+  Certification,
+  Profile,
+  ProfileSkill,
+  SkillCatalog,
+} from '@/types/profile';
 import type { Job } from '@/types/job';
 import type { Career } from '@/types/career';
 import { Prisma } from '@/lib/generated/prisma/client';
@@ -92,6 +97,72 @@ async function ensureSkillRow(slug: string) {
       category: known?.category,
     },
   });
+}
+
+/**
+ * Every skill in the vocabulary, bucketed for the three sections of the
+ * skills grid: certified (quiz passed), mine (self-reported) and available
+ * (everything else).
+ *
+ * One query per table rather than a per-skill subquery: it's ~46 skills, two
+ * handfuls of user rows and a couple of quizzes, so three reads and a join in
+ * memory beats anything cleverer. The bucket is derived here rather than
+ * stored, so passing a quiz moves a card between sections with no extra write
+ * beyond the `source` upgrade recordAttempt already does.
+ */
+export async function listSkillCatalog(userId: string): Promise<SkillCatalog> {
+  const [skills, userSkills, certifications, quizzes] = await Promise.all([
+    prisma.skill.findMany({ orderBy: [{ category: 'asc' }, { name: 'asc' }] }),
+    prisma.userSkill.findMany({ where: { userId } }),
+    prisma.certification.findMany({ where: { userId } }),
+    // A skill can in principle have several authored quizzes; the card links
+    // to one, so the first by id wins and the rest are ignored.
+    prisma.quiz.findMany({ select: { id: true, skillId: true }, orderBy: { id: 'asc' } }),
+  ]);
+
+  const sourceBySkillId = new Map(userSkills.map((row) => [row.skillId, row.source]));
+  const certBySkillId = new Map(certifications.map((row) => [row.skillId, row]));
+  const quizIdBySkillId = new Map<string, string>();
+  for (const quiz of quizzes) {
+    if (!quizIdBySkillId.has(quiz.skillId)) quizIdBySkillId.set(quiz.skillId, quiz.id);
+  }
+
+  const catalog: SkillCatalog = { certified: [], mine: [], available: [] };
+
+  for (const skill of skills) {
+    const base = {
+      slug: skill.slug,
+      name: skill.name,
+      category: skill.category ?? undefined,
+      description: skill.description ?? undefined,
+      quizId: quizIdBySkillId.get(skill.id),
+    };
+
+    // A QUIZ-sourced row is the authority on "certified": recordAttempt writes
+    // the UserSkill upgrade and the Certification in the same transaction, so
+    // the certificate fields are read off the cert row when it's there and the
+    // card still renders as certified if it somehow isn't.
+    if (sourceBySkillId.get(skill.id) === 'QUIZ') {
+      const cert = certBySkillId.get(skill.id);
+      catalog.certified.push({
+        ...base,
+        status: 'CERTIFIED',
+        score: cert?.score,
+        shareSlug: cert?.shareSlug,
+        certifiedAt: cert?.earnedAt.toISOString(),
+      });
+    } else if (sourceBySkillId.has(skill.id)) {
+      catalog.mine.push({ ...base, status: 'MINE' });
+    } else {
+      catalog.available.push({ ...base, status: 'AVAILABLE' });
+    }
+  }
+
+  // Newest certificate first; the other two keep the category/name ordering
+  // the query already produced.
+  catalog.certified.sort((a, b) => (b.certifiedAt ?? '').localeCompare(a.certifiedAt ?? ''));
+
+  return catalog;
 }
 
 // ── Attempts & certificates ──────────────────────────────────────────────────
