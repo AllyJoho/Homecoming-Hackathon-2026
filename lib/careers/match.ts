@@ -9,27 +9,8 @@
 // it. Same shape as @/lib/jobs/shortlist for that reason.
 
 import type { Career, CareerMatch, CareerSkillWeight } from '@/types/career';
-import type { Profile, SkillSource } from '@/types/profile';
-
-/**
- * What each kind of evidence is worth against a quiz pass.
- *
- * The same table as @/lib/jobs/match and @/lib/profile/related, deliberately:
- * a student shouldn't see two different ideas of what their skills are worth
- * depending on which page they're on. A resume sits between the other two
- * because it is a claim with a document behind it — better than a checkbox,
- * short of a graded assessment. A student who merely claims every skill for a
- * career should land mid-pack, not at 100%, and that gap is what makes "take
- * this quiz next" worth acting on.
- *
- * An exhaustive Record rather than a `switch`, on purpose. A switch carrying a
- * `default` is never flagged as non-exhaustive, so when RESUME joined
- * SkillSource this file kept compiling and quietly treated a resume-evidenced
- * skill as one the student did not have at all — no credit, and listed back to
- * them as a skill to go learn. Adding a member to SkillSource now breaks the
- * typecheck here instead of changing scores in silence.
- */
-const CREDIT: Record<SkillSource, number> = { QUIZ: 1, RESUME: 0.7, SELF_REPORTED: 0.5 };
+import type { Profile } from '@/types/profile';
+import { creditFor } from '@/lib/profile/credit';
 
 /**
  * Rank careers for a profile, best fit first.
@@ -40,7 +21,7 @@ const CREDIT: Record<SkillSource, number> = { QUIZ: 1, RESUME: 0.7, SELF_REPORTE
  * across careers that list different numbers of skills.
  */
 export function matchCareers(careers: Career[], profile: Profile, limit = 5): CareerMatch[] {
-  const sourceBySlug = new Map(profile.skills.map((skill) => [skill.slug, skill.source]));
+  const evidenceBySlug = new Map(profile.skills.map((skill) => [skill.slug, skill]));
 
   return careers
     .map((career) => {
@@ -53,17 +34,19 @@ export function matchCareers(careers: Career[], profile: Profile, limit = 5): Ca
       for (const skill of career.skills) {
         total += skill.weight;
 
-        const source = sourceBySlug.get(skill.slug);
-        if (!source) {
+        const evidence = evidenceBySlug.get(skill.slug);
+        if (!evidence) {
           missingSkills.push(skill);
           continue;
         }
 
-        earned += skill.weight * CREDIT[source];
+        // creditFor grades a pass by its level, so two students who both
+        // certified this skill can score differently on the same career.
+        earned += skill.weight * creditFor(evidence);
         // Anything short of a quiz pass is "claimed": it earns partial credit
         // and, unlike a missing skill, is never offered back as something to
         // go learn. The card distinguishes them by colour, not by bucket.
-        (source === 'QUIZ' ? provenSkills : claimedSkills).push(skill.slug);
+        (evidence.source === 'QUIZ' ? provenSkills : claimedSkills).push(skill.slug);
       }
 
       return {

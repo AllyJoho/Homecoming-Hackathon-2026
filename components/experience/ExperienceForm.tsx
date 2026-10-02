@@ -13,6 +13,7 @@ import { useState } from 'react';
 import type { Experience, ExperienceInput, ExperienceKind } from '@/types/experience';
 import { EXPERIENCE_KINDS } from '@/types/experience';
 import { Button, SelectField, TextField } from '@/components/ui';
+import { BulletReword } from './BulletReword';
 
 export interface ExperienceFormProps {
   /** Omit to add a new entry. */
@@ -43,6 +44,10 @@ export function ExperienceForm({
 
   const identified = title.trim().length > 0 || organization.trim().length > 0;
 
+  // The textarea is the source of truth for bullets, so both saving and
+  // rewording read them through here rather than each splitting their own way.
+  const bullets = splitBullets(bulletText);
+
   async function save() {
     setPending(true);
     setError(null);
@@ -55,10 +60,7 @@ export function ExperienceForm({
         startDate: startDate.trim() || undefined,
         endDate: current ? undefined : endDate.trim() || undefined,
         current,
-        bullets: bulletText
-          .split('\n')
-          .map((line) => line.replace(/^[\s•▪◦*-]+/, '').trim())
-          .filter(Boolean),
+        bullets,
       });
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : 'Could not save that.');
@@ -161,6 +163,18 @@ export function ExperienceForm({
         </p>
       </div>
 
+      {/* Under the textarea it edits. Applying writes back into it rather than
+          saving, so the student reviews the wording and then presses Save
+          themselves — see BulletReword for why it never edits in place. */}
+      <BulletReword
+        kind={kind}
+        title={title.trim()}
+        organization={organization.trim()}
+        bullets={bullets}
+        onApply={(next) => setBulletText(next.join('\n'))}
+        disabled={pending}
+      />
+
       {error && (
         <p role="alert" className="text-sm text-red-700 dark:text-red-400">
           {error}
@@ -182,4 +196,17 @@ export function ExperienceForm({
       </div>
     </div>
   );
+}
+
+/**
+ * The textarea's lines as bullets: list markers stripped, blanks dropped.
+ *
+ * Students paste from a resume, and a pasted "• " would otherwise be saved
+ * into the text and then rendered next to the marker the resume adds itself.
+ */
+function splitBullets(text: string): string[] {
+  return text
+    .split('\n')
+    .map((line) => line.replace(/^[\s•▪◦*-]+/, '').trim())
+    .filter(Boolean);
 }

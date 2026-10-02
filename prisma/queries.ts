@@ -176,7 +176,14 @@ export async function listSkillCatalog(userId: string): Promise<SkillCatalog> {
       unclaimedBySlug.set(skill.slug, card);
     }
 
-    if (source) held.push({ ...base, source });
+    if (source)
+      held.push({
+        ...base,
+        source,
+        // Same join as getProfile: the suggester weights a proven skill by the
+        // band it was proven at, so it has to travel with the level.
+        level: source === 'QUIZ' ? certBySkillId.get(skill.id)?.level : undefined,
+      });
   }
 
   // Newest certificate first; the other two keep the category/name ordering
@@ -474,6 +481,12 @@ export async function getProfile(userId: string): Promise<Profile | null> {
   });
   if (!user) return null;
 
+  // The level a pass reached lives on the Certification, not the UserSkill, so
+  // weighting a pass by how good it was means joining it on here. ProfileSkill
+  // has declared a `level` field all along and nothing ever filled it — which
+  // is exactly why a scraped Foundational used to score like a clean Expert.
+  const levelBySkillId = new Map(user.certifications.map((row) => [row.skillId, row.level]));
+
   return {
     userId: user.id,
     name: user.name ?? '',
@@ -482,6 +495,7 @@ export async function getProfile(userId: string): Promise<Profile | null> {
       name: row.skill.name,
       category: row.skill.category ?? undefined,
       source: row.source,
+      level: row.source === 'QUIZ' ? levelBySkillId.get(row.skillId) : undefined,
     })),
     certifications: user.certifications.map(toCertification),
   };

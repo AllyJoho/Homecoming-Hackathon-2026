@@ -1,9 +1,14 @@
 // @/app/(main)/resume/preview/page.tsx
-// The finished resume, ready to print.
+// The finished resume, and the button that downloads it.
 //
-// Everything on this page is already in the database — the experience entries
-// from /resume and the skills from quizzes and resume reading. No model call
-// here; rendering is rendering.
+// Everything here is already in the database — the experience entries from
+// /resume and the skills from quizzes and resume reading. No model call; this
+// is rendering.
+//
+// What's on screen is the HTML version (components/experience/ResumeDocument);
+// the download is generated independently by React-PDF in
+// /api/resume/pdf. They're built to match, but they are two implementations —
+// so check both after a layout change.
 
 import Link from 'next/link';
 
@@ -12,7 +17,7 @@ import { buildProfile } from '@/lib/profile/buildProfile';
 import { listExperiences } from '@/prisma/queries';
 import { Button, EmptyState, PageHeader } from '@/components/ui';
 import { ResumeDocument } from '@/components/experience/ResumeDocument';
-import { PrintButton } from './PrintButton';
+import { DownloadPdfButton } from './DownloadPdfButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -47,7 +52,7 @@ export default async function ResumePreviewPage() {
       <div className="print:hidden">
         <PageHeader
           title="Resume preview"
-          description="Only quiz-certified and resume-backed skills are printed — a claim you only typed in is left off."
+          description="Only quiz-certified and resume-backed skills are included — a claim you only typed in is left off."
           actions={
             <div className="flex items-center gap-2">
               <Link href="/resume">
@@ -55,13 +60,13 @@ export default async function ResumePreviewPage() {
                   Edit entries
                 </Button>
               </Link>
-              <PrintButton />
+              <DownloadPdfButton />
             </div>
           }
         />
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-zinc-200 shadow-sm dark:border-zinc-800 print:overflow-visible print:rounded-none print:border-0 print:shadow-none">
+      <div className="overflow-x-auto rounded-xl border border-zinc-200 shadow-sm dark:border-surface-border print:overflow-visible print:rounded-none print:border-0 print:shadow-none">
         <ResumeDocument
           name={profile.name}
           email={user.email}
