@@ -14,6 +14,8 @@ A website where users take short quizzes on programming languages and software e
 - Prisma
 - Postgres
 
+Setup steps and project layout: [docs/SETUP.md](docs/SETUP.md).
+
 ## How Quizzes Work
 
 - Each quiz has **15 questions**.
