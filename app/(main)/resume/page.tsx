@@ -16,6 +16,7 @@ import { listExperiences, listQuizzes } from '@/prisma/queries';
 import Link from 'next/link';
 import { Button, PageHeader } from '@/components/ui';
 import { ExperienceEditor } from '@/components/experience/ExperienceEditor';
+import { ResumeReviewPanel } from '@/components/experience/ResumeReviewPanel';
 import { ResumeForm } from './ResumeForm';
 
 // The editor writes through API routes and calls router.refresh(), which has
@@ -52,6 +53,10 @@ export default async function ResumePage() {
       />
       <ResumeForm quizBySkill={quizBySkill} />
       <ExperienceEditor experiences={experiences} />
+      {/* Below the editor, not above it: the review points at specific entries
+          and the first thing a student does with it is scroll up and edit one.
+          Hidden until there's something to read. */}
+      {experiences.length > 0 && <ResumeReviewPanel entryCount={experiences.length} />}
     </div>
   );
 }

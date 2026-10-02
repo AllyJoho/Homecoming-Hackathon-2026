@@ -214,19 +214,38 @@ function ApplicationRow({
       <label className="sr-only" htmlFor={`status-${application.id}`}>
         Status for {application.title}
       </label>
-      <select
-        id={`status-${application.id}`}
-        value={application.status}
-        disabled={pending}
-        onChange={(event) => onStatusChange(event.target.value as ApplicationStatus)}
-        className="rounded-lg border border-zinc-200 bg-white px-2 py-1 text-xs outline-none focus:border-zinc-900 disabled:opacity-50 dark:border-surface-border dark:bg-surface dark:focus:border-zinc-50"
-      >
-        {APPLICATION_STATUSES.map((status) => (
-          <option key={status} value={status}>
-            {APPLICATION_STATUS_META[status].label}
-          </option>
-        ))}
-      </select>
+      {/* Same treatment as SelectField, at this row's compact size: the native
+          indicator off, our chevron in a pr-7 gutter. Not SELECT_CLASS itself,
+          which is w-full and sized for a form field — this one is an inline
+          control in a flex row. */}
+      <div className="relative">
+        <select
+          id={`status-${application.id}`}
+          value={application.status}
+          disabled={pending}
+          onChange={(event) => onStatusChange(event.target.value as ApplicationStatus)}
+          className="cursor-pointer appearance-none rounded-lg border border-zinc-200 bg-white py-1 pl-2 pr-7 text-xs outline-none focus:border-zinc-900 disabled:opacity-50 dark:border-surface-border dark:bg-surface dark:focus:border-zinc-50"
+        >
+          {APPLICATION_STATUSES.map((status) => (
+            <option key={status} value={status}>
+              {APPLICATION_STATUS_META[status].label}
+            </option>
+          ))}
+        </select>
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+          className={`pointer-events-none absolute top-1/2 right-2 h-3 w-3 -translate-y-1/2 text-zinc-500 dark:text-zinc-400${pending ? ' opacity-50' : ''}`}
+        >
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </div>
 
       <Button variant="ghost" size="sm" disabled={pending} onClick={onRemove}>
         Remove

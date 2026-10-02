@@ -13,9 +13,15 @@
 export const LABEL_CLASS = 'block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1';
 
 // `min-w-0` lets an input sit in a flex or grid track without forcing the track
-// wider than its slot. Composed by INPUT_CLASS and by custom click surfaces.
+// wider than its slot. Composed by INPUT_CLASS and SELECT_CLASS.
+//
+// Horizontal padding is deliberately NOT in here. A <select> needs a wider
+// right inset than a text input to clear its chevron, and layering a `pr-9`
+// over a `px-3` already baked into this string would leave which one wins up
+// to Tailwind's property ordering rather than to intent. Each consumer states
+// its own horizontal padding.
 export const INPUT_SURFACE =
-  'w-full min-w-0 rounded-lg border border-zinc-300 bg-white px-3 py-2 ' +
+  'w-full min-w-0 rounded-lg border border-zinc-300 bg-white py-2 ' +
   'dark:border-zinc-700 dark:bg-surface ' +
   'focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500';
 
@@ -24,7 +30,24 @@ export const INPUT_SURFACE =
 export const FIELD_ERROR_OVERRIDE =
   ' border-red-500! hover:border-red-500! focus:border-red-500! focus:ring-red-500!';
 
-export const INPUT_CLASS = INPUT_SURFACE + ' text-sm text-zinc-900 dark:text-zinc-50';
+export const INPUT_CLASS = INPUT_SURFACE + ' px-3 text-sm text-zinc-900 dark:text-zinc-50';
+
+// ── Select ───────────────────────────────────────────────────────────────────
+// A <select> cannot simply wear INPUT_CLASS. The browser paints its own
+// dropdown indicator pinned inside the right edge of the box, so with a text
+// input's `px-3` it sits hard against the rounded corner and long option
+// labels run straight into it. `appearance-none` switches that indicator off
+// and SelectField draws the app's own chevron — the same glyph the header
+// uses, instead of whatever the OS happens to ship.
+//
+// `pr-9` is the gutter the chevron sits in. Pair with SELECT_CHEVRON_CLASS on
+// an aria-hidden <svg>, both inside a `relative` wrapper.
+export const SELECT_CLASS =
+  INPUT_SURFACE + ' cursor-pointer appearance-none pl-3 pr-9 text-sm text-zinc-900 dark:text-zinc-50';
+
+export const SELECT_CHEVRON_CLASS =
+  'pointer-events-none absolute top-1/2 right-3 h-3.5 w-3.5 -translate-y-1/2 ' +
+  'text-zinc-500 dark:text-zinc-400';
 
 export const FIELD_ERROR_CLASS = 'mt-1 text-xs text-red-600 dark:text-red-400';
 export const FIELD_HELPER_CLASS = 'mt-1 text-xs text-zinc-500 dark:text-zinc-400';

@@ -218,3 +218,178 @@ Return three things.
 
 3. "summary": one sentence, addressed to the student, on what the resume shows. Mention the strongest one or two areas. No flattery, no advice.`;
 }
+
+/**
+ * Rewrites resume bullets to read more professionally without changing what
+ * they say, for @/lib/profile/reword.
+ *
+ * The hard part of this prompt is not the polish — models are good at that.
+ * It's that "more professional" and "inflate" point the same direction, and a
+ * model asked for the first will drift into the second unless told, in detail,
+ * which specific upgrades are forbidden. Hence the list of named swaps rather
+ * than a general plea for faithfulness: "helped" → "led" is the failure, and
+ * naming it works better than describing the category it belongs to.
+ *
+ * Nothing here is load-bearing on its own. @/lib/profile/rewordGuard checks
+ * the figures afterwards and rejects any rewrite that invented one, because a
+ * student is going to put these lines in front of an employer and a prompt is
+ * not a guarantee.
+ */
+export const REWORD_SYSTEM_PROMPT = `You rewrite a student's resume bullet points so they read like strong professional resume writing. You never change what they say.
+
+What you may change: weak or repetitive verbs, filler, passive constructions, vague phrasing, awkward word order, inconsistent tense.
+
+What you may NOT change, ever:
+- Numbers. Keep every figure exactly as written. Never add one. If the bullet does not say how many, how much, or how long, your rewrite does not either.
+- Scope and seniority. "Helped with" does not become "led". "Worked on a team" does not become "managed a team". "Assisted" does not become "owned". "Contributed to" does not become "spearheaded".
+- Technologies, tools, and company or product names. Do not add one that isn't there, and do not drop one that is.
+- Outcomes. If the bullet does not claim a result, your rewrite does not invent one. "Built a dashboard" must not become "built a dashboard that improved decision-making".
+- Cause. Do not explain how or why something happened when the bullet doesn't say. "Cut review time by 6 hours a week" must not become "cut review time by 6 hours a week through automated reporting" — you do not know that it was.
+- Which job or project it describes.
+
+You are told the role and organization so you can judge tense and register. They are CONTEXT, not material: the resume prints them in the heading directly above these bullets, so never write the organization name, the role title, or the dates into a bullet. A bullet that ends "at Acme Corp" under a heading that already says Acme Corp is padding.
+
+Style: one bullet in, one bullet out. Start with a past-tense verb unless the student is still doing it. No "I" or "my". Match the original's final punctuation — if it has no period, yours has none. Keep roughly the original length; a rewrite much longer than the original is padding, not polish.
+
+A bullet that is already well written should come back unchanged with "changed" set to false. Do not rewrite for the sake of rewriting — a student who sees five pointless changes stops trusting the five real ones.
+
+Return one entry per bullet you were given, with "index" set to the number that bullet was labelled with.`;
+
+/** The per-entry half of the reword call. */
+export function buildRewordUserMessage(entry: {
+  kind: string;
+  title: string;
+  organization: string;
+  bullets: string[];
+}): string {
+  const context = [
+    `Section: ${entry.kind}`,
+    entry.title ? `Role or project: ${entry.title}` : null,
+    entry.organization ? `Organization: ${entry.organization}` : null,
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+  const numbered = entry.bullets.map((bullet, i) => `${i}. ${bullet}`).join('\n');
+
+  return `${context}
+
+Bullets to rewrite, labelled by index:
+${numbered}`;
+}
+
+/**
+ * Reviews a student's whole set of experience entries, for
+ * @/lib/profile/resumeReview.
+ *
+ * Scoped deliberately narrowly. The obvious version of this feature rates how
+ * employable the applicant sounds, and that was left out on purpose: a resume
+ * contains no ground truth for it, so the model would be inventing a verdict,
+ * and the things that read as "risky" to a model are gaps, short stints and
+ * non-traditional schooling — which track caregiving, illness and money, are
+ * mostly not things a student can act on, and would make this a bias vector
+ * pointed at the people it is supposed to help.
+ *
+ * What's left is the part that was actually useful: is this resume telling one
+ * story, and which specific lines are weak. Both are answerable from the text,
+ * and every finding names the entry it came from so the student can go fix it.
+ *
+ * The counted facts (bullets without figures, duty-phrased openers) are passed
+ * IN rather than asked for — @/lib/profile/resumeReview counts them in code,
+ * because counting is not a thing to spend a model call on or to let a model
+ * be approximately right about.
+ */
+export const RESUME_REVIEW_SYSTEM_PROMPT = `You review a student's resume entries the way a good careers advisor would: specific, warm, and about the document rather than about the person.
+
+You are given every entry, the counts of some weaknesses already measured in code, and the career the student's skill profile currently points at.
+
+Return:
+
+- "throughLine": in one sentence, the story these entries currently tell a reader who skims them in ten seconds. Describe what is there, not what is missing.
+- "focus": two or three sentences on whether the entries point one direction or several, and what that costs or buys them. Say plainly if they are scattered. If they are already focused, say that instead of manufacturing a problem.
+- "strengths": one to three things genuinely working, each a full sentence that says what is good and names the entry it is about. "Your Wasatch Health Group bullets are the only ones with real numbers in them" is a strength; "Data Analyst Intern" is not — a bare entry name says nothing. No flattery and no filler: if only one thing is working, return one.
+- "fixes": two to five specific changes, strongest first. Each has "where" (copy the entry's \`label\` line exactly as given, nothing added), "problem" (what is weak about that entry, in one sentence), and "suggestion" (what to do about it, concretely enough to act on tonight). Point at entries that exist; do not suggest adding experience they don't have.
+
+Never put a number in a suggestion unless the student's own text already contains it. This matters more than it looks: a student reads "Built the scheduling logic for 500 students" as a line to paste in, and you do not know that it was 500. When a bullet needs a figure, name the KIND of figure and leave a bracketed placeholder for them to fill — "Built the scheduling logic for [how many] students" or "managed a [size] budget". Never "500", never "10%", never "three".
+
+Rules:
+- Never comment on employment gaps, how long they stayed somewhere, the prestige of their school, or how hireable or risky they seem. Those are not fixable tonight and not yours to judge. Review the writing.
+- An Education entry with no bullets is normal and correct on a student resume. Do not ask them to add bullets to it, and do not count it as a weakness.
+- Do not invent accomplishments they could claim. You have not seen their work.
+- Address them as "you" throughout, in every field. Not "the student" and not "their resume".
+- Plain sentences. No markdown, no headings, no asterisks, no bullet characters — the app lays these fields out itself.`;
+
+/** The per-student half of the review call. */
+export function buildResumeReviewUserMessage(input: {
+  entries: { kind: string; title: string; organization: string; bullets: string[] }[];
+  /** Counted in code, not by the model — see @/lib/profile/resumeReview. */
+  counts: { entries: number; bullets: number; withoutFigures: number; dutyPhrased: number };
+  /**
+   * The specific weak lines, already located in code.
+   *
+   * Passed in because the counts alone are not enough to advise on: told only
+   * that five bullets state no number, the model suggested adding a figure to
+   * the one bullet that already said "40-table". With the weak lines named, it
+   * points at lines that are actually weak.
+   */
+  weakLines: { where: string; bullet: string; reason: string }[];
+  /** Where the skill profile currently points, from the free career matcher. */
+  target: { title: string; percent: number } | null;
+}): string {
+  // `label` is on its own line and is the only thing "where" may contain, so a
+  // fix points at the same string the counted findings use and the two lists
+  // read as being about one resume. Measured: given the section, title and
+  // organization on one line, the model echoed all three back as the label.
+  const entries = input.entries
+    .map((entry) => {
+      const bullets =
+        entry.bullets.length > 0
+          ? entry.bullets.map((bullet) => `  - ${bullet}`).join('\n')
+          : '  (no bullets)';
+      return [
+        `label: ${entry.title || entry.organization || 'Untitled entry'}`,
+        `section: ${entry.kind}`,
+        entry.organization ? `organization: ${entry.organization}` : null,
+        'bullets:',
+        bullets,
+      ]
+        .filter(Boolean)
+        .join('\n');
+    })
+    .join('\n\n');
+
+  const measured = [
+    `${input.counts.entries} entries, ${input.counts.bullets} bullets total`,
+    `${input.counts.withoutFigures} bullets state no number of any kind`,
+    `${input.counts.dutyPhrased} bullets open by describing a duty rather than something done`,
+  ].join('\n');
+
+  const weak =
+    input.weakLines.length > 0
+      ? input.weakLines
+          .map((line) =>
+            line.bullet
+              ? `- under "${line.where}", this line ${line.reason}:\n    ${line.bullet}`
+              : `- "${line.where}" ${line.reason}`,
+          )
+          .join('\n')
+      : '- none; every bullet opens on an action and states a figure';
+
+  return `Entries:
+
+${entries}
+
+Already measured in code (treat these counts as correct; don't recount):
+${measured}
+
+The specific lines those counts refer to. These are the weak ones — do not
+suggest adding a number to any bullet that is not listed here, because the
+others already have one:
+${weak}
+
+Where their skill profile points: ${
+    input.target
+      ? `${input.target.title}, at ${input.target.percent}% match`
+      : 'no clear match yet — they have few confirmed skills'
+  }`;
+}
