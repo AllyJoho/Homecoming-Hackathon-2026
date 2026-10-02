@@ -505,8 +505,16 @@ type QuizRow = {
 
 type QuestionRow = {
   id: string;
-  type: 'MULTIPLE_CHOICE' | 'MULTI_SELECT' | 'TRUE_FALSE' | 'SHORT_ANSWER';
+  type:
+    | 'MULTIPLE_CHOICE'
+    | 'MULTI_SELECT'
+    | 'TRUE_FALSE'
+    | 'SHORT_ANSWER'
+    | 'FIND_THE_BUG'
+    | 'ORDER_LINES';
   prompt: string;
+  code: string | null;
+  codeLanguage: string | null;
   points: number;
   explanation: string | null;
   options: unknown;
@@ -514,12 +522,15 @@ type QuestionRow = {
   correctOptionIds: string[];
   correctAnswer: boolean | null;
   acceptedAnswers: string[];
+  bugLines: number[];
 };
 
 function toQuestion(row: QuestionRow): Question {
   const base = {
     id: row.id,
     prompt: row.prompt,
+    // A snippet with no language still renders, just unhighlighted.
+    code: row.code === null ? undefined : { language: row.codeLanguage ?? 'plain', source: row.code },
     points: row.points,
     explanation: row.explanation ?? undefined,
   };
@@ -545,6 +556,16 @@ function toQuestion(row: QuestionRow): Question {
       };
     case 'SHORT_ANSWER':
       return { ...base, type: 'short_answer', acceptedAnswers: row.acceptedAnswers };
+    case 'FIND_THE_BUG':
+      return {
+        ...base,
+        type: 'find_the_bug',
+        code: required(base.code ?? null, row.id, 'code'),
+        bugLines: row.bugLines,
+      };
+    case 'ORDER_LINES':
+      // `options` holds the lines in their correct order.
+      return { ...base, type: 'order_lines', lines: options };
   }
 }
 

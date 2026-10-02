@@ -2,104 +2,394 @@
   "id": "backend-apis",
   "title": "Backend & REST APIs",
   "skillSlug": "backend-apis",
-  "description": "Test your understanding of backend & rest apis. Designing and building server-side endpoints, handling requests, authentication, and returning structured data.",
-  "timeLimitSeconds": 600,
+  "description": "HTTP semantics, REST design, auth, security, and reliability for server-side APIs.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "backend-apis-1",
       "type": "multiple_choice",
-      "prompt": "What best describes REST resource?",
+      "difficulty": "BEGINNER",
+      "prompt": "A client sends POST /orders with a valid order, and the server creates order 512. Which response follows HTTP conventions?",
       "options": [
         {
           "id": "a",
-          "text": "is a business entity addressed by a URL and manipulated with HTTP methods"
+          "text": "201 Created with a Location: /orders/512 header and the new order in the body"
         },
         {
           "id": "b",
-          "text": "a CSS selector"
+          "text": "200 OK with an empty body, since the client already knows what it sent"
         },
         {
           "id": "c",
-          "text": "a local browser cookie only"
+          "text": "204 No Content with the new order as JSON in the response body"
         },
         {
           "id": "d",
-          "text": "a compiled binary"
+          "text": "302 Found redirecting the client to GET /orders/512 to fetch it"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "REST resource is a business entity addressed by a URL and manipulated with HTTP methods.",
-      "difficulty": "BEGINNER"
+      "explanation": "201 signals that a new resource was created, and Location identifies it (RFC 9110). A 204 response cannot carry a body, and an empty 200 forces the client to guess the new id."
     },
     {
       "id": "backend-apis-2",
       "type": "multiple_choice",
-      "prompt": "What best describes HTTP 401?",
+      "difficulty": "BEGINNER",
+      "prompt": "A user with a valid, unexpired access token and the role \"viewer\" calls DELETE /projects/9, which requires the \"admin\" role. Which status code should the API return?",
       "options": [
         {
           "id": "a",
-          "text": "indicates that authentication is required or has failed"
+          "text": "401 Unauthorized"
         },
         {
           "id": "b",
-          "text": "indicates a successful response"
+          "text": "400 Bad Request"
         },
         {
           "id": "c",
-          "text": "means the server crashed"
+          "text": "405 Method Not Allowed"
         },
         {
           "id": "d",
-          "text": "means the requested resource was permanently moved"
+          "text": "403 Forbidden"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "HTTP 401 indicates that authentication is required or has failed.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "d",
+      "explanation": "The caller is authenticated but lacks permission, which is 403. 401 means credentials are missing or invalid (and must include WWW-Authenticate); 405 means the resource does not support DELETE for anyone."
     },
     {
       "id": "backend-apis-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Idempotent request?",
+      "difficulty": "BEGINNER",
+      "prompt": "A team is adding an endpoint that returns the orders belonging to user 42. Which design is most consistent with REST conventions?",
       "options": [
         {
           "id": "a",
-          "text": "can be repeated without changing the result after the first successful application"
+          "text": "POST /getUserOrders with body {\"userId\": 42}"
         },
         {
           "id": "b",
-          "text": "must always create a new record"
+          "text": "GET /users/42/orders"
         },
         {
           "id": "c",
-          "text": "can only be sent over UDP"
+          "text": "GET /orders/getByUser?id=42"
         },
         {
           "id": "d",
-          "text": "cannot include a response body"
+          "text": "GET /users/orders?action=list&user=42"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Idempotent request can be repeated without changing the result after the first successful application.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "b",
+      "explanation": "REST models resources as nouns in the path and expresses the action with the HTTP method; a nested collection shows ownership. Verbs in the path (getUserOrders, getByUser) or an action parameter recreate RPC, and POST makes a read non-cacheable and non-safe."
     },
     {
       "id": "backend-apis-4",
       "type": "true_false",
-      "prompt": "True or false: REST resource is a business entity addressed by a URL and manipulated with HTTP methods.",
-      "correctAnswer": true,
-      "explanation": "REST resource is a business entity addressed by a URL and manipulated with HTTP methods.",
-      "difficulty": "BEGINNER"
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: because PUT and PATCH both update resources, HTTP defines both methods as idempotent.",
+      "correctAnswer": false,
+      "explanation": "RFC 9110 defines PUT (full replacement) as idempotent, but PATCH (RFC 5789) is not guaranteed to be: a patch like \"append item\" or \"increment counter\" changes the result each time it is applied. Clients should not blindly retry PATCH unless the API makes it idempotent."
     },
     {
       "id": "backend-apis-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: can be repeated without changing the result after the first successful application?",
-      "acceptedAnswers": [
-        "Idempotent request"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "You are building the signup endpoint for a new web app. How should it store user passwords?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Hash each with SHA-256 and store the hex digest in the users table"
+        },
+        {
+          "id": "b",
+          "text": "Encrypt each with AES-256 using a key kept in the app's environment"
+        },
+        {
+          "id": "c",
+          "text": "Hash each with a slow, salted algorithm such as Argon2id or bcrypt"
+        },
+        {
+          "id": "d",
+          "text": "Base64-encode each and restrict database access to the API service"
+        }
       ],
-      "explanation": "The term is Idempotent request.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "OWASP's Password Storage Cheat Sheet recommends Argon2id (or scrypt/bcrypt): per-user salts plus deliberate slowness make offline cracking expensive. SHA-256 is fast enough for billions of guesses per second, and encryption is reversible by anyone who obtains the key."
+    },
+    {
+      "id": "backend-apis-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A mobile app sends POST /payments; the server charges the card, but the response times out. The app retries automatically and the customer is charged twice. What is the standard fix?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Change the endpoint to PUT /payments so that HTTP guarantees the retried request is idempotent"
+        },
+        {
+          "id": "b",
+          "text": "The client sends a unique Idempotency-Key per payment; the server stores the outcome and replays it on retries"
+        },
+        {
+          "id": "c",
+          "text": "Disable automatic retries in the app and ask the user to tap Pay again if the request times out"
+        },
+        {
+          "id": "d",
+          "text": "Raise the server timeout to 60 seconds so the response always arrives before the client gives up"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Timeouts are unavoidable, so the server must recognize a repeated logical request; an idempotency key (as used by Stripe and in the IETF Idempotency-Key draft) returns the original result instead of charging again. Renaming the method does not change the server's behavior, and making the user retry by hand causes the same double charge."
+    },
+    {
+      "id": "backend-apis-7",
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "This Express endpoint looks up a user by email. A security review flags it as exploitable. Which line contains the vulnerability?",
+      "code": {
+        "language": "javascript",
+        "source": "app.get('/api/users', async (req, res) => {\n  const { email } = req.query;\n  if (!email) return res.status(400).json({ error: 'email is required' });\n  const sql = `SELECT id, name FROM users WHERE email = '${email}'`;\n  const { rows } = await db.query(sql);\n  res.json(rows);\n});"
+      },
+      "bugLines": [
+        4
+      ],
+      "explanation": "Interpolating user input into SQL allows injection (e.g., email=' OR '1'='1), OWASP Top 10 2021 A03. Use a parameterized query: db.query('SELECT id, name FROM users WHERE email = $1', [email]). Line 5 simply executes whatever string it is given."
+    },
+    {
+      "id": "backend-apis-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The SPA at https://app.example.com calls fetch(url, { credentials: 'include' }) and gets this console error. The same request works from curl. What fixes it?",
+      "code": {
+        "language": "plaintext",
+        "source": "Access to fetch at 'https://api.example.com/me' from origin\n'https://app.example.com' has been blocked by CORS policy: The value of\nthe 'Access-Control-Allow-Origin' header in the response must not be the\nwildcard '*' when the request's credentials mode is 'include'."
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The API responds with Access-Control-Allow-Origin: https://app.example.com and Access-Control-Allow-Credentials: true"
+        },
+        {
+          "id": "b",
+          "text": "The SPA sets mode: 'no-cors' on the fetch so the browser skips the CORS check and returns the JSON"
+        },
+        {
+          "id": "c",
+          "text": "The SPA adds an Access-Control-Allow-Origin: * header to its own request so the API accepts it"
+        },
+        {
+          "id": "d",
+          "text": "The API adds Access-Control-Allow-Methods: * so that every method from any origin is allowed"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "CORS is enforced by the browser based on the server's response headers; credentialed requests require an explicit origin (with Vary: Origin) plus Allow-Credentials: true. no-cors yields an opaque response that JavaScript cannot read, and request-side Allow-Origin headers mean nothing. curl does not enforce CORS."
+    },
+    {
+      "id": "backend-apis-9",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "An API issues JWT access tokens signed with HS256 that clients send as Bearer tokens. Which statements are true? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Anyone holding the token can decode and read its payload claims"
+        },
+        {
+          "id": "b",
+          "text": "The signature prevents the client from reading the claims inside it"
+        },
+        {
+          "id": "c",
+          "text": "The API must verify the signature and reject tokens whose exp has passed"
+        },
+        {
+          "id": "d",
+          "text": "Logging out on the client invalidates the token on the server immediately"
+        },
+        {
+          "id": "e",
+          "text": "Putting the password hash in the claims is safe because the token is signed"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c"
+      ],
+      "explanation": "A JWS-signed JWT is only base64url-encoded, so its payload is readable; the signature guarantees integrity, not confidentiality. Servers must validate signature, algorithm, and exp (RFC 8725). A stateless token stays valid until it expires unless the server keeps a denylist, so keep lifetimes short."
+    },
+    {
+      "id": "backend-apis-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A nightly sync job calling a partner API receives this response halfway through a batch. What should the client do?",
+      "code": {
+        "language": "plaintext",
+        "source": "HTTP/1.1 429 Too Many Requests\nRetry-After: 30\nContent-Type: application/json\n\n{\"error\":\"rate_limited\"}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Retry the same request immediately in a loop, since rate limits reset as soon as a request succeeds"
+        },
+        {
+          "id": "b",
+          "text": "Treat the batch as permanently failed and skip the remaining records until the next nightly run"
+        },
+        {
+          "id": "c",
+          "text": "Wait at least 30 seconds before retrying, then continue with exponential backoff and jitter if 429s recur"
+        },
+        {
+          "id": "d",
+          "text": "Rotate to a second API key for the rest of the batch so that the job gets a fresh request quota"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "429 is a temporary condition, and Retry-After (RFC 6585, RFC 9110) tells the client how long to wait; backoff with jitter avoids synchronized retry storms. Tight retry loops prolong the throttling, and rotating keys to dodge limits typically violates the provider's terms."
+    },
+    {
+      "id": "backend-apis-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "This endpoint has become slow. Based on its query log, what is the most likely cause and fix?",
+      "code": {
+        "language": "plaintext",
+        "source": "GET /api/orders?limit=50 -> 200 (1840 ms)\n  SELECT * FROM orders ORDER BY created_at DESC LIMIT 50\n  SELECT * FROM customers WHERE id = 81\n  SELECT * FROM customers WHERE id = 17\n  SELECT * FROM customers WHERE id = 81\n  SELECT * FROM customers WHERE id = 203\n  ... (46 more customer queries)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "customers.id is missing an index; add one so that each customer lookup query is faster"
+        },
+        {
+          "id": "b",
+          "text": "The database connection pool is too small; raise the pool size so queries run in parallel"
+        },
+        {
+          "id": "c",
+          "text": "The response is too large; cache the /api/orders response for 24 hours in a CDN instead"
+        },
+        {
+          "id": "d",
+          "text": "An N+1 query pattern; load the customers in one query with a JOIN or WHERE id IN (...)"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "One query for the list plus one per row (51 round trips, including repeats) is the classic N+1 problem, usually from lazy loading in an ORM. Eager loading or a batched IN query makes it 1-2 queries. customers.id is presumably the primary key and already indexed."
+    },
+    {
+      "id": "backend-apis-12",
+      "type": "order_lines",
+      "difficulty": "ADVANCED",
+      "prompt": "A single-page app signs users in with the OAuth 2.0 authorization code flow with PKCE. Put the steps in order.",
+      "lines": [
+        {
+          "id": "k3",
+          "text": "App generates a random code_verifier and derives the code_challenge from it"
+        },
+        {
+          "id": "p7",
+          "text": "App redirects the browser to the authorization endpoint with the code_challenge"
+        },
+        {
+          "id": "m2",
+          "text": "User authenticates and consents; the server redirects back with an authorization code"
+        },
+        {
+          "id": "v9",
+          "text": "App sends the authorization code and the code_verifier to the token endpoint"
+        },
+        {
+          "id": "d4",
+          "text": "Authorization server checks the verifier against the challenge and issues tokens"
+        }
+      ],
+      "explanation": "PKCE (RFC 7636) binds the code to the client that started the flow: only the holder of the original code_verifier can redeem the intercepted code. OAuth 2.0 Security BCP (RFC 9700) recommends this flow for browser apps instead of the implicit flow."
+    },
+    {
+      "id": "backend-apis-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Public API v1 returns \"name\": \"Ada Lovelace\" on users. Product wants separate firstName and lastName. Many mobile clients run old app versions that cannot be force-updated. Which plan avoids breaking them?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Add firstName and lastName alongside name, mark name deprecated, and remove it only after usage drops"
+        },
+        {
+          "id": "b",
+          "text": "Replace name with the two new fields in v1, since clients are expected to ignore unknown fields"
+        },
+        {
+          "id": "c",
+          "text": "Rename the field in v1 and answer old clients with a 301 redirect to the matching v2 endpoint"
+        },
+        {
+          "id": "d",
+          "text": "Keep name in v1 but return null for it from now on, and send the new fields to all clients"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Adding fields is backward compatible; removing or nulling one that clients read is a breaking change. Deprecate (e.g., Deprecation header, RFC 9745, and Sunset header, RFC 8594), monitor usage, then remove. Tolerant readers ignore unknown fields, but they still break when an expected field disappears."
+    },
+    {
+      "id": "backend-apis-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Two editors load the same document and both save. What should the server return to Editor B's request?",
+      "code": {
+        "language": "plaintext",
+        "source": "GET /docs/12                    -> 200, ETag: \"v7\"   (both editors)\nPUT /docs/12  If-Match: \"v7\"    -> 200, ETag: \"v8\"   (Editor A)\nPUT /docs/12  If-Match: \"v7\"    -> ???               (Editor B)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "409 Conflict, after merging B's changes into v8"
+        },
+        {
+          "id": "b",
+          "text": "304 Not Modified, since v7 was already replaced"
+        },
+        {
+          "id": "c",
+          "text": "412 Precondition Failed, without applying the update"
+        },
+        {
+          "id": "d",
+          "text": "200 OK, overwriting v8 because B saved last"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "If-Match makes the PUT conditional: the current ETag is \"v8\", so the precondition fails and RFC 9110 requires the server not to perform the method and to respond 412. Overwriting would silently lose Editor A's changes; 304 applies to conditional GET/HEAD."
+    },
+    {
+      "id": "backend-apis-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A payment provider signs each webhook as hex HMAC-SHA256(secret, timestamp + \".\" + rawBody), sending it in X-Signature with the timestamp in X-Timestamp. Which verification is correct?",
+      "options": [
+        {
+          "id": "a",
+          "text": "HMAC JSON.stringify(req.body) after JSON parsing, and compare the result to the header with ==="
+        },
+        {
+          "id": "b",
+          "text": "HMAC the timestamp and raw body bytes, compare with crypto.timingSafeEqual, and reject stale timestamps"
+        },
+        {
+          "id": "c",
+          "text": "Skip the signature and accept requests from the provider's published IP ranges over HTTPS"
+        },
+        {
+          "id": "d",
+          "text": "Decrypt X-Signature with the shared secret and check that the result equals the request body"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "The signature covers the exact raw bytes; re-serializing parsed JSON can change whitespace or key order and fail. A constant-time comparison avoids timing leaks, and a timestamp window blocks replays. An HMAC is a one-way MAC, not encryption, so it cannot be decrypted."
     }
   ]
 }

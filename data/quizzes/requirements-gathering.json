@@ -2,104 +2,220 @@
   "id": "requirements-gathering",
   "title": "Requirements Gathering",
   "skillSlug": "requirements-gathering",
-  "description": "Test your understanding of requirements gathering. Eliciting, documenting, and validating what stakeholders need from a system.",
-  "timeLimitSeconds": 600,
+  "description": "Elicit, write, prioritize, and trace testable requirements and user stories per BABOK v3 and IEEE 29148.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "requirements-gathering-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Acceptance criterion?",
+      "difficulty": "BEGINNER",
+      "prompt": "A business analyst is sorting requirements for a new online banking app into functional and non-functional lists. Which requirement belongs on the non-functional list?",
       "options": [
-        {
-          "id": "a",
-          "text": "states an observable condition that must be met for a requirement to be accepted"
-        },
-        {
-          "id": "b",
-          "text": "is a vague project aspiration"
-        },
-        {
-          "id": "c",
-          "text": "is a database password"
-        },
-        {
-          "id": "d",
-          "text": "is a visual design token"
-        }
+        { "id": "a", "text": "The system shall let users transfer funds between their own accounts." },
+        { "id": "b", "text": "The system shall email the user a receipt after each completed transfer." },
+        { "id": "c", "text": "The system shall be available 99.9% of each calendar month, excluding planned maintenance." },
+        { "id": "d", "text": "The system shall display the user's transactions from the last 90 days." }
       ],
-      "correctOptionId": "a",
-      "explanation": "Acceptance criterion states an observable condition that must be met for a requirement to be accepted.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "c",
+      "explanation": "Availability is a quality attribute that constrains how well the system operates, so it is non-functional (BABOK v3, IEEE 29148). Sending a receipt is a specific behavior the system performs, which makes it functional even though it sounds like a service-level detail."
     },
     {
       "id": "requirements-gathering-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Stakeholder interview?",
+      "difficulty": "BEGINNER",
+      "prompt": "A reviewer flags the requirement below during a requirements walkthrough. What is the main problem with it?",
+      "code": { "language": "plaintext", "source": "REQ-14: The product search page shall be user-friendly and load quickly." },
       "options": [
-        {
-          "id": "a",
-          "text": "elicits needs, constraints, and context directly from an affected person or group"
-        },
-        {
-          "id": "b",
-          "text": "is a deployment rollback"
-        },
-        {
-          "id": "c",
-          "text": "is an automated unit test"
-        },
-        {
-          "id": "d",
-          "text": "is a network scan"
-        }
+        { "id": "a", "text": "It cannot be verified because \"user-friendly\" and \"quickly\" have no measurable acceptance criteria" },
+        { "id": "b", "text": "It is a functional requirement and should be moved to the functional requirements list" },
+        { "id": "c", "text": "It prescribes a specific design solution instead of stating the stakeholder's need" },
+        { "id": "d", "text": "It is too small to be useful and should be merged with the other search requirements" }
       ],
       "correctOptionId": "a",
-      "explanation": "Stakeholder interview elicits needs, constraints, and context directly from an affected person or group.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "IEEE 29148 requires each requirement to be unambiguous and verifiable; vague terms like \"user-friendly\" and \"quickly\" give a tester nothing to pass or fail against. It does not prescribe a design (no technology or UI element is named), so that is not the problem."
     },
     {
       "id": "requirements-gathering-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Nonfunctional requirement?",
+      "difficulty": "BEGINNER",
+      "prompt": "A team's backlog contains this story: \"As a developer, I want to create a CUSTOMER table with 12 columns so that the schema is ready.\" Which INVEST criterion does it most clearly fail?",
       "options": [
-        {
-          "id": "a",
-          "text": "specifies a quality or constraint such as performance, security, or availability"
-        },
-        {
-          "id": "b",
-          "text": "describes only a button label"
-        },
-        {
-          "id": "c",
-          "text": "is always optional"
-        },
-        {
-          "id": "d",
-          "text": "is a row in a fact table"
-        }
+        { "id": "a", "text": "Small, because a 12-column table is too much work to finish in one sprint" },
+        { "id": "b", "text": "Valuable, because it delivers nothing a user or customer can see or use" },
+        { "id": "c", "text": "Estimable, because schema effort depends on which database product is chosen" },
+        { "id": "d", "text": "Testable, because a database table has no user interface to test through" }
       ],
-      "correctOptionId": "a",
-      "explanation": "Nonfunctional requirement specifies a quality or constraint such as performance, security, or availability.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "b",
+      "explanation": "INVEST stories should deliver value to a user or customer; a standalone schema task is a technical layer with no user-visible outcome. It is easy to estimate and small, so Estimable and Small are not the issue."
     },
     {
       "id": "requirements-gathering-4",
-      "type": "true_false",
-      "prompt": "True or false: Acceptance criterion states an observable condition that must be met for a requirement to be accepted.",
-      "correctAnswer": true,
-      "explanation": "Acceptance criterion states an observable condition that must be met for a requirement to be accepted.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "Senior claims processors who have done the job for 15 years tell you in interviews, \"I just know which claims look wrong,\" but cannot explain how. Which elicitation technique is most likely to surface the rules they actually apply?",
+      "options": [
+        { "id": "a", "text": "A survey asking processors to rank the most common claim errors" },
+        { "id": "b", "text": "Document analysis of the official claims policy manual" },
+        { "id": "c", "text": "A focus group where processors discuss claims with their managers" },
+        { "id": "d", "text": "Observation of processors working real claims, asking why at each decision" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "BABOK v3 lists observation as the technique for tacit knowledge that people cannot easily articulate; watching real work reveals the cues they use. A survey or focus group still depends on people verbalizing knowledge they have already shown they cannot explain."
     },
     {
       "id": "requirements-gathering-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: specifies a quality or constraint such as performance, security, or availability?",
-      "acceptedAnswers": [
-        "Nonfunctional requirement"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: In BABOK v3, validating requirements means checking that each requirement is well-formed (unambiguous, consistent, and correctly formatted) before it goes to the developers.",
+      "correctAnswer": false,
+      "explanation": "That describes verification. BABOK v3 separates Verify Requirements (meets quality standards, well-formed) from Validate Requirements (aligns with business requirements and delivers the needed value)."
+    },
+    {
+      "id": "requirements-gathering-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "For the story below, which acceptance criterion is well-formed and testable?",
+      "code": { "language": "plaintext", "source": "As a returning shopper, I want my cart saved when I log out\nso that I can finish checking out later." },
+      "options": [
+        { "id": "a", "text": "Given the saved-cart feature, When a shopper uses it, Then it works reliably on every device and browser" },
+        { "id": "b", "text": "Given I add items to my cart, When I log out, Then the items are written to the cart_items table by a nightly job" },
+        { "id": "c", "text": "Given I am logged in with 3 items in my cart, When I log out and log back in, Then my cart shows the same 3 items" },
+        { "id": "d", "text": "Given I am a returning shopper, When I come back to the site, Then saving and restoring my cart feels quick and easy" }
       ],
-      "explanation": "The term is Nonfunctional requirement.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "Option c has a concrete precondition, a single trigger, and an observable, checkable outcome. Option b is specific but describes internal implementation (a table and batch job) rather than behavior the shopper can observe, and it would let a design choice masquerade as a requirement."
+    },
+    {
+      "id": "requirements-gathering-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "For a CRM replacement, the analyst records: \"Before go-live, 8 years of open cases must be migrated from the legacy system, and all agents must complete training on the new case screens.\" Neither capability is needed once the new CRM is live. Under BABOK v3, how should these be classified?",
+      "options": [
+        { "id": "a", "text": "Non-functional requirements, because they describe quality constraints on the release" },
+        { "id": "b", "text": "Business requirements, because they state goals of the organization" },
+        { "id": "c", "text": "Stakeholder requirements, because they describe what agents need" },
+        { "id": "d", "text": "Transition requirements, because they are only needed to move from the current to the future state" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "BABOK v3 defines transition requirements as the temporary capabilities, such as data conversion and training, needed to move from the current state to the future state. They are not quality attributes of the running system, so non-functional is wrong."
+    },
+    {
+      "id": "requirements-gathering-8",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Review the requirements below against the IEEE 29148 characteristics of a well-formed requirement (necessary, unambiguous, singular, feasible, verifiable, and so on). Select all that apply: which requirements are defective?",
+      "code": { "language": "plaintext", "source": "R1: The system shall allow an administrator to deactivate a user account.\nR2: The system shall generate the monthly invoice, email it to the customer,\n    and archive it as a PDF.\nR3: The system shall return search results within 2 seconds for 95% of\n    queries with 500 concurrent users.\nR4: The system shall apply all relevant tax rules as appropriate.\nR5: The monthly report shall be easy to read." },
+      "options": [
+        { "id": "a", "text": "R1" },
+        { "id": "b", "text": "R2" },
+        { "id": "c", "text": "R3" },
+        { "id": "d", "text": "R4" },
+        { "id": "e", "text": "R5" }
+      ],
+      "correctOptionIds": ["b", "d", "e"],
+      "explanation": "R2 bundles three capabilities, so it is not singular and cannot pass or fail as one unit; R4 (\"all relevant ... as appropriate\") is ambiguous; R5 (\"easy to read\") is not verifiable. R1 and R3 each state one capability with a clear, testable condition."
+    },
+    {
+      "id": "requirements-gathering-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A BA reviews this excerpt from a requirements traceability matrix before the release readiness meeting. What does it show?",
+      "code": { "language": "plaintext", "source": "Requirement       | Business objective | Design | Test cases\n------------------|--------------------|--------|-----------\nREQ-10 Reorder    | OBJ-1              | DS-3   | TC-21, TC-22\nREQ-11 Refunds    | OBJ-2              | DS-4   | (none)\nREQ-12 Wish list  | OBJ-1              | DS-5   | TC-25\n(none)            | (none)             | DS-9 Social sharing | TC-30" },
+      "options": [
+        { "id": "a", "text": "REQ-12 is untested and DS-9 is missing its design document" },
+        { "id": "b", "text": "REQ-11 has no test coverage, and DS-9 traces to no requirement or objective (possible gold-plating)" },
+        { "id": "c", "text": "REQ-10 is over-tested, and two requirements sharing OBJ-1 are duplicates to be merged" },
+        { "id": "d", "text": "TC-30 is the only problem, because tests must never exist without a design" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Forward traceability shows REQ-11 has no verifying test, and backward traceability shows DS-9 implements something no requirement or business objective asked for, which is classic gold-plating. Several requirements supporting one objective is normal, not duplication."
+    },
+    {
+      "id": "requirements-gathering-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "During an interview, the finance director says, \"We need an Export to Excel button on every screen of the new system.\" What should the analyst do next?",
+      "options": [
+        { "id": "a", "text": "Ask what she does with the exported data and what decision or problem it supports, to find the underlying need" },
+        { "id": "b", "text": "Record it as a Must-have requirement, since a director requested it explicitly" },
+        { "id": "c", "text": "Tell her that exports are a design decision and outside the scope of requirements work" },
+        { "id": "d", "text": "Have a developer build a sample export so she can confirm the column layout" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "The request is a proposed solution; BABOK v3 directs the analyst to elicit the underlying need (for example, a monthly variance report) so the best solution can be chosen. Recording it as a Must on authority alone skips analysis and often locks in a workaround for a missing report."
+    },
+    {
+      "id": "requirements-gathering-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A Kano survey for a hotel booking app asks how respondents would feel if a feature were present (functional question) and absent (dysfunctional question). For \"Booking confirmation email\", the dominant answer pair is shown below. How should the team classify and treat this feature?",
+      "options": [
+        { "id": "a", "text": "Attractive: customers do not expect it, so it can differentiate the app from competitors" },
+        { "id": "b", "text": "One-dimensional: satisfaction rises steadily the more polished and detailed the email becomes" },
+        { "id": "c", "text": "Indifferent: customers do not care either way, so it can safely be deferred to a later release" },
+        { "id": "d", "text": "Must-be: it must ship, but extra polish on it will add little satisfaction beyond meeting the expectation" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "In the Kano evaluation table, an \"expect it\" functional answer paired with a \"dislike\" dysfunctional answer classifies the feature as Must-be: its absence causes dissatisfaction, but exceeding the basic expectation adds little. One-dimensional would require respondents to actively like having it, not merely expect it.",
+      "code": { "language": "plaintext", "source": "Functional (email is sent):        \"I expect it to be that way\"\nDysfunctional (no email is sent):  \"I dislike it that way\"" }
+    },
+    {
+      "id": "requirements-gathering-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A QA lead reviews the business rule and acceptance criteria below before sprint planning. What defect should she raise?",
+      "code": { "language": "plaintext", "source": "BR-7: Orders with a subtotal of $100.00 or more ship free.\n      Orders below $100.00 pay a $7.95 flat rate.\n\nAC1: Given my cart subtotal is over $100.00\n     When I reach checkout\n     Then shipping is $0.00\n\nAC2: Given my cart subtotal is under $100.00\n     When I reach checkout\n     Then shipping is $7.95" },
+      "options": [
+        { "id": "a", "text": "AC1 and AC2 should be merged into a single scenario because they test the same business rule" },
+        { "id": "b", "text": "The Given clauses describe states instead of user actions, which Gherkin does not allow" },
+        { "id": "c", "text": "A subtotal of exactly $100.00 is covered by neither criterion, though BR-7 says it ships free" },
+        { "id": "d", "text": "AC2 must also state the tax on the $7.95 fee, or the criterion cannot be tested" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "\"Over\" and \"under\" both exclude $100.00, the exact boundary BR-7 defines, so the most defect-prone value is unspecified and untested. Given clauses are supposed to describe preconditions (state), and separate scenarios per outcome are normal Gherkin practice."
+    },
+    {
+      "id": "requirements-gathering-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A team using DSDM-style MoSCoW prioritization has a fixed regulatory go-live date. What is the main problem with this release plan?",
+      "code": { "language": "plaintext", "source": "Release 1 (timebox: 12 weeks, date fixed)\nPriority  | Items | Share of estimated effort\nMust      |  21   | 85%\nShould    |   6   | 10%\nCould     |   4   |  5%\nWon't     |   9   |  -" },
+      "options": [
+        { "id": "a", "text": "Won't items must be estimated and counted in the timebox, so the total exceeds 100%" },
+        { "id": "b", "text": "Each priority level should hold roughly one third of the effort to keep the plan balanced" },
+        { "id": "c", "text": "Could items should be at least 40% of effort so the team can show stakeholders quick wins" },
+        { "id": "d", "text": "Musts exceed about 60% of effort, leaving almost no Should/Could contingency to absorb estimate errors" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "DSDM guidance caps Must-have effort at about 60% so that Should and Could items act as contingency that can be dropped to protect the date. At 85%, any overrun puts Must-haves, and therefore the fixed regulatory date, at risk; Won't items are explicitly out of the timebox."
+    },
+    {
+      "id": "requirements-gathering-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A warehouse system passed system testing, but during UAT pickers reject it: the scanning flow assumes one order per cart, while they batch-pick 6 to 10 orders at once. All requirements came from workshops with the operations managers, who signed off. What is the root cause?",
+      "options": [
+        { "id": "a", "text": "Requirements were elicited from managers' descriptions of the process, not validated with the pickers who actually do the work" },
+        { "id": "b", "text": "The requirements were not prioritized with MoSCoW, so batch picking was treated as a Could-have" },
+        { "id": "c", "text": "The traceability matrix was not baselined before development, so the batch-picking requirement was lost" },
+        { "id": "d", "text": "UAT should have been run by the operations managers who signed off, not by the pickers" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Batch picking never appeared as a requirement because the end users who perform the work were left out of stakeholder analysis and elicitation; managers often describe the documented process, not the real one. Traceability and prioritization can only manage requirements that were elicited in the first place."
+    },
+    {
+      "id": "requirements-gathering-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "This epic is too large for one sprint: \"As a customer, I want to pay for my order by card, PayPal, or gift card so that I can check out my way.\" Which split best preserves INVEST?",
+      "options": [
+        { "id": "a", "text": "Three stories by layer: build the payment UI, build the payment API, build the payment database tables" },
+        { "id": "b", "text": "Three stories by payment method, each delivered end to end from the checkout screen to the ledger" },
+        { "id": "c", "text": "Three stories by phase: design the payment flow, build the payment flow, then test the payment flow" },
+        { "id": "d", "text": "Keep one story and break the work into technical tasks so the sprint can absorb its full size" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Vertical slices by payment method each deliver usable value, can be prioritized and tested on their own, and stay small. Splitting by layer or phase produces stories that are neither independent nor valuable alone, and keeping the epic whole still fails Small."
     }
   ]
 }

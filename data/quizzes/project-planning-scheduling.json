@@ -2,104 +2,225 @@
   "id": "project-planning-scheduling",
   "title": "Project Planning & Scheduling",
   "skillSlug": "project-planning-scheduling",
-  "description": "Test your understanding of project planning & scheduling. Defining scope, breaking work into tasks, estimating effort, and building timelines.",
-  "timeLimitSeconds": 600,
+  "description": "Build and analyse schedules: WBS, dependencies, critical path and float, estimating, leveling, and compression.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "project-planning-scheduling-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Work breakdown structure?",
+      "difficulty": "BEGINNER",
+      "prompt": "The WBS for an office relocation has four level-2 elements: Pack, Transport, Unpack, Furniture setup. The sponsor points out that network/IT setup and the project management work are missing, so a cost estimate rolled up from this WBS will be too low. Which WBS principle does this violate?",
       "options": [
-        {
-          "id": "a",
-          "text": "decomposes project scope into smaller deliverables and work packages"
-        },
-        {
-          "id": "b",
-          "text": "is a contact list"
-        },
-        {
-          "id": "c",
-          "text": "is a database backup"
-        },
-        {
-          "id": "d",
-          "text": "is a test assertion"
-        }
+        { "id": "a", "text": "Each work package should take between 8 and 80 hours of effort" },
+        { "id": "b", "text": "Level-2 elements should always be organized by project phase" },
+        { "id": "c", "text": "The 100% rule: the WBS must capture all of the work in scope" },
+        { "id": "d", "text": "Each WBS element should be assigned to exactly one person" }
       ],
-      "correctOptionId": "a",
-      "explanation": "Work breakdown structure decomposes project scope into smaller deliverables and work packages.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "c",
+      "explanation": "The 100% rule (PMI Practice Standard for WBS) says the WBS includes all work defined by the scope, including project management, so rolled-up estimates are complete. The 8/80 heuristic is about sizing work packages, not about missing scope."
     },
     {
       "id": "project-planning-scheduling-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Critical path?",
+      "difficulty": "BEGINNER",
+      "prompt": "Technical writers can start the user manual whenever they like, but the manual cannot be finished until the software features it documents are finished. Which dependency type links \"Build features\" to \"Write manual\"?",
       "options": [
-        {
-          "id": "a",
-          "text": "is the sequence of dependent tasks that determines the shortest project duration"
-        },
-        {
-          "id": "b",
-          "text": "is always the cheapest sequence"
-        },
-        {
-          "id": "c",
-          "text": "contains no dependencies"
-        },
-        {
-          "id": "d",
-          "text": "is a stakeholder map"
-        }
+        { "id": "a", "text": "Finish-to-finish" },
+        { "id": "b", "text": "Finish-to-start" },
+        { "id": "c", "text": "Start-to-start" },
+        { "id": "d", "text": "Start-to-finish" }
       ],
       "correctOptionId": "a",
-      "explanation": "Critical path is the sequence of dependent tasks that determines the shortest project duration.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "The constraint is on the successor's finish (the manual) depending on the predecessor's finish (the features), which is finish-to-finish. Finish-to-start would wrongly stop the writers from starting until all the features were built."
     },
     {
       "id": "project-planning-scheduling-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Scope baseline?",
+      "difficulty": "BEGINNER",
+      "prompt": "For a data-migration task, the team estimates optimistic = 4 days, most likely = 6 days, pessimistic = 14 days. What is the PERT (beta) expected duration?",
       "options": [
-        {
-          "id": "a",
-          "text": "is the approved reference for what the project will deliver"
-        },
-        {
-          "id": "b",
-          "text": "changes after every casual suggestion"
-        },
-        {
-          "id": "c",
-          "text": "is only a team calendar"
-        },
-        {
-          "id": "d",
-          "text": "is a server configuration"
-        }
+        { "id": "a", "text": "6 days" },
+        { "id": "b", "text": "8 days" },
+        { "id": "c", "text": "9 days" },
+        { "id": "d", "text": "7 days" }
       ],
-      "correctOptionId": "a",
-      "explanation": "Scope baseline is the approved reference for what the project will deliver.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "d",
+      "explanation": "PERT beta: (O + 4M + P) / 6 = (4 + 24 + 14) / 6 = 42 / 6 = 7 days. The 8-day answer is the simple triangular average (4 + 6 + 14) / 3, which gives the most-likely value no extra weight."
     },
     {
       "id": "project-planning-scheduling-4",
       "type": "true_false",
-      "prompt": "True or false: Work breakdown structure decomposes project scope into smaller deliverables and work packages.",
-      "correctAnswer": true,
-      "explanation": "Work breakdown structure decomposes project scope into smaller deliverables and work packages.",
-      "difficulty": "BEGINNER"
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: Shortening a task that is not on the critical path will bring the project's finish date forward.",
+      "correctAnswer": false,
+      "explanation": "The finish date is set by the critical path, the longest path through the network. A non-critical task already has float, so shortening it only adds more float and does not move the end date."
     },
     {
       "id": "project-planning-scheduling-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: is the approved reference for what the project will deliver?",
-      "acceptedAnswers": [
-        "Scope baseline"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "Two weeks after the scope baseline is approved, the client's lead asks a developer to add a new export report: \"It's only two days of work.\" What should happen?",
+      "options": [
+        { "id": "a", "text": "Add it quietly, since two days is too small to affect the schedule" },
+        { "id": "b", "text": "Log a change request, assess its impact on scope, schedule, and cost, and get a decision" },
+        { "id": "c", "text": "Refuse it, because no changes are allowed once a baseline is approved" },
+        { "id": "d", "text": "Add it and recover the two days by shortening the testing phase" }
       ],
-      "explanation": "The term is Scope baseline.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "b",
+      "explanation": "Integrated change control evaluates every requested change against the baselines before it is approved or rejected; small unmanaged additions are how scope creep accumulates. Baselines can change, but only through that process, so a flat refusal is also wrong."
+    },
+    {
+      "id": "project-planning-scheduling-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Using the network below (durations in working days), what are the project duration and the critical path?",
+      "code": {
+        "language": "plaintext",
+        "source": "Task  Duration  Predecessors\nA     3         -\nB     5         A\nC     2         A\nD     4         C\nE     3         B, D\nF     2         E"
+      },
+      "options": [
+        { "id": "a", "text": "13 days; A-B-E-F" },
+        { "id": "b", "text": "14 days; A-C-D-E-F" },
+        { "id": "c", "text": "19 days; all tasks in sequence" },
+        { "id": "d", "text": "14 days; A-B-E-F" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Forward pass: A 0-3, B 3-8, C 3-5, D 5-9, E starts at max(8, 9) = 9 and ends 12, F 12-14. Path A-C-D-E-F = 3+2+4+3+2 = 14 days; A-B-E-F is 13 days, so B has 1 day of float even though it is the longest single task."
+    },
+    {
+      "id": "project-planning-scheduling-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "In this network, task B slips by 3 days and nothing else changes. What is the new project duration?",
+      "code": {
+        "language": "plaintext",
+        "source": "Task  Duration  Predecessors\nA     3         -\nB     5         A\nC     2         A\nD     4         C\nE     3         B, D\nF     2         E"
+      },
+      "options": [
+        { "id": "a", "text": "17 days" },
+        { "id": "b", "text": "14 days" },
+        { "id": "c", "text": "15 days" },
+        { "id": "d", "text": "16 days" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "The original duration is 14 days and B has 1 day of total float (LS 4 - ES 3). A 3-day slip uses the 1 day of float and delays the end by 2 days: A-B-E-F becomes 3+8+3+2 = 16. Adding the full 3 days (17) ignores float; saying 14 assumes B is unaffected because it was non-critical."
+    },
+    {
+      "id": "project-planning-scheduling-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A database engineer works 8 hours a day. Two of her tasks overlap for five days and together need 12 hours a day during that overlap. The launch date is contractually fixed. One task is on the critical path; the other has 6 days of total float. Which technique fits?",
+      "options": [
+        { "id": "a", "text": "Resource smoothing: delay the task with float so the engineer's load stays within limits" },
+        { "id": "b", "text": "Resource leveling with no limit, letting the finish date move if needed" },
+        { "id": "c", "text": "Crashing: add a contractor to the critical-path task to shorten it" },
+        { "id": "d", "text": "Fast-tracking: run the two overlapping tasks in parallel as planned" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Resource smoothing (PMBOK) shifts activities only within their float, so delaying the non-critical task by the 5 overlapping days (within its 6 days of float) removes the 4-hour daily overload without moving the end date. Resource leveling can push out the finish date, which the fixed launch date does not allow."
+    },
+    {
+      "id": "project-planning-scheduling-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The sponsor pulls the go-live date in by three weeks. There is no extra budget for people or overtime, but the sponsor accepts a higher risk of rework. Which schedule compression technique fits these constraints?",
+      "options": [
+        { "id": "a", "text": "Crash critical-path tasks by adding contractors" },
+        { "id": "b", "text": "Level resources so no one is over-allocated" },
+        { "id": "c", "text": "Fast-track by overlapping critical-path design and build" },
+        { "id": "d", "text": "Add a schedule buffer ahead of the go-live milestone" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Fast-tracking runs activities in parallel that were planned in sequence, shortening the critical path at the cost of rework risk but with little added cost. Crashing adds resources and therefore money, which the constraints rule out."
+    },
+    {
+      "id": "project-planning-scheduling-10",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A PM trained on the PMBOK Guide 6th edition joins a program whose methods are based on the PMBOK Guide 7th edition (2021). Which statements about the 7th edition are accurate? Select all that apply.",
+      "options": [
+        { "id": "a", "text": "It is organized around 12 principles and 8 performance domains" },
+        { "id": "b", "text": "It expects the team to tailor its approach to the project's context" },
+        { "id": "c", "text": "It prescribes 49 processes in 5 process groups that every project must follow" },
+        { "id": "d", "text": "It applies to predictive, adaptive, and hybrid development approaches" },
+        { "id": "e", "text": "It requires earned value management on every project" }
+      ],
+      "correctOptionIds": ["a", "b", "d"],
+      "explanation": "PMBOK 7 replaced the 6th edition's 49 processes in 5 process groups with 12 principles and 8 performance domains, and it stresses tailoring across predictive, adaptive, and hybrid approaches; EVM is one measurement option, not a requirement. (The 8th edition, released November 2025, condenses this to 6 principles and 7 performance domains and reintroduces 40 non-prescriptive processes.)"
+    },
+    {
+      "id": "project-planning-scheduling-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "An 18-month program has a 3-month pilot. Work after the pilot depends heavily on what the pilot reveals. The PMO wants a schedule baseline now. Which planning approach is most appropriate?",
+      "options": [
+        { "id": "a", "text": "Plan the pilot in detail and keep later phases as planning packages to elaborate later" },
+        { "id": "b", "text": "Break all 18 months into detailed work packages now so the baseline is complete" },
+        { "id": "c", "text": "Delay any baseline or WBS until the pilot has finished and results are known" },
+        { "id": "d", "text": "Use one analogous estimate for the whole program and freeze it as the baseline" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Rolling wave planning details near-term work and keeps distant work at a higher level, refining it as information emerges. Detailing uncertain future work now creates false precision and constant re-planning, while having no baseline at all gives nothing to control against."
+    },
+    {
+      "id": "project-planning-scheduling-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Three independent parallel paths must all finish before an integration milestone. Each path, considered alone, has a 90% chance of finishing on time. The PM reports \"90% confidence\" for the milestone. What is the actual probability that the milestone is met on time?",
+      "options": [
+        { "id": "a", "text": "90%" },
+        { "id": "b", "text": "About 73%" },
+        { "id": "c", "text": "70%" },
+        { "id": "d", "text": "81%" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "With independent paths the milestone needs all three on time: 0.9 x 0.9 x 0.9 = 0.729 (merge bias). Reporting 90% looks only at one path; 70% wrongly subtracts the 10% risks, and 81% counts only two paths."
+    },
+    {
+      "id": "project-planning-scheduling-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Each person below can work on only one task at a time. With this resource constraint applied, what is the shortest possible project duration?",
+      "code": {
+        "language": "plaintext",
+        "source": "Task  Duration  Predecessors  Resource\nP     2         -             Ana\nQ     4         P             Kim\nR     3         P             Kim\nT     5         -             Max\nS     2         Q, R, T       Lee"
+      },
+      "options": [
+        { "id": "a", "text": "8 days" },
+        { "id": "b", "text": "16 days" },
+        { "id": "c", "text": "11 days" },
+        { "id": "d", "text": "9 days" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Without resource limits, Q and R run in parallel after P (day 2), so S starts on day 6 and the project takes 8 days. Kim must do Q and R one after the other, so they finish on day 2 + 7 = 9 and S ends on day 11; the resource-constrained (critical chain) path is longer than the CPM critical path."
+    },
+    {
+      "id": "project-planning-scheduling-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "On a product build, every task owner pads their estimate by about 50%, yet most tasks still finish on or after their padded dates, and the project is late. Which change addresses the underlying cause?",
+      "options": [
+        { "id": "a", "text": "Increase each task's padding further, since the current safety margins are not enough" },
+        { "id": "b", "text": "Hold each task owner strictly accountable for meeting their own padded date" },
+        { "id": "c", "text": "Collect percent-complete updates more often so slipping tasks are noticed sooner" },
+        { "id": "d", "text": "Use tighter task estimates and pool the removed safety into a project buffer" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Safety hidden inside each task is wasted through Parkinson's law and student syndrome, and early finishes are rarely passed on. Critical chain scheduling moves that safety into a shared project buffer that protects the end date. More padding or stricter task deadlines keep the same behaviour in place."
+    },
+    {
+      "id": "project-planning-scheduling-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A project is three weeks behind its approved schedule baseline because the team has been less productive than planned; scope has not changed. Before a board meeting, the sponsor asks the PM to re-baseline so the status shows green. What should the PM do?",
+      "options": [
+        { "id": "a", "text": "Re-baseline, since a baseline should always reflect the latest forecast" },
+        { "id": "b", "text": "Keep the baseline, report the variance, and present recovery options with forecast dates" },
+        { "id": "c", "text": "Re-baseline officially but keep the original dates privately for the team" },
+        { "id": "d", "text": "Keep the baseline but report the milestones as green until the slip is certain" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Baselines change only through approved changes (such as scope changes), not to hide performance variance; the forecast can move while the baseline stays put, so the variance stays visible. Re-baselining for poor performance removes the measure the board needs to make decisions."
     }
   ]
 }

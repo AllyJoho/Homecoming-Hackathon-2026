@@ -2,104 +2,408 @@
   "id": "database-design",
   "title": "Database Design & Modeling",
   "skillSlug": "database-design",
-  "description": "Test your understanding of database design & modeling. Creating entity-relationship diagrams and normalized schemas for relational databases.",
-  "timeLimitSeconds": 600,
+  "description": "ER modeling, normalization through BCNF, keys and constraints, indexing, and PostgreSQL transaction behavior.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "database-design-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Normalization?",
+      "difficulty": "BEGINNER",
+      "prompt": "A university needs to record which students are enrolled in which courses. A student takes many courses, a course has many students, and each enrollment gets its own grade. How should this be implemented?",
       "options": [
         {
           "id": "a",
-          "text": "reduces redundancy by organizing data into related tables with clear dependencies"
+          "text": "Add course_id and grade columns to the student table"
         },
         {
           "id": "b",
-          "text": "stores every field in one JSON string"
+          "text": "Create an enrollment table with foreign keys to student and course, plus a grade column"
         },
         {
           "id": "c",
-          "text": "removes all relationships"
+          "text": "Add a column to course that stores a comma-separated list of enrolled student IDs"
         },
         {
           "id": "d",
-          "text": "is the same as a backup"
+          "text": "Add a course_id foreign key to student and a student_id foreign key to course"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Normalization reduces redundancy by organizing data into related tables with clear dependencies.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "b",
+      "explanation": "A many-to-many relationship is resolved with an associative (junction) table, and attributes of the relationship itself, like grade, live there. Putting course_id on student allows only one course per student, and cross foreign keys on both tables still can't represent many pairs."
     },
     {
       "id": "database-design-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Primary key?",
+      "difficulty": "BEGINNER",
+      "prompt": "Support staff must be able to look up a customer by any of their phone numbers. Given this table, what is the design problem and the right fix?",
+      "code": {
+        "language": "plaintext",
+        "source": "customer_id | name       | phone_numbers\n------------+------------+----------------------------\n101         | Ana Ruiz   | 801-555-0142, 801-555-0199\n102         | Ben Okafor | 385-555-0170"
+      },
       "options": [
         {
           "id": "a",
-          "text": "uniquely identifies each row and cannot be NULL"
+          "text": "name depends on phone_numbers (a 3NF violation); move name into its own table keyed by phone"
         },
         {
           "id": "b",
-          "text": "must contain a person name"
+          "text": "The design is normalized; add a full-text index on phone_numbers to make lookups fast"
         },
         {
           "id": "c",
-          "text": "is always a foreign key"
+          "text": "phone_numbers holds a list per cell (a 1NF violation); store one row per number in customer_phone"
         },
         {
           "id": "d",
-          "text": "stores only encrypted values"
+          "text": "Split the column into phone_1 and phone_2 so each cell holds a single value"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Primary key uniquely identifies each row and cannot be NULL.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "First normal form requires atomic values; a list in one cell can't be indexed, constrained, or joined cleanly. Adding phone_1/phone_2 is a repeating group that breaks as soon as someone has a third number and forces searches across several columns."
     },
     {
       "id": "database-design-3",
-      "type": "multiple_choice",
-      "prompt": "What best describes Foreign key?",
-      "options": [
-        {
-          "id": "a",
-          "text": "references a key in another table to represent a relationship"
-        },
-        {
-          "id": "b",
-          "text": "must be globally unique across all tables"
-        },
-        {
-          "id": "c",
-          "text": "is a chart filter"
-        },
-        {
-          "id": "d",
-          "text": "is a password hash algorithm"
-        }
-      ],
-      "correctOptionId": "a",
-      "explanation": "Foreign key references a key in another table to represent a relationship.",
-      "difficulty": "ADVANCED"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: In PostgreSQL, a UNIQUE constraint on users.email declared with default options prevents two rows from both having NULL in email.",
+      "correctAnswer": false,
+      "explanation": "By default PostgreSQL treats NULLs as distinct, so a UNIQUE column accepts any number of NULLs (PostgreSQL docs, Unique Constraints). To forbid that, add NOT NULL or, in PostgreSQL 15+, declare UNIQUE NULLS NOT DISTINCT."
     },
     {
       "id": "database-design-4",
-      "type": "true_false",
-      "prompt": "True or false: Normalization reduces redundancy by organizing data into related tables with clear dependencies.",
-      "correctAnswer": true,
-      "explanation": "Normalization reduces redundancy by organizing data into related tables with clear dependencies.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "The order_line table below has the composite primary key (order_id, product_id). Which normal form does it violate, and why?",
+      "code": {
+        "language": "plaintext",
+        "source": "order_id | product_id | product_name | quantity\n---------+------------+--------------+---------\n5001     | P10        | USB-C Cable  | 2\n5001     | P22        | Laptop Stand | 1\n5002     | P10        | USB-C Cable  | 5"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "2NF, because product_name depends on product_id alone, which is only part of the key"
+        },
+        {
+          "id": "b",
+          "text": "1NF, because the value 'USB-C Cable' appears in more than one row"
+        },
+        {
+          "id": "c",
+          "text": "3NF, because quantity depends transitively on product_name"
+        },
+        {
+          "id": "d",
+          "text": "None; every non-key column is functionally determined by the full primary key"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "A partial dependency (a non-key attribute depending on part of a composite key) violates 2NF; product_name belongs in a product table. Repeated values alone don't violate 1NF, which is about atomic values and no repeating groups."
     },
     {
       "id": "database-design-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: references a key in another table to represent a relationship?",
-      "acceptedAnswers": [
-        "Foreign key"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "Business rules: every employee must belong to exactly one department, and a department can have many employees (or none yet). How should this relationship be implemented?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Add department.employee_id as a NOT NULL foreign key referencing employee"
+        },
+        {
+          "id": "b",
+          "text": "Create a department_employee junction table with a composite primary key"
+        },
+        {
+          "id": "c",
+          "text": "Add employee.department_id as a nullable foreign key referencing department"
+        },
+        {
+          "id": "d",
+          "text": "Add employee.department_id as a NOT NULL foreign key referencing department"
+        }
       ],
-      "explanation": "The term is Foreign key.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "d",
+      "explanation": "In a one-to-many relationship the foreign key goes on the 'many' side, and mandatory participation (exactly one department) is enforced with NOT NULL. A nullable FK would allow employees with no department, and a junction table would allow an employee in several departments."
+    },
+    {
+      "id": "database-design-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Finance raised the Logistics budget, but only one of the employee rows below was updated, so reports now disagree. Which decomposition removes this anomaly without losing information?",
+      "code": {
+        "language": "plaintext",
+        "source": "employee (PK: emp_id)\nemp_id | name       | dept_id | dept_name | dept_budget\n-------+------------+---------+-----------+------------\nE01    | Priya Nair | D7      | Logistics | 400000\nE02    | Tom Hale   | D7      | Logistics | 425000\nE03    | Lin Zhou   | D3      | Finance   | 650000"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "employee(emp_id, name) and department(dept_id, dept_name, dept_budget)"
+        },
+        {
+          "id": "b",
+          "text": "employee(emp_id, name, dept_id, dept_name) and budget(dept_name, dept_budget)"
+        },
+        {
+          "id": "c",
+          "text": "employee(emp_id, name, dept_id) and department(dept_id, dept_name, dept_budget)"
+        },
+        {
+          "id": "d",
+          "text": "employee(emp_id, name, dept_id, dept_budget) and department(dept_id, dept_name)"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "dept_name and dept_budget depend on dept_id, not on emp_id (a transitive dependency, violating 3NF), so they move to a department table while employee keeps dept_id as the link. Dropping dept_id from employee loses which department each person is in, and the other options still repeat department facts per employee."
+    },
+    {
+      "id": "database-design-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Given the table and business rules below, which statement about its normal form is correct?",
+      "code": {
+        "language": "plaintext",
+        "source": "tutoring\nstudent | subject  | tutor\n--------+----------+----------\nAva     | Calculus | Dr. Kim\nAva     | Physics  | Dr. Osei\nBen     | Calculus | Dr. Kim\nCal     | Calculus | Dr. Ruiz\n\nRules: each tutor teaches exactly one subject;\na student has one tutor per subject.\nCandidate keys: {student, subject}, {student, tutor}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "It violates 2NF, because tutor depends on only part of the key {student, subject}"
+        },
+        {
+          "id": "b",
+          "text": "It is in 3NF but not BCNF, because tutor -> subject holds and tutor is not a superkey"
+        },
+        {
+          "id": "c",
+          "text": "It is in BCNF, because every attribute belongs to at least one candidate key"
+        },
+        {
+          "id": "d",
+          "text": "It violates 3NF, because subject depends transitively on student through tutor"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "BCNF requires every determinant to be a superkey; tutor determines subject but is not a superkey. It still satisfies 3NF because subject is a prime attribute (part of the candidate key {student, subject}), which is exactly the case 3NF tolerates. tutor depends on the whole key {student, subject}, so there is no partial dependency."
+    },
+    {
+      "id": "database-design-8",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "orders has 300 million rows across about 2 million distinct customers, and a B-tree index on (customer_id, created_at). For which queries do all matching index entries sit in one contiguous range, so PostgreSQL can descend the tree once and scan from there? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "WHERE customer_id = 42"
+        },
+        {
+          "id": "b",
+          "text": "WHERE customer_id = 42 AND created_at >= '2026-01-01'"
+        },
+        {
+          "id": "c",
+          "text": "WHERE created_at >= '2026-01-01'"
+        },
+        {
+          "id": "d",
+          "text": "WHERE customer_id = 42 ORDER BY created_at DESC LIMIT 20"
+        },
+        {
+          "id": "e",
+          "text": "WHERE status = 'shipped' AND created_at >= '2026-09-01'"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b",
+        "d"
+      ],
+      "explanation": "With customer_id fixed by equality, the matching entries are adjacent and already sorted by created_at, which also serves ORDER BY ... DESC LIMIT via a backward scan (PostgreSQL docs, Multicolumn Indexes). Filtering only on created_at leaves matches scattered under every customer_id; PostgreSQL 18's skip scan would need a separate descent per distinct customer (about 2 million), not one contiguous range."
+    },
+    {
+      "id": "database-design-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Insert latency on an append-heavy events table (~40k inserts/sec) keeps rising. Index statistics below cover the last 60 days and were checked on the primary and both read replicas. What should the team do first?",
+      "code": {
+        "language": "plaintext",
+        "source": "relname | indexrelname          | idx_scan | size\n--------+-----------------------+----------+------\nevents  | events_pkey           | 18234011 | 21 GB\nevents  | events_account_ts_idx |  5530912 | 34 GB\nevents  | events_type_idx       |        0 | 19 GB\nevents  | events_payload_gin    |        0 | 88 GB\nevents  | events_session_idx    |        0 | 26 GB"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Drop the three indexes with zero scans, since every insert must update each of them"
+        },
+        {
+          "id": "b",
+          "text": "Add a BRIN index on the timestamp column so inserts can be located faster"
+        },
+        {
+          "id": "c",
+          "text": "REINDEX every index to remove bloat, but keep all of them in case they are needed"
+        },
+        {
+          "id": "d",
+          "text": "Increase shared_buffers so all 188 GB of indexes stay in memory"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Every index adds write cost to each INSERT, and 133 GB of indexes with no scans in 60 days (on all nodes) are pure overhead. Adding another index only adds more write work, and reindexing keeps paying the maintenance cost of indexes nobody uses."
+    },
+    {
+      "id": "database-design-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Two requests withdraw money from account 7 at the same time. The application reads the balance, computes the new value, and writes it back. Given this interleaving under PostgreSQL's default READ COMMITTED, what is the final balance and what prevents the problem?",
+      "code": {
+        "language": "sql",
+        "source": "-- balance for id 7 starts at 100\n-- T1:\nBEGIN;\nSELECT balance FROM accounts WHERE id = 7;      -- app reads 100\n-- T2:\nBEGIN;\nSELECT balance FROM accounts WHERE id = 7;      -- app reads 100\n-- T1:\nUPDATE accounts SET balance = 70 WHERE id = 7;  -- app computed 100 - 30\nCOMMIT;\n-- T2:\nUPDATE accounts SET balance = 50 WHERE id = 7;  -- app computed 100 - 50\nCOMMIT;"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "20, because READ COMMITTED applies both updates in order, so no change is needed"
+        },
+        {
+          "id": "b",
+          "text": "70, because T2's UPDATE fails after T1 commits, so the app should add a retry loop"
+        },
+        {
+          "id": "c",
+          "text": "50, a dirty read; switch to READ UNCOMMITTED so each transaction sees the other's changes"
+        },
+        {
+          "id": "d",
+          "text": "50, a lost update; use SET balance = balance - 30 or SELECT ... FOR UPDATE"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "T2 overwrites T1's committed write with a value computed from a stale read, so the $30 withdrawal is lost. An atomic UPDATE (balance = balance - 30) re-reads the latest committed row value, and FOR UPDATE makes T2 wait for T1; READ UNCOMMITTED behaves like READ COMMITTED in PostgreSQL and wouldn't help anyway."
+    },
+    {
+      "id": "database-design-11",
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "This PostgreSQL table should allow a student to enroll in many courses but in any given course at most once. grade stays NULL until the course ends. Which line is wrong?",
+      "code": {
+        "language": "sql",
+        "source": "CREATE TABLE enrollment (\n  student_id  INT  NOT NULL REFERENCES student(id),\n  course_id   INT  NOT NULL REFERENCES course(id),\n  enrolled_on DATE NOT NULL DEFAULT CURRENT_DATE,\n  grade       CHAR(2),\n  PRIMARY KEY (student_id)\n);"
+      },
+      "bugLines": [
+        6
+      ],
+      "explanation": "With student_id alone as the key, each student could have only one enrollment row in total. The key must be the composite (student_id, course_id), which allows many courses per student while preventing duplicate enrollments; the nullable grade column is intentional."
+    },
+    {
+      "id": "database-design-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Rule: at least one doctor must stay on call per shift. Under REPEATABLE READ, two doctors running this at the same moment both committed, leaving nobody on call. The team switches to SERIALIZABLE. What else must the application do?",
+      "code": {
+        "language": "sql",
+        "source": "BEGIN ISOLATION LEVEL SERIALIZABLE;\nSELECT count(*) FROM on_call\n WHERE shift_id = 9 AND active;            -- returns 2\nUPDATE on_call SET active = false\n WHERE shift_id = 9 AND doctor_id = $1;\nCOMMIT;"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Nothing; SERIALIZABLE makes the second transaction wait and then re-run its SELECT"
+        },
+        {
+          "id": "b",
+          "text": "Catch SQLSTATE 40001 serialization failures and retry the whole transaction from BEGIN"
+        },
+        {
+          "id": "c",
+          "text": "Retry just the failed UPDATE statement inside the same transaction"
+        },
+        {
+          "id": "d",
+          "text": "Add FOR SHARE to the count query, because SERIALIZABLE does not detect write skew"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "PostgreSQL's SERIALIZABLE (SSI) detects this write skew and aborts one transaction with a serialization failure instead of blocking; the docs state applications must be prepared to retry the complete transaction. The aborted transaction can't continue, so retrying a single statement inside it fails."
+    },
+    {
+      "id": "database-design-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "To avoid blocking writes on a busy production table, a DBA ran the command below. What state is the table in, and what is the correct next step?",
+      "code": {
+        "language": "plaintext",
+        "source": "=> CREATE UNIQUE INDEX CONCURRENTLY users_email_uq ON users (email);\nERROR:  could not create unique index \"users_email_uq\"\nDETAIL:  Key (email)=(sam@example.com) is duplicated.\n\n=> \\d users\n...\nIndexes:\n    \"users_pkey\" PRIMARY KEY, btree (id)\n    \"users_email_uq\" UNIQUE, btree (email) INVALID"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The failed build rolled back completely; fix the duplicates and rerun the exact same command"
+        },
+        {
+          "id": "b",
+          "text": "The index is partially built; run VACUUM users so PostgreSQL resumes the build where it stopped"
+        },
+        {
+          "id": "c",
+          "text": "An INVALID index remains that queries skip but writes still maintain; dedupe, drop it, and rebuild"
+        },
+        {
+          "id": "d",
+          "text": "Rerun the command inside BEGIN ... COMMIT so a future failure rolls back cleanly"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Per the PostgreSQL docs, a failed CREATE INDEX CONCURRENTLY leaves an INVALID index that is ignored for queries but still adds update overhead; the recommended recovery is to drop it and build again. Rerunning the same command fails because the name already exists, and CONCURRENTLY cannot run inside a transaction block."
+    },
+    {
+      "id": "database-design-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "In a design review, a colleague proposes dropping order_line.unit_price because product.list_price already stores the price, calling it a 3NF violation. List prices change several times a year, and past invoices must be reproducible. What is the correct response?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Drop it and compute invoice totals by joining order_line to product at query time"
+        },
+        {
+          "id": "b",
+          "text": "Drop it, and add a trigger that copies list_price changes into existing order lines"
+        },
+        {
+          "id": "c",
+          "text": "Keep it only as a cache that a nightly job refreshes from product.list_price"
+        },
+        {
+          "id": "d",
+          "text": "Keep it; it records the price agreed at the time of sale, a different fact"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Normalization removes redundant copies of the same fact; the historical transaction price depends on the order line, not the product, so storing it is correct, not redundant. Joining to the current list price (or syncing it) would silently change historical invoices whenever prices change."
+    },
+    {
+      "id": "database-design-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "users uses soft deletes (deleted_at is NULL for active accounts). Email must be unique among active users, but someone who deleted their account must be able to sign up again with the same email. Which PostgreSQL design enforces this?",
+      "options": [
+        {
+          "id": "a",
+          "text": "CREATE UNIQUE INDEX ON users (email) WHERE deleted_at IS NULL"
+        },
+        {
+          "id": "b",
+          "text": "ALTER TABLE users ADD UNIQUE (email, deleted_at)"
+        },
+        {
+          "id": "c",
+          "text": "A CHECK constraint that compares email against other rows where deleted_at IS NULL"
+        },
+        {
+          "id": "d",
+          "text": "ALTER TABLE users ADD UNIQUE NULLS NOT DISTINCT (email)"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "A partial unique index enforces uniqueness only over rows matching its predicate, here the active users. UNIQUE (email, deleted_at) looks right but fails because active rows have NULL deleted_at and NULLs are distinct, so duplicate active emails are allowed; CHECK constraints cannot reference other rows."
     }
   ]
 }

@@ -2,104 +2,219 @@
   "id": "change-management",
   "title": "Change Management",
   "skillSlug": "change-management",
-  "description": "Test your understanding of change management. Preparing people and teams for new systems or processes through communication, training, and adoption tracking.",
-  "timeLimitSeconds": 600,
+  "description": "Lead the people side of change with Prosci ADKAR, Kotter's 8 steps, sponsorship, resistance management, and reinforcement.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "change-management-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Change impact assessment?",
+      "difficulty": "BEGINNER",
+      "prompt": "A clinic is moving to e-prescribing. In a pulse survey, pharmacists say they understand the regulatory reason for the change, but many add, \"It adds steps for me and I see no benefit.\" Using Prosci ADKAR, where is the gap and what should the change team focus on?",
       "options": [
-        {
-          "id": "a",
-          "text": "identifies who and what will be affected by a proposed change"
-        },
-        {
-          "id": "b",
-          "text": "is a code compilation step"
-        },
-        {
-          "id": "c",
-          "text": "is a database index"
-        },
-        {
-          "id": "d",
-          "text": "is a chart legend"
-        }
+        { "id": "a", "text": "Awareness: repeat the regulatory reasons for the change in a town hall" },
+        { "id": "b", "text": "Knowledge: schedule more training sessions on the new software" },
+        { "id": "c", "text": "Desire: address personal concerns and what is in it for them" },
+        { "id": "d", "text": "Ability: give pharmacists hands-on practice time on the system" }
       ],
-      "correctOptionId": "a",
-      "explanation": "Change impact assessment identifies who and what will be affected by a proposed change.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "c",
+      "explanation": "The pharmacists already understand why (Awareness) but do not want to participate, which is a Desire gap; it is addressed through personal impact conversations, usually led by their managers. Repeating the business case targets an element they have already reached."
     },
     {
       "id": "change-management-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Adoption metric?",
+      "difficulty": "BEGINNER",
+      "prompt": "A change manager is drafting a communication plan for a reorganization. One message explains why the company is restructuring; another explains how each employee's daily work will change. According to Prosci research on preferred senders, who should deliver the second message?",
       "options": [
-        {
-          "id": "a",
-          "text": "measures whether people are using and benefiting from a new process or system"
-        },
-        {
-          "id": "b",
-          "text": "is only the project start date"
-        },
-        {
-          "id": "c",
-          "text": "is a firewall rule"
-        },
-        {
-          "id": "d",
-          "text": "is a file extension"
-        }
+        { "id": "a", "text": "Each employee's direct supervisor" },
+        { "id": "b", "text": "The CEO, in a company-wide town hall" },
+        { "id": "c", "text": "The project manager running the reorganization" },
+        { "id": "d", "text": "The HR or internal communications team" }
       ],
       "correctOptionId": "a",
-      "explanation": "Adoption metric measures whether people are using and benefiting from a new process or system.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "Prosci research finds employees want to hear business reasons from senior leaders but personal impact (\"what does this mean for me?\") from their immediate supervisor. The CEO is the preferred sender for the first message, not the second."
     },
     {
       "id": "change-management-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Change champion?",
+      "difficulty": "BEGINNER",
+      "prompt": "Two departments are being merged. Employees are visibly upset about losing their old team names, managers, and routines. Using William Bridges' Transition Model, what should leaders do first?",
       "options": [
-        {
-          "id": "a",
-          "text": "helps peers understand, practice, and adopt a change"
-        },
-        {
-          "id": "b",
-          "text": "blocks all feedback"
-        },
-        {
-          "id": "c",
-          "text": "owns every technical decision"
-        },
-        {
-          "id": "d",
-          "text": "is a replacement for training materials"
-        }
+        { "id": "a", "text": "Launch the new combined team identity right away to move people past the old one" },
+        { "id": "b", "text": "Present the financial business case again so people see the merger is logical" },
+        { "id": "c", "text": "Wait quietly, because the neutral zone resolves itself once people adjust" },
+        { "id": "d", "text": "Openly acknowledge what people are losing and mark the ending of the old way" }
       ],
-      "correctOptionId": "a",
-      "explanation": "Change champion helps peers understand, practice, and adopt a change.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "d",
+      "explanation": "Bridges holds that every transition begins with an ending, so leaders must name and respect losses before people can move through the neutral zone to a new beginning. Rushing to a new identity skips the ending phase and tends to deepen resistance."
     },
     {
       "id": "change-management-4",
       "type": "true_false",
-      "prompt": "True or false: Change impact assessment identifies who and what will be affected by a proposed change.",
-      "correctAnswer": true,
-      "explanation": "Change impact assessment identifies who and what will be affected by a proposed change.",
-      "difficulty": "BEGINNER"
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: Prosci research shows that the most commonly cited reason employees resist change is fear of losing their jobs.",
+      "correctAnswer": false,
+      "explanation": "Prosci's research consistently finds the top reason is lack of awareness of why the change is being made, which is why sponsors communicating the business reasons matters so much. Fear of job loss appears on the list but is not the most common cause."
     },
     {
       "id": "change-management-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: helps peers understand, practice, and adopt a change?",
-      "acceptedAnswers": [
-        "Change champion"
+      "type": "order_lines",
+      "difficulty": "BEGINNER",
+      "prompt": "Put these six of Kotter's 8 steps for leading change in the order Kotter prescribes.",
+      "lines": [
+        { "id": "q7", "text": "Establish a sense of urgency" },
+        { "id": "m2", "text": "Form a powerful guiding coalition" },
+        { "id": "x9", "text": "Develop a vision and strategy" },
+        { "id": "b4", "text": "Communicate the change vision" },
+        { "id": "t6", "text": "Generate short-term wins" },
+        { "id": "h3", "text": "Anchor new approaches in the culture" }
       ],
-      "explanation": "The term is Change champion.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "Kotter's sequence is urgency, guiding coalition, vision and strategy, communicate the vision, empower broad-based action, short-term wins, consolidate gains, and anchor in the culture. Culture change comes last because new behaviors must first prove they produce results."
+    },
+    {
+      "id": "change-management-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A change manager runs a Prosci ADKAR assessment for the billing team (1 = low, 5 = high). Where should she focus effort next?",
+      "code": { "language": "plaintext", "source": "Billing team - average ADKAR scores\nAwareness      4\nDesire         4\nKnowledge      2\nAbility        2\nReinforcement  3" },
+      "options": [
+        { "id": "a", "text": "Reinforcement, so the gains already made are not lost" },
+        { "id": "b", "text": "Knowledge, because it is the first element scoring 3 or lower" },
+        { "id": "c", "text": "Ability, because job performance is what the business measures" },
+        { "id": "d", "text": "Desire, because every element after it scores lower than it" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Prosci defines the barrier point as the first ADKAR element scoring 3 or lower; elements build in sequence, so Ability cannot improve until people know how to change. Ability ties for the lowest score, but working on it before Knowledge is addressed wastes effort."
+    },
+    {
+      "id": "change-management-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The VP sponsoring an ERP rollout approved the budget, then told the change manager, \"You handle the people stuff,\" and has not appeared at any employee event since. Based on Prosci research, what should the change manager push for?",
+      "options": [
+        { "id": "a", "text": "Nothing; the change manager owns adoption, so the sponsor's job ends once funding is secured" },
+        { "id": "b", "text": "Ask the sponsor to fund extra change staff so the team can cover the communications instead" },
+        { "id": "c", "text": "Ask the sponsor to send one company-wide email endorsing the project, then step back again" },
+        { "id": "d", "text": "Coach the sponsor to be active and visible, build a sponsor coalition, and explain the why directly" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Prosci's research names active and visible sponsorship as the top contributor to change success; sponsors must participate throughout, build a coalition of peer sponsors, and communicate the reasons directly. Funding more change staff cannot substitute for the authority only the sponsor has."
+    },
+    {
+      "id": "change-management-8",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Prosci separates the technical (project) side of a change from the people side. For a new expense system, which of these activities are people-side change management work? Select all that apply.",
+      "options": [
+        { "id": "a", "text": "Assessing how much each employee group's daily work will change" },
+        { "id": "b", "text": "Building the cutover schedule and data migration plan" },
+        { "id": "c", "text": "Coaching supervisors to recognize and manage resistance" },
+        { "id": "d", "text": "Configuring approval workflows in the expense software" },
+        { "id": "e", "text": "Designing recognition and reinforcement for new behaviors" },
+        { "id": "f", "text": "Writing and running the system test plan" }
+      ],
+      "correctOptionIds": ["a", "c", "e"],
+      "explanation": "Impact assessment by group, supervisor coaching for resistance, and reinforcement all help individuals adopt the change, which is the people side. Cutover planning, configuration, and testing deliver the technical solution and belong to project management."
+    },
+    {
+      "id": "change-management-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A senior analyst, normally a top performer, is openly criticizing the new workflow tool in team meetings. Following Prosci's resistance-management guidance, what should her team lead do first?",
+      "options": [
+        { "id": "a", "text": "Meet one-on-one to listen and find the root cause, such as which ADKAR element is missing" },
+        { "id": "b", "text": "Escalate to HR as a conduct issue so that others see resistance has consequences" },
+        { "id": "c", "text": "Leave her out of change meetings for now so her criticism does not spread to the team" },
+        { "id": "d", "text": "Ask the sponsor for a company-wide message stating that use of the tool is mandatory" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Prosci treats resistance as a normal reaction and says to identify its root cause before acting, with the supervisor as the primary resistance manager; ADKAR is the diagnostic. Escalating or excluding her treats the symptom and often entrenches the resistance."
+    },
+    {
+      "id": "change-management-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Six weeks after a CRM go-live, the project manager wants to close the project. What do these adoption metrics show?",
+      "code": { "language": "plaintext", "source": "Week 6 after CRM go-live\nLicensed users who logged in this week:        96%\nNew opportunities created in the CRM:          41%\nDeals still tracked in personal spreadsheets:  58%\nCRM records with required fields complete:     47%" },
+      "options": [
+        { "id": "a", "text": "Adoption is successful because nearly all users log in, so the project can close" },
+        { "id": "b", "text": "The only problem is data quality, which mandatory-field validation rules will fix" },
+        { "id": "c", "text": "Logins are high but utilization and proficiency are low, so benefits are not yet realized" },
+        { "id": "d", "text": "The software is defective, since most users cannot create opportunities in it" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Prosci ties project benefits to speed of adoption, ultimate utilization, and proficiency; most work still happens in spreadsheets and records are incomplete, so the change has not been adopted despite logins. Login counts measure access, not the new way of working."
+    },
+    {
+      "id": "change-management-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Seven months into an 18-month transformation, there are no visible results yet, and skeptics are telling colleagues the initiative is failing. Following Kotter's model, what should the guiding coalition do now?",
+      "options": [
+        { "id": "a", "text": "Restart at step 1 with a new burning platform to rebuild a sense of urgency" },
+        { "id": "b", "text": "Plan and deliver visible, unambiguous wins soon and recognize the people behind them" },
+        { "id": "c", "text": "Rewrite the vision statement so it better answers the skeptics' objections" },
+        { "id": "d", "text": "Hold off reporting any results until the full transformation is complete" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Kotter's short-term wins step exists to show progress within months, undercut cynics, and keep momentum through a long change. Withholding results until the end is exactly what lets skeptics define the story."
+    },
+    {
+      "id": "change-management-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Nine months into a lean transformation, the pilot plant hits all its targets. The CEO announces \"mission accomplished,\" disbands the guiding coalition, and moves the change budget elsewhere. A year later the plant's metrics have slid back to baseline. Which of Kotter's change errors does this illustrate?",
+      "options": [
+        { "id": "a", "text": "Declaring victory too soon, before the changes were consolidated and anchored in the culture" },
+        { "id": "b", "text": "Failing to establish a great enough sense of urgency at the start of the transformation" },
+        { "id": "c", "text": "Under-communicating the vision, so employees never understood where the change was heading" },
+        { "id": "d", "text": "Not creating a powerful enough guiding coalition to drive the transformation forward" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Kotter warns that celebrating a win is fine, but declaring the war won removes momentum before new practices are rooted in norms, systems, and promotions, so old behavior returns. The coalition was powerful enough to hit the targets; the error was dissolving it too early."
+    },
+    {
+      "id": "change-management-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Each project below rated its own impact on the call center as acceptable. Since July, call center productivity has fallen 12% and absenteeism has doubled. What should the change lead do?",
+      "code": { "language": "plaintext", "source": "Changes landing on the call center, Q3\nProject               | Impact on agents | Go-live\nNew CRM               | High             | Jul 8\nNew shift schedule    | High             | Jul 15\nQA scorecard redesign | Medium           | Aug 1\nOffice relocation     | Medium           | Aug 19" },
+      "options": [
+        { "id": "a", "text": "Have each project double its own communications so agents better understand every change" },
+        { "id": "b", "text": "Add more CRM training, since the CRM is the highest-impact change on the list" },
+        { "id": "c", "text": "Proceed as planned, since every project assessed its own impact on agents as acceptable" },
+        { "id": "d", "text": "Assess cumulative impact on agents across projects and work with leaders to resequence" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "This is change saturation: impacts that are acceptable one project at a time overwhelm a group when they land together, so impact must be assessed per group across the portfolio and changes sequenced or paused. More communication from every project adds to the overload rather than relieving it."
+    },
+    {
+      "id": "change-management-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A company gave its supervisors a toolkit for coaching their teams through a new performance-review process. A pulse survey shows 40% of the supervisors themselves do not support the change, and their teams' adoption is lagging. What should the change team do?",
+      "options": [
+        { "id": "a", "text": "Bypass the supervisors and have the change team brief their frontline staff directly" },
+        { "id": "b", "text": "Reissue the coaching toolkit with more detailed scripts and talking points" },
+        { "id": "c", "text": "Take supervisors through their own ADKAR transition first, then equip them to coach" },
+        { "id": "d", "text": "Make the coaching sessions mandatory and track completion in supervisors' goals" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Prosci notes managers are both employees experiencing the change and coaches for others; they must be engaged as individuals (Awareness, Desire, and so on) before they can credibly lead their teams. Bypassing them removes the preferred sender for personal-impact messages, and better scripts do not fix a supervisor's own Desire gap."
+    },
+    {
+      "id": "change-management-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Sales reps completed CRM training and pass proficiency checks, yet most still log deals in personal spreadsheets. What is the root cause, and what fixes it?",
+      "code": { "language": "plaintext", "source": "Sales compensation:   paid on closed revenue only\nWeekly pipeline call: managers review reps' own spreadsheets\nCRM logging policy:   \"required\", but never checked or discussed" },
+      "options": [
+        { "id": "a", "text": "A Knowledge gap; run refresher training focused on entering opportunities in the CRM" },
+        { "id": "b", "text": "Reinforcement rewards the old way; managers must run reviews from CRM data and measure its use" },
+        { "id": "c", "text": "An Awareness gap; have the sponsor resend the business case for adopting the new CRM" },
+        { "id": "d", "text": "A tool-fit problem; reps prefer spreadsheets, so the company should change CRM vendors" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "The reps have the Knowledge and Ability, but every organizational signal (pipeline reviews, measures, unenforced policy) still reinforces spreadsheets, so Reinforcement and manager behavior must change. More training addresses an element the proficiency checks show is already in place."
     }
   ]
 }

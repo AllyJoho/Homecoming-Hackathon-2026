@@ -2,104 +2,225 @@
   "id": "product-management-basics",
   "title": "Product Management Basics",
   "skillSlug": "product-management-basics",
-  "description": "Test your understanding of product management basics. Prioritizing a product backlog, writing user stories, and tying features to user needs and business goals.",
-  "timeLimitSeconds": 600,
+  "description": "Run discovery, prioritise with RICE, Kano, and MoSCoW, choose product metrics, and read experiments correctly.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "product-management-basics-1",
       "type": "multiple_choice",
-      "prompt": "What best describes User story?",
+      "difficulty": "BEGINNER",
+      "prompt": "A PM believes small-business users want automatic bank reconciliation, which would take about three months to build. There is little evidence beyond a few anecdotes. What is the right next step?",
       "options": [
-        {
-          "id": "a",
-          "text": "describes a desired capability from a user perspective and its value"
-        },
-        {
-          "id": "b",
-          "text": "is a production server log"
-        },
-        {
-          "id": "c",
-          "text": "is a legal invoice only"
-        },
-        {
-          "id": "d",
-          "text": "is a database backup"
-        }
+        { "id": "a", "text": "Build the full feature and ship it, then measure adoption to see if users want it" },
+        { "id": "b", "text": "Put it on the public roadmap with a date to signal commitment to customers" },
+        { "id": "c", "text": "Ask the sales team which customers would buy it, and build it if most say yes" },
+        { "id": "d", "text": "Interview target users about how they reconcile today and test a quick prototype" }
       ],
-      "correctOptionId": "a",
-      "explanation": "User story describes a desired capability from a user perspective and its value.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "d",
+      "explanation": "Product discovery reduces the risk that you build something nobody needs, using cheap tests (interviews, prototypes, concierge versions) before expensive delivery. Building the whole feature to find out is the costliest possible experiment, and second-hand opinions from sales are weak evidence."
     },
     {
       "id": "product-management-basics-2",
       "type": "multiple_choice",
-      "prompt": "What best describes MVP?",
+      "difficulty": "BEGINNER",
+      "prompt": "Story: \"As a shopper, I want to reset my password so that I can get back into my account.\" Which acceptance criterion is written so that it can be objectively tested?",
       "options": [
-        {
-          "id": "a",
-          "text": "is the smallest useful product version that can test important assumptions"
-        },
-        {
-          "id": "b",
-          "text": "contains every planned feature"
-        },
-        {
-          "id": "c",
-          "text": "is always a throwaway prototype"
-        },
-        {
-          "id": "d",
-          "text": "must be released without feedback"
-        }
+        { "id": "a", "text": "Password reset should be fast and user-friendly on every device" },
+        { "id": "b", "text": "Given a registered email, when a reset is requested, then a single-use link valid for 30 minutes is sent" },
+        { "id": "c", "text": "The reset flow should follow security best practices for account recovery" },
+        { "id": "d", "text": "Users should be satisfied with how easy the new reset experience is to use" }
       ],
-      "correctOptionId": "a",
-      "explanation": "MVP is the smallest useful product version that can test important assumptions.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "b",
+      "explanation": "Good acceptance criteria state observable pass/fail conditions; Given/When/Then with a specific link behaviour and expiry can be verified by a test. \"Fast\", \"best practices\", and \"satisfied\" are not measurable as written."
     },
     {
       "id": "product-management-basics-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Prioritization?",
+      "difficulty": "BEGINNER",
+      "prompt": "A release has a fixed regulatory date and is prioritised with MoSCoW. Two engineers leave, cutting capacity by about 20%. Which items should be dropped from this release first?",
       "options": [
-        {
-          "id": "a",
-          "text": "orders opportunities by factors such as user value, impact, effort, and risk"
-        },
-        {
-          "id": "b",
-          "text": "selects only the newest idea"
-        },
-        {
-          "id": "c",
-          "text": "ignores constraints"
-        },
-        {
-          "id": "d",
-          "text": "means every item is urgent"
-        }
+        { "id": "a", "text": "Could-have items" },
+        { "id": "b", "text": "Should-have items" },
+        { "id": "c", "text": "The cheapest Must-have items" },
+        { "id": "d", "text": "An equal share from every category" }
       ],
       "correctOptionId": "a",
-      "explanation": "Prioritization orders opportunities by factors such as user value, impact, effort, and risk.",
-      "difficulty": "ADVANCED"
+      "explanation": "In MoSCoW (from DSDM), Could-haves are the planned contingency and are the first to go when capacity drops; Should-haves are important but not vital, and go next. Must-haves define the minimum usable release, so cutting them, even cheap ones, means the release fails."
     },
     {
       "id": "product-management-basics-4",
       "type": "true_false",
-      "prompt": "True or false: User story describes a desired capability from a user perspective and its value.",
-      "correctAnswer": true,
-      "explanation": "User story describes a desired capability from a user perspective and its value.",
-      "difficulty": "BEGINNER"
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: If a product's total number of registered users grows every month, its user retention must be improving.",
+      "correctAnswer": false,
+      "explanation": "Cumulative registered users can only go up as new sign-ups arrive, even if most users leave after a week; it is a vanity metric. Retention has to be measured directly, for example as the share of each sign-up cohort still active after N weeks."
     },
     {
       "id": "product-management-basics-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: orders opportunities by factors such as user value, impact, effort, and risk?",
-      "acceptedAnswers": [
-        "Prioritization"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "Research for a hotel booking site shows that customers barely notice the booking confirmation email when it arrives, but complain angrily when it is missing. In the Kano model, what kind of feature is the confirmation email?",
+      "options": [
+        { "id": "a", "text": "Performance (one-dimensional)" },
+        { "id": "b", "text": "Attractive (delighter)" },
+        { "id": "c", "text": "Must-be (basic expectation)" },
+        { "id": "d", "text": "Indifferent" }
       ],
-      "explanation": "The term is Prioritization.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "Must-be features cause dissatisfaction when absent but add little satisfaction when present. A performance feature increases satisfaction roughly in proportion to how well it is delivered, and an indifferent feature would not cause complaints when missing."
+    },
+    {
+      "id": "product-management-basics-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Using the RICE framework (Reach x Impact x Confidence / Effort), which feature should rank highest?",
+      "code": {
+        "language": "plaintext",
+        "source": "Feature  Reach (users/qtr)  Impact  Confidence  Effort (person-months)\nA        3,000              1       80%         5\nB        1,000              2       100%        2\nC        2,500              1       50%         1.5\nD        800                3       80%         3"
+      },
+      "options": [
+        { "id": "a", "text": "Feature A" },
+        { "id": "b", "text": "Feature B" },
+        { "id": "c", "text": "Feature C" },
+        { "id": "d", "text": "Feature D" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Scores: A = 3000x1x0.8/5 = 480; B = 1000x2x1.0/2 = 1,000; C = 2500x1x0.5/1.5 = 833; D = 800x3x0.8/3 = 640. Leaving out Effort makes A look best (2,400), and leaving out Confidence makes C look best (about 1,667)."
+    },
+    {
+      "id": "product-management-basics-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "An A/B test of a new checkout page was planned for 20,000 users per arm (about two weeks). On day 3 the dashboard shows the variant ahead by 8% with p = 0.04. The PM wants to ship today. What should the team do?",
+      "options": [
+        { "id": "a", "text": "Ship now, since p is below 0.05 and the result is statistically significant" },
+        { "id": "b", "text": "Stop the test and start over with a larger sample, since day-3 data is invalid" },
+        { "id": "c", "text": "Keep checking daily and stop as soon as p drops below 0.01" },
+        { "id": "d", "text": "Run to the planned sample size, because stopping on an early p-value inflates false positives" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "With a fixed-horizon test, checking repeatedly and stopping at the first significant result (\"peeking\") greatly inflates the false-positive rate; early effects are also often inflated. Stopping at a stricter threshold is still peeking unless a sequential testing method was planned in advance."
+    },
+    {
+      "id": "product-management-basics-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A collaborative document tool earns revenue from paid seats; its value comes from teams working together on shared documents. Which is the strongest North Star Metric?",
+      "options": [
+        { "id": "a", "text": "Weekly active teams that create or edit a shared document" },
+        { "id": "b", "text": "Total cumulative sign-ups since launch" },
+        { "id": "c", "text": "Quarterly recurring revenue from paid seats" },
+        { "id": "d", "text": "Number of product features shipped per quarter" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "A North Star Metric should capture the core value customers get and act as a leading indicator of revenue; active teams collaborating does both. Revenue is a lagging business outcome, sign-ups are a vanity metric, and features shipped measures output, not value."
+    },
+    {
+      "id": "product-management-basics-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A new onboarding checklist launched on March 1. Here is the cohort retention table (percent of each sign-up cohort active in that week). Which conclusion does the data support?",
+      "code": {
+        "language": "plaintext",
+        "source": "Cohort  Sign-ups  Week 1  Week 4  Week 8\nJan     4,000     40%     22%     18%\nFeb     4,200     41%     23%     18%\nMar     3,900     52%     23%     18%"
+      },
+      "options": [
+        { "id": "a", "text": "The checklist produced a lasting retention gain of about 11 points" },
+        { "id": "b", "text": "The checklist hurt acquisition, since the March cohort is smaller" },
+        { "id": "c", "text": "Week-1 retention rose after the change, but the gain had vanished by week 4" },
+        { "id": "d", "text": "Retention is falling, since week-8 numbers are below week-1 numbers" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "March's week-1 retention jumped from about 40% to 52%, but weeks 4 and 8 match earlier cohorts, so the extra early engagement did not last. A checklist shown after sign-up cannot explain cohort size, and retention always declines with age within a cohort; the comparison that matters is between cohorts."
+    },
+    {
+      "id": "product-management-basics-10",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A leadership team asks for an outcome-based roadmap. Which of these items are outcomes rather than outputs? Select all that apply.",
+      "options": [
+        { "id": "a", "text": "Reduce median time to first invoice for new accounts from 3 days to 1 day" },
+        { "id": "b", "text": "Increase week-4 retention of new SMB accounts from 30% to 36%" },
+        { "id": "c", "text": "Ship the redesigned analytics dashboard" },
+        { "id": "d", "text": "Launch the Android app by the end of Q3" },
+        { "id": "e", "text": "Cut onboarding-related support tickets by 25%" }
+      ],
+      "correctOptionIds": ["a", "b", "e"],
+      "explanation": "Outcomes are measurable changes in customer or business behaviour (faster time to value, higher retention, fewer support contacts). Shipping a dashboard or launching an app are outputs: things the team delivers that may or may not produce an outcome."
+    },
+    {
+      "id": "product-management-basics-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "For an invoicing tool, analysis shows that users who send their first invoice within 7 days of signing up are retained at three times the rate of everyone else. Which metric should the team track as its activation rate?",
+      "options": [
+        { "id": "a", "text": "Percentage of sign-ups who verify their email address" },
+        { "id": "b", "text": "Percentage of new sign-ups who send a first invoice within 7 days" },
+        { "id": "c", "text": "Total number of invoices sent across all users per month" },
+        { "id": "d", "text": "Daily active users divided by monthly active users" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Activation measures the share of new users who reach the first moment of real value, ideally an event tied to later retention, measured within a set window. Email verification is a setup step, not value, and total invoices or DAU/MAU measure overall usage or engagement, not new-user activation."
+    },
+    {
+      "id": "product-management-basics-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A team's discovery tests demand with customer interviews, tests usability with prototypes, and spikes anything technically risky. A feature passed all three, but two weeks before launch the sales lead notices it sends customer documents to a third-party AI service, which the standard enterprise contract forbids. Which discovery change would have caught this most cheaply?",
+      "options": [
+        { "id": "a", "text": "Interview more enterprise customers to confirm the feature is worth building" },
+        { "id": "b", "text": "Run a closed beta with enterprise accounts before general availability" },
+        { "id": "c", "text": "Extend the engineering spike to load-test the third-party AI integration" },
+        { "id": "d", "text": "Review solution ideas with legal, security, and sales owners before build" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Contract, legal, and other business constraints are business viability risk (one of Cagan's four product risks alongside value, usability, and feasibility), and it is tested by reviewing solutions with the people who own those constraints during discovery. Customers wanting the feature reveals nothing about contract terms, a spike tests whether it can be built rather than whether the business may ship it, and a beta only catches the problem after the build is paid for."
+    },
+    {
+      "id": "product-management-basics-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "An experiment was configured as a 50/50 split. Here are the results. What should the PM do?",
+      "code": {
+        "language": "plaintext",
+        "source": "Arm        Users    Conversions  Rate\nControl    50,000   1,550        3.10%\nTreatment  47,800   1,595        3.34%\n\nLift: +7.6%   p-value (conversion): 0.036"
+      },
+      "options": [
+        { "id": "a", "text": "Treat the results as untrustworthy and investigate the sample ratio mismatch first" },
+        { "id": "b", "text": "Ship the treatment, because the conversion lift is significant at p < 0.05" },
+        { "id": "c", "text": "Reweight the treatment arm to 50,000 users and recompute the p-value" },
+        { "id": "d", "text": "Ignore the imbalance, since a 2,200-user gap is normal noise at this scale" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "With 97,800 users a 50/50 split should give about 48,900 per arm; a chi-square test on 50,000 vs 47,800 gives about 49.5, p < 0.0001, a sample ratio mismatch. SRM usually means a bug in assignment, redirects, or logging that biases who is counted, so the lift cannot be trusted until it is fixed; reweighting does not remove that bias."
+    },
+    {
+      "id": "product-management-basics-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Analytics showed users who invite a teammate in their first week retain at twice the rate of others. The PM made \"invite a teammate\" a mandatory onboarding step for everyone. Two months later retention is unchanged and onboarding completion has dropped. What is the most likely explanation?",
+      "options": [
+        { "id": "a", "text": "The invite step was poorly designed; a better UI would produce the 2x gain" },
+        { "id": "b", "text": "Retention effects take at least a year to show in cohort data" },
+        { "id": "c", "text": "Inviting marked users already getting value; it was correlated, not causal" },
+        { "id": "d", "text": "The retention metric is wrong, since the analytics showed a clear effect" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Users who chose to invite were self-selected: they already found value, so the invite was a marker rather than a cause. Forcing the behaviour on everyone tests the causal claim, and it failed; a randomised test of an invite prompt would have shown this before a full rollout."
+    },
+    {
+      "id": "product-management-basics-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "One team can build only one feature at a time. Feature X: cost of delay $50k/week, takes 4 weeks. Feature Y: cost of delay $20k/week, takes 1 week. Delay cost accrues for each feature until it ships. Which sequence minimises total cost of delay?",
+      "options": [
+        { "id": "a", "text": "X first, because its weekly cost of delay is higher and it should not wait" },
+        { "id": "b", "text": "Y first: total delay cost is $270k, compared with $300k for X first" },
+        { "id": "c", "text": "X first: total delay cost is $270k, compared with $300k for Y first" },
+        { "id": "d", "text": "Split the team across both features so that neither one waits" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Y first: Y ships at week 1 ($20k) and X at week 5 ($250k), $270k in total; X first: X at week 4 ($200k) and Y at week 5 ($100k), $300k. Cost of delay divided by duration (CD3/WSJF) is 20 for Y and 12.5 for X, so Y goes first; splitting the team delays both (about $290k)."
     }
   ]
 }

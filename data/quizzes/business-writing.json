@@ -2,104 +2,220 @@
   "id": "business-writing",
   "title": "Business Writing",
   "skillSlug": "business-writing",
-  "description": "Test your understanding of business writing. Writing clear emails, memos, proposals, and status updates that get to the point.",
-  "timeLimitSeconds": 600,
+  "description": "Revise real emails, memos, and status updates using BLUF, plain language, active voice, and clear structure.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "business-writing-1",
       "type": "multiple_choice",
-      "prompt": "What best describes BLUF?",
+      "difficulty": "BEGINNER",
+      "prompt": "Dana, a busy finance director, will read only the first line of this email. Which opening sentence best applies BLUF (bottom line up front)?",
+      "code": { "language": "plaintext", "source": "Subject: Vendor update\n\nHi Dana,\nAs you know, we started evaluating payroll vendors in January. The team\nreviewed six proposals and held demos with three of them. Pricing varied\nquite a bit, and two vendors had integration concerns. After a lot of\ndiscussion, we narrowed it to PayFlow. Could you approve the PayFlow\ncontract by Friday, March 14, so we can start onboarding in April?" },
       "options": [
-        {
-          "id": "a",
-          "text": "puts the bottom line or main conclusion first"
-        },
-        {
-          "id": "b",
-          "text": "buries the request at the end"
-        },
-        {
-          "id": "c",
-          "text": "means every sentence is a heading"
-        },
-        {
-          "id": "d",
-          "text": "is a spreadsheet function"
-        }
+        { "id": "a", "text": "I wanted to give you a quick update on where we are with the payroll vendor evaluation." },
+        { "id": "b", "text": "Please approve the PayFlow payroll contract by Friday, March 14, so onboarding can start in April." },
+        { "id": "c", "text": "As you know, the payroll vendor evaluation that started in January is finally wrapping up." },
+        { "id": "d", "text": "After reviewing six proposals and three demos, the team has now completed its evaluation." }
       ],
-      "correctOptionId": "a",
-      "explanation": "BLUF puts the bottom line or main conclusion first.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "b",
+      "explanation": "BLUF puts the request, the decision-maker's action, and the deadline first; the history becomes optional supporting detail. The other openings still make Dana read to the end to learn what she must do."
     },
     {
       "id": "business-writing-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Action item?",
+      "difficulty": "BEGINNER",
+      "prompt": "A manager drafts this sentence to the board: \"Mistakes were made in the Q3 revenue figures, and corrected figures will be provided.\" Which revision best fixes its main weakness?",
       "options": [
-        {
-          "id": "a",
-          "text": "states what must be done, by whom, and usually by when"
-        },
-        {
-          "id": "b",
-          "text": "is an unowned idea"
-        },
-        {
-          "id": "c",
-          "text": "is a decorative sentence"
-        },
-        {
-          "id": "d",
-          "text": "is a database constraint"
-        }
+        { "id": "a", "text": "Two mistakes were unfortunately made in the Q3 revenue figures; corrections will be provided Tuesday." },
+        { "id": "b", "text": "The Q3 revenue figures sent to the board contained two errors, which will be corrected by Tuesday." },
+        { "id": "c", "text": "It has been determined that two Q3 revenue figures contained errors requiring correction by Tuesday." },
+        { "id": "d", "text": "Our finance team made two errors in the Q3 revenue figures; we will send corrections Tuesday." }
       ],
-      "correctOptionId": "a",
-      "explanation": "Action item states what must be done, by whom, and usually by when.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "d",
+      "explanation": "The passive voice hides who made the errors and who will fix them; active voice names the actor, takes responsibility, and commits to a date. Option b adds the count and date but still never says who erred or who will send the corrections."
     },
     {
       "id": "business-writing-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Plain language?",
+      "difficulty": "BEGINNER",
+      "prompt": "Which revision of this sentence best applies the plain-language guidance to replace hidden verbs (nominalizations) with strong verbs?\n\n\"The committee will conduct a review of the proposal and make a determination regarding funding at the next meeting.\"",
       "options": [
-        {
-          "id": "a",
-          "text": "communicates clearly with familiar words and direct sentence structure"
-        },
-        {
-          "id": "b",
-          "text": "maximizes jargon"
-        },
-        {
-          "id": "c",
-          "text": "removes all necessary detail"
-        },
-        {
-          "id": "d",
-          "text": "uses passive voice everywhere"
-        }
+        { "id": "a", "text": "The committee will review the proposal and decide on funding at its next meeting." },
+        { "id": "b", "text": "A review of the proposal will be conducted, and a funding determination made, at the next meeting." },
+        { "id": "c", "text": "The committee will undertake a review of the proposal and render a funding determination next meeting." },
+        { "id": "d", "text": "At the next meeting, a funding decision will be made by the committee following its proposal review." }
       ],
       "correctOptionId": "a",
-      "explanation": "Plain language communicates clearly with familiar words and direct sentence structure.",
-      "difficulty": "ADVANCED"
+      "explanation": "\"Conduct a review\" and \"make a determination\" bury the real actions in nouns; plainlanguage.gov recommends turning them back into verbs (\"review\", \"decide\"). Options b and d also slip into passive voice, and option c keeps the nominalizations with fancier verbs."
     },
     {
       "id": "business-writing-4",
-      "type": "true_false",
-      "prompt": "True or false: BLUF puts the bottom line or main conclusion first.",
-      "correctAnswer": true,
-      "explanation": "BLUF puts the bottom line or main conclusion first.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "You need your manager to approve $2,400 of conference travel for two engineers by Thursday, June 11. Which subject line makes the email easiest to triage from a crowded inbox?",
+      "options": [
+        { "id": "a", "text": "Conference travel request for the engineering team this summer" },
+        { "id": "b", "text": "Following up on what we discussed in Monday's one-on-one" },
+        { "id": "c", "text": "Approval needed by Thu 6/11: $2,400 travel for 2 engineers" },
+        { "id": "d", "text": "URGENT: travel approval needed for the engineering conference" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "An effective subject line front-loads the action, deadline, and key specifics so the reader can triage without opening the email. Option d signals urgency and the action but omits the deadline and amount, and option a hides that an approval is needed at all."
     },
     {
       "id": "business-writing-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: communicates clearly with familiar words and direct sentence structure?",
-      "acceptedAnswers": [
-        "Plain language"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: The U.S. Federal Plain Language Guidelines recommend using \"shall\" rather than \"must\" when a policy states an obligation, because \"shall\" is more precise.",
+      "correctAnswer": false,
+      "explanation": "The Federal Plain Language Guidelines recommend \"must\" for obligations because \"shall\" is ambiguous (it can mean must, may, or will) and is rarely used in everyday speech. \"Must not\" is likewise preferred for prohibitions."
+    },
+    {
+      "id": "business-writing-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A project lead in New York emails colleagues in Denver and London: \"Let's meet next Friday at 3 to review the launch plan.\" It is early June, and all three locations are on summer time. Which revision removes the ambiguity?",
+      "options": [
+        { "id": "a", "text": "Let's meet next Friday at 3:00 sharp to review the launch plan." },
+        { "id": "b", "text": "Let's meet on the 12th, in the afternoon, to review the launch plan." },
+        { "id": "c", "text": "Let's meet next Friday at 3 p.m. my time to review the launch plan." },
+        { "id": "d", "text": "Let's meet Friday, June 12, 3:00 p.m. ET (1:00 p.m. MT, 8:00 p.m. UK time)." }
       ],
-      "explanation": "The term is Plain language.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "d",
+      "explanation": "\"Next Friday\" and \"3\" can each be read two ways, and readers in three time zones need explicit conversions; option d gives the full date and each local time (EDT is UTC-4, MDT UTC-6, BST UTC+1). \"My time\" still forces every reader to do the conversion and guess the sender's zone."
+    },
+    {
+      "id": "business-writing-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Which bullet breaks the parallel structure of this list?",
+      "code": { "language": "plaintext", "source": "After this training, you will be able to:\n  1. Create a project budget in the finance template\n  2. Track actual spend against the approved budget\n  3. Variance reports, including root-cause notes\n  4. Escalate overruns to your finance partner" },
+      "options": [
+        { "id": "a", "text": "Bullet 1, because it names a specific template" },
+        { "id": "b", "text": "Bullet 3, because it is a noun phrase, not a verb phrase" },
+        { "id": "c", "text": "Bullet 4, because it addresses the reader as \"your\"" },
+        { "id": "d", "text": "Bullet 2, because it repeats the word \"budget\"" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Every item should complete the lead-in \"you will be able to...\" with a verb; \"Variance reports\" does not (a fix is \"Write variance reports that include root-cause notes\"). Using \"your\" or repeating a word does not change the grammatical form of the item."
+    },
+    {
+      "id": "business-writing-8",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "An insurer plans to send this sentence to policyholders. Select all revisions that follow plain-language guidance (plainlanguage.gov).",
+      "code": { "language": "plaintext", "source": "It should be noted that utilization of the new portal by policyholders is\nrequired for the submission of claims subsequent to July 1, and failure to\ncomply with this requirement may result in processing delays being\nexperienced by the claimant, as well as additional documentation\npotentially being requested." },
+      "options": [
+        { "id": "a", "text": "Address the reader directly as \"you\"" },
+        { "id": "b", "text": "Replace \"utilization\" and \"subsequent to\" with \"use\" and \"after\"" },
+        { "id": "c", "text": "Open with \"Please be advised that\" to soften the tone" },
+        { "id": "d", "text": "Split it into shorter sentences, one idea each" },
+        { "id": "e", "text": "Put the July 1 requirement in all capital letters" },
+        { "id": "f", "text": "Keep the passive constructions so the tone stays formal" }
+      ],
+      "correctOptionIds": ["a", "b", "d"],
+      "explanation": "Plain-language guidance calls for addressing readers as \"you\", using common words, and writing short sentences, which yields something like \"After July 1, you must use the new portal to submit claims.\" \"Please be advised\" is filler, all caps is harder to read, and passive voice obscures who must act."
+    },
+    {
+      "id": "business-writing-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "After a redesign, checkout conversion rose from 4% to 6%. An analyst's draft says, \"Conversion increased 2%.\" Which sentence states the change accurately?",
+      "options": [
+        { "id": "a", "text": "Conversion rose 2 percentage points, from 4% to 6%, a 50% relative increase." },
+        { "id": "b", "text": "Conversion increased by 2%, from 4% to 6%, after the redesign launched." },
+        { "id": "c", "text": "Conversion increased 150%, from 4% to 6%, after the redesign launched." },
+        { "id": "d", "text": "Conversion grew by one third, from 4% to 6%, after the redesign launched." }
+      ],
+      "correctOptionId": "a",
+      "explanation": "The absolute change is 2 percentage points, and the relative change is (6 - 4) / 4 = 50%. \"2%\" confuses points with percent, 150% is the new value as a share of the old (6/4) rather than the increase, and one third divides by the new value instead of the old."
+    },
+    {
+      "id": "business-writing-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The program director reads only the first two lines of each weekly status email. What is the most important fix to this one?",
+      "code": { "language": "plaintext", "source": "Subject: Weekly status - Project Atlas\nStatus: GREEN\n\nThis week the team finished vendor onboarding and held two design reviews.\nQA environment setup continued. Note: data migration testing found 3,000\nrecords with invalid tax IDs; the May 4 launch will likely move to May 18\nunless we get approval for 2 contract testers ($14k) by April 10." },
+      "options": [
+        { "id": "a", "text": "Add a bulleted list summarizing the outcome of each design review" },
+        { "id": "b", "text": "Cut the sentence about QA environment setup to shorten the paragraph" },
+        { "id": "c", "text": "Change the status to reflect the risk and lead with the slip and the $14k decision" },
+        { "id": "d", "text": "Move the invalid tax ID details into an attachment for the technical team" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "The status color contradicts the content, and the only item that needs the director's action (approve $14k by April 10 or slip two weeks) is buried at the end. Trimming or reformatting the activity list does nothing to surface the decision."
+    },
+    {
+      "id": "business-writing-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A memo explaining a new travel policy to managers uses the headings \"Background\", \"Overview\", \"Other information\", and \"Next steps\". Based on Nielsen Norman Group research on how people scan text, which change helps readers most?",
+      "options": [
+        { "id": "a", "text": "Rename them \"Introduction\", \"Policy details\", \"Miscellaneous items\", and \"Summary\"" },
+        { "id": "b", "text": "Use headings that state the point, such as \"Book all hotels in Concur by March 1\"" },
+        { "id": "c", "text": "Keep the current headings but bold the most important sentence in each section" },
+        { "id": "d", "text": "Replace the headings with numbered sections so readers can cite them by number" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "NN/g eye-tracking research shows readers scan headings and the first words of lines, so headings should front-load the information itself. Generic labels like \"Policy details\" still force readers into the body to learn anything."
+    },
+    {
+      "id": "business-writing-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A draft policy reads: \"Employees who submit expense reports late frequently lose reimbursement.\" The intended rule is that employees with a pattern of late reports lose reimbursement. Which revision states that rule unambiguously?",
+      "options": [
+        { "id": "a", "text": "Employees who submit expense reports late, frequently lose reimbursement." },
+        { "id": "b", "text": "Frequently, employees who submit expense reports late lose reimbursement." },
+        { "id": "c", "text": "Employees who submit expense reports late lose reimbursement frequently." },
+        { "id": "d", "text": "Employees who frequently submit expense reports late lose reimbursement." }
+      ],
+      "correctOptionId": "d",
+      "explanation": "\"Frequently\" is a squinting modifier: it can attach to \"submit late\" or to \"lose\". Placing it directly before \"submit\" ties it to the pattern of late submission; options b and c attach it to losing reimbursement, and the comma in option a is a grammatical error that does not settle the meaning."
+    },
+    {
+      "id": "business-writing-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Using Barbara Minto's Pyramid Principle, what is the structural flaw in this recommendation memo?",
+      "code": { "language": "plaintext", "source": "Recommendation: Move customer support to Vendor B.\n\nWhy:\n1. Vendor B costs $40k less per year than our current vendor.\n2. Vendor B offers 24/7 phone and chat coverage.\n3. Vendor B is the cheaper option on annual price.\n4. Vendor B's customer satisfaction score is 4.6/5 versus our vendor's 3.9." },
+      "options": [
+        { "id": "a", "text": "The recommendation should come last, as the conclusion the reasons build toward" },
+        { "id": "b", "text": "A pyramid group must contain exactly three supporting points, so one must be cut" },
+        { "id": "c", "text": "Points 1 and 3 make the same argument, so the group is not mutually exclusive" },
+        { "id": "d", "text": "The points mix facts with numbers, so each must be restated as an opinion" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Minto requires ideas grouped under a point to be MECE (mutually exclusive, collectively exhaustive); points 1 and 3 are both the cost argument, which double-counts it. The pyramid puts the governing thought first, so moving the recommendation to the end is the opposite of the principle."
+    },
+    {
+      "id": "business-writing-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "An engineering manager is writing one incident email for both executives and engineers. Her outline is below. How should she restructure it?",
+      "code": { "language": "plaintext", "source": "1. Detailed timeline from logs, 02:14 to 06:40 (about 40 lines)\n2. Root-cause analysis of the database connection-pool exhaustion\n3. Customer impact: 18,000 failed payments over 4 hours\n4. Request: approve $60k for a redundant database cluster by Friday" },
+      "options": [
+        { "id": "a", "text": "Open with a summary of impact and the $60k request, then root cause, and link the timeline as an appendix" },
+        { "id": "b", "text": "Keep the chronological order, since an incident report is easiest to follow as a sequence of events" },
+        { "id": "c", "text": "Send executives only the request and send engineers only the timeline, with no shared summary" },
+        { "id": "d", "text": "Cut the timeline and root cause entirely, since executives will not read technical detail" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Layering a document for mixed audiences puts what everyone needs (impact and the decision) first and moves detail that only specialists need further down or into an appendix. Chronological order buries the decision under 40 lines that executives will not read, and cutting the detail fails the engineers."
+    },
+    {
+      "id": "business-writing-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A project manager drafts this email to her VP: \"Hi Maria, the vendor is late again on the API deliverable. What do you think we should do?\" Applying the principle of completed staff work, which revision is strongest?",
+      "options": [
+        { "id": "a", "text": "Add a detailed history of each missed vendor deadline so Maria has full context before she decides" },
+        { "id": "b", "text": "Recommend an option, name the alternative and its trade-off, and state the decision deadline" },
+        { "id": "c", "text": "Ask Maria for a 30-minute meeting this week to talk through what the team could do next" },
+        { "id": "d", "text": "Copy the vendor's account manager so Maria can see the vendor's own explanation directly" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Completed staff work means the writer analyzes the problem and hands the decision-maker a recommendation she can simply approve or reject, along with the alternatives and the deadline. More history or a meeting still leaves Maria to do the analysis herself."
     }
   ]
 }

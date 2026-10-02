@@ -10,6 +10,7 @@ import type { PublicQuiz, QuizResult } from '@/types/quiz';
 import { LEVEL_TONE, nextLevelThreshold } from '@/lib/quiz/levels';
 import { Card, Tag } from '@/components/ui';
 import { FeedbackPanel } from '@/components/quiz/FeedbackPanel';
+import { CodeBlock } from '@/components/quiz/CodeBlock';
 
 export interface ResultSummaryProps {
   quiz: PublicQuiz;
@@ -78,10 +79,13 @@ export function ResultSummary({
             return (
               <li key={graded.questionId} className="flex gap-3 text-sm">
                 <Tag tone={graded.correct ? 'success' : 'warning'}>{i + 1}</Tag>
-                <div>
+                <div className="flex min-w-0 flex-col gap-2">
                   <p className="text-zinc-900 dark:text-zinc-50">{question?.prompt}</p>
+                  {/* A "what does this log?" prompt means nothing without its
+                      snippet, so the review shows it again. */}
+                  {question?.code && <CodeBlock code={question.code} />}
                   {graded.explanation && (
-                    <p className="mt-1 text-zinc-600 dark:text-zinc-400">{graded.explanation}</p>
+                    <p className="text-zinc-600 dark:text-zinc-400">{graded.explanation}</p>
                   )}
                 </div>
               </li>

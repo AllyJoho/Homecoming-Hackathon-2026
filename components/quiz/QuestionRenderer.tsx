@@ -8,6 +8,7 @@
 import type { ComponentType } from 'react';
 import type { Answer, PublicQuestion } from '@/types/quiz';
 import { QUESTION_COMPONENTS, type AnyQuestionProps } from './questions';
+import { CodeBlock } from './CodeBlock';
 
 export interface QuestionRendererProps {
   question: PublicQuestion;
@@ -40,6 +41,8 @@ export function QuestionRenderer({
         </p>
       )}
       <h2 className="text-lg font-medium text-zinc-900 dark:text-zinc-50">{question.prompt}</h2>
+      {/* find_the_bug renders its own, clickable copy of the snippet. */}
+      {question.code && question.type !== 'find_the_bug' && <CodeBlock code={question.code} />}
       <Component question={question} answer={answer} onChange={onChange} disabled={disabled} />
     </div>
   );

@@ -2,325 +2,406 @@
   "id": "javascript",
   "title": "JavaScript Fundamentals",
   "skillSlug": "javascript-fundamentals",
-  "description": "Types, scope, async, and the array methods you reach for daily.",
-  "timeLimitSeconds": 900,
+  "description": "Modern JavaScript: scope, coercion, arrays, async code, the event loop, and DOM events.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
-      "id": "js-1",
+      "id": "javascript-1",
       "type": "multiple_choice",
-      "prompt": "What does `typeof null` evaluate to?",
+      "difficulty": "BEGINNER",
+      "prompt": "What does this code log, and which one-word change makes it log 0, 1, 2?",
+      "code": {
+        "language": "javascript",
+        "source": "for (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 0);\n}"
+      },
       "options": [
         {
           "id": "a",
-          "text": "\"null\""
+          "text": "0, 1, 2 - the code already works as intended"
         },
         {
           "id": "b",
-          "text": "\"object\""
+          "text": "3, 3, 3 - change var to let"
         },
         {
           "id": "c",
-          "text": "\"undefined\""
+          "text": "2, 2, 2 - change var to const"
         },
         {
           "id": "d",
-          "text": "\"boolean\""
+          "text": "3, 3, 3 - change the delay from 0 to 100"
         }
       ],
       "correctOptionId": "b",
-      "explanation": "A longstanding bug kept for backwards compatibility: null's type tag is the object tag."
+      "explanation": "var is function-scoped, so all three callbacks close over one i, which is 3 when they run. let creates a fresh binding per iteration; const would throw on i++, and a longer delay changes nothing."
     },
     {
-      "id": "js-2",
+      "id": "javascript-2",
       "type": "multiple_choice",
-      "prompt": "Which array method returns a new array rather than mutating the original?",
+      "difficulty": "BEGINNER",
+      "prompt": "A developer sorts an array of scores. What is logged?",
+      "code": {
+        "language": "javascript",
+        "source": "const scores = [10, 1, 5, 25];\nscores.sort();\nconsole.log(scores);"
+      },
       "options": [
         {
           "id": "a",
-          "text": "push()"
+          "text": "[1, 5, 10, 25]"
         },
         {
           "id": "b",
-          "text": "sort()"
+          "text": "[25, 10, 5, 1]"
         },
         {
           "id": "c",
-          "text": "map()"
+          "text": "[1, 10, 25, 5]"
         },
         {
           "id": "d",
-          "text": "splice()"
+          "text": "[10, 1, 5, 25]"
         }
       ],
       "correctOptionId": "c",
-      "explanation": "map() builds a new array. push, sort, and splice all mutate in place."
+      "explanation": "Without a comparator, sort() converts elements to strings and compares UTF-16 code units, so \"10\" < \"25\" < \"5\". Use scores.sort((a, b) => a - b) for numeric order. It also sorts in place, so the original order is not kept."
     },
     {
-      "id": "js-3",
+      "id": "javascript-3",
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "What does this call return?",
+      "code": {
+        "language": "javascript",
+        "source": "function startServer(options) {\n  const port = options.port || 3000;\n  const verbose = options.verbose || true;\n  return { port, verbose };\n}\n\nstartServer({ port: 0, verbose: false });"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "{ port: 0, verbose: false }"
+        },
+        {
+          "id": "b",
+          "text": "{ port: 3000, verbose: false }"
+        },
+        {
+          "id": "c",
+          "text": "{ port: 0, verbose: true }"
+        },
+        {
+          "id": "d",
+          "text": "{ port: 3000, verbose: true }"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "|| falls back on any falsy value, and both 0 and false are falsy, so both defaults kick in. The nullish coalescing operator (??) falls back only on null or undefined and would keep 0 and false."
+    },
+    {
+      "id": "javascript-4",
       "type": "true_false",
-      "prompt": "`const` prevents the contents of an object from being changed.",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: given `const cart = ['apple'];`, the statement `cart.push('pear');` throws a TypeError because cart was declared with const.",
       "correctAnswer": false,
-      "explanation": "const binds the variable, not the value — you can still mutate the object it points at."
+      "explanation": "const prevents reassigning the binding (cart = [] would throw), not mutating the object it refers to. push succeeds and cart becomes ['apple', 'pear']. Use Object.freeze if you need an immutable array."
     },
     {
-      "id": "js-4",
-      "type": "multi_select",
-      "prompt": "Which of these values are falsy in JavaScript? Select all that apply.",
-      "options": [
-        {
-          "id": "a",
-          "text": "0"
-        },
-        {
-          "id": "b",
-          "text": "\"\" (empty string)"
-        },
-        {
-          "id": "c",
-          "text": "[] (empty array)"
-        },
-        {
-          "id": "d",
-          "text": "NaN"
-        }
+      "id": "javascript-5",
+      "type": "find_the_bug",
+      "difficulty": "BEGINNER",
+      "prompt": "cartTotal([{ price: 5, qty: 2 }, { price: 3, qty: 1 }]) should return 13, but it returns \"[object Object]3\". Which line has the bug?",
+      "code": {
+        "language": "javascript",
+        "source": "function cartTotal(items) {\n  const lines = items.filter((item) => item.qty > 0);\n  return lines.reduce((sum, item) => sum + item.price * item.qty);\n}"
+      },
+      "bugLines": [
+        3
       ],
-      "correctOptionIds": [
-        "a",
-        "b",
-        "d"
-      ],
-      "explanation": "An empty array is an object, and all objects are truthy. 0, \"\", and NaN are falsy."
+      "explanation": "Without an initial value, reduce uses the first element (an object) as the starting sum, and object + number becomes string concatenation. Pass 0 as the second argument; that also stops an empty cart from throwing a TypeError."
     },
     {
-      "id": "js-5",
+      "id": "javascript-6",
       "type": "multiple_choice",
-      "prompt": "What does an `async` function always return?",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "counter.incLater() logs NaN instead of 1 (non-strict browser script). Which change makes it log 1?",
+      "code": {
+        "language": "javascript",
+        "source": "const counter = {\n  count: 0,\n  incLater() {\n    setTimeout(function () {\n      this.count++;\n      console.log(this.count);\n    }, 10);\n  },\n};\ncounter.incLater();"
+      },
       "options": [
         {
           "id": "a",
-          "text": "The resolved value"
+          "text": "Change the callback to an arrow function: setTimeout(() => { ... }, 10)"
         },
         {
           "id": "b",
-          "text": "A Promise"
+          "text": "Change incLater itself to an arrow function: incLater: () => { ... }"
         },
         {
           "id": "c",
-          "text": "undefined"
+          "text": "Add \"use strict\" at the top of the file so this is bound correctly"
         },
         {
           "id": "d",
-          "text": "A generator"
-        }
-      ],
-      "correctOptionId": "b",
-      "explanation": "An async function wraps its return value in a Promise, even if you return a plain value."
-    },
-    {
-      "id": "js-6",
-      "type": "short_answer",
-      "prompt": "Which keyword declares a block-scoped variable that can be reassigned?",
-      "acceptedAnswers": [
-        "let"
-      ],
-      "explanation": "`let` is block-scoped and reassignable; `var` is function-scoped; `const` can't be reassigned."
-    },
-    {
-      "id": "js-7",
-      "type": "multiple_choice",
-      "prompt": "What is the result of `\"5\" + 3` in JavaScript?",
-      "options": [
-        {
-          "id": "a",
-          "text": "8"
-        },
-        {
-          "id": "b",
-          "text": "\"53\""
-        },
-        {
-          "id": "c",
-          "text": "NaN"
-        },
-        {
-          "id": "d",
-          "text": "A TypeError"
-        }
-      ],
-      "correctOptionId": "b",
-      "explanation": "With a string operand, + concatenates. `\"5\" - 3` would coerce to a number and give 2."
-    },
-    {
-      "id": "js-8",
-      "type": "multiple_choice",
-      "prompt": "Which comparison returns `true`?",
-      "options": [
-        {
-          "id": "a",
-          "text": "0 === \"0\""
-        },
-        {
-          "id": "b",
-          "text": "0 == \"0\""
-        },
-        {
-          "id": "c",
-          "text": "NaN === NaN"
-        },
-        {
-          "id": "d",
-          "text": "null === undefined"
-        }
-      ],
-      "correctOptionId": "b",
-      "explanation": "== coerces the string to a number, so 0 == \"0\". === doesn't coerce, and NaN is never equal to itself."
-    },
-    {
-      "id": "js-9",
-      "type": "multiple_choice",
-      "prompt": "Which array method gives you a single accumulated value from all elements?",
-      "options": [
-        {
-          "id": "a",
-          "text": "filter()"
-        },
-        {
-          "id": "b",
-          "text": "forEach()"
-        },
-        {
-          "id": "c",
-          "text": "reduce()"
-        },
-        {
-          "id": "d",
-          "text": "find()"
-        }
-      ],
-      "correctOptionId": "c",
-      "explanation": "reduce() folds the array into one value using an accumulator."
-    },
-    {
-      "id": "js-10",
-      "type": "true_false",
-      "prompt": "An arrow function has its own `this` binding.",
-      "correctAnswer": false,
-      "explanation": "Arrow functions inherit `this` from the enclosing scope — that's the main reason to use one in a callback."
-    },
-    {
-      "id": "js-11",
-      "type": "multi_select",
-      "prompt": "Which of these create a new array or object rather than modifying the original? Select all that apply.",
-      "options": [
-        {
-          "id": "a",
-          "text": "Spread syntax: [...arr]"
-        },
-        {
-          "id": "b",
-          "text": "Object.assign(target, source)"
-        },
-        {
-          "id": "c",
-          "text": "arr.slice(1)"
-        },
-        {
-          "id": "d",
-          "text": "arr.filter(fn)"
-        }
-      ],
-      "correctOptionIds": [
-        "a",
-        "c",
-        "d"
-      ],
-      "explanation": "Object.assign mutates its first argument. Spread, slice, and filter all produce something new."
-    },
-    {
-      "id": "js-12",
-      "type": "multiple_choice",
-      "prompt": "What does `await` do inside an async function?",
-      "options": [
-        {
-          "id": "a",
-          "text": "Blocks the whole thread until the Promise settles"
-        },
-        {
-          "id": "b",
-          "text": "Pauses that function until the Promise settles, letting other code run"
-        },
-        {
-          "id": "c",
-          "text": "Converts a Promise into a callback"
-        },
-        {
-          "id": "d",
-          "text": "Retries the Promise until it resolves"
-        }
-      ],
-      "correctOptionId": "b",
-      "explanation": "await suspends only the async function. The event loop keeps running everything else."
-    },
-    {
-      "id": "js-13",
-      "type": "short_answer",
-      "prompt": "What method turns a JSON string into a JavaScript object? (Give the full call, e.g. Thing.method)",
-      "acceptedAnswers": [
-        "JSON.parse",
-        "JSON.parse()",
-        "parse"
-      ],
-      "explanation": "JSON.parse() reads a string into a value; JSON.stringify() goes the other way."
-    },
-    {
-      "id": "js-14",
-      "type": "multiple_choice",
-      "prompt": "What does `arr.find(fn)` return when nothing matches?",
-      "options": [
-        {
-          "id": "a",
-          "text": "undefined"
-        },
-        {
-          "id": "b",
-          "text": "null"
-        },
-        {
-          "id": "c",
-          "text": "An empty array"
-        },
-        {
-          "id": "d",
-          "text": "-1"
+          "text": "Replace this.count++ with count++ inside the callback"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "find() returns undefined on no match. findIndex() is the one that returns -1."
+      "explanation": "A regular function passed to setTimeout gets this = the global object, so it increments an undefined window.count. An arrow callback inherits this from incLater, which is counter. Making incLater an arrow leaves the regular callback unchanged, and \"use strict\" does not help: browsers call setTimeout callbacks with this set to window even in strict mode."
     },
     {
-      "id": "js-15",
+      "id": "javascript-7",
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "saveAll should save every item and resolve to the array of saved records, but it resolves to [] before any save finishes. Which line causes this?",
+      "code": {
+        "language": "javascript",
+        "source": "async function saveAll(items) {\n  const results = [];\n  items.forEach(async (item) => {\n    const saved = await api.save(item);\n    results.push(saved);\n  });\n  return results;\n}"
+      },
+      "bugLines": [
+        3
+      ],
+      "explanation": "forEach ignores the promises its async callback returns, so saveAll reaches return immediately. Use for...of with await (sequential) or return Promise.all(items.map((item) => api.save(item))) (parallel). The await inside the callback itself is fine."
+    },
+    {
+      "id": "javascript-8",
+      "type": "order_lines",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Put the console output of this script in the order it is printed.",
+      "code": {
+        "language": "javascript",
+        "source": "console.log('A');\nsetTimeout(() => console.log('B'), 0);\nPromise.resolve().then(() => console.log('C'));\nqueueMicrotask(() => console.log('D'));\nconsole.log('E');"
+      },
+      "lines": [
+        {
+          "id": "q4",
+          "text": "A"
+        },
+        {
+          "id": "x9",
+          "text": "E"
+        },
+        {
+          "id": "m2",
+          "text": "C"
+        },
+        {
+          "id": "t7",
+          "text": "D"
+        },
+        {
+          "id": "c5",
+          "text": "B"
+        }
+      ],
+      "explanation": "Synchronous code runs first (A, E). Then the microtask queue drains in FIFO order (the .then callback C, then the queueMicrotask callback D) before the event loop takes the next task, the setTimeout callback (B), even with a 0 ms delay."
+    },
+    {
+      "id": "javascript-9",
       "type": "multiple_choice",
-      "prompt": "What is the `?.` operator called, and what does it do?",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "List items present at page load toggle when clicked, but items added later do not. Which fix handles current and future items with a single listener?",
+      "code": {
+        "language": "javascript",
+        "source": "document.querySelectorAll('#todo-list li').forEach((li) => {\n  li.addEventListener('click', () => li.classList.toggle('done'));\n});\n\n// later, after a fetch completes:\nlist.insertAdjacentHTML('beforeend', '<li>New task</li>');"
+      },
       "options": [
         {
           "id": "a",
-          "text": "Ternary — picks between two values"
+          "text": "Re-run the querySelectorAll loop after every insertAdjacentHTML call"
         },
         {
           "id": "b",
-          "text": "Optional chaining — short-circuits to undefined if the left side is null or undefined"
+          "text": "Pass { capture: true } when adding each li listener so new items inherit it"
         },
         {
           "id": "c",
-          "text": "Nullish coalescing — supplies a default value"
+          "text": "Add one click listener to #todo-list and toggle event.target.closest('li')"
         },
         {
           "id": "d",
-          "text": "Non-null assertion — tells the compiler a value exists"
+          "text": "Replace insertAdjacentHTML with innerHTML += so listeners are copied over"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Click events bubble, so a listener on the stable parent sees clicks on any current or future li (event delegation). Re-running the loop double-binds existing items so they toggle twice, and innerHTML += actually destroys and recreates every li, dropping their listeners."
+    },
+    {
+      "id": "javascript-10",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "settings contains only strings, numbers, and nested plain objects/arrays, e.g. { theme: { colors: ['red'] } }. Which expressions produce a copy where pushing to copy.theme.colors does NOT change settings? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "structuredClone(settings)"
+        },
+        {
+          "id": "b",
+          "text": "{ ...settings }"
+        },
+        {
+          "id": "c",
+          "text": "JSON.parse(JSON.stringify(settings))"
+        },
+        {
+          "id": "d",
+          "text": "Object.assign({}, settings)"
+        },
+        {
+          "id": "e",
+          "text": "{ ...settings, theme: { ...settings.theme } }"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c"
+      ],
+      "explanation": "structuredClone and a JSON round-trip both copy every level (the JSON trick is safe here only because the data is JSON-friendly). Spread and Object.assign are shallow, and spreading theme one level deeper still shares the same colors array."
+    },
+    {
+      "id": "javascript-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The API responds to GET /api/users/99 with status 404 and body {\"error\":\"not found\"}. What does loadUser(99) do?",
+      "code": {
+        "language": "javascript",
+        "source": "async function loadUser(id) {\n  try {\n    const res = await fetch(`/api/users/${id}`);\n    const user = await res.json();\n    return user;\n  } catch (err) {\n    showError('Could not load user');\n    return null;\n  }\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "fetch rejects on the 404, so showError runs and it resolves to null"
+        },
+        {
+          "id": "b",
+          "text": "Resolves to { error: 'not found' } and never calls showError"
+        },
+        {
+          "id": "c",
+          "text": "res.json() throws because of the 404 status, so the catch block runs"
+        },
+        {
+          "id": "d",
+          "text": "Resolves to undefined because a 404 response has no usable body"
         }
       ],
       "correctOptionId": "b",
-      "explanation": "`a?.b` gives undefined instead of throwing when `a` is null or undefined. `??` is nullish coalescing."
+      "explanation": "fetch only rejects on network failures; an HTTP 404 still resolves with res.ok === false, and the JSON error body parses fine. Check if (!res.ok) and throw or handle it explicitly before using the data."
+    },
+    {
+      "id": "javascript-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "When the flaky recommendations service fails, the whole dashboard shows an error even though profile and orders loaded. Which statement is accurate and gives the right fix?",
+      "code": {
+        "language": "javascript",
+        "source": "const [profile, orders, recs] = await Promise.all([\n  getProfile(id),\n  getOrders(id),\n  getRecommendations(id), // flaky third-party service\n]);\nrender({ profile, orders, recs });"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Promise.all cancels the other two requests when one fails; use Promise.race so the fastest successful result renders first"
+        },
+        {
+          "id": "b",
+          "text": "Promise.all waits for all three to settle before rejecting; wrap it in try/catch and retry the whole batch until it succeeds"
+        },
+        {
+          "id": "c",
+          "text": "Promise.any resolves with an array of every fulfilled value; switch to it so that failed requests are simply skipped"
+        },
+        {
+          "id": "d",
+          "text": "Promise.all rejects on the first rejection while the other requests keep running; use Promise.allSettled and render recs only if fulfilled"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Promise.all rejects as soon as any input rejects (promises are not cancellable, so the others still run). Promise.allSettled reports each outcome so the page can degrade gracefully. Promise.any resolves with only the first fulfilled value, not all of them."
+    },
+    {
+      "id": "javascript-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "In this search-as-you-type box, users typing quickly sometimes see results for \"ja\" after they have typed \"java\". What is the most robust fix?",
+      "code": {
+        "language": "javascript",
+        "source": "input.addEventListener('input', async () => {\n  const q = encodeURIComponent(input.value);\n  const res = await fetch(`/search?q=${q}`);\n  renderResults(await res.json());\n});"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Abort the previous request with an AbortController when new input arrives, and ignore the resulting AbortError"
+        },
+        {
+          "id": "b",
+          "text": "Debounce the handler by 300 ms, which guarantees that responses arrive in the order they were requested"
+        },
+        {
+          "id": "c",
+          "text": "Await renderResults as well, so each render finishes before the next response is allowed to render"
+        },
+        {
+          "id": "d",
+          "text": "Use XMLHttpRequest instead of fetch, because XHR delivers responses in the same order they were sent"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Responses can arrive out of order, so a slow \"ja\" response can land after \"java\". Aborting (or otherwise discarding) superseded requests guarantees only the latest query renders. Debouncing reduces the number of requests but a slow earlier response can still win."
+    },
+    {
+      "id": "javascript-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "In a single-page app this widget is mounted and unmounted 50 times. Afterwards, every window resize calls layout() 50 times. Why?",
+      "code": {
+        "language": "javascript",
+        "source": "class Widget {\n  mount() {\n    window.addEventListener('resize', () => this.layout());\n  }\n  unmount() {\n    window.removeEventListener('resize', () => this.layout());\n  }\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Listeners added to window cannot be removed individually, so a ResizeObserver must be used instead"
+        },
+        {
+          "id": "b",
+          "text": "removeEventListener only removes listeners that were registered with the { once: true } option"
+        },
+        {
+          "id": "c",
+          "text": "Each arrow function is a new object, so removeEventListener never matches the listener that mount added"
+        },
+        {
+          "id": "d",
+          "text": "Arrow functions keep this alive, so the garbage collector re-registers the listener after unmount"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "removeEventListener matches by function identity (and capture flag); a newly created arrow function never equals the one that was added, so every mount leaks a listener and its closure. Store the handler in a field, or pass an AbortController signal and call abort() on unmount."
+    },
+    {
+      "id": "javascript-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A Node service receives {\"orderId\": 9007199254740993} from a Java backend. After JSON.parse, lookups by orderId fail because the value reads 9007199254740992. What is the cause and the standard fix?",
+      "options": [
+        {
+          "id": "a",
+          "text": "JSON.parse truncates numbers to 32-bit integers; read the field with parseInt(value, 10) after parsing"
+        },
+        {
+          "id": "b",
+          "text": "It exceeds Number.MAX_SAFE_INTEGER and is rounded to the nearest double; have the producer send 64-bit IDs as strings"
+        },
+        {
+          "id": "c",
+          "text": "JSON forbids integers above 2^31, so the Java service is emitting invalid JSON that must be rejected"
+        },
+        {
+          "id": "d",
+          "text": "JSON.parse returns a BigInt for large values, which fails strict equality against Number lookup keys"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "JavaScript numbers are IEEE 754 doubles, exact only up to 2^53 - 1; 2^53 + 1 silently rounds to 2^53 during parsing. JSON itself has no size limit, and JSON.parse never produces BigInt, so the standard fix is to serialize large IDs as strings."
     }
   ]
 }

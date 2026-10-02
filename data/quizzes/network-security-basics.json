@@ -2,104 +2,399 @@
   "id": "network-security-basics",
   "title": "Network Security Basics",
   "skillSlug": "network-security-basics",
-  "description": "Test your understanding of network security basics. Firewalls, VPNs, network segmentation, and common network attack types.",
-  "timeLimitSeconds": 600,
+  "description": "Read firewall rules, captures, and configs to apply segmentation, VPN, and network attack defenses.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "network-security-basics-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Firewall?",
+      "difficulty": "BEGINNER",
+      "prompt": "A stateful perimeter firewall has one rule allowing LAN hosts to open outbound TCP connections to port 443, followed by a default deny for all inbound traffic. A user browses an HTTPS site. What happens to the web server's response packets?",
       "options": [
         {
           "id": "a",
-          "text": "filters network traffic according to defined rules"
+          "text": "They are allowed, because the firewall matches them to the established connection in its state table"
         },
         {
           "id": "b",
-          "text": "compresses backups"
+          "text": "They are dropped, because no inbound rule allows traffic from source port 443"
         },
         {
           "id": "c",
-          "text": "creates user stories"
+          "text": "They are dropped unless an inbound rule permits ephemeral ports 49152-65535"
         },
         {
           "id": "d",
-          "text": "renders a web page"
+          "text": "They are allowed, because the default inbound deny applies only to new UDP flows"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Firewall filters network traffic according to defined rules.",
-      "difficulty": "BEGINNER"
+      "explanation": "A stateful firewall tracks connections and automatically permits return traffic belonging to an allowed session. Opening inbound ephemeral ports is what stateless ACLs require, and it would expose those ports to unsolicited traffic."
     },
     {
       "id": "network-security-basics-2",
       "type": "multiple_choice",
-      "prompt": "What best describes VPN?",
+      "difficulty": "BEGINNER",
+      "prompt": "A small company is launching a public web store whose application reads customer data from a database. Which network layout follows standard segmentation practice?",
       "options": [
         {
           "id": "a",
-          "text": "creates an authenticated, encrypted tunnel across an untrusted network"
+          "text": "Web server and database both on the internal LAN, with port forwarding of 443 to the web server"
         },
         {
           "id": "b",
-          "text": "is a public DNS record"
+          "text": "Web server and database both in the DMZ so the application can reach the database quickly"
         },
         {
           "id": "c",
-          "text": "is a database index"
+          "text": "Web server in the DMZ; database on an internal segment that accepts only the web server's DB port"
         },
         {
           "id": "d",
-          "text": "is a chart type"
+          "text": "Database in the DMZ and web server on the internal LAN, so customer data sits closest to the internet"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "VPN creates an authenticated, encrypted tunnel across an untrusted network.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "A DMZ (screened subnet) holds internet-facing systems so that a compromised web server does not sit on the internal LAN, and the database stays deeper inside, reachable only on its specific port from the web tier. Placing the database in the DMZ exposes it to the same attack surface as the web server."
     },
     {
       "id": "network-security-basics-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Network segmentation?",
+      "difficulty": "BEGINNER",
+      "prompt": "A user on the office LAN reports slow, oddly behaving web sessions. On her PC you run arp -a and see the output below (10.0.0.1 is the default gateway). What is the most likely explanation?",
+      "code": {
+        "language": "plaintext",
+        "source": "Interface: 10.0.0.57 --- 0x7\n  Internet Address      Physical Address      Type\n  10.0.0.1              3c-52-82-aa-10-17     dynamic\n  10.0.0.23             3c-52-82-aa-10-17     dynamic\n  10.0.0.40             f0-9f-c2-11-6b-02     dynamic"
+      },
       "options": [
         {
           "id": "a",
-          "text": "separates networks or hosts to limit reach and contain incidents"
+          "text": "The gateway has failed over to a standby router that shares a virtual MAC address"
         },
         {
           "id": "b",
-          "text": "puts every device on one flat network"
+          "text": "ARP spoofing: host 10.0.0.23 is claiming the gateway's IP to intercept her traffic"
         },
         {
           "id": "c",
-          "text": "removes the need for authentication"
+          "text": "A DHCP conflict has assigned the gateway's address to two different hosts"
         },
         {
           "id": "d",
-          "text": "only changes screen layout"
+          "text": "A broadcast storm has filled the ARP cache with duplicate entries"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Network segmentation separates networks or hosts to limit reach and contain incidents.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "b",
+      "explanation": "The gateway IP now maps to the same MAC as workstation 10.0.0.23, the classic sign of ARP cache poisoning for a man-in-the-middle attack. A standby router would not share its MAC with an ordinary workstation, and DHCP conflicts produce two MACs for one IP, not one MAC for two IPs."
     },
     {
       "id": "network-security-basics-4",
-      "type": "true_false",
-      "prompt": "True or false: Firewall filters network traffic according to defined rules.",
-      "correctAnswer": true,
-      "explanation": "Firewall filters network traffic according to defined rules.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A packet capture on the server VLAN shows the exchange below between a backup script and a file server. What should be done?",
+      "code": {
+        "language": "plaintext",
+        "source": "10.1.4.22:51544 -> 10.1.9.5:21   USER backup_svc\n10.1.9.5:21 -> 10.1.4.22:51544   331 Password required for backup_svc\n10.1.4.22:51544 -> 10.1.9.5:21   PASS Winter2026!\n10.1.9.5:21 -> 10.1.4.22:51544   230 User backup_svc logged in"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Nothing, because the traffic stays on the internal network"
+        },
+        {
+          "id": "b",
+          "text": "Move the FTP service to a non-standard port so scanners will not find it"
+        },
+        {
+          "id": "c",
+          "text": "Add an IDS signature to alert whenever the PASS command is seen"
+        },
+        {
+          "id": "d",
+          "text": "Replace FTP with SFTP or FTPS and change the exposed backup_svc password"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "FTP sends credentials in cleartext, so anyone who can capture traffic on that segment now has the password; the service needs an encrypted protocol and the credential must be treated as compromised. Internal networks are not trusted by default, and changing ports or alerting does not stop disclosure."
     },
     {
       "id": "network-security-basics-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: separates networks or hosts to limit reach and contain incidents?",
-      "acceptedAnswers": [
-        "Network segmentation"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: when an employee on hotel Wi-Fi browses an external website through the company's full-tunnel VPN, the VPN by itself encrypts that traffic all the way to the website's server.",
+      "correctAnswer": false,
+      "explanation": "The VPN encrypts traffic only between the laptop and the VPN gateway; from the gateway to the website the traffic is protected only if the application uses its own encryption such as HTTPS. The VPN protects against the hotel network, not the path beyond the corporate gateway."
+    },
+    {
+      "id": "network-security-basics-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The firewall below evaluates rules top-down, first match wins. Subnet 10.20.5.0/24 is a quarantine VLAN that is supposed to reach nothing. Which traffic from quarantined host 10.20.5.17 still gets through?",
+      "code": {
+        "language": "plaintext",
+        "source": "#  Action  Source          Destination     Service\n1  ALLOW   10.20.0.0/16    10.50.1.10      tcp/443\n2  DENY    10.20.5.0/24    any             any\n3  ALLOW   10.20.0.0/16    10.50.1.0/24    tcp/22\n4  DENY    any             any             any"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "SSH to 10.50.1.10, allowed by rule 3"
+        },
+        {
+          "id": "b",
+          "text": "HTTPS to 10.50.1.10, allowed by rule 1"
+        },
+        {
+          "id": "c",
+          "text": "None, because rule 2 blocks the quarantine subnet"
+        },
+        {
+          "id": "d",
+          "text": "HTTPS to any host in 10.50.1.0/24, allowed by rule 1"
+        }
       ],
-      "explanation": "The term is Network segmentation.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "b",
+      "explanation": "Rule 1 matches 10.20.5.17 (inside 10.20.0.0/16) going to 10.50.1.10 on tcp/443 before the quarantine deny is reached, so that flow is allowed; the deny must be moved above the broader allow. SSH is caught by rule 2 before rule 3, and HTTPS to other 10.50.1.x hosts does not match rule 1's single destination."
+    },
+    {
+      "id": "network-security-basics-7",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A firewall rule permits SSH to production servers only from the admin jump-host subnet 172.16.8.32/28. Which source addresses would match that rule? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "172.16.8.33"
+        },
+        {
+          "id": "b",
+          "text": "172.16.8.48"
+        },
+        {
+          "id": "c",
+          "text": "172.16.8.44"
+        },
+        {
+          "id": "d",
+          "text": "172.16.8.31"
+        },
+        {
+          "id": "e",
+          "text": "172.16.9.40"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c"
+      ],
+      "explanation": "A /28 is a block of 16 addresses, so 172.16.8.32/28 spans 172.16.8.32 through 172.16.8.47; .33 and .44 fall inside. 172.16.8.31 belongs to the previous block, .48 starts the next block, and 172.16.9.40 is in a different third octet."
+    },
+    {
+      "id": "network-security-basics-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "An IDS captured the traffic below aimed at a public server. What does it show?",
+      "code": {
+        "language": "plaintext",
+        "source": "10:02:11.101 IP 203.0.113.77.40112 > 198.51.100.10.21: Flags [S]\n10:02:11.101 IP 198.51.100.10.21 > 203.0.113.77.40112: Flags [R.]\n10:02:11.102 IP 203.0.113.77.40112 > 198.51.100.10.22: Flags [S]\n10:02:11.102 IP 198.51.100.10.22 > 203.0.113.77.40112: Flags [S.]\n10:02:11.102 IP 203.0.113.77.40112 > 198.51.100.10.22: Flags [R]\n10:02:11.103 IP 203.0.113.77.40112 > 198.51.100.10.23: Flags [S]\n10:02:11.103 IP 198.51.100.10.23 > 203.0.113.77.40112: Flags [R.]\n10:02:11.104 IP 203.0.113.77.40112 > 198.51.100.10.80: Flags [S]\n(no response from port 80 after 3 s)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "A SYN flood; port 22 is overwhelmed and dropping connections"
+        },
+        {
+          "id": "b",
+          "text": "A TCP connect scan; ports 21, 22, and 23 are open and port 80 is closed"
+        },
+        {
+          "id": "c",
+          "text": "A SYN (half-open) scan; port 22 is open, 21 and 23 are closed, and 80 is likely filtered"
+        },
+        {
+          "id": "d",
+          "text": "A completed SSH login attempt followed by a reset from the server"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "The scanner sends SYNs to successive ports, gets RST from closed ports, a SYN-ACK from open port 22 which it immediately resets instead of completing the handshake, and silence from port 80, which suggests a firewall drop. A connect scan would complete the handshake with an ACK, and a flood would hammer one port, not step through several."
+    },
+    {
+      "id": "network-security-basics-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The internal DNS resolver logs show thousands of queries like these from one workstation over two hours. What is the most likely activity?",
+      "code": {
+        "language": "plaintext",
+        "source": "14:02:01 client 10.4.7.31 query TXT 4a6f686e2e536d697468.0001.x7q.updates-cdn.net\n14:02:01 client 10.4.7.31 query TXT 3435332d31322d38383231.0002.x7q.updates-cdn.net\n14:02:02 client 10.4.7.31 query TXT 2c4d61696e53742c3132.0003.x7q.updates-cdn.net\n14:02:02 client 10.4.7.31 query TXT 33342c4f72656d2c5554.0004.x7q.updates-cdn.net"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Data exfiltration or C2 tunneled through DNS to an attacker-controlled authoritative server"
+        },
+        {
+          "id": "b",
+          "text": "DNS cache poisoning of the internal resolver by an external attacker"
+        },
+        {
+          "id": "c",
+          "text": "A reflection/amplification DDoS attack being launched from the workstation"
+        },
+        {
+          "id": "d",
+          "text": "A CDN client retrying failed lookups because of a misconfigured TTL"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Long, unique, hex-encoded labels with sequence numbers under one rarely seen domain, using TXT records, are the hallmark of DNS tunneling; the labels decode to data such as \"John.Smith\". Cache poisoning involves forged responses, not a stream of unique client queries, and retries would repeat the same name."
+    },
+    {
+      "id": "network-security-basics-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "An office of 300 employees uses one WPA2-Personal passphrase that has not changed in four years. Several former staff and contractors still know it. Which change best fixes the underlying weakness?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Change the passphrase every quarter and announce it by email"
+        },
+        {
+          "id": "b",
+          "text": "Hide the SSID so only employees know the network exists"
+        },
+        {
+          "id": "c",
+          "text": "Enable MAC address filtering using the list of company laptops"
+        },
+        {
+          "id": "d",
+          "text": "Move to WPA2/WPA3-Enterprise with 802.1X so each user authenticates individually"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "With 802.1X/EAP each user or device has its own credential, so access can be revoked per person at offboarding and sessions get unique keys. Rotating a shared passphrase still shares it with everyone, and hidden SSIDs and MAC filtering are trivially bypassed because SSIDs and MACs are visible in the air."
+    },
+    {
+      "id": "network-security-basics-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A signature-based IDS connected to a switch SPAN port raised a high-severity alert for an exploit against a web server, yet the exploit still succeeded. Assuming the signature was accurate, why did the IDS not stop it?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The SPAN port dropped the packets, so the IDS saw only part of the exploit"
+        },
+        {
+          "id": "b",
+          "text": "An IDS on a SPAN port monitors a copy of traffic out-of-band and cannot block; blocking needs an inline IPS"
+        },
+        {
+          "id": "c",
+          "text": "Signature-based detection only works after the attack completes, so blocking is impossible"
+        },
+        {
+          "id": "d",
+          "text": "The IDS needed a host-based agent on the web server to see the alert"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "A passive IDS receives mirrored traffic and can only alert, while an IPS sits inline in the traffic path and can drop malicious packets. The IDS clearly saw the exploit because it alerted on it, and signatures can match during the attack, which is how IPSs block."
+    },
+    {
+      "id": "network-security-basics-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Ransomware on one workstation spread to 600 others in under an hour over SMB and RPC using stolen admin credentials. The network is a flat /16. Which control would most directly have limited this lateral movement?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Deny workstation-to-workstation TCP 445/135 using host firewalls or microsegmentation"
+        },
+        {
+          "id": "b",
+          "text": "Add a next-generation firewall at the internet edge with stricter inbound rules"
+        },
+        {
+          "id": "c",
+          "text": "Require a site-to-site IPsec VPN between the office and the data center"
+        },
+        {
+          "id": "d",
+          "text": "Move all workstations into one new VLAN and enable DHCP snooping on it"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Workstations rarely need to talk to each other over SMB/RPC, so denying east-west traffic between them removes the propagation path even when the attacker holds valid credentials. The edge firewall and site-to-site VPN do not see traffic inside the flat LAN, and moving all hosts into one new VLAN keeps them just as reachable from each other."
+    },
+    {
+      "id": "network-security-basics-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Your ISP reports that packets are leaving your network with source addresses outside your allocated ranges (198.51.100.0/24 and 2001:db8:40::/48), and they appear to be part of a reflection DDoS against a third party. What should you configure at your border?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Inbound rate limiting of DNS and NTP responses arriving from the internet"
+        },
+        {
+          "id": "b",
+          "text": "Geo-IP blocking of all outbound traffic to the victim's country"
+        },
+        {
+          "id": "c",
+          "text": "Egress filtering that drops outbound packets whose source is not one of your prefixes (BCP 38 / uRPF)"
+        },
+        {
+          "id": "d",
+          "text": "A stateful rule that blocks outbound UDP from your public DNS resolver"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "BCP 38 (RFC 2827) ingress filtering by networks, applied as egress filtering at your edge or via unicast RPF, stops spoofed-source packets from ever leaving your network, which is what the ISP is reporting. Inbound rate limiting protects you, not the victim, and blocking your resolver's outbound UDP neither identifies nor stops the spoofing host."
+    },
+    {
+      "id": "network-security-basics-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A penetration tester connected to Redis on port 6379 of this Linux server from the internet, even though the admin says the firewall only allows 443. Based on the output, what is the cause?",
+      "code": {
+        "language": "plaintext",
+        "source": "# iptables -S\n-P INPUT DROP\n-A INPUT -i lo -j ACCEPT\n-A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT\n-A INPUT -p tcp --dport 443 -j ACCEPT\n# ip6tables -S\n-P INPUT ACCEPT\n-P FORWARD ACCEPT\n-P OUTPUT ACCEPT\n# ss -ltn\nState   Recv-Q  Send-Q  Local Address:Port  Peer Address:Port\nLISTEN  0       511     *:443               *:*\nLISTEN  0       511     *:6379              *:*"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The ESTABLISHED,RELATED rule lets the tester's Redis connection through"
+        },
+        {
+          "id": "b",
+          "text": "Redis was started before iptables, so it bypasses netfilter"
+        },
+        {
+          "id": "c",
+          "text": "The INPUT policy DROP does not apply to traffic on the loopback interface"
+        },
+        {
+          "id": "d",
+          "text": "IPv6 traffic is governed by ip6tables, whose INPUT policy is ACCEPT, and Redis listens on all addresses"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "iptables filters only IPv4; ip6tables has no rules and an ACCEPT policy, and the *:6379 listener accepts IPv6, so any host with IPv6 reach can connect. The ESTABLISHED rule only matches packets of connections already accepted, and netfilter applies to every packet regardless of when a service started."
+    },
+    {
+      "id": "network-security-basics-15",
+      "type": "find_the_bug",
+      "difficulty": "ADVANCED",
+      "prompt": "This Cisco switch port serves a kiosk in the public lobby and must carry only VLAN 30. Which line exposes the network to VLAN hopping?",
+      "code": {
+        "language": "plaintext",
+        "source": "interface GigabitEthernet1/0/12\n description Lobby kiosk (untrusted)\n switchport mode dynamic desirable\n switchport access vlan 30\n spanning-tree portfast\n spanning-tree bpduguard enable"
+      },
+      "bugLines": [
+        3
+      ],
+      "explanation": "dynamic desirable makes the port actively negotiate a trunk via DTP, so a device posing as a switch can become a trunk and reach every VLAN (switch spoofing). User-facing ports should be hard-coded with switchport mode access and switchport nonegotiate; portfast with BPDU guard is the recommended setting for edge ports."
     }
   ]
 }

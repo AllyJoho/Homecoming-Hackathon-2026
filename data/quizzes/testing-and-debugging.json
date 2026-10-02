@@ -2,104 +2,397 @@
   "id": "testing-and-debugging",
   "title": "Testing & Debugging",
   "skillSlug": "testing-and-debugging",
-  "description": "Test your understanding of testing & debugging. Writing unit and integration tests, reading stack traces, and isolating the cause of defects.",
-  "timeLimitSeconds": 600,
+  "description": "Unit and integration tests, coverage, flaky tests, and reading stack traces to isolate defects.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "testing-and-debugging-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Unit test?",
+      "difficulty": "BEGINNER",
+      "prompt": "A report job crashes with the Python traceback below. Where was the exception raised, and what is the most likely immediate cause?",
+      "code": {
+        "language": "plaintext",
+        "source": "Traceback (most recent call last):\n  File \"app/main.py\", line 42, in <module>\n    report = build_report(orders)\n  File \"app/reports.py\", line 18, in build_report\n    avg = average_total(orders)\n  File \"app/stats.py\", line 7, in average_total\n    return sum(o.total for o in orders) / len(orders)\nZeroDivisionError: division by zero"
+      },
       "options": [
         {
           "id": "a",
-          "text": "checks a small piece of code in isolation"
+          "text": "app/main.py line 42; build_report was called with the wrong argument type"
         },
         {
           "id": "b",
-          "text": "deploys production servers"
+          "text": "app/stats.py line 7; average_total received an empty orders list"
         },
         {
           "id": "c",
-          "text": "replaces source control"
+          "text": "app/reports.py line 18; build_report divided by zero while computing avg"
         },
         {
           "id": "d",
-          "text": "measures internet bandwidth"
+          "text": "app/stats.py line 7; one of the orders has a total of 0"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Unit test checks a small piece of code in isolation.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "b",
+      "explanation": "Python tracebacks list the most recent call last, so the bottom frame (stats.py line 7) raised the error, and `/ len(orders)` divides by zero only when the list is empty. An order total of 0 would make the numerator zero, which is not an error."
     },
     {
       "id": "testing-and-debugging-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Stack trace?",
+      "difficulty": "BEGINNER",
+      "prompt": "A test for `UserRepository.save()` starts a real PostgreSQL container, saves a user, then queries the table to confirm the row exists. A teammate calls it a unit test. Which classification is accurate?",
       "options": [
         {
           "id": "a",
-          "text": "shows the call path that led to an error"
+          "text": "Unit test, because it exercises only a single method"
         },
         {
           "id": "b",
-          "text": "is a database schema"
+          "text": "End-to-end test, because it uses real infrastructure"
         },
         {
           "id": "c",
-          "text": "is a UI color token"
+          "text": "Integration test, because it verifies the code working with a real database"
         },
         {
           "id": "d",
-          "text": "is a release checklist"
+          "text": "Smoke test, because it checks only that one row is written"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Stack trace shows the call path that led to an error.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "It tests the boundary between your code and a real external component (the database), which is what integration tests do. Calling one method doesn't make it a unit test, and it isn't end-to-end because no user-facing flow through the whole system is exercised."
     },
     {
       "id": "testing-and-debugging-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Regression test?",
+      "difficulty": "BEGINNER",
+      "prompt": "`is_eligible(age)` must return True for ages 18 through 65 inclusive. You may write only four test inputs. Which set best targets the boundaries where off-by-one errors occur?",
       "options": [
         {
           "id": "a",
-          "text": "checks that a previously working behavior still works after a change"
+          "text": "17, 18, 65, 66"
         },
         {
           "id": "b",
-          "text": "tests only brand-new features"
+          "text": "0, 30, 50, 100"
         },
         {
           "id": "c",
-          "text": "deletes old test data"
+          "text": "18, 30, 45, 65"
         },
         {
           "id": "d",
-          "text": "measures CPU temperature"
+          "text": "-1, 17, 66, 120"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Regression test checks that a previously working behavior still works after a change.",
-      "difficulty": "ADVANCED"
+      "explanation": "Boundary value analysis tests each edge and the value just outside it, so mistakes like `> 18` or `< 65` fail a test. The set -1, 17, 66, 120 never tests 18 or 65 themselves, so it would miss an exclusive-comparison bug."
     },
     {
       "id": "testing-and-debugging-4",
-      "type": "true_false",
-      "prompt": "True or false: Unit test checks a small piece of code in isolation.",
-      "correctAnswer": true,
-      "explanation": "Unit test checks a small piece of code in isolation.",
-      "difficulty": "BEGINNER"
+      "type": "find_the_bug",
+      "difficulty": "BEGINNER",
+      "prompt": "This pytest test always passes, even when `apply_discount` is completely broken. Which line causes that?",
+      "code": {
+        "language": "python",
+        "source": "from pricing import apply_discount\n\n\ndef test_twenty_percent_discount():\n    price = 100.00\n    result = apply_discount(price, 0.20)\n    result == 80.00"
+      },
+      "bugLines": [
+        7
+      ],
+      "explanation": "Line 7 evaluates a comparison and throws the result away; without `assert`, pytest has nothing to fail on. It should be `assert result == pytest.approx(80.00)` (or a plain `assert`). The other lines just set up the inputs and call the function."
     },
     {
       "id": "testing-and-debugging-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: checks that a previously working behavior still works after a change?",
-      "acceptedAnswers": [
-        "Regression test"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "For the function below, the single test `assert shipping_fee(150) == 0` gives 100% line coverage and therefore also 100% branch coverage. True or false?",
+      "code": {
+        "language": "python",
+        "source": "def shipping_fee(total):\n    fee = 5\n    if total >= 100:\n        fee = 0\n    return fee"
+      },
+      "correctAnswer": false,
+      "explanation": "That one call executes every line, but only the True outcome of the `if`; the path where `total >= 100` is false (fee stays 5) is never taken, so branch coverage is 50%. Line coverage can be 100% while branch outcomes remain untested."
+    },
+    {
+      "id": "testing-and-debugging-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The test below passes Monday through Friday but fails every Saturday and Sunday in CI. What is the most robust fix?",
+      "code": {
+        "language": "python",
+        "source": "from datetime import datetime\n\ndef price_for(plan):\n    base = {\"basic\": 10, \"pro\": 25}[plan]\n    if datetime.now().weekday() >= 5:  # Saturday or Sunday\n        return base * 0.8\n    return base\n\ndef test_basic_price():\n    assert price_for(\"basic\") == 10"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Skip this test automatically on Saturdays and Sundays with a date check"
+        },
+        {
+          "id": "b",
+          "text": "Configure CI to retry this test up to three times whenever it fails"
+        },
+        {
+          "id": "c",
+          "text": "Loosen the assertion so it accepts either the weekday or weekend price"
+        },
+        {
+          "id": "d",
+          "text": "Inject the clock (or freeze time in the test) so the test controls the date"
+        }
       ],
-      "explanation": "The term is Regression test.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "d",
+      "explanation": "The code reads the real clock, so the outcome depends on when the test runs. Controlling time (passing a clock or date in, or using a library like freezegun) makes it deterministic and lets you test both the weekday and weekend prices; retrying can't help because the failure is consistent all weekend."
+    },
+    {
+      "id": "testing-and-debugging-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "This React component crashes as soon as the page loads with `TypeError: Cannot read properties of undefined (reading 'map')` at UserList.jsx line 9. What is the cause?",
+      "code": {
+        "language": "jsx",
+        "source": "function UserList() {\n  const [users, setUsers] = useState();\n\n  useEffect(() => {\n    fetch('/api/users').then(r => r.json()).then(setUsers);\n  }, []);\n\n  return (\n    <ul>{users.map(u => <li key={u.id}>{u.name}</li>)}</ul>\n  );\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The API returned user objects without an `id` field"
+        },
+        {
+          "id": "b",
+          "text": "`users` is undefined on the first render, before the fetch resolves"
+        },
+        {
+          "id": "c",
+          "text": "`useEffect` runs before the first render and called `setUsers(undefined)`"
+        },
+        {
+          "id": "d",
+          "text": "The fetch failed, so `r.json()` set `users` to undefined"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "`useState()` with no argument starts as undefined, and the component renders once before the effect's fetch completes, so `users.map` throws immediately. Initializing with `useState([])` fixes it; effects run after render, not before it."
+    },
+    {
+      "id": "testing-and-debugging-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A team's CI runs 380 browser end-to-end tests (48 minutes, several flaky failures per week) and 60 unit tests. Most of the E2E tests check form validation rules and price calculations through the UI. What change improves feedback speed and reliability without losing coverage?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Move validation and pricing checks into unit/integration tests and keep a few E2E tests for critical journeys"
+        },
+        {
+          "id": "b",
+          "text": "Run the E2E suite only nightly and remove it from pull request checks"
+        },
+        {
+          "id": "c",
+          "text": "Parallelize the E2E suite across more CI runners and keep its scope as is"
+        },
+        {
+          "id": "d",
+          "text": "Delete the flaky E2E tests and rely on manual QA before each release"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Business rules are fastest and most reliable to test below the UI, so the test pyramid pushes them down and reserves E2E for a few critical flows. Parallelizing cuts wall-clock time but keeps the flakiness, and nightly runs or deletions lose coverage on pull requests."
+    },
+    {
+      "id": "testing-and-debugging-9",
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "`paginate` should return the items on a 1-based page number. The test `assert paginate(list(range(10)), 1, 3) == [0, 1, 2]` fails with `assert [3, 4, 5] == [0, 1, 2]`. Which line is wrong?",
+      "code": {
+        "language": "python",
+        "source": "def paginate(items, page, page_size):\n    if page < 1 or page_size < 1:\n        raise ValueError(\"page and page_size must be >= 1\")\n    start = page * page_size\n    end = start + page_size\n    return items[start:end]"
+      },
+      "bugLines": [
+        4
+      ],
+      "explanation": "For a 1-based page the first index is `(page - 1) * page_size`; line 4 skips a whole page, which matches the observed [3, 4, 5]. Once `start` is right, `end = start + page_size` and the slice on line 6 are correct."
+    },
+    {
+      "id": "testing-and-debugging-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "test_invoice_currency passes when its file is run alone but fails in the full suite, as shown below, on every run. What is the most likely cause?",
+      "code": {
+        "language": "plaintext",
+        "source": "$ pytest tests/test_invoices.py\n5 passed in 0.41s\n\n$ pytest\nFAILED tests/test_invoices.py::test_invoice_currency - AssertionError: assert 'EUR' == 'USD'\n1 failed, 212 passed in 9.88s"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The test file has a syntax error that appears only when the whole suite is collected"
+        },
+        {
+          "id": "b",
+          "text": "The full suite runs under a different Python version than the single-file run"
+        },
+        {
+          "id": "c",
+          "text": "Another test changes shared state, such as a module-level settings object, and doesn't restore it"
+        },
+        {
+          "id": "d",
+          "text": "pytest shuffles test order by default, so the failure is random"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "A test that passes in isolation but fails alongside others usually depends on state leaked by an earlier test (global config, a cached singleton, or database rows). pytest runs tests in file order by default (random order requires a plugin such as pytest-randomly), and a syntax error would fail collection in both runs."
+    },
+    {
+      "id": "testing-and-debugging-11",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Which of these make a unit test non-deterministic, meaning it can pass or fail without any code change? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Asserting on a value derived from the current system time"
+        },
+        {
+          "id": "b",
+          "text": "Generating input with `random.random()` and no fixed seed"
+        },
+        {
+          "id": "c",
+          "text": "Relying on another test having run first to insert data"
+        },
+        {
+          "id": "d",
+          "text": "Calling a pure function with hard-coded input literals"
+        },
+        {
+          "id": "e",
+          "text": "Using a hand-written fake repository that returns fixed in-memory data"
+        },
+        {
+          "id": "f",
+          "text": "Making real HTTP calls to a third-party API"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b",
+        "c",
+        "f"
+      ],
+      "explanation": "Clock reads, unseeded randomness, order dependence, and live network calls all bring in inputs the test doesn't control. Pure functions with literal inputs and in-memory fakes return the same result on every run, which is why fakes are used to remove that kind of variability."
+    },
+    {
+      "id": "testing-and-debugging-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A payments module's quality report is below. What does it most strongly indicate?",
+      "code": {
+        "language": "plaintext",
+        "source": "Line coverage:    96%\nBranch coverage:  91%\nMutation score:   38%  (412 of 1,084 mutants killed)\n\nSurviving mutants (sample):\n  pricing.py:44  `>=` -> `>`                   SURVIVED\n  pricing.py:51  `return total` -> `return 0`  SURVIVED\n  refunds.py:19  `+ fee` -> `- fee`            SURVIVED"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The coverage tool is double-counting lines, so the real coverage is much lower"
+        },
+        {
+          "id": "b",
+          "text": "The tool generated mostly equivalent mutants, so the mutation score can be ignored"
+        },
+        {
+          "id": "c",
+          "text": "The main gap is the 4% of lines with no tests, so new tests should target those"
+        },
+        {
+          "id": "d",
+          "text": "The tests execute most of the code but their assertions are too weak to detect wrong results"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Surviving mutants like `return total` -> `return 0` mean code ran under test but no assertion noticed the wrong output; high coverage only shows execution, not verification. These survivors change behavior, so they aren't equivalent mutants, and covering the last 4% won't fix weak assertions in the other 96%."
+    },
+    {
+      "id": "testing-and-debugging-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "In production this Go function occasionally returns a count slightly lower than expected. When a developer adds log statements inside the goroutine, the problem stops reproducing. What is the most likely cause and the right next step?",
+      "code": {
+        "language": "go",
+        "source": "func countValid(events []Event) int {\n\tvar count int\n\tvar wg sync.WaitGroup\n\tfor _, e := range events {\n\t\twg.Add(1)\n\t\tgo func(e Event) {\n\t\t\tdefer wg.Done()\n\t\t\tif e.Valid() {\n\t\t\t\tcount++\n\t\t\t}\n\t\t}(e)\n\t}\n\twg.Wait()\n\treturn count\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "A data race on `count`; confirm with `go test -race` and use sync/atomic or a mutex for the increment"
+        },
+        {
+          "id": "b",
+          "text": "`wg.Wait()` returns before every goroutine finishes; add a short `time.Sleep` after it"
+        },
+        {
+          "id": "c",
+          "text": "Each goroutine captures the loop variable `e` by reference, so several see the same event"
+        },
+        {
+          "id": "d",
+          "text": "Logging alters what `e.Valid()` returns; drop the logs and inspect with a debugger breakpoint"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "`count++` is an unsynchronized read-modify-write from many goroutines, so increments can be lost, and extra logging changes timing enough to hide it (a classic heisenbug). The race detector confirms it. `e` is passed as an argument, so it isn't shared, and `wg.Add` before each `go` makes `Wait` correct."
+    },
+    {
+      "id": "testing-and-debugging-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "The Orders service consumes the Customers service's API. The Customers team renamed the response field `zipCode` to `postalCode`. Both services' own unit and integration tests passed, and Orders broke in production. Which practice would have caught this in the Customers pipeline before deploy, with the least extra infrastructure?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A shared full-stack end-to-end environment that runs nightly"
+        },
+        {
+          "id": "b",
+          "text": "Higher unit-test coverage thresholds in both services"
+        },
+        {
+          "id": "c",
+          "text": "Consumer-driven contract tests (e.g., Pact) verified in the provider's CI"
+        },
+        {
+          "id": "d",
+          "text": "More detailed mocks of the Customers API in the Orders unit tests"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Contract tests record what the consumer actually relies on, and the provider verifies against them on every build, so removing `zipCode` fails the Customers build without deploying the whole system. Orders' mocks encode the old assumption, so they keep passing; a nightly E2E environment is heavier and catches the problem later."
+    },
+    {
+      "id": "testing-and-debugging-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A CI test fails in about 2% of runs with a timeout. The team proposes rerunning any failed test up to three times and treating a single pass as green, as a permanent fix. What is the main risk?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Retries invalidate the code coverage numbers reported for every build"
+        },
+        {
+          "id": "b",
+          "text": "It can mask a real intermittent product bug, such as a race condition users will hit"
+        },
+        {
+          "id": "c",
+          "text": "Total CI run time will roughly triple on every build, even when nothing fails"
+        },
+        {
+          "id": "d",
+          "text": "Most CI systems can rerun whole pipelines but not individual integration tests"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Flaky failures are sometimes caused by real concurrency or timeout bugs in the product, and automatic retries turn that signal green. The better practice is to quarantine, track, and root-cause flaky tests. Run time barely changes, because only the roughly 2% of failing runs are retried."
     }
   ]
 }

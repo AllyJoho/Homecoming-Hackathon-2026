@@ -2,104 +2,215 @@
   "id": "presentation-skills",
   "title": "Presentation Skills",
   "skillSlug": "presentation-skills",
-  "description": "Test your understanding of presentation skills. Structuring and delivering talks and demos tailored to the audience.",
-  "timeLimitSeconds": 600,
+  "description": "Structure and deliver talks with Minto/SCQA, evidence-based slide design, honest data stories, and strong Q&A.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "presentation-skills-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Audience adaptation?",
+      "difficulty": "BEGINNER",
+      "prompt": "You have 10 minutes with the CFO to recommend consolidating two warehouses into one. Following Barbara Minto's Pyramid Principle, how should you open?",
       "options": [
-        {
-          "id": "a",
-          "text": "selects content and delivery based on what listeners need to decide or do"
-        },
-        {
-          "id": "b",
-          "text": "uses identical detail for every audience"
-        },
-        {
-          "id": "c",
-          "text": "removes the main point"
-        },
-        {
-          "id": "d",
-          "text": "avoids examples entirely"
-        }
+        { "id": "a", "text": "With the history of the warehouse network so she has full context" },
+        { "id": "b", "text": "With the recommendation and its main reason, e.g. a $2.1M annual saving" },
+        { "id": "c", "text": "With the analysis method so she trusts the numbers before seeing them" },
+        { "id": "d", "text": "With an agenda slide listing the six sections you plan to cover" }
       ],
-      "correctOptionId": "a",
-      "explanation": "Audience adaptation selects content and delivery based on what listeners need to decide or do.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "b",
+      "explanation": "The pyramid puts the governing thought (the answer) at the top, followed by the supporting arguments, so a busy executive gets the point even if time runs out. Building up through history or method makes her wait for the one thing she needs to decide on."
     },
     {
       "id": "presentation-skills-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Signposting?",
+      "difficulty": "BEGINNER",
+      "prompt": "Each of a trainer's slides shows a process diagram plus a full paragraph of text, which she reads aloud word for word. Based on Richard Mayer's multimedia learning research, what change will help the audience learn most?",
       "options": [
-        {
-          "id": "a",
-          "text": "uses verbal or visual cues to show where a presentation is going"
-        },
-        {
-          "id": "b",
-          "text": "hides the structure from listeners"
-        },
-        {
-          "id": "c",
-          "text": "is a database operation"
-        },
-        {
-          "id": "d",
-          "text": "is a form validation rule"
-        }
+        { "id": "a", "text": "Add more detail to the paragraph so people can read ahead at their own pace" },
+        { "id": "b", "text": "Remove the diagram so that attention stays on the text she is reading aloud" },
+        { "id": "c", "text": "Keep the diagram, cut the paragraph to a short label, and give the detail by voice" },
+        { "id": "d", "text": "Hand out printed copies of the slides beforehand so people can read along" }
       ],
-      "correctOptionId": "a",
-      "explanation": "Signposting uses verbal or visual cues to show where a presentation is going.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "Mayer's redundancy principle shows people learn better from graphics plus narration than from graphics, narration, and the same printed text, which competes for visual attention. Removing the diagram throws away the multimedia benefit of pairing words with pictures."
     },
     {
       "id": "presentation-skills-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Slide hierarchy?",
+      "difficulty": "BEGINNER",
+      "prompt": "You need to show the leadership team monthly active users over the last 24 months and point out a sharp dip in month 14. Which chart fits this message?",
       "options": [
-        {
-          "id": "a",
-          "text": "makes the main message and supporting points visually distinguishable"
-        },
-        {
-          "id": "b",
-          "text": "gives every word equal emphasis"
-        },
-        {
-          "id": "c",
-          "text": "uses as many colors as possible"
-        },
-        {
-          "id": "d",
-          "text": "replaces rehearsal"
-        }
+        { "id": "a", "text": "A line chart with the 24 months in order along the x-axis" },
+        { "id": "b", "text": "A pie chart with one slice for each of the 24 months" },
+        { "id": "c", "text": "A horizontal bar chart sorted from highest to lowest month" },
+        { "id": "d", "text": "A table that lists the exact value for each of the 24 months" }
       ],
       "correctOptionId": "a",
-      "explanation": "Slide hierarchy makes the main message and supporting points visually distinguishable.",
-      "difficulty": "ADVANCED"
+      "explanation": "Line charts show change over continuous time, so the trend and the dip are visible at a glance. Sorting bars by value destroys the time order that the dip depends on, and a table makes the audience find the pattern themselves."
     },
     {
       "id": "presentation-skills-4",
-      "type": "true_false",
-      "prompt": "True or false: Audience adaptation selects content and delivery based on what listeners need to decide or do.",
-      "correctAnswer": true,
-      "explanation": "Audience adaptation selects content and delivery based on what listeners need to decide or do.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "Using the assertion-evidence slide design studied by Michael Alley and colleagues, which headline should replace \"Q3 Churn\" on a slide whose chart shows churn by customer segment?",
+      "options": [
+        { "id": "a", "text": "Q3 Churn by Customer Segment" },
+        { "id": "b", "text": "Churn Analysis: Q3 Results and Overview" },
+        { "id": "c", "text": "Q3 churn data (source: CRM export, Oct 2)" },
+        { "id": "d", "text": "SMB churn doubled in Q3; enterprise held steady" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Assertion-evidence slides use a full-sentence headline stating the takeaway, with the visual as evidence; research found audiences understand and remember more than with topic-phrase titles. Options a to c are still topic labels that leave the audience to work out the point."
     },
     {
       "id": "presentation-skills-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: makes the main message and supporting points visually distinguishable?",
-      "acceptedAnswers": [
-        "Slide hierarchy"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: When an audience member asks a question you cannot answer, you protect your credibility best by giving your best guess confidently rather than admitting you do not know.",
+      "correctAnswer": false,
+      "explanation": "A confident guess that turns out wrong damages credibility far more than an honest \"I don't know, and I'll find out by Friday.\" Committing to a specific follow-up keeps trust and gets the person a correct answer."
+    },
+    {
+      "id": "presentation-skills-6",
+      "type": "order_lines",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Arrange these opening sentences for a pitch to the support director in Minto's SCQA order (Situation, Complication, Question, Answer).",
+      "lines": [
+        { "id": "r5", "text": "Our support team handles 12,000 tickets a month with a 4-hour average response time." },
+        { "id": "k2", "text": "Since the spring launch, ticket volume is up 40% and response times have doubled." },
+        { "id": "w8", "text": "So how do we get back to 4-hour responses without doubling headcount?" },
+        { "id": "d3", "text": "Launch self-service for the top five ticket types, which make up 45% of volume." }
       ],
-      "explanation": "The term is Slide hierarchy.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "SCQA starts with an uncontroversial situation, introduces the complication that disrupts it, raises the question the complication creates, and then gives the answer, which becomes the top of the pyramid. Putting the 40% increase first removes the baseline that makes it meaningful."
+    },
+    {
+      "id": "presentation-skills-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A slide shows an engine diagram with nine parts numbered 1 to 9; the key explaining the numbers is on the next slide. According to Mayer's spatial contiguity principle, what is the fix?",
+      "options": [
+        { "id": "a", "text": "Put each part's name next to that part on the diagram itself" },
+        { "id": "b", "text": "Enlarge the numbers on the diagram so they are easier to see" },
+        { "id": "c", "text": "Move the key to the handout so the slides stay uncluttered" },
+        { "id": "d", "text": "Color-code the parts and put a color key on the following slide" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Spatial contiguity says people learn better when words are placed near the parts of the graphic they describe, so they do not spend working memory matching numbers to a distant key. Color codes on another slide keep the same split-attention problem."
+    },
+    {
+      "id": "presentation-skills-8",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "You have a 20-minute slot at a board meeting to request funding for a data platform. Select all practices that fit an executive audience.",
+      "options": [
+        { "id": "a", "text": "State the recommendation and the funding ask within the first minute" },
+        { "id": "b", "text": "Put detailed methodology and data in backup slides or an appendix" },
+        { "id": "c", "text": "Walk through the analysis in the order you did it to build credibility" },
+        { "id": "d", "text": "Prepare a version that makes the core case in five minutes if cut short" },
+        { "id": "e", "text": "Save the ask for the final slide so the board hears the full case first" }
+      ],
+      "correctOptionIds": ["a", "b", "d"],
+      "explanation": "Executives want the answer and the decision up front, detail available on demand, and a presenter who can adapt when agendas run long. Chronological walkthroughs and a last-slide ask risk running out of time before the board learns what you need."
+    },
+    {
+      "id": "presentation-skills-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Following Cole Nussbaumer Knaflic's storytelling-with-data guidance, how should this chart be redesigned?",
+      "code": { "language": "plaintext", "source": "Chart:   Quarterly revenue by product line, Q1-Q4\nType:    line chart, 6 lines, each in a different bright color\nLegend:  right side, alphabetical\nTitle:   \"Revenue by Product Line\"\nMessage: Product C is the only line that declined." },
+      "options": [
+        { "id": "a", "text": "Add data labels to all 24 points so the audience can compare every value" },
+        { "id": "b", "text": "Apply a 3D effect so the six lines are easier to tell apart from one another" },
+        { "id": "c", "text": "Gray out five lines, color and label C directly, and title the chart with the takeaway" },
+        { "id": "d", "text": "Split it into six small charts, one per product, keeping the same bright colors" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Knaflic recommends decluttering and using a preattentive attribute such as color sparingly to direct attention to the one series that carries the message, with a title that states it. Labeling all 24 points adds clutter and still leaves the audience to find Product C."
+    },
+    {
+      "id": "presentation-skills-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A draft slide shows customer satisfaction as a bar chart: Region A 97.1, Region B 97.9, Region C 98.4. The y-axis runs from 96.5 to 98.5, so Region C's bar looks about three times as tall as Region A's. What is the problem and fix?",
+      "options": [
+        { "id": "a", "text": "Three regions are too few for bars; show them as a pie chart instead" },
+        { "id": "b", "text": "Bar length encodes value, so start the axis at zero or switch to a dot plot" },
+        { "id": "c", "text": "Gridlines are missing; add them so readers can see the exact values" },
+        { "id": "d", "text": "Nothing needs fixing, since the axis range is labeled on the chart" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Viewers judge bars by length, so a truncated baseline turns a 1.3-point gap into an apparent threefold difference. If the small differences matter, a dot plot can use a narrow range honestly because it encodes value by position, not length."
+    },
+    {
+      "id": "presentation-skills-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "During Q&A at a 30-person all-hands, one manager asks a detailed question about how the new tool handles her team's specific billing codes. A full answer would take ten minutes and matters to no one else. What should you do?",
+      "options": [
+        { "id": "a", "text": "Answer it fully now, since every question deserves the same amount of time" },
+        { "id": "b", "text": "Tell her the question is off-topic for this forum and take the next one" },
+        { "id": "c", "text": "Ask the audience whether anyone else knows the answer to her question" },
+        { "id": "d", "text": "Give a brief answer, offer a detailed follow-up afterward, and move on" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Respecting both the questioner and the group means acknowledging the question, giving what is useful in a sentence or two, and committing to a specific follow-up. A ten-minute answer spends everyone's time on one person's need, and dismissing her as off-topic damages trust."
+    },
+    {
+      "id": "presentation-skills-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Two slides into your 12-slide proposal, the CFO interrupts: \"What will this cost?\" The cost breakdown is on slide 9. What should you do?",
+      "options": [
+        { "id": "a", "text": "Give the headline cost in a sentence now, then resume from slide 3" },
+        { "id": "b", "text": "Say \"Great question, I'll cover that on slide 9\" and keep going" },
+        { "id": "c", "text": "Skip ahead to slide 9 and present the remaining slides from there" },
+        { "id": "d", "text": "Ask her to hold questions until the end so the story stays intact" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Executives signal what matters to their decision through their questions; answering immediately and briefly (answer first) keeps their attention and trust, and you can still present the breakdown on slide 9. Deferring leaves the decision-maker distracted for seven slides, and jumping to slide 9 abandons the structure the rest of the case depends on."
+    },
+    {
+      "id": "presentation-skills-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Your forecasting model produced the output below. The COO says, \"Just give me one number.\" Which statement should go on your summary slide?",
+      "code": { "language": "plaintext", "source": "Projected annual savings, route optimization\n  P10:  $3.1M\n  P50:  $3.8M\n  P90:  $4.6M\nLargest driver of the range: diesel price" },
+      "options": [
+        { "id": "a", "text": "We will save $3,847,212 per year with route optimization." },
+        { "id": "b", "text": "About $3.8M a year, likely $3.1M to $4.6M, driven mainly by diesel prices." },
+        { "id": "c", "text": "Savings can't be reliably predicted, so we'll share a number after the pilot." },
+        { "id": "d", "text": "Route optimization will save up to $4.6M a year at current diesel prices." }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Lead with the central estimate the COO asked for, but keep the range and its main driver so the decision accounts for uncertainty. An unrounded figure implies false precision, and \"up to $4.6M\" quotes the optimistic P90 as if it were the expectation."
+    },
+    {
+      "id": "presentation-skills-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A colleague's slide is described below. What should be changed before it goes to the executive team?",
+      "code": { "language": "plaintext", "source": "Title:      \"Marketing spend drives signups\"\nChart:      dual-axis line chart, Jan-Dec\nLeft axis:  Marketing spend ($K), 0 to 500    (spend rose from 120 to 360)\nRight axis: Signups, 9,000 to 10,000          (signups rose from 9,100 to 9,600)\nVisual:     the two lines rise together and overlap almost exactly" },
+      "options": [
+        { "id": "a", "text": "Swap the left and right axes so that marketing spend is on the right side" },
+        { "id": "b", "text": "Add a legend so viewers can tell which line belongs to which axis" },
+        { "id": "c", "text": "Use a thicker, darker line for signups so it stands out from spend" },
+        { "id": "d", "text": "Index both to a common baseline or use two panels, and drop the causal title" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "With two independently chosen axis ranges, a 200% rise in spend and a roughly 5% rise in signups look identical, and the title claims causation the chart cannot show. Indexing to a baseline or using separate panels shows the true relative change; a legend fixes labeling but not the distortion."
+    },
+    {
+      "id": "presentation-skills-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Your recommendation, to be decided at Thursday's executive meeting, cuts the Operations VP's budget by 15%. She has not seen the analysis. What should you do before Thursday?",
+      "options": [
+        { "id": "a", "text": "Nothing; present it Thursday so every executive hears it at the same time" },
+        { "id": "b", "text": "Remove the budget impact from the deck to avoid conflict in the meeting" },
+        { "id": "c", "text": "Pre-wire it: walk her through the analysis privately and hear her objections" },
+        { "id": "d", "text": "Email the full deck to all executives the night before, with no discussion" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Pre-wiring key stakeholders, especially those most affected, lets you surface objections, correct errors, and adjust the proposal before the decision meeting instead of having the VP blindsided in front of peers. Hiding the budget impact undermines trust and the decision itself."
     }
   ]
 }

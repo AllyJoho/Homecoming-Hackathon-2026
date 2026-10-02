@@ -51,8 +51,15 @@ type QuizJson = {
 
 type QuestionJson = {
   id: string;
-  type: 'multiple_choice' | 'multi_select' | 'true_false' | 'short_answer';
+  type:
+    | 'multiple_choice'
+    | 'multi_select'
+    | 'true_false'
+    | 'short_answer'
+    | 'find_the_bug'
+    | 'order_lines';
   prompt: string;
+  code?: { language: string; source: string };
   points?: number;
   explanation?: string;
   difficulty?: string;
@@ -61,6 +68,9 @@ type QuestionJson = {
   correctOptionIds?: string[];
   correctAnswer?: boolean;
   acceptedAnswers?: string[];
+  bugLines?: number[];
+  /** order_lines only, authored in the correct order. Stored in `options`. */
+  lines?: { id: string; text: string }[];
 };
 
 // The JSON spells question types in snake_case; the enum is SCREAMING_SNAKE.
@@ -69,7 +79,30 @@ const QUESTION_TYPES: Record<QuestionJson['type'], QuestionType> = {
   multi_select: 'MULTI_SELECT',
   true_false: 'TRUE_FALSE',
   short_answer: 'SHORT_ANSWER',
+  find_the_bug: 'FIND_THE_BUG',
+  order_lines: 'ORDER_LINES',
 };
+
+/**
+ * Catch authoring mistakes in the two newer types at seed time. A bug line
+ * past the end of the snippet would otherwise make the question impossible to
+ * get right, silently.
+ */
+function validateQuestion(file: string, q: QuestionJson) {
+  const where = `${file} → ${q.id}`;
+  if (q.type === 'find_the_bug') {
+    if (!q.code) throw new Error(`${where}: find_the_bug needs a "code" snippet.`);
+    if (!q.bugLines?.length) throw new Error(`${where}: find_the_bug needs "bugLines".`);
+    const lineCount = q.code.source.replace(/\n+$/, '').split('\n').length;
+    const outOfRange = q.bugLines.filter((n) => n < 1 || n > lineCount);
+    if (outOfRange.length) {
+      throw new Error(`${where}: bugLines ${outOfRange.join(', ')} not in 1–${lineCount}.`);
+    }
+  }
+  if (q.type === 'order_lines' && (q.lines?.length ?? 0) < 2) {
+    throw new Error(`${where}: order_lines needs at least 2 "lines".`);
+  }
+}
 
 type CareerJson = {
   slug: string;
@@ -180,6 +213,8 @@ async function main() {
       throw new Error(`Quiz "${file}" declares id "${quiz.id}" but its filename says "${stem}".`);
     }
 
+    for (const q of quiz.questions) validateQuestion(file, q);
+
     await prisma.quiz.create({
       data: {
         id: quiz.id,
@@ -194,17 +229,20 @@ async function main() {
             order: i,
             type: QUESTION_TYPES[q.type],
             prompt: q.prompt,
+            code: q.code?.source ?? null,
+            codeLanguage: q.code?.language ?? null,
             points: q.points ?? 1,
             explanation: q.explanation ?? null,
             difficulty: q.difficulty ?? null,
             // Authored content is trusted: it's reviewed by whoever wrote the
             // file, so it counts for certification immediately.
             reviewed: true,
-            options: q.options ?? undefined,
+            options: q.options ?? q.lines ?? undefined,
             correctOptionId: q.correctOptionId ?? null,
             correctOptionIds: q.correctOptionIds ?? [],
             correctAnswer: q.correctAnswer ?? null,
             acceptedAnswers: q.acceptedAnswers ?? [],
+            bugLines: q.bugLines ?? [],
           })),
         },
       },
