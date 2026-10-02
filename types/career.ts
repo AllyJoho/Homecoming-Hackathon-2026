@@ -40,7 +40,10 @@ export interface CareerMatch {
   score: number;
   /** Slugs of this career's skills the student has proven by quiz. */
   provenSkills: string[];
-  /** Slugs they've claimed but not proven. Counted at partial credit. */
+  /**
+   * Slugs they have but haven't proven by quiz — self-reported or read off a
+   * resume. Counted at partial credit, and deliberately not in missingSkills.
+   */
   claimedSkills: string[];
   /** Skills they have neither, heaviest first — the "learn this next" list. */
   missingSkills: CareerSkillWeight[];

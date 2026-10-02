@@ -9,18 +9,27 @@
 // it. Same shape as @/lib/jobs/shortlist for that reason.
 
 import type { Career, CareerMatch, CareerSkillWeight } from '@/types/career';
-import type { Profile } from '@/types/profile';
+import type { Profile, SkillSource } from '@/types/profile';
 
 /**
- * What a self-reported skill is worth against a quiz-verified one.
+ * What each kind of evidence is worth against a quiz pass.
  *
- * Half credit, matching how the rest of the app treats provenance: the
- * recommender's system prompt weights SELF_REPORTED below QUIZ, and
- * buildProfile's dedupe prefers QUIZ when a skill arrives both ways. A student
- * who merely claims every skill for a career should land mid-pack, not at
- * 100% — that gap is what makes "take this quiz next" worth acting on.
+ * The same table as @/lib/jobs/match and @/lib/profile/related, deliberately:
+ * a student shouldn't see two different ideas of what their skills are worth
+ * depending on which page they're on. A resume sits between the other two
+ * because it is a claim with a document behind it — better than a checkbox,
+ * short of a graded assessment. A student who merely claims every skill for a
+ * career should land mid-pack, not at 100%, and that gap is what makes "take
+ * this quiz next" worth acting on.
+ *
+ * An exhaustive Record rather than a `switch`, on purpose. A switch carrying a
+ * `default` is never flagged as non-exhaustive, so when RESUME joined
+ * SkillSource this file kept compiling and quietly treated a resume-evidenced
+ * skill as one the student did not have at all — no credit, and listed back to
+ * them as a skill to go learn. Adding a member to SkillSource now breaks the
+ * typecheck here instead of changing scores in silence.
  */
-const SELF_REPORTED_CREDIT = 0.5;
+const CREDIT: Record<SkillSource, number> = { QUIZ: 1, RESUME: 0.7, SELF_REPORTED: 0.5 };
 
 /**
  * Rank careers for a profile, best fit first.
@@ -44,18 +53,17 @@ export function matchCareers(careers: Career[], profile: Profile, limit = 5): Ca
       for (const skill of career.skills) {
         total += skill.weight;
 
-        switch (sourceBySlug.get(skill.slug)) {
-          case 'QUIZ':
-            earned += skill.weight;
-            provenSkills.push(skill.slug);
-            break;
-          case 'SELF_REPORTED':
-            earned += skill.weight * SELF_REPORTED_CREDIT;
-            claimedSkills.push(skill.slug);
-            break;
-          default:
-            missingSkills.push(skill);
+        const source = sourceBySlug.get(skill.slug);
+        if (!source) {
+          missingSkills.push(skill);
+          continue;
         }
+
+        earned += skill.weight * CREDIT[source];
+        // Anything short of a quiz pass is "claimed": it earns partial credit
+        // and, unlike a missing skill, is never offered back as something to
+        // go learn. The card distinguishes them by colour, not by bucket.
+        (source === 'QUIZ' ? provenSkills : claimedSkills).push(skill.slug);
       }
 
       return {

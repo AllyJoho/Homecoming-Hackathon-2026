@@ -32,18 +32,26 @@ const NICE_TO_HAVE_DISCOUNT = 0.4;
 
 /**
  * The weighted demand a listing has to state before its score is taken at
- * face value — roughly three required skills at the default weight.
+ * face value. A thinner listing's score is scaled down — a confidence factor,
+ * not a penalty: we know less about that job, so we claim less about the fit.
  *
- * Without this, a listing that asks for almost nothing scores perfectly. A
- * real example: a "Growth Marketing Intern" whose only extracted skill was
- * SQL as a nice-to-have came out at 100% and outranked every genuine match,
- * because one skill covered all of its tiny stated demand.
+ * Without it, a listing that asks for almost nothing scores perfectly. A real
+ * example: a "Growth Marketing Intern" whose only extracted skill was SQL as a
+ * nice-to-have came out at 100% and outranked every genuine match, because one
+ * skill covered all of its tiny stated demand.
  *
- * So a thin listing's score is scaled by how much it actually told us. This is
- * a confidence factor, not a penalty: we know less about that job, so we claim
- * less about the fit.
+ * The number is measured, not guessed. Across the stored listings the stake
+ * distribution is min 5.6, p25 10.0, median 12.0, p75 15.2, max 24.2 — so 10
+ * damps roughly the thinnest quarter. The first version of this was 9, which
+ * only caught the bottom 17% and still let a 3-skill "Learning & Development
+ * Intern" outrank a Stripe engineering internship that named five. Setting it
+ * at the median instead would damp half the catalog, which makes most scores
+ * artificially low rather than fixing the outliers.
+ *
+ * Re-measure if the catalog changes shape: p25 of the stake distribution is
+ * the number to use.
  */
-const CONFIDENCE_BASELINE = 9;
+const CONFIDENCE_BASELINE = 10;
 
 export interface JobMatchOptions {
   /** Drop matches below this score. 0 keeps everything. */

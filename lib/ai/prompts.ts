@@ -8,13 +8,114 @@
 // message and this stays cacheable as the app grows.
 
 /**
- * Per-question coaching on a finished attempt, used by
- * /api/results/[resultId]/feedback. Only the missed questions reach the model,
- * so there is nothing in context to congratulate the student about.
+ * The tutor behind the "Explain what I missed" button under each question on a
+ * quiz result, used by /api/results/[resultId]/feedback.
+ *
+ * One question per conversation, and the conversation continues: the student
+ * reads the explanation and can ask back. So this has to do two jobs the old
+ * whole-quiz prompt didn't — hold a thread without losing the question, and
+ * stay inside it when a follow-up wanders off.
+ *
+ * Still plain prose rather than a schema. The structured-fields trick that
+ * stopped the old card rendering literal `**asterisks**` can't work on a
+ * conversation, so the markdown ban is back to being an instruction — and an
+ * instruction not to format is one models break. Measured on Haiku: told to
+ * use no marks at all, it still reached for backticks around identifiers and
+ * asterisks around a stressed word, in most replies.
+ *
+ * So rather than forbidding the marks and rendering the leak as literal
+ * punctuation, this permits exactly three and QuestionCoach renders each one.
+ * Allowing what a model reaches for anyway is more reliable than banning it.
+ *
+ * The third, fenced code blocks, was added after watching a student's most
+ * obvious follow-up — "show me an example" — come back as a fence every time
+ * no matter how firmly the prompt said not to. It renders through the same
+ * CodeBlock as the question's own snippet, so a worked example is highlighted
+ * rather than printed as literal backticks.
+ *
+ * The ban still holds where it matters: headings and bullet lists are what
+ * made the old card unreadable, and a tutor talking about one question has no
+ * use for either.
  */
-export const FEEDBACK_SYSTEM_PROMPT = `You are a patient tutor reviewing a student's completed quiz.
+export const QUESTION_COACH_SYSTEM_PROMPT = `You are a patient tutor helping a student understand ONE question from a quiz they have just finished.
 
-For each question the student got wrong, write 2-3 sentences: what the right answer is, and the specific misunderstanding the wrong answer suggests. Address the student directly. Skip questions they answered correctly. No overall score summary — they can already see their score.`;
+The first message gives you that question, the correct answer, and what the student answered. Every message after it is the student talking to you.
+
+Your first reply: say what the correct answer is and why it is right, then name the specific misunderstanding their answer points to. Three or four sentences. Address them directly as "you". If they left it blank, explain the concept instead of guessing at what they were thinking.
+
+After that, answer what they ask. Stay on this question and the concept behind it — if they ask about something else, say so in a sentence and offer what you can about this question instead. If they push back and they are right, say so plainly and correct yourself.
+
+The first message is the record of what happened: never tell them they answered something other than what it says. If the question is genuinely ambiguous or the answer key looks wrong to you, say that rather than defending it.
+
+Do not open with a greeting, and do not praise them for asking. Start with the substance.
+
+Formatting: plain sentences in short paragraphs. Three marks are available, and the app renders all three:
+
+- \`single backticks\` around code, SQL, identifiers, and literal values, inline in a sentence.
+- *single asterisks* around a word you need to stress.
+- A fenced block for a multi-line example — a query, a snippet, a few rows of a table. Always tag the fence with a language, and use \`text\` for anything that isn't code. The app syntax-highlights these, so put a worked example in one rather than inline.
+
+Nothing else: no headings, no bullet or numbered lists in your prose, no markdown tables. Keep each reply under about 120 words unless they ask for more detail; a fenced example doesn't count toward that.`;
+
+/**
+ * The opening turn of a coaching conversation: everything about one question
+ * the tutor needs, written out.
+ *
+ * This is a user message rather than part of the system prompt so the system
+ * prompt stays a constant prefix across every question and every follow-up —
+ * the caching shape the note at the top of this file describes.
+ *
+ * `correct` is passed rather than inferred because the button is offered under
+ * every reviewed question, not only the missed ones. A student who guessed
+ * right still has something to learn, and a tutor told they got it right
+ * writes a different (and shorter) explanation than one assuming a mistake.
+ */
+export function buildQuestionCoachOpening(parts: {
+  quizTitle: string;
+  questionNumber: number;
+  questionCount: number;
+  correct: boolean;
+  prompt: string;
+  /** Numbered snippet, when the question carries one. */
+  code: string | null;
+  /** The choices offered, when the type has any. */
+  options: string | null;
+  answerKey: string;
+  studentAnswer: string;
+  /** The quiz author's own note on the question, when there is one. */
+  authorNote?: string;
+}): string {
+  const sections = [
+    `Quiz: ${parts.quizTitle}`,
+    `Question ${parts.questionNumber} of ${parts.questionCount} — the student got this ${
+      parts.correct ? 'RIGHT' : 'WRONG'
+    }.`,
+    `Question: ${parts.prompt}`,
+  ];
+
+  if (parts.code) sections.push(`Code shown with the question:\n${parts.code}`);
+  if (parts.options) sections.push(`The choices offered:\n${parts.options}`);
+
+  sections.push(`Correct answer: ${parts.answerKey}`);
+  sections.push(`The student answered: ${parts.studentAnswer}`);
+
+  // The author's note is the ground truth for *why*, so it goes last, closest
+  // to the instruction — and it is the one part the student has already read
+  // on the results screen, so the tutor is told not to just repeat it.
+  if (parts.authorNote) {
+    sections.push(
+      `The quiz author's note on this question (the student has already read this, so build on it rather than repeating it): ${parts.authorNote}`,
+    );
+  }
+
+  sections.push(
+    parts.correct
+      ? 'Explain why that answer is right, and what the question was testing.'
+      : 'Explain what I missed.',
+  );
+
+  return sections.join('\n\n');
+}
 
 /**
  * Maps a free-text job description onto the canonical skill vocabulary, for

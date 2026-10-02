@@ -20,7 +20,9 @@ export interface Skill {
  *
  * Ordered weakest to strongest evidence, which is how the matcher treats them:
  * typed in is a claim, read off a resume is a claim with a document behind it,
- * passed a quiz is proof. @/lib/jobs/match turns that into partial credit.
+ * passed a quiz is proof. The matchers in @/lib/jobs/match and
+ * @/lib/careers/match, and the suggester in @/lib/profile/related, all turn
+ * that into partial credit from one shared table of weights.
  */
 export type SkillSource = 'SELF_REPORTED' | 'RESUME' | 'QUIZ';
 

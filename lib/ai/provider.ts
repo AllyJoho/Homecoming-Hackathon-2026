@@ -17,7 +17,9 @@ import { AI_TASKS, type AiProviderId, type AiTaskId } from '@/lib/ai/tasks';
 import { logAiCall } from '@/lib/ai/log';
 import { anthropicBackend } from '@/lib/ai/providers/anthropic';
 import { ollamaBackend } from '@/lib/ai/providers/ollama';
-import type { AiBackend } from '@/lib/ai/providers/types';
+import type { AiBackend, AiMessage } from '@/lib/ai/providers/types';
+
+export type { AiMessage };
 
 const BACKENDS: Record<AiProviderId, AiBackend> = {
   anthropic: anthropicBackend,
@@ -84,9 +86,30 @@ interface Request {
   prompt: string;
 }
 
-/** Prose, for tasks whose output a person reads directly. */
+/** Prose from one user turn, for tasks whose output a person reads directly. */
 export async function generateText(request: Request): Promise<string> {
-  return run(request, (backend, spec) => backend.text(spec, request.system, request.prompt));
+  return run(request.task, (backend, spec) =>
+    backend.text(spec, request.system, [{ role: 'user', content: request.prompt }]),
+  );
+}
+
+/**
+ * Prose continuing a conversation — the same shape as `generateText`, but the
+ * model sees the turns so far.
+ *
+ * `messages` is oldest-first and must end on a user turn; neither backend has
+ * anything to generate otherwise. Models are stateless, so the whole
+ * conversation is resent every turn: cost grows with its length, which is why
+ * callers cap it rather than letting a thread run forever.
+ */
+export async function generateChat(request: {
+  task: AiTaskId;
+  system: string;
+  messages: AiMessage[];
+}): Promise<string> {
+  return run(request.task, (backend, spec) =>
+    backend.text(spec, request.system, request.messages),
+  );
 }
 
 /**
@@ -100,14 +123,14 @@ export async function generateText(request: Request): Promise<string> {
 export async function generateObject<T>(
   request: Request & { schema: ZodType<T> },
 ): Promise<T | null> {
-  return run(request, (backend, spec) =>
+  return run(request.task, (backend, spec) =>
     backend.object(spec, request.system, request.prompt, request.schema),
   );
 }
 
 /** Readiness gate, timing, logging, and error normalization in one place. */
 async function run<T>(
-  request: Request,
+  task: AiTaskId,
   call: (
     backend: AiBackend,
     spec: (typeof AI_TASKS)[AiTaskId],
@@ -118,18 +141,18 @@ async function run<T>(
     outputTokens?: number;
   }>,
 ): Promise<T> {
-  const reason = aiUnavailableReason(request.task);
+  const reason = aiUnavailableReason(task);
   if (reason) throw new AiError(reason);
 
-  const provider = providerFor(request.task);
-  const spec = AI_TASKS[request.task];
+  const provider = providerFor(task);
+  const spec = AI_TASKS[task];
   const startedAt = Date.now();
 
   try {
     const result = await call(BACKENDS[provider], spec);
 
     logAiCall({
-      task: request.task,
+      task,
       provider,
       model: result.model,
       ms: Date.now() - startedAt,
@@ -141,7 +164,7 @@ async function run<T>(
     return result.value;
   } catch (error) {
     logAiCall({
-      task: request.task,
+      task,
       provider,
       model: spec.models[provider],
       ms: Date.now() - startedAt,

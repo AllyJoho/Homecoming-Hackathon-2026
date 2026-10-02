@@ -16,7 +16,7 @@
 import { z, type ZodType } from 'zod';
 
 import type { AiTaskSpec } from '@/lib/ai/tasks';
-import type { AiBackend, AiReadiness, AiResult } from './types';
+import type { AiBackend, AiMessage, AiReadiness, AiResult } from './types';
 
 const OLLAMA_URL = process.env.OLLAMA_URL?.replace(/\/$/, '') || 'http://localhost:11434';
 
@@ -34,7 +34,7 @@ interface ChatResponse {
 async function chat(
   model: string,
   system: string,
-  prompt: string,
+  messages: AiMessage[],
   maxOutputTokens: number,
   format?: unknown,
 ): Promise<{ content: string; inputTokens?: number; outputTokens?: number }> {
@@ -47,10 +47,7 @@ async function chat(
       body: JSON.stringify({
         model,
         stream: false,
-        messages: [
-          { role: 'system', content: system },
-          { role: 'user', content: prompt },
-        ],
+        messages: [{ role: 'system', content: system }, ...messages],
         // Deterministic by default: when you're tuning a prompt you want the
         // same input to give the same output, so a diff means your edit did it.
         options: { temperature: 0, num_predict: maxOutputTokens },
@@ -94,12 +91,12 @@ export const ollamaBackend: AiBackend = {
     return { ok: true };
   },
 
-  async text(spec: AiTaskSpec, system, prompt): Promise<AiResult<string>> {
+  async text(spec: AiTaskSpec, system, messages: AiMessage[]): Promise<AiResult<string>> {
     const model = spec.models.ollama;
     const { content, inputTokens, outputTokens } = await chat(
       model,
       system,
-      prompt,
+      messages,
       spec.maxOutputTokens,
     );
     return { value: content.trim(), model, inputTokens, outputTokens };
@@ -118,7 +115,7 @@ export const ollamaBackend: AiBackend = {
       // Small models fill a schema more reliably when the instruction to do so
       // is in the prompt as well as in the decoder constraint.
       `${system}\n\nRespond with JSON matching the required schema. No prose, no markdown fences.`,
-      prompt,
+      [{ role: 'user', content: prompt }],
       spec.maxOutputTokens,
       z.toJSONSchema(schema),
     );
