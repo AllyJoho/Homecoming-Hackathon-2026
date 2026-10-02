@@ -75,9 +75,18 @@ prompt edit against `AI_PROVIDER=anthropic` before trusting it.
 
 ## How Quizzes Work
 
-- Quiz banks contain **5–15 questions**, depending on the skill; the two original authored banks have 15 and the full skill catalog now has a focused bank for every skill.
+- Every quiz has **15 questions**: 5 beginner (college sophomore), 6 intermediate (graduate level), 4 advanced (5–10 years in industry).
 - The result is a **percentage**.
-- The percentage maps to one of four levels: **Beginner, Intermediate, Proficient, Advanced**.
+- A certificate needs **8 of 15 correct**. The level depends on how many are right:
+
+  | Correct (of 15) | Percentage | Certificate |
+  | --- | --- | --- |
+  | 0–7 | below 53.3% | none |
+  | 8–11 | 53.3% and up | **Foundational** |
+  | 12–13 | 80% and up | **Proficient** |
+  | 14–15 | 93.3% and up | **Expert** |
+
+  The cutoffs are applied as fractions, so a quiz of a different length is held to the same standard. They live in `lib/quiz/levels.ts`.
 - The level is printed on the **certificate**.
 - Each certificate is **viewable by link**.
 - Would like the certificate available as a **PDF**.
@@ -109,7 +118,7 @@ Out of scope for the hackathon: running user code in a sandbox, free-form code w
 | Multi-select ("which of these would fix it?") | 2 |
 | Reorder the lines | 1–2 |
 
-Difficulty split: about 5 `BEGINNER`, 6 `INTERMEDIATE`, 4 `ADVANCED`, so reaching Advanced means getting the advanced questions right.
+Difficulty split: about 5 `BEGINNER`, 6 `INTERMEDIATE`, 4 `ADVANCED`, so reaching Expert means getting the advanced questions right.
 
 ### Topics
 
@@ -216,7 +225,7 @@ Then run `npm run db:seed`. The seed rejects a `find_the_bug` whose `bugLines` f
 
 - A list of job titles.
 - Under each title, the skills/quizzes required for that job, linking to each quiz.
-- If the user has already taken a quiz, its link is **color coded** by the level they earned (Beginner, Intermediate, Proficient, or Advanced).
+- If the user has already taken a quiz, its link is **color coded** by the level they earned (Foundational, Proficient, or Expert).
 
 ## MVP
 
@@ -241,8 +250,6 @@ Then run `npm run db:seed`. The seed rejects a `find_the_bug` whose `bugLines` f
 
 ## Open Questions
 
-- Percentage cutoffs for each level
-- Where quiz questions come from (written by hand, AI generated, or both) and which quizzes we launch with
 - Which job titles and skill requirements we include
 - Who owns which screen
 - How we incorporate AI into the project

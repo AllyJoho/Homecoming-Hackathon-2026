@@ -138,8 +138,8 @@ export interface QuizResult {
   quizId: string;
   /** Rounded percentage, 0–100. */
   score: number;
-  /** The level this score earns — there is no pass/fail. */
-  level: ProficiencyLevel;
+  /** The certificate level earned, or null below the certificate threshold. */
+  level: ProficiencyLevel | null;
   pointsEarned: number;
   pointsPossible: number;
   graded: GradedQuestion[];
