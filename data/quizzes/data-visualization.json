@@ -2,104 +2,399 @@
   "id": "data-visualization",
   "title": "Data Visualization",
   "skillSlug": "data-visualization",
-  "description": "Test your understanding of data visualization. Choosing chart types and building dashboards that show data accurately and clearly.",
-  "timeLimitSeconds": 600,
+  "description": "Choose encodings, scales, and colours that show data accurately, clearly, and accessibly.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "data-visualization-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Bar chart?",
+      "difficulty": "BEGINNER",
+      "prompt": "A slide shows the market share of 9 products as a pie chart, and the audience cannot tell how the middle-sized products rank. Which redesign makes those comparisons most accurate?",
       "options": [
         {
           "id": "a",
-          "text": "compares values across discrete categories"
+          "text": "A 3D pie chart with the smaller slices pulled out"
         },
         {
           "id": "b",
-          "text": "shows only network topology"
+          "text": "A donut chart with each percentage listed in the legend"
         },
         {
           "id": "c",
-          "text": "is best for encrypting data"
+          "text": "A horizontal bar chart sorted by share, on a common zero baseline"
         },
         {
           "id": "d",
-          "text": "always proves causation"
+          "text": "A treemap with each product's rectangle sized by share"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Bar chart compares values across discrete categories.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "c",
+      "explanation": "Cleveland and McGill's experiments show that judging position or length along a common scale is far more accurate than judging angles or areas, and sorting makes the ranking immediate. A treemap still relies on area judgments, and 3D distorts slice sizes further."
     },
     {
       "id": "data-visualization-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Line chart?",
+      "difficulty": "BEGINNER",
+      "prompt": "A bar chart compares customer-satisfaction scores of 96.1 (Team A) and 97.4 (Team B), and its y-axis starts at 95. Viewers say Team B is \"more than twice as good\". What is the problem and fix?",
       "options": [
         {
           "id": "a",
-          "text": "shows how a measure changes across an ordered sequence such as time"
+          "text": "Bar length encodes the value, so the axis must start at zero; if the small gap matters, use a dot plot"
         },
         {
           "id": "b",
-          "text": "is only for text labels"
+          "text": "Nothing; a truncated axis is the right way to make small differences in bars visible"
         },
         {
           "id": "c",
-          "text": "cannot show trends"
+          "text": "The bars need data labels; adding them makes the truncated axis acceptable"
         },
         {
           "id": "d",
-          "text": "replaces statistical tests"
+          "text": "The axis range is too wide; start it at 96 so the difference is clearer"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Line chart shows how a measure changes across an ordered sequence such as time.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "Readers judge bars by their length, and from a baseline of 95 the bars are 1.1 and 2.4 units long, a 2.2x visual ratio for a 1.4-point (about 1.5%) real difference. Position-based marks such as dots do not imply a zero baseline, so they can use a narrower axis honestly; labels do not undo the misleading lengths."
     },
     {
       "id": "data-visualization-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Dashboard?",
+      "difficulty": "BEGINNER",
+      "prompt": "A stacked bar chart shows revenue for four years, with each bar split into In-store (bottom), Online (middle), and Wholesale (top). Stakeholders mainly want to see how Online changed year to year. What is the problem?",
       "options": [
         {
           "id": "a",
-          "text": "combines coordinated visual summaries to support monitoring or decisions"
+          "text": "Stacked bars cannot show totals, so the yearly totals are hidden"
         },
         {
           "id": "b",
-          "text": "is a raw database dump"
+          "text": "The colours for the three channels are too similar to tell apart"
         },
         {
           "id": "c",
-          "text": "must contain every available metric"
+          "text": "Revenue should be shown as a percentage of the total instead of in dollars"
         },
         {
           "id": "d",
-          "text": "is a password manager"
+          "text": "Online segments do not share a baseline, so their lengths are hard to compare"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Dashboard combines coordinated visual summaries to support monitoring or decisions.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "d",
+      "explanation": "Only the bottom segment of a stacked bar sits on a shared baseline; middle segments float, so readers must compare unaligned lengths, which is much less accurate. A separate line or bar for Online (or small multiples per channel) puts it on a common scale; stacked bars actually show totals well."
     },
     {
       "id": "data-visualization-4",
-      "type": "true_false",
-      "prompt": "True or false: Bar chart compares values across discrete categories.",
-      "correctAnswer": true,
-      "explanation": "Bar chart compares values across discrete categories.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A county map shows each county's percentage change in housing permits versus last year, ranging from -18% to +25%. Which colour scheme fits the data?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A sequential single-hue palette from light to dark"
+        },
+        {
+          "id": "b",
+          "text": "A diverging two-hue palette with a neutral midpoint at 0%"
+        },
+        {
+          "id": "c",
+          "text": "A qualitative palette with a distinct hue per range"
+        },
+        {
+          "id": "d",
+          "text": "A rainbow palette so that every range stands out"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "The data have a meaningful midpoint (no change), with values on both sides, which is what diverging palettes such as ColorBrewer's are designed for. A sequential palette would make -18% and -2% look like different amounts of the same thing rather than declines versus growth."
     },
     {
       "id": "data-visualization-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: combines coordinated visual summaries to support monitoring or decisions?",
-      "acceptedAnswers": [
-        "Dashboard"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: like a bar chart, a line chart's y-axis must always start at zero to avoid misleading the viewer.",
+      "correctAnswer": false,
+      "explanation": "Bars encode value by length, so their baseline must be zero, but lines encode value by position and change by slope, so a non-zero axis that fits the data's range is often appropriate (as Stephen Few notes). The axis should still be clearly labelled."
+    },
+    {
+      "id": "data-visualization-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A dashboard plots monthly ad spend (left axis, $0-50k) and signups (right axis, 1,200-1,500) as two lines on one chart; they appear to rise and fall together. What is the main problem with this design?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Monthly data should be shown as bars rather than lines"
+        },
+        {
+          "id": "b",
+          "text": "Two lines on one chart always need a legend instead of axis labels"
+        },
+        {
+          "id": "c",
+          "text": "The apparent relationship depends on arbitrary choices of the two axis ranges"
+        },
+        {
+          "id": "d",
+          "text": "Ad spend and signups should both be plotted on the left axis in dollars"
+        }
       ],
-      "explanation": "The term is Dashboard.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "With two independent y-axes, rescaling either axis can make the lines cross, overlap, or diverge at will, so the visual correlation is an artefact of the design. A scatterplot of spend against signups, or two aligned panels sharing the time axis, shows the relationship honestly."
+    },
+    {
+      "id": "data-visualization-7",
+      "type": "order_lines",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Order these visual encodings from MOST to LEAST accurately judged for quantitative values, according to Cleveland and McGill's (1984) graphical perception ranking.",
+      "lines": [
+        {
+          "id": "q7",
+          "text": "Position along a common scale"
+        },
+        {
+          "id": "m2",
+          "text": "Position along non-aligned scales"
+        },
+        {
+          "id": "x5",
+          "text": "Length"
+        },
+        {
+          "id": "k9",
+          "text": "Area"
+        },
+        {
+          "id": "b4",
+          "text": "Colour saturation (shading)"
+        }
+      ],
+      "explanation": "Cleveland and McGill ranked elementary perceptual tasks: position on a common scale, position on non-aligned scales, length (with direction and angle), area, volume and curvature, then shading and colour saturation. This is why sorted bar and dot plots beat pies, bubbles, and colour-only encodings for precise comparison."
+    },
+    {
+      "id": "data-visualization-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Following Tufte's data-ink principle, which set of changes improves this chart without removing information?",
+      "code": {
+        "language": "plaintext",
+        "source": "Chart: \"Q3 Revenue by Region\" (4 regions, one series)\n- 3D extruded bars with drop shadows\n- Gradient-filled background\n- Dark gridlines every $5k\n- Legend box with one entry: \"Revenue\"\n- Value label on each bar; y-axis in $k"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Remove the 3D effect, shadows, gradient, and single-entry legend; lighten the gridlines"
+        },
+        {
+          "id": "b",
+          "text": "Remove the value labels and the y-axis so the chart uses as little ink as possible"
+        },
+        {
+          "id": "c",
+          "text": "Convert the bars to a pie chart, which needs no axes or gridlines"
+        },
+        {
+          "id": "d",
+          "text": "Keep every element but shrink the chart so the decoration takes less space"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Tufte's data-ink ratio asks you to erase non-data ink (3D extrusion, shadows, background gradients, a legend for a single series) and mute redundant ink such as heavy gridlines. Removing labels and axes deletes data ink, which loses information instead of clarifying it."
+    },
+    {
+      "id": "data-visualization-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A line chart of weekly sales for 12 regions has become a tangle of overlapping lines in 12 colours. Readers need to see each region's trend and compare levels between regions. Which redesign works best?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Small multiples, one panel per region, each with its own y-axis range"
+        },
+        {
+          "id": "b",
+          "text": "Small multiples, one panel per region, all sharing the same y-axis scale"
+        },
+        {
+          "id": "c",
+          "text": "A stacked area chart with one band per region"
+        },
+        {
+          "id": "d",
+          "text": "The same chart with thicker lines and a larger 12-colour legend"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Small multiples untangle the lines, and a shared y scale keeps panels comparable so a taller line really means more sales. Independent y-axes make every region fill its panel, which hides differences in level and invites false comparisons; stacked areas put most regions on a floating baseline."
+    },
+    {
+      "id": "data-visualization-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A designer sizes bubbles by setting each bubble's radius proportional to revenue. Company B has 3 times Company A's revenue. How much larger does B's bubble look by area, and what is the fix?",
+      "options": [
+        {
+          "id": "a",
+          "text": "3 times as large; this sizing is already correct"
+        },
+        {
+          "id": "b",
+          "text": "9 times as large; scale bubble area, not radius, to revenue"
+        },
+        {
+          "id": "c",
+          "text": "6 times as large; scale the diameter instead of the radius"
+        },
+        {
+          "id": "d",
+          "text": "About 1.7 times as large; put the radius on a log scale"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Area grows with the square of the radius, so tripling the radius makes the circle 3^2 = 9 times larger, exaggerating the difference. Scaling area to the value (radius proportional to sqrt(value)) fixes it; diameter is just twice the radius, so scaling it changes nothing."
+    },
+    {
+      "id": "data-visualization-11",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A team is making its line and bar charts accessible to people with colour-vision deficiencies and low vision. Select all practices that help, consistent with WCAG 2.2.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Label series directly, or add markers or patterns, so they are not identified by colour alone"
+        },
+        {
+          "id": "b",
+          "text": "Give essential marks (lines, bars, points) at least 3:1 contrast against adjacent colours"
+        },
+        {
+          "id": "c",
+          "text": "Choose a palette that stays distinguishable under common colour-vision deficiencies"
+        },
+        {
+          "id": "d",
+          "text": "Encode bad-to-good with a red-to-green palette that people already understand"
+        },
+        {
+          "id": "e",
+          "text": "Use a rainbow colour map for continuous values so every range gets its own hue"
+        },
+        {
+          "id": "f",
+          "text": "Identify each series only through coloured swatches in the legend"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b",
+        "c"
+      ],
+      "explanation": "WCAG 2.2 SC 1.4.1 (Use of Color) forbids colour as the only means of conveying information, and SC 1.4.11 (Non-text Contrast) requires 3:1 contrast for graphical objects needed to understand content. Red-green pairs are the classic failure for deuteranopia and protanopia, and rainbow maps vary unevenly in lightness, so they also fail for many readers."
+    },
+    {
+      "id": "data-visualization-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A heatmap of API latency (0-800 ms, no meaningful midpoint) uses the classic rainbow \"jet\" colour map. Engineers keep reporting sharp boundaries around the yellow and cyan bands that do not exist in the raw numbers. What change fixes this?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Add more colour stops to the rainbow so transitions are smoother"
+        },
+        {
+          "id": "b",
+          "text": "Switch to a diverging palette centred on the median latency"
+        },
+        {
+          "id": "c",
+          "text": "Bin latency into 8 classes and use a qualitative palette"
+        },
+        {
+          "id": "d",
+          "text": "Use a perceptually uniform sequential map such as viridis"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Jet's lightness rises and falls across its range, so equal data steps look unequal and bright bands (yellow, cyan) create false edges; perceptually uniform maps such as viridis change lightness monotonically and also survive greyscale and colour-vision deficiencies. A diverging palette implies a meaningful midpoint, which latency here does not have."
+    },
+    {
+      "id": "data-visualization-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "An executive dashboard must show 8 KPIs, each with its actual value, a target, and poor/satisfactory/good ranges, in a small area. The current design uses 8 speedometer gauges. Which replacement is best supported by established dashboard design practice?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Bullet graphs: a bar for actual, a target marker, and shaded ranges"
+        },
+        {
+          "id": "b",
+          "text": "Larger gauges arranged in a 2 x 4 grid so the needles are easier to read"
+        },
+        {
+          "id": "c",
+          "text": "One pie chart per KPI showing the percentage of target achieved"
+        },
+        {
+          "id": "d",
+          "text": "Red/amber/green status icons, with numbers shown on hover"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Stephen Few designed the bullet graph to replace gauges: it encodes actual, target, and ranges along one linear scale in a fraction of the space, and several stack neatly for comparison. Status icons alone discard magnitude and rely on red-green colour, and gauges waste space on decoration."
+    },
+    {
+      "id": "data-visualization-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A public-safety team wants a county map showing where a resident's risk of burglary is highest. The draft colours counties by total burglaries last year, and the darkest counties are simply the most populous. What should the map show instead?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Total burglaries, using a logarithmic colour scale to compress the range"
+        },
+        {
+          "id": "b",
+          "text": "Burglaries per square mile of county land area"
+        },
+        {
+          "id": "c",
+          "text": "Burglaries per 100,000 residents, flagging counties too small for stable rates"
+        },
+        {
+          "id": "d",
+          "text": "Total burglaries shown as graduated circles instead of shaded areas"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Raw counts largely re-map population, so per-resident risk needs a rate normalized by population; experienced analysts also flag or pool tiny counties, where one or two incidents swing the rate wildly. Per-square-mile density answers a different question (concentration over land) and still favours dense urban counties."
+    },
+    {
+      "id": "data-visualization-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "You need to compare how fast cumulative case counts grew in five countries whose totals range from about 10 to 1,000,000. On a linear axis, four of the lines are flat near zero. Which design fits this goal?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A linear axis zoomed to 0-10,000, cutting off the largest country's line"
+        },
+        {
+          "id": "b",
+          "text": "A bar chart of each country's final total on a logarithmic axis"
+        },
+        {
+          "id": "c",
+          "text": "Separate panels for each country, each with its own linear y-axis range"
+        },
+        {
+          "id": "d",
+          "text": "A line chart with a labelled log y-axis, so equal slopes mean equal growth rates"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "On a log scale, constant percentage growth plots as a straight line, so countries with very different sizes can be compared by slope, the quantity of interest. Bars on a log axis are misleading because there is no zero for their length to start from, and independent panels hide the size differences and make slopes non-comparable."
     }
   ]
 }

@@ -2,104 +2,408 @@
   "id": "user-research-methods",
   "title": "User Research Methods",
   "skillSlug": "user-research-methods",
-  "description": "Test your understanding of user research methods. Planning and running interviews, surveys, and usability tests, and turning findings into recommendations.",
-  "timeLimitSeconds": 600,
+  "description": "Choose and run interviews, surveys and usability tests, and interpret results without bias.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "user-research-methods-1",
       "type": "multiple_choice",
-      "prompt": "What best describes User interview?",
+      "difficulty": "BEGINNER",
+      "prompt": "A startup wants to build a tool for independent plumbers but doesn't yet know how plumbers schedule jobs or what frustrates them. No designs exist yet. Which research method fits this stage?",
       "options": [
         {
           "id": "a",
-          "text": "gathers qualitative evidence by asking people about experiences, needs, and behavior"
+          "text": "Usability testing of a clickable scheduling prototype with plumbers"
         },
         {
           "id": "b",
-          "text": "proves a hypothesis from one person"
+          "text": "An A/B test of two landing-page versions aimed at plumbers"
         },
         {
           "id": "c",
-          "text": "is a production deployment"
+          "text": "Contextual inquiry: observe and interview plumbers while they schedule real jobs"
         },
         {
           "id": "d",
-          "text": "is a database migration"
+          "text": "A System Usability Scale survey of plumbers using competitor apps"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "User interview gathers qualitative evidence by asking people about experiences, needs, and behavior.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "c",
+      "explanation": "With no understanding of the problem space and no design yet, the team needs generative research such as contextual inquiry, which shows real workflows and pain points. Usability testing is evaluative and needs a design to test, and the team doesn't know yet what that design should be."
     },
     {
       "id": "user-research-methods-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Usability test?",
+      "difficulty": "BEGINNER",
+      "prompt": "An interviewer's discussion guide includes: 'How much do you love the new dashboard?' Which rewrite removes the bias?",
       "options": [
         {
           "id": "a",
-          "text": "observes representative users attempting realistic tasks with a product or prototype"
+          "text": "\"Walk me through the last time you used the dashboard.\""
         },
         {
           "id": "b",
-          "text": "asks only whether users like a color"
+          "text": "\"Don't you think the new dashboard is easier than the old one?\""
         },
         {
           "id": "c",
-          "text": "requires a finished product"
+          "text": "\"On a scale of 1 to 10, how much do you like the new dashboard?\""
         },
         {
           "id": "d",
-          "text": "replaces all analytics"
+          "text": "\"What do you love most about the new dashboard?\""
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Usability test observes representative users attempting realistic tasks with a product or prototype.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "An open, neutral prompt about a specific past experience lets the participant report what actually happened without being steered. Adding a 1-10 scale still assumes the participant likes the dashboard, so the question stays leading."
     },
     {
       "id": "user-research-methods-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Qualitative finding?",
+      "difficulty": "BEGINNER",
+      "prompt": "In a survey, 70% of users say they would use a proposed 'save for later' feature 'often'. The PM wants to know how often people would actually use it. Which evidence is most reliable?",
       "options": [
         {
           "id": "a",
-          "text": "captures themes, motivations, or observed behaviors in participants’ words or actions"
+          "text": "The same survey repeated with a sample five times larger"
         },
         {
           "id": "b",
-          "text": "is always a statistically representative percentage"
+          "text": "A focus group asking users how often they expect to use it"
         },
         {
           "id": "c",
-          "text": "is a database key"
+          "text": "Interviews in which participants rate the feature's usefulness from 1 to 5"
         },
         {
           "id": "d",
-          "text": "is a UI component"
+          "text": "Product analytics on actual usage from a limited beta release of the feature"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Qualitative finding captures themes, motivations, or observed behaviors in participants’ words or actions.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "d",
+      "explanation": "Attitudinal data (what people say they'll do) is a poor predictor of behaviour, so measuring real use is far more reliable. A bigger survey only shrinks sampling error; it still measures stated intent, not behaviour."
     },
     {
       "id": "user-research-methods-4",
       "type": "true_false",
-      "prompt": "True or false: User interview gathers qualitative evidence by asking people about experiences, needs, and behavior.",
-      "correctAnswer": true,
-      "explanation": "User interview gathers qualitative evidence by asking people about experiences, needs, and behavior.",
-      "difficulty": "BEGINNER"
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: Testing with 5 users is enough for a quantitative usability benchmark, such as reporting average time-on-task with a narrow confidence interval.",
+      "correctAnswer": false,
+      "explanation": "The 5-user guideline applies to qualitative studies that look for usability problems. For quantitative metrics, NN/g recommends about 40 participants; with 5, confidence intervals are too wide to be useful."
     },
     {
       "id": "user-research-methods-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: captures themes, motivations, or observed behaviors in participants’ words or actions?",
-      "acceptedAnswers": [
-        "Qualitative finding"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "During a moderated usability test, a participant pauses and asks: 'Am I supposed to click Settings here?' What should the facilitator say?",
+      "options": [
+        {
+          "id": "a",
+          "text": "\"Yes, Settings is the right place for that.\""
+        },
+        {
+          "id": "b",
+          "text": "\"What would you do if you were trying this on your own?\""
+        },
+        {
+          "id": "c",
+          "text": "\"No, try looking somewhere else on the page.\""
+        },
+        {
+          "id": "d",
+          "text": "\"Most people click Settings, so that's probably it.\""
+        }
       ],
-      "explanation": "The term is Qualitative finding.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "b",
+      "explanation": "Facilitators should hand the question back without hinting, so the test shows what users do without help. Saying 'most people click Settings' is still a hint and invalidates the task result."
+    },
+    {
+      "id": "user-research-methods-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A fitness-app survey draft contains the items below. Which item has a design flaw that makes its answers uninterpretable?",
+      "code": {
+        "language": "plaintext",
+        "source": "Q1. In the past 30 days, how many times did you book a class in the app?\n    [0] [1-2] [3-5] [6 or more]\nQ2. How satisfied are you with the speed and accuracy of class search?\n    [Very dissatisfied ... Very satisfied]\nQ3. Which device do you mostly use to book classes?\n    [Phone] [Tablet] [Computer] [Other]\nQ4. How easy or difficult was it to cancel a booking?\n    [Very difficult ... Very easy] [I haven't cancelled a booking]"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Q1, because frequency should be collected as open text, not ranges"
+        },
+        {
+          "id": "b",
+          "text": "Q2, because it asks about two things (speed and accuracy) in one question"
+        },
+        {
+          "id": "c",
+          "text": "Q3, because an 'Other' option should never be offered in a survey"
+        },
+        {
+          "id": "d",
+          "text": "Q4, because its rating scale is unbalanced toward positive answers"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Q2 is double-barreled: a respondent who finds search fast but inaccurate has no valid answer, and you can't tell which attribute a rating reflects. Q4's scale runs symmetrically from very difficult to very easy, with an opt-out, so it's well designed."
+    },
+    {
+      "id": "user-research-methods-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A team must report the checkout flow's task-success rate and average time-on-task as a baseline for next year's redesign, with a margin of error of about 15% at 95% confidence. Per NN/g guidance, about how many participants should they plan for?",
+      "options": [
+        {
+          "id": "a",
+          "text": "5"
+        },
+        {
+          "id": "b",
+          "text": "15"
+        },
+        {
+          "id": "c",
+          "text": "400"
+        },
+        {
+          "id": "d",
+          "text": "40"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "NN/g recommends about 40 participants for quantitative usability studies, which gives roughly a 15% margin of error at 95% confidence. Five works for qualitative problem discovery, and 15 is NN/g's guideline for card sorting, not for benchmarking metrics."
+    },
+    {
+      "id": "user-research-methods-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Analytics show that 62% of users abandon the 'Connect your bank account' step of onboarding. The team knows where users drop off but not why. Which method should they run next?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Moderated usability tests of that step with think-aloud"
+        },
+        {
+          "id": "b",
+          "text": "An A/B test comparing two button colours on that step"
+        },
+        {
+          "id": "c",
+          "text": "A longer analytics window of 90 days for a larger sample"
+        },
+        {
+          "id": "d",
+          "text": "A card sort of the app's top-level navigation labels"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Analytics show what happens and where; qualitative usability testing shows why, such as distrust, confusion or missing information. An A/B test can only compare variants you've already guessed at, and it still wouldn't tell you the cause."
+    },
+    {
+      "id": "user-research-methods-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Based on the survey plan below, what is the main threat to the validity of the findings?",
+      "code": {
+        "language": "plaintext",
+        "source": "Survey plan\nGoal:         Understand why customers cancel their subscriptions\nDistribution: In-app pop-up on the Home screen, shown to users\n              who logged in during the past 7 days\nTarget:       2,000 responses"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Insufficient sample: 2,000 responses is too few for statistical significance"
+        },
+        {
+          "id": "b",
+          "text": "Acquiescence bias: pop-ups make respondents agree with every statement"
+        },
+        {
+          "id": "c",
+          "text": "Sampling bias: people who already cancelled or stopped logging in can't see the survey"
+        },
+        {
+          "id": "d",
+          "text": "Hawthorne effect: users act differently because they know they're observed"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "The sampling frame leaves out exactly the people the goal is about (cancelled and lapsed customers), so no number of responses can fix it. 2,000 responses is plenty for precision; the problem is who is being sampled."
+    },
+    {
+      "id": "user-research-methods-10",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Which of these practices reduce bias in user interviews? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Asking about specific past behaviour, e.g. 'Tell me about the last time you...'"
+        },
+        {
+          "id": "b",
+          "text": "Asking 'Would you use a feature that did X?' to gauge demand"
+        },
+        {
+          "id": "c",
+          "text": "Keeping reactions neutral and not praising or agreeing with answers"
+        },
+        {
+          "id": "d",
+          "text": "Showing the prototype first so participants have something concrete to discuss"
+        },
+        {
+          "id": "e",
+          "text": "Following up with 'Why do you say that?' or 'Can you show me?'"
+        },
+        {
+          "id": "f",
+          "text": "Recruiting only from the most engaged beta testers, who give the richest feedback"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c",
+        "e"
+      ],
+      "explanation": "Grounding questions in real past events, staying neutral, and probing with open follow-ups all reduce bias. Hypothetical 'would you' questions predict behaviour poorly, showing the prototype first primes how participants describe their workflow, and recruiting only power users skews the sample."
+    },
+    {
+      "id": "user-research-methods-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A meal-kit company wants to understand how families decide what to cook across a typical month, including moments at the grocery store, on weekday evenings and on weekends. Which method fits best?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A single 60-minute lab usability test of the recipe app"
+        },
+        {
+          "id": "b",
+          "text": "A five-second test of the company's homepage"
+        },
+        {
+          "id": "c",
+          "text": "A tree test of the recipe category structure"
+        },
+        {
+          "id": "d",
+          "text": "A diary study in which participants log cooking decisions over 3-4 weeks"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Diary studies capture behaviour and context over time and across settings, which a single session can't do. A lab usability test evaluates an interface, not how decisions happen naturally over a month."
+    },
+    {
+      "id": "user-research-methods-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A paid study ($100 incentive) uses the screener question below to recruit participants. What is wrong with it, and how should it be fixed?",
+      "code": {
+        "language": "plaintext",
+        "source": "Screener Q3\nDo you use Acme Budget at least once a week to track your spending?\n  ( ) Yes  -> continue\n  ( ) No   -> screen out"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "It reveals the qualifying answer; list several budgeting tools including Acme Budget, and ask frequency separately"
+        },
+        {
+          "id": "b",
+          "text": "It should be an open-ended text question so participants can explain their usage"
+        },
+        {
+          "id": "c",
+          "text": "It's fine, because yes/no questions are the clearest format for screeners"
+        },
+        {
+          "id": "d",
+          "text": "It should be moved to the end of the screener to reduce respondent fatigue"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "With a paid incentive, a yes/no question that signals the 'right' answer invites people to lie their way in. A multiple-choice list with distractor options and a separate frequency question hides what you're screening for. Open text is harder to score and still names the product."
+    },
+    {
+      "id": "user-research-methods-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "An A/B test was planned for 14 days with 20,000 users per arm. The PM checks results daily (below) and wants to stop on day 4 and ship B because p < 0.05. What should the researcher advise?",
+      "code": {
+        "language": "plaintext",
+        "source": "Day   p-value (B vs A conversion)\n2     0.31\n4     0.04\n5     0.09\n7     0.12"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Stop and ship B, because p = 0.04 means there is a 96% chance that B is better"
+        },
+        {
+          "id": "b",
+          "text": "Stop now, then run a fresh 4-day test to confirm the day-4 result"
+        },
+        {
+          "id": "c",
+          "text": "Keep running: stopping at the first p < 0.05 after repeated checks inflates false positives; use the planned sample"
+        },
+        {
+          "id": "d",
+          "text": "Keep running, but switch to a one-tailed test so the day-4 result stays significant"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Repeatedly peeking and stopping at the first significant result greatly inflates the Type I error rate, and the later p-values show the day-4 result was likely noise. Run to the pre-planned sample size or use a proper sequential-testing method. A p-value is not the probability that B is better."
+    },
+    {
+      "id": "user-research-methods-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "In a 5-person usability test, 4 participants completed the key task. The team's goal is a completion rate of at least 78%. A stakeholder says: '80% beats 78%, so we've hit the goal.' Using an adjusted-Wald 95% confidence interval, which statement is correct?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The interval is roughly 76% to 84%, so the goal was met"
+        },
+        {
+          "id": "b",
+          "text": "The interval is roughly 36% to 98%, so the data cannot show that the goal was met"
+        },
+        {
+          "id": "c",
+          "text": "80% is above 78%, so the goal was met regardless of sample size"
+        },
+        {
+          "id": "d",
+          "text": "No confidence interval can be computed with fewer than 30 participants"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Adjusted Wald: p = (4 + 1.92) / (5 + 3.84) = 0.67, SE = sqrt(0.67 x 0.33 / 8.84) = 0.158, so 0.67 +/- 0.31 gives about 36%-98%. The true rate could easily be below 78%. Small-sample intervals such as adjusted Wald (Sauro and Lewis) exist precisely so you can work with n = 5."
+    },
+    {
+      "id": "user-research-methods-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Participants signed consent forms stating that interview recordings would be viewed only by the research team. A VP now asks for all raw interview videos to be uploaded to the company-wide shared drive. What should the researcher do?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Share de-identified findings and quotes, and get renewed consent before sharing any video more widely"
+        },
+        {
+          "id": "b",
+          "text": "Upload the videos, since participants were paid and the company owns the recordings"
+        },
+        {
+          "id": "c",
+          "text": "Upload the videos with faces blurred, since voices alone don't identify anyone"
+        },
+        {
+          "id": "d",
+          "text": "Upload the videos only to the VP's department folder, since that is still internal"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Consent defines how data may be used; sharing beyond the stated scope breaks that agreement and research ethics (and possibly privacy law), no matter who owns the files. Voices, names and details in what people say can still identify participants, so blurring faces isn't enough."
     }
   ]
 }

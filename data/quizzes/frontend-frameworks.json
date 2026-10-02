@@ -2,104 +2,428 @@
   "id": "frontend-frameworks",
   "title": "Frontend Frameworks",
   "skillSlug": "frontend-frameworks",
-  "description": "Test your understanding of frontend frameworks. Building component-based user interfaces with a framework such as React or Vue, including state and props.",
-  "timeLimitSeconds": 600,
+  "description": "Component UIs in React: props, state, hooks, effects, lists, rendering performance, and SSR.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "frontend-frameworks-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Component?",
+      "difficulty": "BEGINNER",
+      "prompt": "In this React component, the item is deleted as soon as the list renders, and clicking the button does nothing. Which change fixes it?",
+      "code": {
+        "language": "jsx",
+        "source": "function DeleteButton({ onDelete }) {\n  return <button onClick={onDelete()}>Delete</button>;\n}"
+      },
       "options": [
         {
           "id": "a",
-          "text": "is a reusable unit of UI markup and behavior"
+          "text": "Use the lowercase DOM name: onclick={onDelete()}"
         },
         {
           "id": "b",
-          "text": "a database table"
+          "text": "Pass the function instead of calling it: onClick={onDelete}"
         },
         {
           "id": "c",
-          "text": "a DNS record"
+          "text": "Add type=\"button\" so the click does not submit a form"
         },
         {
           "id": "d",
-          "text": "a build artifact only"
+          "text": "Move the onDelete() call into a useEffect after render"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Component is a reusable unit of UI markup and behavior.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "b",
+      "explanation": "onDelete() runs during render and passes its return value (undefined) as the handler. React needs a function reference, either onDelete or () => onDelete(). type=\"button\" matters inside forms but does not stop the call during render."
     },
     {
       "id": "frontend-frameworks-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Props?",
+      "difficulty": "BEGINNER",
+      "prompt": "In React, the parent owns count and passes it down. Clicking this button never changes the displayed number. What is the idiomatic fix?",
+      "code": {
+        "language": "jsx",
+        "source": "function Counter({ count }) {\n  return <button onClick={() => count++}>{count}</button>;\n}"
+      },
       "options": [
         {
           "id": "a",
-          "text": "are inputs passed from a parent component to a child"
+          "text": "Have the parent pass an onIncrement callback that updates its state, and call it on click"
         },
         {
           "id": "b",
-          "text": "private database credentials"
+          "text": "Write count += 1 instead, because React tracks assignments to props but not ++"
         },
         {
           "id": "c",
-          "text": "CSS files fetched from a CDN"
+          "text": "Copy count into a module-level variable and increment that variable on click"
         },
         {
           "id": "d",
-          "text": "browser history entries"
+          "text": "Call this.forceUpdate() after count++ so React re-renders with the new value"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Props are inputs passed from a parent component to a child.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "Props are read-only snapshots; changing the local variable neither updates the parent's state nor triggers a render. Data flows down and events flow up: the state owner exposes a callback. forceUpdate exists only on class components and would still render the parent's unchanged value."
     },
     {
       "id": "frontend-frameworks-3",
       "type": "multiple_choice",
-      "prompt": "What best describes State?",
+      "difficulty": "BEGINNER",
+      "prompt": "This React component crashes with \"Rendered more hooks than during the previous render\" right after the user logs in. What is the cause?",
+      "code": {
+        "language": "jsx",
+        "source": "function Profile({ user }) {\n  if (!user) {\n    return <p>Please log in</p>;\n  }\n  const [tab, setTab] = useState('posts');\n  return <Tabs value={tab} onChange={setTab} user={user} />;\n}"
+      },
       "options": [
         {
           "id": "a",
-          "text": "is data owned by a component that can change and trigger a re-render"
+          "text": "useState cannot take a string initial value; it must be initialized with null or an object"
         },
         {
           "id": "b",
-          "text": "a server IP address"
+          "text": "The early return must render null rather than JSX whenever a component uses any hooks"
         },
         {
           "id": "c",
-          "text": "a Git tag"
+          "text": "useState runs only on some renders; hooks must be called unconditionally before any early return"
         },
         {
           "id": "d",
-          "text": "an image compression format"
+          "text": "setTab is passed to a child component, but hook setters may only be called in their own component"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "State is data owned by a component that can change and trigger a re-render.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "c",
+      "explanation": "React identifies hooks by call order, so the number and order of hook calls must be identical on every render (Rules of Hooks). Move useState above the if. Passing a setter to a child is normal and safe."
     },
     {
       "id": "frontend-frameworks-4",
-      "type": "true_false",
-      "prompt": "True or false: Component is a reusable unit of UI markup and behavior.",
-      "correctAnswer": true,
-      "explanation": "Component is a reusable unit of UI markup and behavior.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "Typing into this React search box does nothing: the field stays empty. Which change fixes it while keeping query as the source of truth?",
+      "code": {
+        "language": "jsx",
+        "source": "function Search() {\n  const [query, setQuery] = useState('');\n  return <input value={query} />;\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Replace value={query} with defaultValue={query} on the input"
+        },
+        {
+          "id": "b",
+          "text": "Initialize the state with useState(null) instead of an empty string"
+        },
+        {
+          "id": "c",
+          "text": "Add readOnly={false} so React allows the input to be edited"
+        },
+        {
+          "id": "d",
+          "text": "Add onChange={(e) => setQuery(e.target.value)} to the input"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "A value prop makes the input controlled: React re-applies query on every render, and nothing ever updates query. An onChange that sets state completes the loop. defaultValue makes it uncontrolled, so typing works but query never changes."
     },
     {
       "id": "frontend-frameworks-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: is data owned by a component that can change and trigger a re-render?",
-      "acceptedAnswers": [
-        "State"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: in this React component, addItem reliably re-renders the list with the new item.",
+      "code": {
+        "language": "jsx",
+        "source": "const [items, setItems] = useState([]);\n\nfunction addItem(item) {\n  items.push(item);\n  setItems(items);\n}"
+      },
+      "correctAnswer": false,
+      "explanation": "push mutates the existing array, and setItems receives the same reference, so React's Object.is comparison sees no change and can skip the render. Create a new array instead: setItems([...items, item]) or setItems((prev) => [...prev, item])."
+    },
+    {
+      "id": "frontend-frameworks-6",
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "This React component should fetch the user once per userId. The network tab shows requests firing endlessly. Which line is wrong?",
+      "code": {
+        "language": "jsx",
+        "source": "function UserProfile({ userId }) {\n  const [user, setUser] = useState(null);\n  useEffect(() => {\n    fetch(`/api/users/${userId}`)\n      .then((res) => res.json())\n      .then((data) => setUser(data));\n  });\n  if (!user) return <p>Loading...</p>;\n  return <h1>{user.name}</h1>;\n}"
+      },
+      "bugLines": [
+        7
       ],
-      "explanation": "The term is State.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "With no dependency array the effect runs after every render, and setUser causes another render (a new object each time), so it loops forever. It should close with }, [userId]); so it re-runs only when userId changes."
+    },
+    {
+      "id": "frontend-frameworks-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "In development with StrictMode this React clock ticks twice per second, and in production the interval keeps running after the component unmounts. What is the correct fix?",
+      "code": {
+        "language": "jsx",
+        "source": "function Clock() {\n  const [now, setNow] = useState(new Date());\n  useEffect(() => {\n    setInterval(() => setNow(new Date()), 1000);\n  }, []);\n  return <span>{now.toLocaleTimeString()}</span>;\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Keep the interval id and return () => clearInterval(id) from the effect"
+        },
+        {
+          "id": "b",
+          "text": "Remove StrictMode, since it is the cause of the extra interval"
+        },
+        {
+          "id": "c",
+          "text": "Add now to the dependency array so the interval stays in sync"
+        },
+        {
+          "id": "d",
+          "text": "Switch to useLayoutEffect so the interval is created only once"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Every effect that subscribes to something needs a cleanup. StrictMode deliberately mounts, unmounts, and remounts in development to expose missing cleanups like this one; removing it hides the bug but production unmounts still leak."
+    },
+    {
+      "id": "frontend-frameworks-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "After the user deletes the first todo, the input in the first row still shows the deleted todo's text and the last todo's text disappears. What is the cause?",
+      "code": {
+        "language": "jsx",
+        "source": "<ul>\n  {todos.map((todo, index) => (\n    <li key={index}>\n      <input defaultValue={todo.text} />\n      <button onClick={() => remove(todo.id)}>x</button>\n    </li>\n  ))}\n</ul>"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "defaultValue only works inside a <form>; wrap the list in a form element"
+        },
+        {
+          "id": "b",
+          "text": "remove(todo.id) captures a stale id; pass index to remove instead"
+        },
+        {
+          "id": "c",
+          "text": "key={index} makes React match rows by position and reuse their inputs; use key={todo.id}"
+        },
+        {
+          "id": "d",
+          "text": "React cannot remove list items; filter todos with CSS display: none"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Keys tell React which item each element belongs to. With index keys, deleting item 0 looks like \"the last row was removed,\" so rows 0 and 1 keep their existing uncontrolled inputs. Stable ids keep each input attached to its own todo."
+    },
+    {
+      "id": "frontend-frameworks-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A reviewer flags this React component. What change do the React docs recommend?",
+      "code": {
+        "language": "jsx",
+        "source": "function Cart({ items }) {\n  const [total, setTotal] = useState(0);\n  useEffect(() => {\n    setTotal(items.reduce((sum, i) => sum + i.price, 0));\n  }, [items]);\n  return <p>Total: {total}</p>;\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Move the calculation into useLayoutEffect so the stale total is not painted before it updates"
+        },
+        {
+          "id": "b",
+          "text": "Compute total during render (with useMemo only if it is expensive) and delete the state and effect"
+        },
+        {
+          "id": "c",
+          "text": "Add total to the dependency array so that the effect re-runs whenever the total changes"
+        },
+        {
+          "id": "d",
+          "text": "Copy items into state as well so that items and total always update in the same render"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Values derivable from props or state should be calculated while rendering (\"You Might Not Need an Effect\"). Syncing them through state and an effect causes an extra render with a stale total and invites drift. useLayoutEffect still does the redundant render."
+    },
+    {
+      "id": "frontend-frameworks-10",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "In React, which of these cause a function component to re-render? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Calling its own state setter with a different value"
+        },
+        {
+          "id": "b",
+          "text": "Mutating ref.current on a ref created with useRef"
+        },
+        {
+          "id": "c",
+          "text": "Its parent re-renders (the component is not wrapped in memo)"
+        },
+        {
+          "id": "d",
+          "text": "A context it reads with useContext receives a new value"
+        },
+        {
+          "id": "e",
+          "text": "A module-level variable that it reads is reassigned"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c",
+        "d"
+      ],
+      "explanation": "React re-renders on state changes, parent renders (by default children render too), and changes to consumed context. Refs and plain variables are invisible to React: changing them does not schedule a render."
+    },
+    {
+      "id": "frontend-frameworks-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "When a user has no notifications, a stray \"0\" appears next to the bell icon. Which change fixes it?",
+      "code": {
+        "language": "jsx",
+        "source": "function Bell({ count }) {\n  return (\n    <span>\n      <BellIcon />\n      {count && <Badge value={count} />}\n    </span>\n  );\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Use {count || <Badge value={count} />}"
+        },
+        {
+          "id": "b",
+          "text": "Use {count ?? <Badge value={count} />}"
+        },
+        {
+          "id": "c",
+          "text": "Use {!count && <Badge value={count} />}"
+        },
+        {
+          "id": "d",
+          "text": "Use {count > 0 && <Badge value={count} />}"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "count && ... evaluates to 0 when count is 0, and React renders the number 0 (it only skips false, null, undefined, and true). A boolean condition such as count > 0 renders nothing. The other options render the 0 or show the badge at the wrong time."
+    },
+    {
+      "id": "frontend-frameworks-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "The React Profiler shows every Row re-rendering whenever selected changes, even though Row is wrapped in memo. Why?",
+      "code": {
+        "language": "jsx",
+        "source": "const Row = memo(function Row({ item, onSelect, style }) {\n  /* ... */\n});\n\nfunction List({ items }) {\n  const [selected, setSelected] = useState(null);\n  return items.map((item) => (\n    <Row key={item.id} item={item}\n      onSelect={() => setSelected(item.id)}\n      style={{ padding: 8 }} />\n  ));\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "onSelect and style are new objects on every render, so memo's shallow prop comparison fails"
+        },
+        {
+          "id": "b",
+          "text": "memo only skips renders for class components; function components always re-render"
+        },
+        {
+          "id": "c",
+          "text": "memo compares props deeply, and the items array is recreated whenever selected changes"
+        },
+        {
+          "id": "d",
+          "text": "Using item.id as the key forces a fresh render; memo only works with index-based keys"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "memo compares each prop with Object.is; an inline arrow and an inline object literal are new references every render. Hoist the style constant and pass a stable callback (useCallback taking the id as an argument). memo is shallow, not deep, and items is unchanged here."
+    },
+    {
+      "id": "frontend-frameworks-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "This React counter shows 1 and then stops increasing. Which change fixes it while keeping a single interval for the component's lifetime?",
+      "code": {
+        "language": "jsx",
+        "source": "function Ticker() {\n  const [count, setCount] = useState(0);\n  useEffect(() => {\n    const id = setInterval(() => setCount(count + 1), 1000);\n    return () => clearInterval(id);\n  }, []);\n  return <p>{count}</p>;\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Add count to the dependency array of the effect"
+        },
+        {
+          "id": "b",
+          "text": "Store the interval id in useRef instead of a const"
+        },
+        {
+          "id": "c",
+          "text": "Use the updater form: setCount((c) => c + 1)"
+        },
+        {
+          "id": "d",
+          "text": "Move setInterval out of the effect into the body"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "The interval callback closed over count from the first render (0), so it keeps setting 1. The updater form reads the latest state without depending on count. Adding count to the dependencies also works but tears down and recreates the interval every tick, which the prompt rules out."
+    },
+    {
+      "id": "frontend-frameworks-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "When a user types quickly, this React component sometimes shows results for an older query. What is the recommended fix?",
+      "code": {
+        "language": "jsx",
+        "source": "useEffect(() => {\n  fetch(`/api/search?q=${encodeURIComponent(query)}`)\n    .then((r) => r.json())\n    .then(setResults);\n}, [query]);"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Remove query from the dependency array so that only one request is ever in flight at a time"
+        },
+        {
+          "id": "b",
+          "text": "Wrap setResults in startTransition so React applies the result updates in request order"
+        },
+        {
+          "id": "c",
+          "text": "Switch to useLayoutEffect so each fetch finishes before the next render is allowed to start"
+        },
+        {
+          "id": "d",
+          "text": "Return a cleanup that sets an ignore flag (or aborts the request) and skip setResults for stale responses"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Responses can resolve out of order. When query changes, React runs the previous effect's cleanup, so flagging or aborting there guarantees only the latest response is applied (React docs, \"Fetching data\" with an ignore flag). startTransition affects render priority, not network ordering."
+    },
+    {
+      "id": "frontend-frameworks-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A server-rendered React page (e.g., Next.js) shows hydration-mismatch errors for this component. Which approach correctly resolves it?",
+      "code": {
+        "language": "jsx",
+        "source": "function LastUpdated() {\n  return <p>Updated at {new Date().toLocaleTimeString()}</p>;\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Add suppressHydrationWarning to the root <html> element so all child mismatches are ignored"
+        },
+        {
+          "id": "b",
+          "text": "Render a placeholder first, then set the time in state from a useEffect after mount"
+        },
+        {
+          "id": "c",
+          "text": "Wrap the value in useMemo(() => new Date(), []) so it is computed only once per page load"
+        },
+        {
+          "id": "d",
+          "text": "Wrap the component in StrictMode so React reconciles server and client output automatically"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "The server and the browser compute different times (and possibly locales), so the first client render does not match the server HTML. Effects run only on the client after hydration, so setting the time there keeps the initial render identical. suppressHydrationWarning only applies one level deep, so on <html> it does not cover this <p>."
     }
   ]
 }

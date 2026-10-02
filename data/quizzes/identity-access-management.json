@@ -2,104 +2,406 @@
   "id": "identity-access-management",
   "title": "Identity & Access Management",
   "skillSlug": "identity-access-management",
-  "description": "Test your understanding of identity & access management. Managing authentication, authorization, least privilege, and account lifecycles.",
-  "timeLimitSeconds": 600,
+  "description": "Apply authentication, authorization, federation, least privilege, and account lifecycle controls to real cases.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "identity-access-management-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Least privilege?",
+      "difficulty": "BEGINNER",
+      "prompt": "An accountant signs in to the company portal with the correct password and MFA, then receives HTTP 403 Forbidden when opening the payroll admin page. Which IAM process denied the request?",
       "options": [
         {
           "id": "a",
-          "text": "gives a principal only the access needed for its task"
+          "text": "Authentication, because the MFA challenge was not satisfied for that page"
         },
         {
           "id": "b",
-          "text": "gives every user administrator rights"
+          "text": "Authorization, because her verified identity lacks permission for that resource"
         },
         {
           "id": "c",
-          "text": "removes all auditing"
+          "text": "Accounting, because the audit log recorded the access attempt"
         },
         {
           "id": "d",
-          "text": "shares one account with everyone"
+          "text": "Identification, because the portal could not determine which user she was"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Least privilege gives a principal only the access needed for its task.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "b",
+      "explanation": "She was already authenticated (identity proven); 403 means the server knows who she is but her permissions do not allow the resource. A failed or missing authentication would normally produce 401 or a login redirect, not 403."
     },
     {
       "id": "identity-access-management-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Multi-factor authentication?",
+      "difficulty": "BEGINNER",
+      "prompt": "A company wants to require multi-factor authentication for VPN logins. Which combination actually provides two different authentication factors?",
       "options": [
         {
           "id": "a",
-          "text": "requires two or more independent types of evidence to verify identity"
+          "text": "A password plus answers to two security questions"
         },
         {
           "id": "b",
-          "text": "uses two passwords of the same type"
+          "text": "A fingerprint scan plus a face scan on the same laptop"
         },
         {
           "id": "c",
-          "text": "is only a firewall rule"
+          "text": "A password plus a one-time code from an authenticator app on an enrolled phone"
         },
         {
           "id": "d",
-          "text": "removes the need for usernames"
+          "text": "A password plus a second, different password stored in the user's vault"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Multi-factor authentication requires two or more independent types of evidence to verify identity.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "MFA requires different factor types: something you know (password) plus something you have (the enrolled device generating codes). Security questions and a second password are both knowledge factors, and two biometrics are both inherence factors, so each of those is still single-factor."
     },
     {
       "id": "identity-access-management-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Role-based access control?",
+      "difficulty": "BEGINNER",
+      "prompt": "A help-desk analyst needs to reset MFA registrations for regular employees a few times a week. Currently the team plans to give her the Global Administrator role. Which option follows least privilege?",
       "options": [
         {
           "id": "a",
-          "text": "assigns permissions through job or system roles"
+          "text": "Assign a built-in or custom role limited to resetting authentication methods for non-admin users"
         },
         {
           "id": "b",
-          "text": "grants permissions only by IP address"
+          "text": "Give her Global Administrator but require her to sign in with a hardware security key"
         },
         {
           "id": "c",
-          "text": "stores data in a spreadsheet"
+          "text": "Let her use her manager's admin account when a reset is needed, with the manager present"
         },
         {
           "id": "d",
-          "text": "encrypts network traffic"
+          "text": "Give her Global Administrator during business hours only and remove it each evening"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Role-based access control assigns permissions through job or system roles.",
-      "difficulty": "ADVANCED"
+      "explanation": "Least privilege means granting only the permissions the task requires, so a role scoped to authentication-method resets for standard users is correct. Stronger sign-in or time windows still leave her with tenant-wide power she does not need, and sharing an account destroys individual accountability."
     },
     {
       "id": "identity-access-management-4",
       "type": "true_false",
-      "prompt": "True or false: Least privilege gives a principal only the access needed for its task.",
-      "correctAnswer": true,
-      "explanation": "Least privilege gives a principal only the access needed for its task.",
-      "difficulty": "BEGINNER"
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: NIST SP 800-63B recommends that organizations force users to change their passwords every 60 to 90 days.",
+      "correctAnswer": false,
+      "explanation": "SP 800-63B (Rev. 3 and Rev. 4) says verifiers should not (Rev. 4: SHALL NOT) require periodic password changes; a change is forced only when there is evidence of compromise. Forced rotation pushes users toward predictable patterns such as Spring2026! to Summer2026!."
     },
     {
       "id": "identity-access-management-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: assigns permissions through job or system roles?",
-      "acceptedAnswers": [
-        "Role-based access control"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "Dana moved from Finance to Marketing six months ago. A quarterly access review shows she still has write access to the general ledger and the accounts-payable system. What lifecycle failure does this show, and what is the fix?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A joiner failure; re-run onboarding so her Marketing access is provisioned correctly"
+        },
+        {
+          "id": "b",
+          "text": "A leaver failure; disable her account and create a new one for her Marketing role"
+        },
+        {
+          "id": "c",
+          "text": "An authentication failure; require MFA on the finance systems she can still reach"
+        },
+        {
+          "id": "d",
+          "text": "A mover failure causing privilege creep; remove access not needed for her new role"
+        }
       ],
-      "explanation": "The term is Role-based access control.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "d",
+      "explanation": "When someone changes roles, the mover process must revoke old entitlements as well as add new ones; otherwise access accumulates (privilege creep). She has not left the company, so leaver processing does not apply, and MFA does not fix excessive authorization."
+    },
+    {
+      "id": "identity-access-management-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A hospital requires: clinicians may view a patient record only if the patient is admitted to the clinician's own department, and only while the clinician is on a scheduled shift. Which access control model fits this requirement most directly?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Discretionary access control, letting each record owner grant access to clinicians"
+        },
+        {
+          "id": "b",
+          "text": "Attribute-based access control evaluating user department, patient location, and current shift"
+        },
+        {
+          "id": "c",
+          "text": "Role-based access control with a single Clinician role assigned to all doctors and nurses"
+        },
+        {
+          "id": "d",
+          "text": "Mandatory access control with Confidential and Secret labels on patient records"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "The decision depends on attributes of the subject (department, schedule), the resource (patient's current unit), and the environment (time), which is what ABAC policies evaluate (NIST SP 800-162). A single RBAC role would grant every clinician all records; pure RBAC would need a role explosion for every department-shift combination."
+    },
+    {
+      "id": "identity-access-management-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Your service, https://api.reports.example.com, receives a request with the bearer access token below (decoded). The signature verifies against the issuer's published key, and the current time is 1790983800. What should the API do?",
+      "code": {
+        "language": "plaintext",
+        "source": "Header:\n{ \"alg\": \"RS256\", \"kid\": \"2026-09\", \"typ\": \"at+jwt\" }\nPayload:\n{\n  \"iss\": \"https://login.example.com\",\n  \"sub\": \"u-48213\",\n  \"aud\": \"https://api.billing.example.com\",\n  \"client_id\": \"reports-web\",\n  \"scope\": \"invoices:read\",\n  \"iat\": 1790982000,\n  \"exp\": 1790985600\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Accept it, because the signature is valid and the token has not expired"
+        },
+        {
+          "id": "b",
+          "text": "Accept it, but limit the caller to read-only operations because of the scope"
+        },
+        {
+          "id": "c",
+          "text": "Reject it, because the audience is a different API and the token was not issued for this service"
+        },
+        {
+          "id": "d",
+          "text": "Reject it, because RS256 tokens must be replaced with HS256 for API-to-API calls"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "RFC 9068 and RFC 8725 require resource servers to check that aud identifies them; accepting tokens meant for another API lets any service that receives a token replay it elsewhere. A valid signature and unexpired exp are necessary but not sufficient, and RS256 is a sound choice, unlike a shared HS256 secret."
+    },
+    {
+      "id": "identity-access-management-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A team is building a native iOS app that calls the company's APIs on behalf of signed-in users through an OAuth 2.0 / OpenID Connect provider. Which flow aligns with current guidance (RFC 8252 and the OAuth 2.0 Security BCP, RFC 9700)?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Authorization code flow with PKCE, launched in the system browser"
+        },
+        {
+          "id": "b",
+          "text": "Implicit flow, returning the access token in the redirect URI fragment"
+        },
+        {
+          "id": "c",
+          "text": "Resource owner password credentials, with the app collecting the user's password"
+        },
+        {
+          "id": "d",
+          "text": "Client credentials flow, with the client secret embedded in the app bundle"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Native apps are public clients, so they use the authorization code flow in an external user-agent with PKCE to bind the code to the app instance. The implicit and password grants are deprecated by the Security BCP, and a secret embedded in a distributed app is not secret; client credentials also authenticates the app, not the user."
+    },
+    {
+      "id": "identity-access-management-9",
+      "type": "order_lines",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Put the steps of SP-initiated SAML 2.0 web browser SSO (HTTP-Redirect / HTTP-POST bindings) in order.",
+      "lines": [
+        {
+          "id": "q7",
+          "text": "User's browser requests a protected page at the service provider (SP)"
+        },
+        {
+          "id": "c2",
+          "text": "SP redirects the browser to the identity provider (IdP) with a SAML AuthnRequest"
+        },
+        {
+          "id": "x9",
+          "text": "IdP authenticates the user, or reuses an existing IdP session"
+        },
+        {
+          "id": "m4",
+          "text": "IdP returns a signed SAML Response through the browser to the SP's Assertion Consumer Service URL"
+        },
+        {
+          "id": "f1",
+          "text": "SP validates the signature, audience, and time conditions, then creates a local session"
+        }
+      ],
+      "explanation": "In SP-initiated SSO the SP starts with an AuthnRequest, the IdP authenticates, and the assertion travels back through the browser via HTTP-POST to the ACS endpoint (SAML 2.0 Profiles). The SP must validate the assertion before establishing its own session."
+    },
+    {
+      "id": "identity-access-management-10",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "An auditor reviews accounts-payable entitlements against the company's segregation-of-duties rules. Which users hold a toxic combination of access? Select all that apply.",
+      "code": {
+        "language": "plaintext",
+        "source": "User     Roles\njdoe     AP_Clerk (enter invoices)\nasmith   AP_Approver (approve payments), GL_Reporter (read-only)\nmlee     AP_Clerk (enter invoices), AP_Approver (approve payments)\npkim     Vendor_Master_Edit (create/edit vendors), AP_Approver (approve payments)\nrkhan    Vendor_Master_Edit (create/edit vendors), GL_Reporter (read-only)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "jdoe"
+        },
+        {
+          "id": "b",
+          "text": "asmith"
+        },
+        {
+          "id": "c",
+          "text": "mlee"
+        },
+        {
+          "id": "d",
+          "text": "pkim"
+        },
+        {
+          "id": "e",
+          "text": "rkhan"
+        }
+      ],
+      "correctOptionIds": [
+        "c",
+        "d"
+      ],
+      "explanation": "mlee can both enter and approve invoices, and pkim can create a fictitious vendor and then approve payments to it; both let one person commit and conceal fraud. asmith only approves and reads reports, and rkhan's vendor maintenance combined with read-only reporting cannot move money."
+    },
+    {
+      "id": "identity-access-management-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "An audit finds 14 engineers hold permanent Global Administrator in the company's cloud tenant \"in case they need it\"; each uses it a few times a month. Which change addresses the finding while preserving their ability to do the work?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Keep the standing assignments but rotate the engineers' passwords every 30 days"
+        },
+        {
+          "id": "b",
+          "text": "Replace the 14 assignments with one shared admin account whose password is kept in a vault"
+        },
+        {
+          "id": "c",
+          "text": "Remove admin rights entirely and have the engineers ask the CISO to make each change"
+        },
+        {
+          "id": "d",
+          "text": "Make the role eligible-only, activated just in time for a limited period with MFA, justification, and logging"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Just-in-time privileged access removes standing privilege, so a compromised engineer account is not an admin account most of the time, while still letting engineers elevate when needed. A shared admin account removes individual accountability, and password rotation leaves the permanent privilege in place."
+    },
+    {
+      "id": "identity-access-management-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Attackers are using an adversary-in-the-middle phishing kit that proxies the real login page, relays users' MFA responses, and steals session cookies. Users currently use push notifications. Which authenticator would defeat this technique?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Push notifications with number matching shown on the login page"
+        },
+        {
+          "id": "b",
+          "text": "SMS one-time codes sent to the user's registered phone number"
+        },
+        {
+          "id": "c",
+          "text": "FIDO2/WebAuthn passkeys or security keys bound to the legitimate origin"
+        },
+        {
+          "id": "d",
+          "text": "TOTP codes with the validity window shortened from 30 to 15 seconds"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "WebAuthn signs a challenge bound to the site's origin, so a credential for login.example.com will not produce a valid assertion for a lookalike proxy domain; NIST SP 800-63B Rev. 4 recognizes it as phishing-resistant and states OTP and out-of-band methods are not. Number matching stops push fatigue, but a user on the proxy page still sees and enters the number in real time."
+    },
+    {
+      "id": "identity-access-management-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A contractor's account was disabled in the IdP at 09:00. Logs show his laptop kept calling the orders API successfully until 08:40 the next day. The API validates JWT access tokens locally (signature and exp only); tokens are issued with a 24-hour lifetime. What explains this, and what is the right fix?",
+      "options": [
+        {
+          "id": "a",
+          "text": "IdP replication lag delayed the disable; schedule a forced directory sync at offboarding"
+        },
+        {
+          "id": "b",
+          "text": "Issued JWTs stay valid until exp; use short-lived access tokens and revoke refresh tokens at offboarding"
+        },
+        {
+          "id": "c",
+          "text": "The API skipped signature checks; enforce RS256 validation against the IdP's JWKS endpoint"
+        },
+        {
+          "id": "d",
+          "text": "The contractor's password was not reset; rotate passwords for all disabled accounts"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Self-contained tokens are validated without contacting the IdP, so disabling the account only stops new tokens from being issued; an existing token works until it expires. Short access-token lifetimes (minutes) plus refresh-token revocation, or introspection for sensitive APIs, bound that window; resetting a password does not invalidate tokens already issued."
+    },
+    {
+      "id": "identity-access-management-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A multi-tenant SaaS app supports \"Sign in with\" any customer's OpenID Connect tenant. After verifying the ID token's signature, issuer, and audience, it runs the code below. What is the security flaw?",
+      "code": {
+        "language": "python",
+        "source": "claims = verify_id_token(id_token, issuer=tenant_issuer, audience=CLIENT_ID)\nuser = users.find_one({\"email\": claims[\"email\"]})\nif user is None:\n    user = users.insert_one({\"email\": claims[\"email\"], \"name\": claims[\"name\"]})\nstart_session(user)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Users are matched on the email claim, which a tenant admin can set to someone else's address; key accounts on iss plus sub"
+        },
+        {
+          "id": "b",
+          "text": "The ID token should be sent to the userinfo endpoint and its claims ignored, because ID tokens are unsigned"
+        },
+        {
+          "id": "c",
+          "text": "Users should be matched on the name claim instead, because it is set by HR and cannot be changed by tenants"
+        },
+        {
+          "id": "d",
+          "text": "The app should match on the access token's scope claim, since scopes are tied to a specific user"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "OpenID Connect Core guarantees only that sub is unique and stable within an issuer, so the iss+sub pair is the correct account key; email can be mutable or unverified in another tenant, allowing account takeover (the 2023 \"nOAuth\" issue). Name and scope do not identify a user, and ID tokens are signed JWTs."
+    },
+    {
+      "id": "identity-access-management-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A red team requested a Kerberos service ticket for the account below using an ordinary domain user, then cracked its password offline in three hours. Which remediation prevents this class of attack against this service?",
+      "code": {
+        "language": "plaintext",
+        "source": "PS> Get-ADUser svc_sqlprod -Properties ServicePrincipalName, PasswordLastSet\nDistinguishedName    : CN=svc_sqlprod,OU=Service Accounts,DC=corp,DC=example,DC=com\nEnabled              : True\nServicePrincipalName : {MSSQLSvc/sql01.corp.example.com:1433}\nPasswordLastSet      : 3/14/2017 9:02:11 AM"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Add svc_sqlprod to the Protected Users security group in AD"
+        },
+        {
+          "id": "b",
+          "text": "Require MFA for svc_sqlprod at every interactive logon"
+        },
+        {
+          "id": "c",
+          "text": "Mark svc_sqlprod as sensitive and not allowed for delegation"
+        },
+        {
+          "id": "d",
+          "text": "Migrate the service to a group Managed Service Account (gMSA)"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Kerberoasting works because any authenticated user can request a ticket encrypted with the service account's password-derived key and crack it offline; a gMSA's 240-byte random password, rotated automatically, makes that infeasible. MFA does not apply to service-ticket issuance, Protected Users is not intended for service accounts, and the delegation flag addresses a different attack."
     }
   ]
 }

@@ -2,104 +2,217 @@
   "id": "technical-writing",
   "title": "Technical Writing",
   "skillSlug": "technical-writing",
-  "description": "Test your understanding of technical writing. Writing clear documentation, procedures, and reports for technical and nontechnical readers.",
-  "timeLimitSeconds": 600,
+  "description": "Write and fix developer docs using Diataxis, the Google developer style guide, docs-as-code, and clear API references.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "technical-writing-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Task procedure?",
+      "difficulty": "BEGINNER",
+      "prompt": "A sysadmin already runs your product in production. She needs to rotate the database credentials without downtime and wants to get it done this afternoon. Under the Diataxis framework, which kind of document serves her?",
       "options": [
-        {
-          "id": "a",
-          "text": "gives ordered steps that help a reader complete a goal"
-        },
-        {
-          "id": "b",
-          "text": "is a list of unrelated slogans"
-        },
-        {
-          "id": "c",
-          "text": "is a database query plan"
-        },
-        {
-          "id": "d",
-          "text": "is a color palette"
-        }
+        { "id": "a", "text": "A tutorial" },
+        { "id": "b", "text": "An explanation" },
+        { "id": "c", "text": "A reference" },
+        { "id": "d", "text": "A how-to guide" }
       ],
-      "correctOptionId": "a",
-      "explanation": "Task procedure gives ordered steps that help a reader complete a goal.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "d",
+      "explanation": "Diataxis defines how-to guides as goal-oriented directions for a competent user solving a real problem. A tutorial is a learning experience for a newcomer, and a reference describes the machinery without walking through the task."
     },
     {
       "id": "technical-writing-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Audience analysis?",
+      "difficulty": "BEGINNER",
+      "prompt": "Which version of this procedure step follows the Google developer documentation style guide?",
       "options": [
-        {
-          "id": "a",
-          "text": "adapts terminology, context, and detail to the reader"
-        },
-        {
-          "id": "b",
-          "text": "uses the same jargon for everyone"
-        },
-        {
-          "id": "c",
-          "text": "removes all examples"
-        },
-        {
-          "id": "d",
-          "text": "only checks spelling"
-        }
+        { "id": "a", "text": "To turn on two-factor authentication, click Enable." },
+        { "id": "b", "text": "Click Enable to turn on two-factor authentication." },
+        { "id": "c", "text": "Two-factor authentication will be turned on when Enable is clicked." },
+        { "id": "d", "text": "You should now click Enable, which turns on two-factor authentication." }
       ],
       "correctOptionId": "a",
-      "explanation": "Audience analysis adapts terminology, context, and detail to the reader.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "Google's procedure guidance says to state the goal before the action, so readers know why before they act and can skip steps that do not apply. Option b has the same words but puts the action first; options c and d add passive voice, future tense, or filler."
     },
     {
       "id": "technical-writing-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Information architecture?",
+      "difficulty": "BEGINNER",
+      "prompt": "A user tries to upload a 40 MB file to a form with a 25 MB limit. Which error message follows the guidance in Google's technical writing course on error messages?",
       "options": [
-        {
-          "id": "a",
-          "text": "organizes content so readers can find and understand it"
-        },
-        {
-          "id": "b",
-          "text": "is a server deployment method"
-        },
-        {
-          "id": "c",
-          "text": "is an encryption key"
-        },
-        {
-          "id": "d",
-          "text": "is a spreadsheet formula"
-        }
+        { "id": "a", "text": "Error 413: Request entity too large." },
+        { "id": "b", "text": "Oops! Something went wrong. Please try again later." },
+        { "id": "c", "text": "This file is 40 MB. Upload a file of 25 MB or less." },
+        { "id": "d", "text": "You uploaded an invalid file, and the server rejected it." }
       ],
-      "correctOptionId": "a",
-      "explanation": "Information architecture organizes content so readers can find and understand it.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "c",
+      "explanation": "A helpful error message identifies the specific problem and tells the user how to fix it, without blame or jargon. The HTTP code is accurate but meaningless to most users, and \"try again later\" sends them to repeat an upload that will fail again."
     },
     {
       "id": "technical-writing-4",
-      "type": "true_false",
-      "prompt": "True or false: Task procedure gives ordered steps that help a reader complete a goal.",
-      "correctAnswer": true,
-      "explanation": "Task procedure gives ordered steps that help a reader complete a goal.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A draft says: \"To learn about quotas, [click here].\" Which revision follows the Google developer style guide and WCAG guidance on link text?",
+      "options": [
+        { "id": "a", "text": "To learn about quotas, [click this link]." },
+        { "id": "b", "text": "For details, see [Quotas and limits]." },
+        { "id": "c", "text": "See [https://example.com/docs/quotas] for details." },
+        { "id": "d", "text": "[Read more] about quotas in the docs." }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Link text should describe the destination so it makes sense out of context, for example in a screen reader's list of links (WCAG 2.4.4); Google suggests matching the target page title. \"Read more\" and \"click this link\" are generic, and raw URLs are hard to read aloud."
     },
     {
       "id": "technical-writing-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: organizes content so readers can find and understand it?",
-      "acceptedAnswers": [
-        "Information architecture"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: The Google developer documentation style guide recommends future tense for describing system behavior, as in \"The API will return a 404 error if the user is not found.\"",
+      "correctAnswer": false,
+      "explanation": "Google recommends present tense (\"The API returns a 404 error...\"); future tense adds words and implies the behavior happens at some later time. Future tense is reserved for things that really happen in the future."
+    },
+    {
+      "id": "technical-writing-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Analytics show most learners abandon this getting-started tutorial at step 3. Following Diataxis, what is the best fix?",
+      "code": { "language": "markdown", "source": "## Step 3: Add your first webhook\n\nBefore we add the webhook, it's worth understanding how our event\nsystem evolved. In 2019 we moved from polling to a pub/sub model,\nwhich has several trade-offs...\n\n(four more paragraphs on delivery guarantees and retry theory)\n\nNow run:\n\n    acme webhooks create --url https://example.com/hook" },
+      "options": [
+        { "id": "a", "text": "Move the architecture discussion into the CLI reference page so the reference is complete" },
+        { "id": "b", "text": "Keep it, because a tutorial should explain in depth why each step works before doing it" },
+        { "id": "c", "text": "Cut it to one sentence and link to a separate explanation page about the event system" },
+        { "id": "d", "text": "Turn the tutorial into a how-to guide, since it now has too much detail for beginners" }
       ],
-      "explanation": "The term is Information architecture.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "Diataxis says tutorials should keep learners doing and give minimal explanation, linking out to explanation content for those who want depth. Moving discussion into reference just pollutes a different quadrant, since reference should describe, not discuss."
+    },
+    {
+      "id": "technical-writing-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A developer reads this API reference, sends amount=25 to charge $25.00, and the customer is charged $0.25. Which documentation fix prevents this?",
+      "code": { "language": "markdown", "source": "### POST /v1/payments\n\n| Field    | Type    | Description                     |\n|----------|---------|---------------------------------|\n| amount   | integer | Amount to charge.               |\n| currency | string  | Three-letter ISO currency code. |\n| capture  | boolean | Capture the payment immediately. |" },
+      "options": [
+        { "id": "a", "text": "State that amount is in the currency's smallest unit: 2500 means $25.00 USD" },
+        { "id": "b", "text": "Change the documented type of amount from integer to a decimal string" },
+        { "id": "c", "text": "Add a sentence saying that amount must be a positive whole number" },
+        { "id": "d", "text": "Mark the currency field as required and list the supported currencies" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Reference entries must state units, and the missing unit (minor units such as cents) is what caused the hundredfold error; an example value makes it unmistakable. Saying amount must be positive is true but would not have prevented sending 25."
+    },
+    {
+      "id": "technical-writing-8",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "These release notes are about to be published to customers. Select the two entries that must be rewritten before publishing.",
+      "code": { "language": "markdown", "source": "## v4.0.0\n\n- Added CSV export to the Reports page.\n- Refactored PaymentManager to use the new DAO layer (JIRA-2231).\n- Removed the `legacy_auth` parameter from `POST /login`.\n- Fixed a bug where invoices showed the wrong due date in some time zones." },
+      "options": [
+        { "id": "a", "text": "Added CSV export to the Reports page." },
+        { "id": "b", "text": "Refactored PaymentManager to use the new DAO layer (JIRA-2231)." },
+        { "id": "c", "text": "Removed the legacy_auth parameter from POST /login." },
+        { "id": "d", "text": "Fixed a bug where invoices showed the wrong due date in some time zones." }
+      ],
+      "correctOptionIds": ["b", "c"],
+      "explanation": "The refactor entry describes internal code and a private ticket with no user-facing impact, so it should be removed or restated as an effect users notice. The legacy_auth removal is a breaking change that must be flagged as breaking and include migration steps; the other two entries already describe user-visible changes."
+    },
+    {
+      "id": "technical-writing-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Readers copy this command, run it unchanged, and get \"project not found.\" How should it be rewritten according to the Google developer style guide on placeholders?",
+      "code": { "language": "plaintext", "source": "To view your project's details, run:\n\n    gcloud projects describe my-project-123" },
+      "options": [
+        { "id": "a", "text": "Use gcloud projects describe <your project>, with angle brackets around it" },
+        { "id": "b", "text": "Keep my-project-123, since a realistic example shows the expected ID format" },
+        { "id": "c", "text": "Use gcloud projects describe your-project-id, written in lowercase with hyphens" },
+        { "id": "d", "text": "Use gcloud projects describe PROJECT_ID, then add \"Replace PROJECT_ID with ...\"" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Google's guide formats placeholders in uppercase with underscores, without possessives like \"your\", and explains each one right after the sample. Angle brackets are risky in shell commands (they are redirection operators), and a realistic-looking value invites exactly the copy-paste failure seen here."
+    },
+    {
+      "id": "technical-writing-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Support tickets show admins losing files with this procedure. What change fixes the documentation?",
+      "code": { "language": "markdown", "source": "1. Open the Admin console.\n2. Select the workspace.\n3. Click **Delete workspace**, and then click **Confirm**.\n4. Note: Deleting a workspace permanently removes all its files.\n   Export any files you need before you delete it." },
+      "options": [
+        { "id": "a", "text": "Keep the note in step 4 but make it bold so readers notice it" },
+        { "id": "b", "text": "Move it before step 3 as a warning, ahead of the action it guards" },
+        { "id": "c", "text": "Move the note to an FAQ page and link to it from the procedure" },
+        { "id": "d", "text": "Add an \"Are you sure?\" sentence to step 3, right after Confirm" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "A hazard notice must appear before the step that causes the irreversible action, and data loss warrants a warning rather than a note. Bolding it after step 3 still means readers see it only once the files are already gone."
+    },
+    {
+      "id": "technical-writing-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A team's API docs live in a wiki and keep drifting from the code: features ship, but nobody updates the pages, and reviewers never see doc changes. Which docs-as-code change addresses the cause?",
+      "options": [
+        { "id": "a", "text": "Keep docs as Markdown in the code repo, update them in the same pull request, and lint/build them in CI" },
+        { "id": "b", "text": "Hire a technical writer to audit every wiki page once a quarter and fix whatever has drifted" },
+        { "id": "c", "text": "Add a \"last reviewed\" date to each wiki page so readers can judge whether to trust it" },
+        { "id": "d", "text": "Generate all documentation from code comments and delete the conceptual and how-to pages" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Docs-as-code puts docs under the same version control, review, and CI as the code, so doc updates ship and are reviewed with the change that requires them. Quarterly audits only find drift after users have hit it, and generated comments cover reference but not tutorials or how-tos."
+    },
+    {
+      "id": "technical-writing-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "API v2.4 deprecates the customer_name field in favor of customer.given_name and customer.family_name. The field will be removed in v3.0, planned for March. How should the reference documentation handle customer_name now?",
+      "options": [
+        { "id": "a", "text": "Remove customer_name from the reference now so that no new integrations start using it" },
+        { "id": "b", "text": "Leave the reference unchanged and announce the deprecation only in the changelog" },
+        { "id": "c", "text": "Keep its entry, mark it deprecated, name the replacement fields, and state the removal version" },
+        { "id": "d", "text": "Leave the reference unchanged until v3.0 ships, then delete the entry in the same release" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Existing integrators still need the entry while the field works, so the reference should flag it as deprecated, point to the replacement with a migration example, and give the removal version. Deleting it early strands current users, and a changelog-only notice is missed by anyone landing on the reference page."
+    },
+    {
+      "id": "technical-writing-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "After an SDK release renamed several methods, support receives dozens of tickets from users whose copy-pasted documentation samples no longer run. This is the third time this year. What prevents it from recurring?",
+      "options": [
+        { "id": "a", "text": "Add a banner on every page warning that the code samples might be out of date" },
+        { "id": "b", "text": "Keep samples in source files that CI runs against the current SDK, and include them in docs" },
+        { "id": "c", "text": "Have the writers manually re-check every code sample before each major SDK release" },
+        { "id": "d", "text": "Replace the code samples with pseudocode so that they cannot go stale after renames" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Samples that are compiled and run in CI break the build when the SDK changes, so drift is caught before publishing rather than by users. Manual review before major releases is what has already failed three times, and pseudocode removes the copy-paste value developers need."
+    },
+    {
+      "id": "technical-writing-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "An architecture overview page includes a diagram of 12 services and the data flows between them; the page's main point depends on the diagram. Following the W3C WAI images tutorial, how should the text alternative be handled?",
+      "options": [
+        { "id": "a", "text": "Set alt=\"Architecture diagram\" and rely on the image to convey the rest" },
+        { "id": "b", "text": "Put a full 300-word description of every service and flow in the alt attribute" },
+        { "id": "c", "text": "Set alt=\"\" and mark the image decorative, since the page has prose around it" },
+        { "id": "d", "text": "Use short alt text naming the diagram, with a full text description nearby or linked" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "For complex images, the W3C guidance is a two-part alternative: a short alt that identifies the image, plus a long description in the page or linked from it. A 300-word alt attribute is hard to navigate with a screen reader, and marking a content-bearing diagram as decorative hides it entirely."
+    },
+    {
+      "id": "technical-writing-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Your docs use \"workspace,\" \"project,\" and \"space\" interchangeably for the same object, and they are about to be translated into nine languages. What should the writing team do?",
+      "options": [
+        { "id": "a", "text": "Choose one term, use it everywhere, and define it in a glossary or termbase for translators" },
+        { "id": "b", "text": "Keep the variety, because repeating one noun throughout makes the docs read monotonously" },
+        { "id": "c", "text": "Let each translator pick whichever local term reads best in their language and market" },
+        { "id": "d", "text": "Add a footnote on the first page explaining that the three terms mean the same thing" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "In technical writing, a different word signals a different thing; readers and translators will reasonably treat three terms as three objects, multiplying confusion across nine languages. Google's guide for a global audience calls for consistent terminology, and a termbase keeps translations consistent too."
     }
   ]
 }

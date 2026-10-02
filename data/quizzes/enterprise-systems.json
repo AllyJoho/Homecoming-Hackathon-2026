@@ -2,104 +2,411 @@
   "id": "enterprise-systems",
   "title": "Enterprise Systems (ERP/CRM)",
   "skillSlug": "enterprise-systems",
-  "description": "Test your understanding of enterprise systems (erp/crm). How ERP and CRM platforms are configured, integrated, and used to run business operations.",
-  "timeLimitSeconds": 600,
+  "description": "ERP and CRM processes, master data, order-to-cash and procure-to-pay, controls, integration, and implementation.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "enterprise-systems-1",
-      "type": "multiple_choice",
-      "prompt": "What best describes ERP?",
-      "options": [
+      "type": "order_lines",
+      "difficulty": "BEGINNER",
+      "prompt": "Put these order-to-cash steps for a standard sale of a stocked item in an ERP (e.g., SAP S/4HANA) in the order they occur.",
+      "lines": [
         {
-          "id": "a",
-          "text": "integrates business functions such as finance, supply chain, and operations"
+          "id": "q7",
+          "text": "Enter the sales order (pricing, availability, and credit check)"
         },
         {
-          "id": "b",
-          "text": "is a browser rendering engine"
+          "id": "m2",
+          "text": "Pick, pack, and post the goods issue for the outbound delivery"
         },
         {
-          "id": "c",
-          "text": "is a network packet format"
+          "id": "x5",
+          "text": "Create the customer invoice (billing document)"
         },
         {
-          "id": "d",
-          "text": "is a single social-media post"
+          "id": "d9",
+          "text": "Receive the customer's payment and clear the open receivable"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "ERP integrates business functions such as finance, supply chain, and operations.",
-      "difficulty": "BEGINNER"
+      "explanation": "The sales order commits the sale, the goods issue moves stock out and posts cost of goods sold, billing creates the receivable, and the incoming payment clears it. Invoicing before goods issue is a common mix-up, but standard delivery-based billing requires the delivery first."
     },
     {
       "id": "enterprise-systems-2",
       "type": "multiple_choice",
-      "prompt": "What best describes CRM pipeline?",
+      "difficulty": "BEGINNER",
+      "prompt": "A new data steward is asked to take ownership of the company's master data in the ERP. Which of these records falls under that responsibility?",
       "options": [
         {
           "id": "a",
-          "text": "tracks prospects and customer interactions through stages of a sales process"
+          "text": "The purchase order for 200 units sent to that supplier last week"
         },
         {
           "id": "b",
-          "text": "is a server boot sequence"
+          "text": "The vendor record holding the supplier's address, bank details, and payment terms"
         },
         {
           "id": "c",
-          "text": "is a data encryption key"
+          "text": "The goods receipt posted when the 200 units arrived at the warehouse"
         },
         {
           "id": "d",
-          "text": "is a CSS layout model"
+          "text": "The supplier's invoice for the 200 units awaiting payment"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "CRM pipeline tracks prospects and customer interactions through stages of a sales process.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "b",
+      "explanation": "Master data describes long-lived business entities (vendors, customers, materials) that many transactions reuse; an error there propagates to every PO and payment. Purchase orders, goods receipts, and invoices are transactional documents that reference the vendor master."
     },
     {
       "id": "enterprise-systems-3",
-      "type": "multiple_choice",
-      "prompt": "What best describes Master data?",
-      "options": [
-        {
-          "id": "a",
-          "text": "is shared, relatively stable business information used consistently across systems"
-        },
-        {
-          "id": "b",
-          "text": "is temporary log output"
-        },
-        {
-          "id": "c",
-          "text": "is a random test fixture"
-        },
-        {
-          "id": "d",
-          "text": "is a user-interface animation"
-        }
-      ],
-      "correctOptionId": "a",
-      "explanation": "Master data is shared, relatively stable business information used consistently across systems.",
-      "difficulty": "ADVANCED"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: In an integrated ERP such as SAP S/4HANA, posting a goods receipt against a purchase order for a stocked, valuated material automatically creates an accounting entry (debit inventory, credit the GR/IR clearing account).",
+      "correctAnswer": true,
+      "explanation": "Integration means the logistics event posts to the general ledger in real time: inventory is debited and the GR/IR clearing account credited, and the invoice later debits GR/IR and credits the vendor. Many people assume accounting only happens when the invoice arrives."
     },
     {
       "id": "enterprise-systems-4",
-      "type": "true_false",
-      "prompt": "True or false: ERP integrates business functions such as finance, supply chain, and operations.",
-      "correctAnswer": true,
-      "explanation": "ERP integrates business functions such as finance, supply chain, and operations.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A sales rep qualifies a web lead from a company that is not yet in Salesforce, and there is a real deal to pursue. What does converting the lead typically do?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Creates a customer master record and a sales order in the connected ERP"
+        },
+        {
+          "id": "b",
+          "text": "Creates a campaign and a support case, both linked to the lead record"
+        },
+        {
+          "id": "c",
+          "text": "Creates an account, a contact, and optionally an opportunity from the lead"
+        },
+        {
+          "id": "d",
+          "text": "Creates a quote and a contract, then deletes the original lead record"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Lead conversion in Salesforce turns a qualified prospect into an account (company), a contact (person), and optionally an opportunity (the deal), keeping the lead for reporting. ERP customer and order records are typically created later, when a deal closes and integration runs."
     },
     {
       "id": "enterprise-systems-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: is shared, relatively stable business information used consistently across systems?",
-      "acceptedAnswers": [
-        "Master data"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "Before the ERP rollout, sales entered orders in a standalone system and finance tracked receivables in another. A customer with $80,000 overdue kept receiving new shipments. Which integrated-ERP capability prevents this?",
+      "options": [
+        {
+          "id": "a",
+          "text": "An automatic credit check at order entry against real-time open receivables"
+        },
+        {
+          "id": "b",
+          "text": "A monthly accounts receivable aging report emailed to the sales team"
+        },
+        {
+          "id": "c",
+          "text": "A CRM dashboard showing each customer's lifetime revenue and open deals"
+        },
+        {
+          "id": "d",
+          "text": "A rule requiring manager approval for any order above a fixed dollar amount"
+        }
       ],
-      "explanation": "The term is Master data.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "a",
+      "explanation": "In an ERP, sales and finance share one data model, so the order can be blocked the moment exposure exceeds the credit limit. A monthly report is too late, and a fixed order-value approval ignores how much the customer already owes."
+    },
+    {
+      "id": "enterprise-systems-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Accounts payable enters the vendor invoice below against the purchase order and goods receipt. Given the configured tolerance, what happens?",
+      "code": {
+        "language": "plaintext",
+        "source": "Purchase order 4500018812   Material M-220   Qty 500   Price $10.00/ea\nGoods receipt               Qty 500 received\nVendor invoice              Qty 500   Price $10.80/ea   Total $5,400.00\nInvoice price tolerance     +/- 5% per unit"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The invoice is paid at $10.00 per unit and the difference is written off automatically"
+        },
+        {
+          "id": "b",
+          "text": "The invoice is rejected because the quantities on the three documents don't match"
+        },
+        {
+          "id": "c",
+          "text": "The invoice is paid in full because the receipt confirms that all 500 units arrived"
+        },
+        {
+          "id": "d",
+          "text": "The invoice posts but is blocked for payment until the price variance is resolved"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Three-way matching compares PO, goods receipt, and invoice; quantities agree, but the $10.80 price is 8% over the PO price, beyond the 5% tolerance, so the invoice is blocked for payment. A matching quantity doesn't override a price variance."
+    },
+    {
+      "id": "enterprise-systems-7",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "An audit finds that 14% of customer records in the ERP are duplicates (e.g., 'Acme Corp' and 'ACME Corporation'), splitting credit limits and miscalculating rebates. Which actions address both the root cause and the existing duplicates? Select 3.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Assign a business data owner and stewards with documented creation and survivorship rules"
+        },
+        {
+          "id": "b",
+          "text": "Add duplicate-matching checks that run whenever a new customer record is created"
+        },
+        {
+          "id": "c",
+          "text": "Merge existing duplicates into a single golden record and repoint open transactions to it"
+        },
+        {
+          "id": "d",
+          "text": "Let each sales region maintain its own customer list and sync the lists nightly"
+        },
+        {
+          "id": "e",
+          "text": "Add a free-text 'possible duplicate' note field to the customer record"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b",
+        "c"
+      ],
+      "explanation": "Master data governance needs ownership and rules, preventive checks at creation, and a one-time cleanup that merges duplicates with survivorship logic. Regional lists multiply the sources of duplicates, and a note field records the problem without fixing it."
+    },
+    {
+      "id": "enterprise-systems-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "During an ERP implementation, the finance director wants the vendor's standard invoice-approval code modified to replicate the legacy nine-step routing. The required approval thresholds could instead be set in the standard workflow configuration. What is the main long-term risk of modifying the code?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Every upgrade or patch must be retested and the change refitted, raising cost and delaying upgrades"
+        },
+        {
+          "id": "b",
+          "text": "Configuration settings are wiped at each upgrade, whereas modified code is preserved"
+        },
+        {
+          "id": "c",
+          "text": "Modified code always runs slower than the same logic built with configuration"
+        },
+        {
+          "id": "d",
+          "text": "Auditors can review modified code but not configured workflows, weakening controls"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Configuration uses vendor-supported settings that survive upgrades; modifications to standard code create technical debt that must be re-applied and regression-tested with every release, which is why practitioners adopt standard processes where possible. Configuration is preserved across upgrades, not wiped."
+    },
+    {
+      "id": "enterprise-systems-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Customers occasionally receive two identical shipments. The CRM-to-ERP integration log for one case is below. Which fix addresses the root cause without losing orders?",
+      "code": {
+        "language": "plaintext",
+        "source": "10:02:11 CRM->ERP  POST /salesOrders  opp=OPP-5531  ... no response, timeout after 30s\n10:02:41 CRM->ERP  POST /salesOrders  opp=OPP-5531  -> 201 Created  SO 7100452\n10:03:05 ERP       SO 7100451 created for opp=OPP-5531 (first request, slow commit)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Increase the integration timeout to 120 seconds so retries happen less often"
+        },
+        {
+          "id": "b",
+          "text": "Send an idempotency key (the opportunity ID) so the ERP returns the existing order"
+        },
+        {
+          "id": "c",
+          "text": "Turn off retries in the CRM so every order is only ever sent one time"
+        },
+        {
+          "id": "d",
+          "text": "Add a nightly ERP job that deletes orders created within a minute of each other"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "The first request succeeded but timed out from the CRM's view, so the retry created a second order; an idempotency key lets the ERP recognize the replay. A longer timeout only narrows the window, and disabling retries drops orders when a request genuinely fails."
+    },
+    {
+      "id": "enterprise-systems-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "On April 6, an AP clerk posts a vendor invoice with a March 28 posting date and gets the message below. Finance completed the March close on April 5. What should happen?",
+      "code": {
+        "language": "plaintext",
+        "source": "Error: Posting period 003 2026 is not open\nCompany code 1000, posting date 28.03.2026"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Change the invoice's document date to April 6 so it matches the posting date"
+        },
+        {
+          "id": "b",
+          "text": "Ask master data to remove the posting block on the vendor's master record"
+        },
+        {
+          "id": "c",
+          "text": "Post it in April, unless the controller approves reopening March"
+        },
+        {
+          "id": "d",
+          "text": "Request an additional security role that grants access to the AP module"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Posting periods are opened and closed by finance to lock completed months; a late invoice is normally posted in the current open period, or the period is reopened under controlled approval. The message is about the period, not the vendor or user access, and altering the document date misstates the invoice."
+    },
+    {
+      "id": "enterprise-systems-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A user access review shows the role assignments below. Internal audit rates this as a high risk. Why?",
+      "code": {
+        "language": "plaintext",
+        "source": "User:   jlopez (AP Specialist)\nRoles:  AP_INVOICE_ENTRY\n        VENDOR_MASTER_MAINTAIN\n        PAYMENT_RUN_EXECUTE"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "AP specialists should not enter invoices at all; invoice entry belongs to purchasing"
+        },
+        {
+          "id": "b",
+          "text": "ERP users should be limited to exactly one role each to keep access auditable"
+        },
+        {
+          "id": "c",
+          "text": "Payment runs must be executed by IT administrators, not by finance staff"
+        },
+        {
+          "id": "d",
+          "text": "One user can set up a vendor or change its bank details and also run payments to it"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Segregation of duties separates maintaining vendor master data from processing payments so no single person can set up a vendor (or change its bank account) and pay it. Holding multiple roles is fine when they don't combine conflicting duties."
+    },
+    {
+      "id": "enterprise-systems-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A company running a multi-tenant SaaS ERP (e.g., SAP S/4HANA Cloud) needs a custom approval app for capital projects that reads and updates project data. Which approach follows the vendor's 'clean core' extensibility guidance?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A side-by-side extension on the vendor's platform using released APIs and events"
+        },
+        {
+          "id": "b",
+          "text": "Copy the standard project program into a custom namespace and modify the copy"
+        },
+        {
+          "id": "c",
+          "text": "Have an external app write directly to the ERP's underlying database tables"
+        },
+        {
+          "id": "d",
+          "text": "Ask the vendor's support team to apply a code modification to the tenant"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Clean-core guidance keeps the ERP standard and extends it only through stable, released interfaces, so quarterly SaaS upgrades don't break the extension. Cloning standard programs and writing straight to tables both depend on internals that the vendor can change at any release, and SaaS tenants don't accept core modifications."
+    },
+    {
+      "id": "enterprise-systems-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "During a flash sale the web store sold 900 units of an item with only 600 in stock. Details are below. Which change fixes the root cause?",
+      "code": {
+        "language": "plaintext",
+        "source": "01:00  ERP -> web store inventory sync: SKU 44-190 on hand = 600\n09:00  Flash sale starts\n09:00-11:30  Web store accepts 900 orders for SKU 44-190\n             (store decrements only its own copy; it allows negative stock)\nNext sync: 01:00 tomorrow"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Run the inventory sync twice a day instead of once a night"
+        },
+        {
+          "id": "b",
+          "text": "Check real-time ATP in the ERP at checkout and reserve stock for each order"
+        },
+        {
+          "id": "c",
+          "text": "Make the web store the system of record for inventory and sync it to the ERP nightly"
+        },
+        {
+          "id": "d",
+          "text": "Allow backorders on every item so oversold orders ship once stock is replenished"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "The store sells against a stale nightly snapshot, so any demand spike between syncs oversells; checking ATP and reserving stock in real time closes that gap. A twice-daily sync shrinks the window but still oversells during a sale, and backorders accept the overselling rather than prevent it."
+    },
+    {
+      "id": "enterprise-systems-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "AP receives an emailed request, on what looks like the vendor's letterhead, to change the vendor's bank account before Friday's payment run. Which control should the ERP process require for every vendor bank-detail change?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Reply to the email and ask the vendor to confirm the new account details in writing first"
+        },
+        {
+          "id": "b",
+          "text": "Accept the change only if the request comes as a signed PDF on official letterhead"
+        },
+        {
+          "id": "c",
+          "text": "Call back on a phone number already on file, then require a second approver"
+        },
+        {
+          "id": "d",
+          "text": "Apply the change immediately, then send the vendor a confirmation email afterward"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Payment-redirection fraud relies on spoofed or compromised email, so verification must use an independent channel with contact details already on file, and ERPs support dual control on sensitive vendor fields. Replying to the same email thread or trusting letterhead can be answered by the attacker."
+    },
+    {
+      "id": "enterprise-systems-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "The second mock data migration produced the AR reconciliation below. What explains the difference, and what should the team do before the next mock load?",
+      "code": {
+        "language": "plaintext",
+        "source": "AR reconciliation - mock load 2\nLegacy AR control account balance         4,812,400.00\nSum of open items in new ERP              4,908,700.00\nDifference                                   96,300.00\n\nLegacy open items by type\n  Open invoices (debit)                   5,003,900.00\n  Open credit memos (credit)                -96,300.00\n  Unapplied cash (credit)                   -95,200.00"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Unapplied cash was not migrated; load it as open payments on account and rerun"
+        },
+        {
+          "id": "b",
+          "text": "Currency rounding caused the gap; post the difference to a suspense account"
+        },
+        {
+          "id": "c",
+          "text": "Paid invoices were migrated twice; delete the duplicated history and rerun"
+        },
+        {
+          "id": "d",
+          "text": "Open credit memos were not migrated; load them as open credits and rerun"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Legacy open items net to the control balance: 5,003,900 - 96,300 - 95,200 = 4,812,400. The migrated total, 4,908,700, equals invoices minus unapplied cash only, so the 96,300 gap is exactly the credit memos. Unapplied cash (95,200) is a near-miss figure that is already included; plugging to suspense would hide the error."
     }
   ]
 }

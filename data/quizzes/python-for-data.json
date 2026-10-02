@@ -2,104 +2,420 @@
   "id": "python-for-data",
   "title": "Python for Data Analysis",
   "skillSlug": "python-for-data",
-  "description": "Test your understanding of python for data analysis. Using Python with libraries like pandas and NumPy to load, transform, and analyze datasets.",
-  "timeLimitSeconds": 600,
+  "description": "Load, reshape, aggregate, and debug datasets with pandas and NumPy.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "python-for-data-1",
       "type": "multiple_choice",
-      "prompt": "What best describes DataFrame?",
+      "difficulty": "BEGINNER",
+      "prompt": "You load this file with pd.read_csv(\"people.csv\") and no other arguments. What dtype does pandas infer for the age column, and what is stored for id 2?",
+      "code": {
+        "language": "plaintext",
+        "source": "id,age\n1,34\n2,\n3,29"
+      },
       "options": [
         {
           "id": "a",
-          "text": "is a labeled two-dimensional table commonly used in pandas"
+          "text": "int64, with 0 stored for the blank value"
         },
         {
           "id": "b",
-          "text": "is a Python package installer"
+          "text": "object, with an empty string stored for the blank"
         },
         {
           "id": "c",
-          "text": "is a neural-network layer only"
+          "text": "float64, with NaN stored for the blank value"
         },
         {
           "id": "d",
-          "text": "is a browser DOM node"
+          "text": "Int64 (nullable), with <NA> stored for the blank"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "DataFrame is a labeled two-dimensional table commonly used in pandas.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "c",
+      "explanation": "The default NumPy int64 dtype cannot hold NaN, so read_csv upcasts a numeric column with a missing value to float64 and stores NaN. The nullable Int64 dtype is only used if you ask for it (e.g. dtype={\"age\": \"Int64\"})."
     },
     {
       "id": "python-for-data-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Vectorization?",
+      "difficulty": "BEGINNER",
+      "prompt": "What does this code print?",
+      "code": {
+        "language": "python",
+        "source": "import pandas as pd\n\ns = pd.Series([10, 20, 30, 40, 50], index=[1, 2, 3, 4, 5])\nprint(s.loc[2:4].tolist(), s.iloc[2:4].tolist())"
+      },
       "options": [
         {
           "id": "a",
-          "text": "applies an operation to an array or column without an explicit Python loop over each item"
+          "text": "[20, 30] [30, 40]"
         },
         {
           "id": "b",
-          "text": "turns code into HTML"
+          "text": "[20, 30, 40] [30, 40]"
         },
         {
           "id": "c",
-          "text": "encrypts a CSV file"
+          "text": "[20, 30, 40] [20, 30, 40]"
         },
         {
           "id": "d",
-          "text": "creates a Git branch"
+          "text": "[30, 40] [30, 40, 50]"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Vectorization applies an operation to an array or column without an explicit Python loop over each item.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "b",
+      "explanation": "Label-based slicing with .loc includes both endpoints, so labels 2..4 give 20, 30, 40. Positional slicing with .iloc follows Python rules and excludes the stop, so positions 2 and 3 give 30 and 40."
     },
     {
       "id": "python-for-data-3",
       "type": "multiple_choice",
-      "prompt": "What best describes NumPy array?",
+      "difficulty": "BEGINNER",
+      "prompt": "What is the result of the last line?",
+      "code": {
+        "language": "python",
+        "source": "import numpy as np\n\na = np.zeros((3, 1))\nb = np.arange(4)\n(a + b).shape"
+      },
       "options": [
         {
           "id": "a",
-          "text": "is a homogeneous, multidimensional structure designed for numerical operations"
+          "text": "ValueError: operands could not be broadcast together"
         },
         {
           "id": "b",
-          "text": "is a relational database"
+          "text": "(3, 1)"
         },
         {
           "id": "c",
-          "text": "is a Markdown document"
+          "text": "(4, 3)"
         },
         {
           "id": "d",
-          "text": "is a web server route"
+          "text": "(3, 4)"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "NumPy array is a homogeneous, multidimensional structure designed for numerical operations.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "d",
+      "explanation": "NumPy broadcasting aligns shapes from the right: (3, 1) and (4,) become (3, 1) and (1, 4), and each size-1 dimension stretches, giving (3, 4). An error occurs only when two non-1 dimensions differ."
     },
     {
       "id": "python-for-data-4",
       "type": "true_false",
-      "prompt": "True or false: DataFrame is a labeled two-dimensional table commonly used in pandas.",
-      "correctAnswer": true,
-      "explanation": "DataFrame is a labeled two-dimensional table commonly used in pandas.",
-      "difficulty": "BEGINNER"
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: pd.Series([2, None, 4]).mean() returns NaN because one of the values is missing.",
+      "correctAnswer": false,
+      "explanation": "pandas reductions use skipna=True by default, so the result is 3.0 (the mean of 2 and 4). The tempting answer comes from NumPy, where np.mean on an array containing NaN does return nan."
     },
     {
       "id": "python-for-data-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: is a homogeneous, multidimensional structure designed for numerical operations?",
-      "acceptedAnswers": [
-        "NumPy array"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "Given the DataFrame below, what does the row for team A contain in the output of df.groupby(\"team\")[\"pts\"].agg([\"mean\", \"count\", \"size\"])?",
+      "code": {
+        "language": "plaintext",
+        "source": "  team   pts\n0    A  10.0\n1    B   7.0\n2    A   NaN\n3    B   9.0\n4    A   4.0"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "mean 7.0, count 2, size 3"
+        },
+        {
+          "id": "b",
+          "text": "mean 4.67, count 3, size 3"
+        },
+        {
+          "id": "c",
+          "text": "mean 7.0, count 3, size 3"
+        },
+        {
+          "id": "d",
+          "text": "mean NaN, count 2, size 3"
+        }
       ],
-      "explanation": "The term is NumPy array.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "a",
+      "explanation": "mean and count skip NaN, so team A averages 10 and 4 (7.0) over 2 non-missing values, while size counts all 3 rows including the NaN. 4.67 would only result from treating the missing value as 0."
+    },
+    {
+      "id": "python-for-data-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Using the same team/pts DataFrame (5 rows, default RangeIndex), you need a new column team_avg holding each row's team mean, keeping all 5 rows. Which line does this?",
+      "options": [
+        {
+          "id": "a",
+          "text": "df[\"team_avg\"] = df.groupby(\"team\")[\"pts\"].mean()"
+        },
+        {
+          "id": "b",
+          "text": "df[\"team_avg\"] = df[\"pts\"].mean()"
+        },
+        {
+          "id": "c",
+          "text": "df[\"team_avg\"] = df.groupby(\"team\")[\"pts\"].transform(\"mean\")"
+        },
+        {
+          "id": "d",
+          "text": "df[\"team_avg\"] = df.groupby(\"team\")[\"pts\"].apply(lambda s: s.mean())"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "transform returns a result aligned to the original row index, so every row gets its group's mean. groupby().mean() and the apply version return a Series indexed by team name (\"A\", \"B\"), which does not align with row labels 0-4 and fills the column with NaN."
+    },
+    {
+      "id": "python-for-data-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "What does print(x + y) show?",
+      "code": {
+        "language": "python",
+        "source": "import pandas as pd\n\nx = pd.Series([1, 2, 3], index=[\"a\", \"b\", \"c\"])\ny = pd.Series([10, 20, 30], index=[\"b\", \"c\", \"d\"])\nprint(x + y)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "a NaN, b 12.0, c 23.0, d NaN"
+        },
+        {
+          "id": "b",
+          "text": "0 11, 1 22, 2 33"
+        },
+        {
+          "id": "c",
+          "text": "b 12, c 23"
+        },
+        {
+          "id": "d",
+          "text": "a 1.0, b 12.0, c 23.0, d 30.0"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Arithmetic between Series aligns on index labels, producing the union of labels; labels present in only one Series become NaN (and the dtype becomes float). To treat missing labels as 0 you would use x.add(y, fill_value=0)."
+    },
+    {
+      "id": "python-for-data-8",
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "This script should coerce unparseable quantities to NaN, overwrite negative quantities in the orders DataFrame with 0, and then print total revenue. Negative quantities still show up in the output. Which line is wrong?",
+      "code": {
+        "language": "python",
+        "source": "import pandas as pd\n\norders = pd.read_csv(\"orders.csv\")\norders[\"qty\"] = pd.to_numeric(orders[\"qty\"], errors=\"coerce\")\nbad = orders[\"qty\"] < 0\norders[bad][\"qty\"] = 0\norders[\"revenue\"] = orders[\"qty\"] * orders[\"unit_price\"]\nprint(orders[\"revenue\"].sum())"
+      },
+      "bugLines": [
+        6
+      ],
+      "explanation": "orders[bad][\"qty\"] = 0 is chained assignment: orders[bad] produces a new object, so the write never reaches orders (SettingWithCopyWarning in pandas 2.x; it never works under Copy-on-Write). Use orders.loc[bad, \"qty\"] = 0. Line 4 is correct: errors=\"coerce\" is exactly how to turn unparseable values into NaN."
+    },
+    {
+      "id": "python-for-data-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A DataFrame w is in wide format (one column per year). Which call produces the long table shown, with one row per store-year?",
+      "code": {
+        "language": "plaintext",
+        "source": "w (wide):\n  store  2023  2024\n0    S1     5     7\n1    S2     6     8\n\nwanted (long):\n  store  year  sales\n0    S1  2023      5\n1    S2  2023      6\n2    S1  2024      7\n3    S2  2024      8"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "w.pivot(index=\"store\", columns=\"year\", values=\"sales\")"
+        },
+        {
+          "id": "b",
+          "text": "w.melt(id_vars=\"store\", var_name=\"year\", value_name=\"sales\")"
+        },
+        {
+          "id": "c",
+          "text": "w.set_index(\"store\").T.reset_index()"
+        },
+        {
+          "id": "d",
+          "text": "w.groupby(\"store\").sum().reset_index()"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "melt unpivots the year columns into variable/value pairs while keeping store as an identifier, giving one row per store-year. pivot goes the opposite direction (long to wide) and would fail here because w has no year or sales columns."
+    },
+    {
+      "id": "python-for-data-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "What does this print?",
+      "code": {
+        "language": "python",
+        "source": "import pandas as pd\n\nr = pd.Series([3, 6, 9, 12, 15])\nprint(r.rolling(3).mean().tolist())"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "[3.0, 4.5, 6.0, 9.0, 12.0]"
+        },
+        {
+          "id": "b",
+          "text": "[6.0, 9.0, 12.0, nan, nan]"
+        },
+        {
+          "id": "c",
+          "text": "[nan, 6.0, 9.0, 12.0, nan]"
+        },
+        {
+          "id": "d",
+          "text": "[nan, nan, 6.0, 9.0, 12.0]"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "A trailing window of 3 needs 3 observations by default (min_periods equals the window size), so the first two results are NaN and each later value averages the current and two previous points. [3.0, 4.5, ...] would require min_periods=1, and the centred version would require center=True."
+    },
+    {
+      "id": "python-for-data-11",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "You need the rows of df where city is \"Provo\" or \"Orem\". Select all expressions that return exactly those rows without raising an error.",
+      "options": [
+        {
+          "id": "a",
+          "text": "df[df[\"city\"].isin([\"Provo\", \"Orem\"])]"
+        },
+        {
+          "id": "b",
+          "text": "df[df[\"city\"] == \"Provo\" or df[\"city\"] == \"Orem\"]"
+        },
+        {
+          "id": "c",
+          "text": "df.query(\"city in ['Provo', 'Orem']\")"
+        },
+        {
+          "id": "d",
+          "text": "df[(df[\"city\"] == \"Provo\") | (df[\"city\"] == \"Orem\")]"
+        },
+        {
+          "id": "e",
+          "text": "df[df[\"city\"] == \"Provo\" | df[\"city\"] == \"Orem\"]"
+        },
+        {
+          "id": "f",
+          "text": "df[df[\"city\"] in [\"Provo\", \"Orem\"]]"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c",
+        "d"
+      ],
+      "explanation": "isin, query with in, and | with each comparison parenthesised all build a valid boolean mask. Python's or and in call bool() on a Series and raise \"truth value of a Series is ambiguous\", and without parentheses | binds tighter than ==, so \"Provo\" | df[\"city\"] is evaluated first and raises a TypeError."
+    },
+    {
+      "id": "python-for-data-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Reconciling a sales report, you see the output below. Why do the totals disagree, and what is the right fix?",
+      "code": {
+        "language": "plaintext",
+        "source": ">>> sales[\"amount\"].sum()\n1250000.0\n>>> sales.groupby(\"region\")[\"amount\"].sum().sum()\n1184500.0\n>>> sales[\"region\"].isna().sum()\n212"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "groupby drops rows whose key is NaN by default; pass dropna=False (or fill a label) so they form their own group"
+        },
+        {
+          "id": "b",
+          "text": "groupby().sum() skips NaN amounts while Series.sum() counts them as 0; fill amount NaNs before grouping"
+        },
+        {
+          "id": "c",
+          "text": "Floating-point error accumulates differently across groups; round both totals to the nearest dollar first"
+        },
+        {
+          "id": "d",
+          "text": "groupby silently merges case variants like \"West\" and \"west\"; normalize the region labels to fix it"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "groupby defaults to dropna=True, so the 212 rows with a missing region are excluded from every group, which is exactly the kind of gap shown. Both sum methods skip NaN amounts identically, and float error cannot explain a 65,500 difference."
+    },
+    {
+      "id": "python-for-data-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A left join to add product names should keep one row per order, but the row count grew. What is the most likely cause, and what safeguard should be added?",
+      "code": {
+        "language": "plaintext",
+        "source": ">>> len(orders)\n48210\n>>> enriched = orders.merge(products, on=\"sku\", how=\"left\")\n>>> len(enriched)\n48977"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Some order SKUs are missing from products; add indicator=True to list the unmatched rows"
+        },
+        {
+          "id": "b",
+          "text": "products has duplicate sku values; dedupe it and pass validate=\"many_to_one\" so duplicates raise"
+        },
+        {
+          "id": "c",
+          "text": "how=\"left\" also keeps unmatched products; switch to how=\"inner\" to restore the count"
+        },
+        {
+          "id": "d",
+          "text": "The sku columns have different dtypes; cast both to str so each key matches only once"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "A left join only adds rows when a left key matches several right rows, i.e. duplicate keys in products; validate=\"many_to_one\" makes pandas raise a MergeError instead of silently fanning out. Unmatched SKUs produce NaN columns, not extra rows, and an inner join would hide the problem while dropping orders."
+    },
+    {
+      "id": "python-for-data-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A 30-million-row DataFrame no longer fits in memory. Profiling shows most of it is the state column: Python string objects with only 50 distinct values, used for filtering and groupby. Which change cuts that column's memory the most while keeping it usable?",
+      "options": [
+        {
+          "id": "a",
+          "text": "df[\"state\"] = df[\"state\"].str.strip() to remove padding"
+        },
+        {
+          "id": "b",
+          "text": "Write the frame to CSV with compression=\"gzip\" and read it back"
+        },
+        {
+          "id": "c",
+          "text": "df[\"state\"] = df[\"state\"].astype(\"category\")"
+        },
+        {
+          "id": "d",
+          "text": "df = df.set_index(\"state\") so the labels live in the index"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "The category dtype stores each of the 50 strings once plus a small integer code per row (int8 here), turning 30 million string objects into about 30 MB of codes, and it still supports filtering and groupby. Compression only shrinks the file on disk, and moving the strings into the index keeps the same objects in memory."
+    },
+    {
+      "id": "python-for-data-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "This loop combines about 5,000 daily files, and each iteration gets slower than the last. Which change fixes the slowdown?",
+      "code": {
+        "language": "python",
+        "source": "results = pd.DataFrame()\nfor path in files:          # ~5,000 daily CSVs\n    day = pd.read_csv(path)\n    results = pd.concat([results, day], ignore_index=True)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Replace pd.concat with results = results.append(day)"
+        },
+        {
+          "id": "b",
+          "text": "Pass copy=False to pd.concat inside the loop"
+        },
+        {
+          "id": "c",
+          "text": "Read each file with engine=\"pyarrow\" to speed up parsing"
+        },
+        {
+          "id": "d",
+          "text": "Collect each day in a list and call pd.concat once after the loop"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Concatenating inside the loop copies the whole growing frame every iteration, so total work grows quadratically; building a list and concatenating once copies each row a single time. DataFrame.append was removed in pandas 2.0 and had the same quadratic cost, and faster parsing does not address the repeated copying."
     }
   ]
 }

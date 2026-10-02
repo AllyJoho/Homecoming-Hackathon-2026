@@ -2,104 +2,415 @@
   "id": "html-css-fundamentals",
   "title": "HTML & CSS Fundamentals",
   "skillSlug": "html-css-fundamentals",
-  "description": "Test your understanding of html & css fundamentals. Writing semantic HTML and styling pages with CSS, including layout with flexbox and grid.",
-  "timeLimitSeconds": 600,
+  "description": "Semantic, accessible HTML and CSS: cascade, box model, flexbox, grid, positioning, and performance.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "html-css-fundamentals-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Semantic HTML?",
+      "difficulty": "BEGINNER",
+      "prompt": "Keyboard users can neither tab to nor activate this \"Save\" control. Which single change fixes both problems?",
+      "code": {
+        "language": "markup",
+        "source": "<div class=\"btn\" onclick=\"save()\">Save</div>"
+      },
       "options": [
         {
           "id": "a",
-          "text": "uses elements that describe the meaning and structure of content"
+          "text": "Add tabindex=\"0\" to the div so that it joins the keyboard tab order"
         },
         {
           "id": "b",
-          "text": "only class names to style every element"
+          "text": "Add role=\"button\" to the div so assistive technology treats it as a button"
         },
         {
           "id": "c",
-          "text": "JavaScript to draw all page content"
+          "text": "Replace it with <button type=\"button\" class=\"btn\" onclick=\"save()\">Save</button>"
         },
         {
           "id": "d",
-          "text": "tables for page layout"
+          "text": "Add cursor: pointer to .btn so it is clearly presented as clickable"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Semantic HTML uses elements that describe the meaning and structure of content.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "c",
+      "explanation": "A native <button> is focusable, fires click on Enter and Space, and exposes the button role for free. tabindex=\"0\" only makes the div focusable (Enter/Space still do nothing), and role=\"button\" changes semantics without adding any behavior."
     },
     {
       "id": "html-css-fundamentals-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Flexbox?",
+      "difficulty": "BEGINNER",
+      "prompt": "Given <body><p class=\"intro\">Hello</p></body> and only these rules, what color is the text?",
+      "code": {
+        "language": "css",
+        "source": "p.intro { color: green; }\n.intro { color: red; }\np { color: black; }\nbody p { color: orange; }"
+      },
       "options": [
         {
           "id": "a",
-          "text": "lays out items along one main axis and distributes available space"
+          "text": "Green"
         },
         {
           "id": "b",
-          "text": "stores data in browser storage"
+          "text": "Red"
         },
         {
           "id": "c",
-          "text": "creates database relationships"
+          "text": "Black"
         },
         {
           "id": "d",
-          "text": "compresses image files"
+          "text": "Orange"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Flexbox lays out items along one main axis and distributes available space.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "Specificity beats source order: p.intro is (0,1,1), .intro is (0,1,0), body p is (0,0,2), p is (0,0,1). Source order only decides between equally specific selectors, so the later .intro and body p rules lose."
     },
     {
       "id": "html-css-fundamentals-3",
       "type": "multiple_choice",
-      "prompt": "What best describes CSS Grid?",
+      "difficulty": "BEGINNER",
+      "prompt": "With the browser default box-sizing, how wide is this element from the outer edge of its left border to the outer edge of its right border?",
+      "code": {
+        "language": "css",
+        "source": ".card {\n  width: 300px;\n  padding: 20px;\n  border: 2px solid #ccc;\n  margin: 10px;\n}"
+      },
       "options": [
         {
           "id": "a",
-          "text": "lays out content across rows and columns"
+          "text": "300px"
         },
         {
           "id": "b",
-          "text": "validates a form on the server"
+          "text": "344px"
         },
         {
           "id": "c",
-          "text": "changes an HTTP status code"
+          "text": "364px"
         },
         {
           "id": "d",
-          "text": "loads a web font"
+          "text": "340px"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "CSS Grid lays out content across rows and columns.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "b",
+      "explanation": "The default is box-sizing: content-box, so width sets only the content: 300 + 2x20 padding + 2x2 border = 344px. Margin (which would give 364px) sits outside the border. With box-sizing: border-box the result would be 300px."
     },
     {
       "id": "html-css-fundamentals-4",
-      "type": "true_false",
-      "prompt": "True or false: Semantic HTML uses elements that describe the meaning and structure of content.",
-      "correctAnswer": true,
-      "explanation": "Semantic HTML uses elements that describe the meaning and structure of content.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "You want this sidebar's children centered horizontally (left-right) at their natural width instead of stretching. Which declaration should you add to .sidebar?",
+      "code": {
+        "language": "css",
+        "source": ".sidebar {\n  display: flex;\n  flex-direction: column;\n  height: 100vh;\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "justify-content: center;"
+        },
+        {
+          "id": "b",
+          "text": "justify-items: center;"
+        },
+        {
+          "id": "c",
+          "text": "vertical-align: middle;"
+        },
+        {
+          "id": "d",
+          "text": "align-items: center;"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "With flex-direction: column the main axis is vertical, so justify-content would center vertically; align-items controls the cross (horizontal) axis and also stops the default stretch. justify-items is ignored in flexbox, and vertical-align applies to inline and table-cell content."
     },
     {
       "id": "html-css-fundamentals-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: lays out content across rows and columns?",
-      "acceptedAnswers": [
-        "CSS Grid"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: for a purely decorative image, <img src=\"divider.png\" alt=\"\"> is correct, and screen readers will skip the image.",
+      "correctAnswer": true,
+      "explanation": "An empty alt marks the image as decorative, so assistive technology ignores it (WCAG 1.1.1, technique H67). Omitting alt entirely is the mistake: many screen readers then announce the file name."
+    },
+    {
+      "id": "html-css-fundamentals-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The container's content box is 700px wide. How many columns does this grid create, and how wide is each one?",
+      "code": {
+        "language": "css",
+        "source": ".gallery {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\n  gap: 20px;\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "3 columns, each 220px wide"
+        },
+        {
+          "id": "b",
+          "text": "3 columns, each about 233px wide"
+        },
+        {
+          "id": "c",
+          "text": "4 columns, each 175px wide"
+        },
+        {
+          "id": "d",
+          "text": "3 columns of 200px, with 40px unused"
+        }
       ],
-      "explanation": "The term is CSS Grid.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "a",
+      "explanation": "Four tracks would need 4x200 + 3x20 = 860px, so only three fit (3x200 + 2x20 = 640px). The 1fr maximum then shares the space left after the gaps: (700 - 40) / 3 = 220px. Ignoring the gaps gives the 233px mistake."
+    },
+    {
+      "id": "html-css-fundamentals-7",
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The markup is <div class=\"page\"><header class=\"site-header\">...</header><main>...</main></div>, and the document scrolls normally. The header should stay pinned to the top while scrolling, but it scrolls away. Which line causes this?",
+      "code": {
+        "language": "css",
+        "source": ".page {\n  max-width: 1200px;\n  margin: 0 auto;\n  overflow: hidden;\n}\n.site-header {\n  position: sticky;\n  top: 0;\n  background: white;\n  z-index: 10;\n}"
+      },
+      "bugLines": [
+        4
+      ],
+      "explanation": "A sticky element sticks within its nearest scrolling ancestor. overflow: hidden makes .page a scroll container that never scrolls itself, so the header has nothing to stick to while the viewport scrolls. Remove it, or use overflow: clip, which does not create a scroll container."
+    },
+    {
+      "id": "html-css-fundamentals-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "At a viewport width of 1200px, how many columns does .grid have?",
+      "code": {
+        "language": "css",
+        "source": ".grid { display: grid; grid-template-columns: 1fr; }\n\n@media (min-width: 600px) {\n  .grid { grid-template-columns: 1fr 1fr; }\n}\n@media (min-width: 1024px) {\n  .grid { grid-template-columns: repeat(4, 1fr); }\n}\n@media (min-width: 768px) {\n  .grid { grid-template-columns: repeat(3, 1fr); }\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "1"
+        },
+        {
+          "id": "b",
+          "text": "2"
+        },
+        {
+          "id": "c",
+          "text": "3"
+        },
+        {
+          "id": "d",
+          "text": "4"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "All three media queries match at 1200px, and media queries add no specificity, so the last matching rule in source order wins: 3 columns. Mobile-first min-width queries must be written in ascending order for the largest breakpoint to win."
+    },
+    {
+      "id": "html-css-fundamentals-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "html has font-size: 16px, and the only other rule is li { font-size: 1.25em; }. In three levels of nested lists (ul > li > ul > li > ul > li), what is the computed font size of the innermost li?",
+      "options": [
+        {
+          "id": "a",
+          "text": "20px"
+        },
+        {
+          "id": "b",
+          "text": "31.25px"
+        },
+        {
+          "id": "c",
+          "text": "25px"
+        },
+        {
+          "id": "d",
+          "text": "60px"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "em is relative to the parent's font size, so each nested li compounds: 16 x 1.25 x 1.25 x 1.25 = 31.25px (25px is only two levels). Using 1.25rem would keep every li at 20px because rem is relative to the root."
+    },
+    {
+      "id": "html-css-fundamentals-10",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Which of these icon-only close buttons have an accessible name of \"Close\"? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "<button aria-label=\"Close\"><svg aria-hidden=\"true\">...</svg></button>"
+        },
+        {
+          "id": "b",
+          "text": "<button><svg alt=\"Close\">...</svg></button>"
+        },
+        {
+          "id": "c",
+          "text": "<button><svg aria-hidden=\"true\">...</svg><span class=\"visually-hidden\">Close</span></button>"
+        },
+        {
+          "id": "d",
+          "text": "<button aria-hidden=\"true\"><svg>...</svg></button>"
+        },
+        {
+          "id": "e",
+          "text": "<button placeholder=\"Close\"><svg aria-hidden=\"true\">...</svg></button>"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c"
+      ],
+      "explanation": "aria-label and visually hidden text content both name the button. <svg> has no alt attribute, placeholder is not a button attribute, and aria-hidden on the button removes it from the accessibility tree entirely."
+    },
+    {
+      "id": "html-css-fundamentals-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The \"New\" badge should sit in the top-right corner of its card, but it appears in the top-right corner of the page. Which change fixes it?",
+      "code": {
+        "language": "markup",
+        "source": "<div class=\"card\">\n  <span class=\"badge\">New</span>\n  <h3>Plan B</h3>\n</div>\n\n<style>\n  .card  { margin: 40px; padding: 16px; }\n  .badge { position: absolute; top: 0; right: 0; }\n</style>"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Change .badge to position: relative"
+        },
+        {
+          "id": "b",
+          "text": "Change .badge to position: fixed"
+        },
+        {
+          "id": "c",
+          "text": "Add display: block to the .badge"
+        },
+        {
+          "id": "d",
+          "text": "Add position: relative to .card"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "An absolutely positioned element is placed relative to its nearest positioned ancestor; with none, it uses the initial containing block (the page). position: relative on .card makes it the containing block without moving it. A relative badge would just be nudged within the flow."
+    },
+    {
+      "id": "html-css-fundamentals-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "The modal (a child of .content) renders underneath the sticky toolbar despite z-index: 9999, and it is sized to .content rather than the viewport. What is the cause?",
+      "code": {
+        "language": "css",
+        "source": ".toolbar { position: sticky; top: 0; z-index: 100; }\n.content { transform: translateZ(0); } /* added for smoother scrolling */\n.content .modal { position: fixed; inset: 0; z-index: 9999; }"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The transform makes .content a stacking context and containing block, so the modal's z-index only competes inside it"
+        },
+        {
+          "id": "b",
+          "text": "z-index values above 999 are clamped by browsers, so 9999 ends up lower than the toolbar's 100"
+        },
+        {
+          "id": "c",
+          "text": "position: fixed elements ignore z-index entirely, so the modal needs position: absolute instead"
+        },
+        {
+          "id": "d",
+          "text": "Sticky elements are always painted above fixed elements, regardless of their z-index values"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Any transform creates a stacking context (here at level 0, below the toolbar's 100) and a containing block for fixed descendants. Remove the transform or render the modal outside .content (for example, as a direct child of body). Browsers do not clamp z-index at 999."
+    },
+    {
+      "id": "html-css-fundamentals-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Lighthouse reports a Cumulative Layout Shift of 0.32 on article pages: text jumps down as each image loads. Images use this markup and CSS. What is the most effective fix?",
+      "code": {
+        "language": "markup",
+        "source": "<img src=\"/img/chart.png\" class=\"article-img\" alt=\"Q3 revenue by region\">\n\n<style>\n  .article-img { width: 100%; height: auto; }\n</style>"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Add loading=\"lazy\" to every image so they load only after the text has finished rendering"
+        },
+        {
+          "id": "b",
+          "text": "Preload each article image in the <head> so it downloads before the browser lays out the text"
+        },
+        {
+          "id": "c",
+          "text": "Add width and height attributes (e.g., width=\"1200\" height=\"675\") so the browser reserves the space"
+        },
+        {
+          "id": "d",
+          "text": "Change height: auto to height: 100% so each image takes its height from the parent element"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "With width and height attributes, browsers derive the aspect ratio before the file arrives, and height: auto keeps it responsive, so no space jumps (CSS aspect-ratio also works). Lazy loading and preloading change when images arrive but still leave zero-height boxes that shift."
+    },
+    {
+      "id": "html-css-fundamentals-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Designers dislike the focus ring that appears on some buttons after a mouse click. A developer proposes button:focus { outline: none; }. What should the team do instead?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Ship outline: none as proposed, since a :hover color change satisfies WCAG Focus Visible for keyboard users"
+        },
+        {
+          "id": "b",
+          "text": "Style focus with :focus-visible, which browsers apply for keyboard focus but generally not for mouse clicks on buttons"
+        },
+        {
+          "id": "c",
+          "text": "Ship outline: none and set tabindex=\"-1\" on the buttons so that keyboard users never land on them"
+        },
+        {
+          "id": "d",
+          "text": "Use outline-color: transparent, which passes WCAG because an outline still technically exists"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "WCAG 2.2 SC 2.4.7 requires a visible keyboard focus indicator; removing outlines unconditionally fails it, and hover is not focus. :focus-visible lets browsers show the ring for keyboard users while generally suppressing it after mouse clicks on buttons."
+    },
+    {
+      "id": "html-css-fundamentals-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "app.js depends on vendor.js and queries DOM elements on startup. Both scripts currently block rendering. Which change stops both scripts from blocking rendering while keeping app.js working?",
+      "code": {
+        "language": "markup",
+        "source": "<head>\n  <script src=\"/js/vendor.js\"></script>\n  <script src=\"/js/app.js\"></script>\n</head>"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Add async to both scripts"
+        },
+        {
+          "id": "b",
+          "text": "Add async to vendor.js and defer to app.js"
+        },
+        {
+          "id": "c",
+          "text": "Add type=\"module\" to app.js only"
+        },
+        {
+          "id": "d",
+          "text": "Add defer to both scripts"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "defer scripts download in parallel and execute in document order after parsing finishes, so vendor runs before app and the DOM exists. async scripts run as soon as each downloads, in any order. Making only app.js a module still leaves vendor.js blocking in the head."
     }
   ]
 }

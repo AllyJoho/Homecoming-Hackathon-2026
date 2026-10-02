@@ -2,104 +2,391 @@
   "id": "etl-data-warehousing",
   "title": "ETL & Data Warehousing",
   "skillSlug": "etl-data-warehousing",
-  "description": "Test your understanding of etl & data warehousing. Moving data between systems and organizing it into warehouse schemas such as star and snowflake designs.",
-  "timeLimitSeconds": 600,
+  "description": "Dimensional modeling, SCDs, grain, ELT vs ETL, incremental and idempotent loads, and data quality checks.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "etl-data-warehousing-1",
       "type": "multiple_choice",
-      "prompt": "What best describes ETL?",
+      "difficulty": "BEGINNER",
+      "prompt": "A retail star schema has fact_sales(date_key, store_key, product_key, units, sales_amount). Analysts want to slice revenue by each store's sales region. Where should region be stored?",
       "options": [
         {
           "id": "a",
-          "text": "extracts data, transforms it, and loads it into a target system"
+          "text": "As a column in fact_sales, repeated on every sales row"
         },
         {
           "id": "b",
-          "text": "encrypts, tags, and logs a password"
+          "text": "In a new fact_region table that pre-sums sales by region"
         },
         {
           "id": "c",
-          "text": "tests, deploys, and links a UI"
+          "text": "As an attribute in dim_store"
         },
         {
           "id": "d",
-          "text": "trains, tunes, and labels a model"
+          "text": "As an attribute in dim_product, next to category"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "ETL extracts data, transforms it, and loads it into a target system.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "c",
+      "explanation": "Descriptive attributes used for filtering and grouping belong in the dimension that owns them; region describes a store, so it goes in dim_store (Kimball). Copying it onto every fact row bloats the fact table and must be rewritten if a store is reassigned."
     },
     {
       "id": "etl-data-warehousing-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Star schema?",
+      "difficulty": "BEGINNER",
+      "prompt": "fact_sales has a grain of one row per product per store per day. Merchandisers now want sales by hour of day to plan staffing. What is the situation?",
       "options": [
         {
           "id": "a",
-          "text": "uses a central fact table connected to descriptive dimension tables"
+          "text": "It can't be answered; the fact table must be rebuilt at a finer grain"
         },
         {
           "id": "b",
-          "text": "stores every value in one wide text field"
+          "text": "Add an hour attribute to dim_date and re-join the existing daily fact rows to it"
         },
         {
           "id": "c",
-          "text": "is a network firewall design"
+          "text": "Divide each daily total by the store's opening hours to estimate hourly sales"
         },
         {
           "id": "d",
-          "text": "is a UI component hierarchy"
+          "text": "Add hour of day as an attribute in dim_product and rebuild the cube"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Star schema uses a central fact table connected to descriptive dimension tables.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "A fact table can't be sliced finer than its declared grain; daily rows contain no hourly information, which is why Kimball recommends modeling at the most atomic grain available. Adding hour to a dimension changes nothing because each fact row still represents a whole day."
     },
     {
       "id": "etl-data-warehousing-3",
-      "type": "multiple_choice",
-      "prompt": "What best describes Idempotent pipeline?",
-      "options": [
-        {
-          "id": "a",
-          "text": "produces the same target state when the same input is processed repeatedly"
-        },
-        {
-          "id": "b",
-          "text": "must append duplicates on every run"
-        },
-        {
-          "id": "c",
-          "text": "can only run once"
-        },
-        {
-          "id": "d",
-          "text": "cannot include validation"
-        }
-      ],
-      "correctOptionId": "a",
-      "explanation": "Idempotent pipeline produces the same target state when the same input is processed repeatedly.",
-      "difficulty": "ADVANCED"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: In Kimball dimensional modeling, a dimension table's primary key should be the source system's natural key (for example, the CRM customer number) rather than a warehouse-generated surrogate key.",
+      "correctAnswer": false,
+      "explanation": "Kimball recommends meaningless integer surrogate keys for dimensions. They insulate the warehouse from source key changes and collisions across systems, and they make Type 2 history possible, where one customer number maps to several dimension rows."
     },
     {
       "id": "etl-data-warehousing-4",
-      "type": "true_false",
-      "prompt": "True or false: ETL extracts data, transforms it, and loads it into a target system.",
-      "correctAnswer": true,
-      "explanation": "ETL extracts data, transforms it, and loads it into a target system.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A team uses a managed connector to copy SaaS application data, unchanged, into Snowflake, then builds cleaned and modeled tables with dbt SQL models that run inside Snowflake. Which pattern is this, and what is its key advantage?",
+      "options": [
+        {
+          "id": "a",
+          "text": "ETL; data is transformed before loading so the warehouse stores only clean, modeled data"
+        },
+        {
+          "id": "b",
+          "text": "ELT; analysts query the raw tables directly, so no dimensional modeling is needed"
+        },
+        {
+          "id": "c",
+          "text": "ETL; dbt transforms the data on a separate server and then loads it into Snowflake"
+        },
+        {
+          "id": "d",
+          "text": "ELT; raw data lands first and is transformed in-warehouse, so models can be rebuilt from raw"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Loading raw data and then transforming it inside the warehouse is ELT; keeping the raw layer means logic changes can be replayed without re-extracting from the source. dbt compiles SQL that the warehouse itself executes, so no separate transform server is involved, and ELT still produces modeled tables."
     },
     {
       "id": "etl-data-warehousing-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: produces the same target state when the same input is processed repeatedly?",
-      "acceptedAnswers": [
-        "Idempotent pipeline"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A customer moves from the West sales region to East. Finance requires last year's sales to stay reported under West while new sales roll up to East. Which slowly changing dimension technique should be used for region?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Type 1: overwrite region on the existing customer row"
+        },
+        {
+          "id": "b",
+          "text": "Type 2: expire the current customer row and insert a new row with a new surrogate key"
+        },
+        {
+          "id": "c",
+          "text": "Type 0: keep the original region value and never change it"
+        },
+        {
+          "id": "d",
+          "text": "Type 3: add a prior_region column and overwrite region with East"
+        }
       ],
-      "explanation": "The term is Idempotent pipeline.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "b",
+      "explanation": "Type 2 adds a new row, so old facts keep pointing to the West version and new facts to the East version, preserving history by event date. Type 1 and Type 3 both change the value old facts roll up to under the current region, restating last year's sales as East."
+    },
+    {
+      "id": "etl-data-warehousing-6",
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "This nightly SCD Type 2 load for dim_customer should (1) expire current rows whose address changed and (2) insert a new current row for each changed or brand-new customer. Unchanged customers must not get new rows. Which line is wrong?",
+      "code": {
+        "language": "sql",
+        "source": "-- SCD Type 2 load for dim_customer from stg_customer\nUPDATE dim_customer d\nSET    expiry_date = CURRENT_DATE - 1,\n       is_current  = FALSE\nFROM   stg_customer s\nWHERE  d.customer_id = s.customer_id\n  AND  d.is_current = TRUE\n  AND  d.address IS DISTINCT FROM s.address;\n\nINSERT INTO dim_customer (customer_id, address, effective_date, expiry_date, is_current)\nSELECT s.customer_id, s.address, CURRENT_DATE, DATE '9999-12-31', TRUE\nFROM   stg_customer s\nLEFT JOIN dim_customer d\n       ON d.customer_id = s.customer_id AND d.is_current = FALSE\nWHERE  d.customer_id IS NULL;"
+      },
+      "bugLines": [
+        14
+      ],
+      "explanation": "The anti-join must look for a remaining current row (is_current = TRUE): after step 1, changed customers have none and new customers have none, so only they get inserted. Matching on is_current = FALSE inserts duplicate current rows for unchanged customers with no history, and skips every changed customer because its just-expired row now matches."
+    },
+    {
+      "id": "etl-data-warehousing-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "An incremental extract is missing a few orders each day. Based on the job design and reconciliation findings below, what is the cause and fix?",
+      "code": {
+        "language": "plaintext",
+        "source": "-- extract job, runs every 15 minutes\nSELECT * FROM orders WHERE updated_at > :last_watermark;\n-- afterwards: last_watermark := MAX(updated_at) of extracted rows\n\n-- app sets updated_at = now() at the START of each write transaction;\n-- some checkout transactions stay open 2-5 minutes before COMMIT.\n\nDaily reconciliation: 3-12 orders/day exist in source, not in warehouse.\nEach missing row's updated_at is slightly earlier than the watermark\nsaved by the first run that executed after the row's write began."
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Rows whose updated_at equals the watermark are skipped; change > to >= in the WHERE clause"
+        },
+        {
+          "id": "b",
+          "text": "Server clocks are skewed; store the job's start time as the watermark instead of MAX(updated_at)"
+        },
+        {
+          "id": "c",
+          "text": "Late commits land behind the advanced watermark; re-extract with a lookback overlap and MERGE"
+        },
+        {
+          "id": "d",
+          "text": "The job runs too rarely; schedule it every 5 minutes so fewer rows fall between runs"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "updated_at is stamped when the transaction starts, but the row only becomes visible at commit, by which time a run may have advanced the watermark beyond it. An overlapping lookback window plus an idempotent MERGE catches late commits without duplicating rows; >= only fixes exact ties, and a job-start watermark has the same blind spot."
+    },
+    {
+      "id": "etl-data-warehousing-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Marketing asks which promoted products sold nothing while their promotion was running. fact_sales has rows only when a sale occurs. What should the warehouse add?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A coverage factless fact table: one row per product, store, day, and active promotion"
+        },
+        {
+          "id": "b",
+          "text": "A promotion_flag column on fact_sales marking sales that happened under a promotion"
+        },
+        {
+          "id": "c",
+          "text": "A promotion_name attribute on dim_product listing its current promotion"
+        },
+        {
+          "id": "d",
+          "text": "An is_promoted attribute on dim_date marking days with any promotion"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Sales facts can't show events that didn't happen; Kimball's coverage factless fact table records what was eligible (promoted), and subtracting what sold reveals products that sold nothing. A flag on fact_sales only exists for rows where a sale occurred, which is exactly the set that excludes the answer."
+    },
+    {
+      "id": "etl-data-warehousing-9",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Two incidents hit last month: (1) a vendor sent a header-only file, the load succeeded with 0 rows, and dashboards showed a revenue drop; (2) fact_orders rows arrived with customer_key values missing from dim_customer, and BI inner joins silently dropped them. Which checks would have caught these? Select the 2.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Row-count check comparing each load to the trailing 4-week average for that weekday"
+        },
+        {
+          "id": "b",
+          "text": "Referential integrity check that every fact_orders.customer_key exists in dim_customer"
+        },
+        {
+          "id": "c",
+          "text": "Uniqueness test on dim_customer.customer_key"
+        },
+        {
+          "id": "d",
+          "text": "Not-null test on fact_orders.order_id"
+        },
+        {
+          "id": "e",
+          "text": "Schema check that column names and data types match the expected contract"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b"
+      ],
+      "explanation": "A volume anomaly check flags an empty or unusually small load, and a relationship (orphan key) test flags fact rows without a matching dimension row. The header-only file had the correct schema, and orphan keys are neither null nor duplicated, so the other tests pass."
+    },
+    {
+      "id": "etl-data-warehousing-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Tonight's load includes an order for customer C-88123, but the CRM feed that creates that customer in dim_customer won't arrive for two days. Following Kimball's guidance for late-arriving dimensions, how should the load handle the order?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Hold the order out of fact_orders until the customer exists, then load it late"
+        },
+        {
+          "id": "b",
+          "text": "Load the fact with a NULL customer_key and update the key once the customer arrives"
+        },
+        {
+          "id": "c",
+          "text": "Point the fact at the generic 'Unknown customer' row and leave it there permanently"
+        },
+        {
+          "id": "d",
+          "text": "Insert a placeholder row for C-88123 now and fill in its attributes later"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "An inferred-member row keeps the fact loaded on time with a valid key, and later updates overwrite the placeholder attributes without rekeying facts. Holding facts back understates current numbers, NULL foreign keys break joins, and the generic Unknown row permanently loses the customer link."
+    },
+    {
+      "id": "etl-data-warehousing-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Finance wants the total balance held across all accounts at the end of Q1 2026. An analyst summed the balance column for January through March and reported 4,900. What is the correct figure?",
+      "code": {
+        "language": "plaintext",
+        "source": "fact_account_balance (grain: one row per account per month-end)\naccount | month   | balance\n--------+---------+--------\nA1      | 2026-01 | 1,000\nA1      | 2026-02 | 1,200\nA1      | 2026-03 |   900\nA2      | 2026-01 |   500\nA2      | 2026-02 |   500\nA2      | 2026-03 |   800"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "4,900, because balance is a fully additive measure"
+        },
+        {
+          "id": "b",
+          "text": "1,700, the sum across accounts of each account's March month-end balance"
+        },
+        {
+          "id": "c",
+          "text": "1,633, the sum of each account's average monthly balance"
+        },
+        {
+          "id": "d",
+          "text": "1,500, the sum of the January balances at the start of the quarter"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Balances in a periodic snapshot are semi-additive: they add across accounts but not across time, so the end-of-quarter total uses the last snapshot (900 + 800). Summing months counts the same money three times; an average balance is a different measure from the period-end balance requested."
+    },
+    {
+      "id": "etl-data-warehousing-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Product managers want ordered vs. shipped by category. Both totals from this query are far higher than each team's own reports. What is wrong, and what is the fix?",
+      "code": {
+        "language": "sql",
+        "source": "SELECT p.category,\n       SUM(o.order_amount) AS ordered,\n       SUM(s.ship_qty)     AS shipped\nFROM   fact_orders o\nJOIN   fact_shipments s\n       ON s.product_key = o.product_key\n      AND s.date_key    = o.date_key\nJOIN   dim_product p ON p.product_key = o.product_key\nGROUP  BY p.category;"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Joining two facts multiplies rows; total each by category separately, then join"
+        },
+        {
+          "id": "b",
+          "text": "Unmatched products are dropped; change both inner JOINs to LEFT JOINs"
+        },
+        {
+          "id": "c",
+          "text": "dim_product has duplicate keys; use SUM(DISTINCT ...) for both of the measures"
+        },
+        {
+          "id": "d",
+          "text": "Grouping is too coarse; add product_key and date_key to the GROUP BY clause"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "With m order rows and n shipment rows for the same product and day, the join yields m x n rows, inflating both sums. Kimball's drill-across pattern queries each fact separately to the conformed attribute and then merges the results (ideally with a full outer join). SUM(DISTINCT) would drop legitimately equal amounts."
+    },
+    {
+      "id": "etl-data-warehousing-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "The source ERP physically deletes cancelled orders. The warehouse loads incrementally with WHERE updated_at > :watermark, and cancelled orders still appear in revenue. Which approach reliably captures these changes?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Shorten the load interval so deletions are picked up before the next run"
+        },
+        {
+          "id": "b",
+          "text": "Change the comparison to updated_at >= :watermark so boundary rows are re-read"
+        },
+        {
+          "id": "c",
+          "text": "Log-based CDC that reads the transaction log (WAL/binlog) and emits delete events"
+        },
+        {
+          "id": "d",
+          "text": "Add ON DELETE CASCADE to the warehouse tables' foreign keys"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "A deleted row no longer exists to be selected, so no timestamp-based query can see it; log-based CDC (e.g., Debezium on WAL/binlog) records deletes as events. A periodic full key comparison is the other option. Warehouse-side cascades only fire on deletes executed in the warehouse, which never happen here."
+    },
+    {
+      "id": "etl-data-warehousing-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "The loader consumes batches from Kafka, INSERTs them into raw_events, then commits offsets. After the incident below, daily event counts are inflated. Which change fixes this permanently?",
+      "code": {
+        "language": "plaintext",
+        "source": "02:11:07 INFO  inserted 50000 rows (partition 3, offsets 1880000-1929999)\n02:11:08 ERROR loader pod OOMKilled before offset commit\n02:11:31 INFO  restarted; resuming partition 3 from committed offset 1880000\n02:11:39 INFO  inserted 50000 rows (partition 3, offsets 1880000-1929999)\n02:11:40 INFO  committed offset 1930000 for partition 3"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Enable the Kafka idempotent producer on the upstream services that emit events"
+        },
+        {
+          "id": "b",
+          "text": "Commit the Kafka offsets before inserting each batch into raw_events"
+        },
+        {
+          "id": "c",
+          "text": "Raise the loader's memory limit so it is no longer OOM-killed mid-batch"
+        },
+        {
+          "id": "d",
+          "text": "Make the sink idempotent: MERGE on event_id (deduplicated per batch) instead of INSERT"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "The pipeline is at-least-once: any crash between the write and the offset commit replays the batch, so the sink must tolerate replays by keying on a stable event ID. The idempotent producer only prevents duplicates when writing into Kafka, and committing offsets first converts duplicates into data loss."
+    },
+    {
+      "id": "etl-data-warehousing-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Many orders have no promotion, so the load writes NULL into fact_sales.promotion_key. Revenue in BI reports that join to dim_promotion is lower than finance's totals. What is the standard dimensional modeling fix?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Require all report authors to use LEFT OUTER JOIN to dim_promotion"
+        },
+        {
+          "id": "b",
+          "text": "Add a special dim_promotion row, such as key -1 'No Promotion', and load it instead of NULL"
+        },
+        {
+          "id": "c",
+          "text": "Move orders without a promotion into a separate fact table"
+        },
+        {
+          "id": "d",
+          "text": "Remove the foreign key constraint so NULL keys are ignored by the database"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Kimball advises against NULL foreign keys in fact tables; a default dimension row keeps every fact joinable with a normal inner join and lets reports label the case explicitly. Relying on every author to remember outer joins leaves the warehouse one careless query away from wrong totals."
     }
   ]
 }

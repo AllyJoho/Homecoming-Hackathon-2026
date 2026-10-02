@@ -2,104 +2,415 @@
   "id": "business-process-modeling",
   "title": "Business Process Modeling",
   "skillSlug": "business-process-modeling",
-  "description": "Test your understanding of business process modeling. Mapping workflows with notations like BPMN and flowcharts to find inefficiencies.",
-  "timeLimitSeconds": 600,
+  "description": "BPMN 2.0 gateways, events, pools and lanes, plus process analysis: bottlenecks, flow metrics, and redesign.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "business-process-modeling-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Swimlane?",
+      "difficulty": "BEGINNER",
+      "prompt": "In an expense process, after 'Submit expense report', claims over $1,000 go to 'Manager approval' and all other claims go to 'Auto-approve'. Exactly one path must be taken. Which BPMN construct should split the flow?",
       "options": [
         {
           "id": "a",
-          "text": "groups process steps by the role, team, or system responsible for them"
+          "text": "An exclusive gateway (X) with a condition on each outgoing sequence flow"
         },
         {
           "id": "b",
-          "text": "is a database partition key"
+          "text": "A parallel gateway (+) with a condition on each outgoing sequence flow"
         },
         {
           "id": "c",
-          "text": "is an encryption mode"
+          "text": "An event-based gateway followed by two intermediate message events"
         },
         {
           "id": "d",
-          "text": "is a chart color"
+          "text": "Two plain sequence flows leaving the task, one to each path"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Swimlane groups process steps by the role, team, or system responsible for them.",
-      "difficulty": "BEGINNER"
+      "explanation": "An exclusive (XOR) gateway evaluates its conditions and routes the token down exactly one path. A parallel gateway ignores conditions and activates every outgoing flow, and multiple uncontrolled flows leaving a task also act as a parallel split."
     },
     {
       "id": "business-process-modeling-2",
       "type": "multiple_choice",
-      "prompt": "What best describes BPMN gateway?",
+      "difficulty": "BEGINNER",
+      "prompt": "After an order is accepted, 'Pick items' and 'Prepare invoice' can be done at the same time, and 'Ship order' must not start until both are finished. How should this be modeled in BPMN?",
       "options": [
         {
           "id": "a",
-          "text": "represents a decision or branching point in a business process"
+          "text": "An exclusive gateway that splits to both tasks, and an exclusive gateway that merges them"
         },
         {
           "id": "b",
-          "text": "stores customer passwords"
+          "text": "A parallel gateway split, with both tasks connected directly into 'Ship order' without a join"
         },
         {
           "id": "c",
-          "text": "renders CSS grid columns"
+          "text": "A parallel gateway that splits to both tasks, and a parallel gateway that joins them"
         },
         {
           "id": "d",
-          "text": "identifies a Git commit"
+          "text": "An event-based gateway that splits to both tasks, and a parallel gateway that joins them"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "BPMN gateway represents a decision or branching point in a business process.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "A parallel (AND) split creates a token for each branch and a parallel join waits for all of them, so shipping starts once. Without the join, each arriving token starts 'Ship order' separately, so it runs twice; an exclusive split would only ever activate one task."
     },
     {
       "id": "business-process-modeling-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Bottleneck?",
+      "difficulty": "BEGINNER",
+      "prompt": "A collaboration diagram has two pools, Customer and Supplier. The modeler draws a solid sequence-flow arrow from the Customer's 'Send purchase order' task to the Supplier's 'Receive order' task. What is wrong?",
       "options": [
         {
           "id": "a",
-          "text": "is a step that limits the throughput of the overall process"
+          "text": "Nothing; sequence flows are how separate organizations hand work to each other"
         },
         {
           "id": "b",
-          "text": "is always the first step"
+          "text": "Sequence flows can't cross pools; the pools must be linked by a dashed message flow"
         },
         {
           "id": "c",
-          "text": "is a type of stakeholder"
+          "text": "It should be a dotted association, because the pools represent different participants"
         },
         {
           "id": "d",
-          "text": "is a completed audit"
+          "text": "Customer and Supplier should be lanes in one pool so the sequence flow is allowed"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Bottleneck is a step that limits the throughput of the overall process.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "b",
+      "explanation": "In BPMN 2.0 a sequence flow orders activities within one process (one pool); interactions between participants are message flows. Turning independent organizations into lanes would wrongly model them as one process under a single controller; associations link artifacts, not interactions."
     },
     {
       "id": "business-process-modeling-4",
       "type": "true_false",
-      "prompt": "True or false: Swimlane groups process steps by the role, team, or system responsible for them.",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: In BPMN 2.0, a sequence flow may connect an activity in one lane to an activity in a different lane of the same pool.",
       "correctAnswer": true,
-      "explanation": "Swimlane groups process steps by the role, team, or system responsible for them.",
-      "difficulty": "BEGINNER"
+      "explanation": "Lanes only partition a single process by role or department, so the flow of work moves between lanes using ordinary sequence flows. The restriction people confuse this with applies to pools: sequence flows can't cross pool boundaries."
     },
     {
       "id": "business-process-modeling-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: is a step that limits the throughput of the overall process?",
-      "acceptedAnswers": [
-        "Bottleneck"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A loan application passes through these steps in sequence. Demand is 15 applications per hour. What is the maximum throughput of the process, and where is the bottleneck?",
+      "code": {
+        "language": "plaintext",
+        "source": "Step           Capacity (applications/hour)\nIntake         30\nVerification   12\nScoring        20\nDecision       25"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "15 per hour, matching demand, with no bottleneck"
+        },
+        {
+          "id": "b",
+          "text": "30 per hour, set by Intake as the first step"
+        },
+        {
+          "id": "c",
+          "text": "20 per hour; Scoring is the bottleneck"
+        },
+        {
+          "id": "d",
+          "text": "12 per hour; Verification is the bottleneck"
+        }
       ],
-      "explanation": "The term is Bottleneck.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "d",
+      "explanation": "A serial process can't produce faster than its slowest step, so throughput is capped at Verification's 12/hour, and work will pile up in front of it because demand is 15/hour. Intake's higher capacity only feeds the queue faster."
+    },
+    {
+      "id": "business-process-modeling-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "After 'Send quote', the process must wait for whichever comes first: the customer's acceptance message or 14 days passing. If acceptance arrives first, the order is booked; if 14 days pass first, the quote expires. Which BPMN construct models this correctly?",
+      "options": [
+        {
+          "id": "a",
+          "text": "An exclusive gateway with the conditions 'accepted' and '14 days elapsed' on its outgoing flows"
+        },
+        {
+          "id": "b",
+          "text": "An event-based gateway followed by a message intermediate catch event and a timer intermediate catch event"
+        },
+        {
+          "id": "c",
+          "text": "A parallel gateway followed by a message intermediate catch event and a timer intermediate catch event"
+        },
+        {
+          "id": "d",
+          "text": "An inclusive gateway whose two outgoing flows each lead to the matching intermediate event"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "An event-based gateway routes based on which subsequent event occurs first and then discards the other, which is exactly a race between a message and a timeout. An exclusive gateway evaluates data conditions instantly rather than waiting, and a parallel gateway would wait for both events, so the quote would both book and expire."
+    },
+    {
+      "id": "business-process-modeling-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Support agents work on 'Resolve ticket'. If a ticket isn't resolved within 48 hours, a supervisor must be notified, but the agent keeps working on it. How should this be modeled?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A non-interrupting timer boundary event (dashed border) on 'Resolve ticket', leading to 'Notify supervisor'"
+        },
+        {
+          "id": "b",
+          "text": "An interrupting timer boundary event (solid border) on 'Resolve ticket', leading to 'Notify supervisor'"
+        },
+        {
+          "id": "c",
+          "text": "A timer intermediate catch event placed in sequence after 'Resolve ticket', then 'Notify supervisor'"
+        },
+        {
+          "id": "d",
+          "text": "A timer start event inside 'Resolve ticket' that starts 'Notify supervisor' every 48 hours"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "A non-interrupting boundary event spawns a parallel path when it fires while leaving the activity running. An interrupting boundary timer would cancel 'Resolve ticket', and a timer placed after the task would only start counting once the ticket is already resolved."
+    },
+    {
+      "id": "business-process-modeling-8",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Given the fragment below, which statements about its behavior are correct? Select all that apply.",
+      "code": {
+        "language": "plaintext",
+        "source": "[Receive order] --> (O inclusive split)\n    \"order has hardware\" --> [Ship hardware]     --> (O inclusive join)\n    \"order has software\" --> [Email license key] --> (O inclusive join)\n(O inclusive join) --> [Close order] --> (end)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "For a software-only order, only 'Email license key' runs, then the join passes the token on"
+        },
+        {
+          "id": "b",
+          "text": "For an order with both, both tasks run, and 'Close order' starts once both have completed"
+        },
+        {
+          "id": "c",
+          "text": "For an order with both, only the first condition that evaluates to true is followed"
+        },
+        {
+          "id": "d",
+          "text": "For a software-only order, the join waits indefinitely for a token from 'Ship hardware'"
+        },
+        {
+          "id": "e",
+          "text": "For an order with both, 'Close order' runs twice, once after each task completes"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b"
+      ],
+      "explanation": "An inclusive (OR) split activates every outgoing flow whose condition is true, and the inclusive join waits only for the branches that were actually activated before continuing once. 'First true condition only' is exclusive-gateway behavior, and waiting for all branches is how a parallel join (wrongly used here) would deadlock."
+    },
+    {
+      "id": "business-process-modeling-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A value-stream map of an insurance claim process is below. What share of total lead time is active work, and which change would shorten lead time the most?",
+      "code": {
+        "language": "plaintext",
+        "source": "Step              Work time   Wait before next step\nLog claim         0.25 h       8 h\nVerify policy     0.50 h      16 h\nAssess damage     1.50 h      24 h\nApprove payment   0.25 h       4 h\nIssue payment     0.50 h       -"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "About 94.5%; speed up the 1.5-hour damage assessment work itself"
+        },
+        {
+          "id": "b",
+          "text": "About 5.5%; speed up the 1.5-hour damage assessment work itself"
+        },
+        {
+          "id": "c",
+          "text": "About 5.5%; cut the 24-hour queue between damage assessment and payment approval"
+        },
+        {
+          "id": "d",
+          "text": "About 5.8%; cut the 24-hour queue between damage assessment and payment approval"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Work time is 3.0 h and waiting is 52 h, so lead time is 55 h and process cycle efficiency is 3 / 55, about 5.5%; 5.8% wrongly divides by wait time only. Since waiting dominates, removing the largest queue (24 h) saves far more than any speed-up of a 1.5-hour task."
+    },
+    {
+      "id": "business-process-modeling-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A loan team has an average of 120 applications in progress and completes 30 per working day, with arrivals matching completions. Management wants the average cycle time cut to 2 working days at the same throughput. What average work-in-progress must they reach?",
+      "options": [
+        {
+          "id": "a",
+          "text": "240 applications"
+        },
+        {
+          "id": "b",
+          "text": "15 applications"
+        },
+        {
+          "id": "c",
+          "text": "90 applications"
+        },
+        {
+          "id": "d",
+          "text": "60 applications"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "By Little's Law (WIP = throughput x cycle time), the current cycle time is 120 / 30 = 4 days, and a 2-day target at 30/day requires 30 x 2 = 60 applications in progress. 15 comes from dividing throughput by the target time instead of multiplying."
+    },
+    {
+      "id": "business-process-modeling-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Your bank's loan process sends a request to an external credit bureau and waits for a score. You neither know nor control the bureau's internal steps. How should the bureau appear in a BPMN collaboration diagram?",
+      "options": [
+        {
+          "id": "a",
+          "text": "As a collapsed (black-box) pool, connected to your process by message flows"
+        },
+        {
+          "id": "b",
+          "text": "As a lane inside the bank's pool, connected to your tasks by sequence flows"
+        },
+        {
+          "id": "c",
+          "text": "As a data store, connected to your tasks by data associations"
+        },
+        {
+          "id": "d",
+          "text": "As a call activity inside your process that invokes the bureau's process"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "An external participant whose internals are unknown is modeled as an empty (black-box) pool, and the request and response are message flows to its boundary. A lane implies the bureau is part of your own process and under your control."
+    },
+    {
+      "id": "business-process-modeling-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "In testing, every order following this model gets stuck and never reaches 'Confirm to customer'. Why?",
+      "code": {
+        "language": "plaintext",
+        "source": "[Check stock] --> (X exclusive split)\n    \"in stock\"     --> [Reserve stock]       --> (+ parallel join)\n    \"out of stock\" --> [Order from supplier] --> (+ parallel join)\n(+ parallel join) --> [Confirm to customer] --> (end)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The exclusive split has no default flow, so it raises an exception for every order"
+        },
+        {
+          "id": "b",
+          "text": "Both conditions can be true at once, so two tokens collide at the parallel join"
+        },
+        {
+          "id": "c",
+          "text": "The parallel join waits for both incoming flows, but the XOR split sends only one"
+        },
+        {
+          "id": "d",
+          "text": "A parallel gateway can't follow a task directly; add an intermediate event before it"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "An XOR split produces exactly one token, while an AND join synchronizes by waiting for a token on every incoming flow, so the instance deadlocks. Since 'in stock' and 'out of stock' are complementary, a default flow isn't needed and two tokens can never be produced."
+    },
+    {
+      "id": "business-process-modeling-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Demand is 22 new items per day, and the backlog keeps growing. Based on the capacities below, which single change lets the process keep up with demand?",
+      "code": {
+        "language": "plaintext",
+        "source": "Step     Capacity (reviews or items per day)\nIntake   40\nReview   25   (20% of reviews fail; the item returns to Review after\n              the applicant fixes it, and it can fail more than once)\nApprove  30"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Add an intake clerk, raising Intake capacity to 50 items per day"
+        },
+        {
+          "id": "b",
+          "text": "Cut the Review failure rate from 20% to 5% by validating submissions at Intake"
+        },
+        {
+          "id": "c",
+          "text": "Add an approver, raising Approve capacity to 40 items per day"
+        },
+        {
+          "id": "d",
+          "text": "Approve overtime, raising Review capacity to 26 reviews per day"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "With a 20% failure rate each new item needs on average 1 / 0.8 = 1.25 reviews, so Review handles only 25 x 0.8 = 20 new items/day, the bottleneck. At 5% failure it handles 25 x 0.95 = 23.75 >= 22, while overtime to 26 gives only 26 x 0.8 = 20.8; changes at non-bottleneck steps add nothing."
+    },
+    {
+      "id": "business-process-modeling-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "An order is flagged as fraud while 'Pick and pack' is still in progress. Under BPMN 2.0 semantics, what happens?",
+      "code": {
+        "language": "plaintext",
+        "source": "(start) --> [Receive order] --> (+ parallel split)\n  branch 1: [Run fraud check] --> (X) \"fraud\" --> (terminate end event)\n                                  (X) \"clear\" --> (+ parallel join)\n  branch 2: [Pick and pack] ---------------------> (+ parallel join)\n(+ parallel join) --> [Ship order] --> (end)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "'Pick and pack' finishes, and the instance then waits forever at the parallel join"
+        },
+        {
+          "id": "b",
+          "text": "Only the fraud branch ends; 'Pick and pack' continues and the order still ships"
+        },
+        {
+          "id": "c",
+          "text": "The engine raises an error, because terminate end events aren't allowed in parallel branches"
+        },
+        {
+          "id": "d",
+          "text": "The terminate end event ends the whole instance, cancelling 'Pick and pack'"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "A terminate end event immediately ends all remaining activity in the process instance, which is why it's used for fraud kills. The 'waits forever at the join' outcome is what would happen with a plain (none) end event, because the parallel join would never receive the fraud branch's token."
+    },
+    {
+      "id": "business-process-modeling-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A Lean consultant proposes deleting the manager approval step below because it adds 3.5 days of waiting for 2 minutes of work and 'adds no value for the customer'. Given the notes, what is the right recommendation?",
+      "code": {
+        "language": "plaintext",
+        "source": "Vendor payment process (current state)\nStep               Work      Wait before step\nEnter invoice      5 min     -\nManager approval   2 min     3.5 days\nPayment run        automated 1 day\n\nNotes: Manager approval is a documented SOX key control.\n       82% of invoices are under $500 and matched to a PO."
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Delete the step, since Lean treats every step the customer wouldn't pay for as waste"
+        },
+        {
+          "id": "b",
+          "text": "Leave the step exactly as it is, since compliance controls are out of scope for any redesign"
+        },
+        {
+          "id": "c",
+          "text": "Keep the control but cut its wait, e.g., an audit-agreed threshold for small PO-matched invoices"
+        },
+        {
+          "id": "d",
+          "text": "Auto-approve every invoice regardless of amount, which removes the 3.5-day wait"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "A step required by regulation or internal control is business-necessary non-value-added work: you minimize it rather than delete it. Removing a SOX key control unilaterally creates a control deficiency, while risk-based thresholds (agreed with audit and backed by three-way match) shrink the wait for the 82% of low-value invoices."
     }
   ]
 }

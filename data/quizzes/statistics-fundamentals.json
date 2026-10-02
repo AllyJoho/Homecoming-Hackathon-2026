@@ -2,104 +2,408 @@
   "id": "statistics-fundamentals",
   "title": "Statistics Fundamentals",
   "skillSlug": "statistics-fundamentals",
-  "description": "Test your understanding of statistics fundamentals. Descriptive statistics, probability, hypothesis testing, and interpreting confidence intervals.",
-  "timeLimitSeconds": 600,
+  "description": "Apply descriptive stats, probability, hypothesis tests, and confidence intervals to real decisions.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "statistics-fundamentals-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Median?",
+      "difficulty": "BEGINNER",
+      "prompt": "A startup's seven employees earn the salaries below (in $1,000s). A recruiter wants one number for a typical employee's salary. Which should they report?",
+      "code": {
+        "language": "plaintext",
+        "source": "42, 45, 48, 50, 52, 55, 410"
+      },
       "options": [
         {
           "id": "a",
-          "text": "is the middle value after observations are ordered"
+          "text": "The mean, about $100.3k, because it uses every salary"
         },
         {
           "id": "b",
-          "text": "is always the largest value"
+          "text": "The median, $50k, because one very large salary pulls the mean up"
         },
         {
           "id": "c",
-          "text": "is the number of observations squared"
+          "text": "The midrange, $226k, because it reflects the full spread"
         },
         {
           "id": "d",
-          "text": "is a probability of zero"
+          "text": "The mode, because it is the most common salary"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Median is the middle value after observations are ordered.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "b",
+      "explanation": "The single $410k salary drags the mean (702 / 7 = 100.3) above six of the seven salaries, while the median (the 4th value, 50) is resistant to that outlier. There is no mode because no salary repeats, and the midrange is even more outlier-driven than the mean."
     },
     {
       "id": "statistics-fundamentals-2",
       "type": "multiple_choice",
-      "prompt": "What best describes P-value?",
+      "difficulty": "BEGINNER",
+      "prompt": "These 8 values are a random sample of call-handling times (minutes) from a much larger population. What is the sample standard deviation you would use to estimate the population's spread?",
+      "code": {
+        "language": "plaintext",
+        "source": "2, 4, 4, 4, 5, 5, 7, 9"
+      },
       "options": [
         {
           "id": "a",
-          "text": "measures how surprising the observed result would be if the null hypothesis were true"
+          "text": "2.00"
         },
         {
           "id": "b",
-          "text": "is the probability the null is true"
+          "text": "4.00"
         },
         {
           "id": "c",
-          "text": "is the sample mean"
+          "text": "2.14"
         },
         {
           "id": "d",
-          "text": "is a confidence interval width"
+          "text": "4.57"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "P-value measures how surprising the observed result would be if the null hypothesis were true.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "The mean is 5 and the squared deviations sum to 32; dividing by n - 1 = 7 gives a sample variance of 4.57, whose square root is 2.14. Dividing by n = 8 (variance 4, SD 2.00) is the population formula, which underestimates spread when estimating from a sample."
     },
     {
       "id": "statistics-fundamentals-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Confidence interval?",
+      "difficulty": "BEGINNER",
+      "prompt": "Three independent servers each have a 10% chance of failing on a given day. What is the probability that at least one fails today?",
       "options": [
         {
           "id": "a",
-          "text": "gives a range produced by a method intended to capture a population parameter at a chosen confidence level"
+          "text": "0.271"
         },
         {
           "id": "b",
-          "text": "guarantees every future value is inside"
+          "text": "0.300"
         },
         {
           "id": "c",
-          "text": "contains only the sample minimum"
+          "text": "0.729"
         },
         {
           "id": "d",
-          "text": "is the same as a prediction label"
+          "text": "0.001"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Confidence interval gives a range produced by a method intended to capture a population parameter at a chosen confidence level.",
-      "difficulty": "ADVANCED"
+      "explanation": "Use the complement: P(none fail) = 0.9^3 = 0.729, so P(at least one) = 1 - 0.729 = 0.271. Adding the probabilities (0.30) double-counts days when more than one server fails."
     },
     {
       "id": "statistics-fundamentals-4",
-      "type": "true_false",
-      "prompt": "True or false: Median is the middle value after observations are ordered.",
-      "correctAnswer": true,
-      "explanation": "Median is the middle value after observations are ordered.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "Students who attend optional review sessions score 12 points higher on the final than students who do not. The department concludes the sessions raise scores by 12 points. What is the main flaw?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A 12-point gap is too small to be practically meaningful"
+        },
+        {
+          "id": "b",
+          "text": "The medians should have been compared instead of the means"
+        },
+        {
+          "id": "c",
+          "text": "No correlation coefficient was reported for attendance and score"
+        },
+        {
+          "id": "d",
+          "text": "Attendance was self-selected, so motivation or prior ability could explain the gap"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "This is an observational comparison: students who choose to attend likely differ (motivation, prior grades) in ways that also affect scores, so the 12 points mixes the sessions' effect with confounding. Estimating the causal effect needs random assignment or adjustment for those confounders; reporting a correlation coefficient would not fix that."
     },
     {
       "id": "statistics-fundamentals-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: gives a range produced by a method intended to capture a population parameter at a chosen confidence level?",
-      "acceptedAnswers": [
-        "Confidence interval"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: if a hypothesis test gives p = 0.03, there is a 3% probability that the null hypothesis is true.",
+      "correctAnswer": false,
+      "explanation": "A p-value is the probability of data at least as extreme as observed, assuming the null hypothesis is true (ASA Statement on p-values, 2016). It is not the probability that the null is true; that would require a prior and Bayes' theorem."
+    },
+    {
+      "id": "statistics-fundamentals-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "From a random sample of 200 deliveries, a 95% confidence interval for the mean delivery time is 28.4 to 31.6 minutes (sample mean 30.0). Which statement is correct?",
+      "options": [
+        {
+          "id": "a",
+          "text": "About 95% of individual deliveries take between 28.4 and 31.6 minutes"
+        },
+        {
+          "id": "b",
+          "text": "A repeat study's sample mean would fall between 28.4 and 31.6 with 95% probability"
+        },
+        {
+          "id": "c",
+          "text": "The method used captures the true mean in 95% of repeated samples"
+        },
+        {
+          "id": "d",
+          "text": "The data let us reject, at the 5% level, that the true mean is 30 minutes"
+        }
       ],
-      "explanation": "The term is Confidence interval.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "The 95% describes the long-run success rate of the interval procedure across repeated samples. A CI is about the mean, not individual deliveries (that would be a much wider prediction interval), and 30 lies inside the interval, so a two-sided test would not reject it."
+    },
+    {
+      "id": "statistics-fundamentals-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A screening test for a condition with 1% prevalence has 90% sensitivity and 95% specificity. A randomly selected person tests positive. About how likely is it that they have the condition?",
+      "options": [
+        {
+          "id": "a",
+          "text": "About 90%"
+        },
+        {
+          "id": "b",
+          "text": "About 15%"
+        },
+        {
+          "id": "c",
+          "text": "About 95%"
+        },
+        {
+          "id": "d",
+          "text": "About 1%"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Out of 10,000 people, 100 have the condition (90 test positive) and 9,900 do not (495 false positives), so P(condition | positive) = 90 / 585, about 15%. Answering 90% confuses sensitivity, P(positive | condition), with the positive predictive value and ignores the low base rate."
+    },
+    {
+      "id": "statistics-fundamentals-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A hospital compares two kidney-stone treatments. Which conclusion does the table support?",
+      "code": {
+        "language": "plaintext",
+        "source": "               Treatment A       Treatment B\nSmall stones   81/87   (93%)     234/270 (87%)\nLarge stones   192/263 (73%)     55/80   (69%)\nAll patients   273/350 (78%)     289/350 (83%)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "A is better for both stone sizes; B's overall lead comes from treating more small stones"
+        },
+        {
+          "id": "b",
+          "text": "B is more effective, because its overall success rate is higher (83% vs 78%)"
+        },
+        {
+          "id": "c",
+          "text": "The treatments are equivalent, because the overall rates differ by only 5 points"
+        },
+        {
+          "id": "d",
+          "text": "A is better for small stones, but B is better for large stones"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "This is Simpson's paradox (data from Charig et al., 1986): A wins within each stratum (93% vs 87%, 73% vs 69%), but A was given mostly to large, harder stones, so its aggregate rate is dragged down. Stone size is a confounder, so the stratified comparison is the valid one. B does not win for large stones either (69% vs 73%)."
+    },
+    {
+      "id": "statistics-fundamentals-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The typing speed of the same 25 employees is measured before and after a training course. Which test is appropriate for whether mean speed changed?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Independent two-sample t-test comparing the before and after groups"
+        },
+        {
+          "id": "b",
+          "text": "Chi-square test of independence on before/after speeds"
+        },
+        {
+          "id": "c",
+          "text": "One-way ANOVA with \"before\" and \"after\" as two groups"
+        },
+        {
+          "id": "d",
+          "text": "Paired t-test on each employee's after-minus-before difference"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Each employee is measured twice, so the observations are dependent; the paired t-test analyses the per-person differences and removes between-person variation. An independent two-sample test (or a two-group ANOVA, which is equivalent) wrongly treats the two sets as unrelated people and usually loses power."
+    },
+    {
+      "id": "statistics-fundamentals-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A poll of 400 randomly sampled voters has a margin of error of plus or minus 5 percentage points. Roughly how many voters are needed for a margin of plus or minus 2.5 points, all else equal?",
+      "options": [
+        {
+          "id": "a",
+          "text": "800"
+        },
+        {
+          "id": "b",
+          "text": "1,600"
+        },
+        {
+          "id": "c",
+          "text": "566"
+        },
+        {
+          "id": "d",
+          "text": "3,200"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "The margin of error is proportional to 1 / sqrt(n), so halving it requires 2^2 = 4 times the sample: 4 x 400 = 1,600. Doubling to 800 only shrinks the margin by a factor of sqrt(2), to about 3.5 points."
+    },
+    {
+      "id": "statistics-fundamentals-11",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "You are planning a two-group experiment. Holding everything else fixed, which changes increase the test's statistical power? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Increasing the sample size in each group"
+        },
+        {
+          "id": "b",
+          "text": "Raising the significance level from 0.01 to 0.05"
+        },
+        {
+          "id": "c",
+          "text": "Reducing measurement noise so within-group SD is smaller"
+        },
+        {
+          "id": "d",
+          "text": "Lowering the significance level from 0.05 to 0.01"
+        },
+        {
+          "id": "e",
+          "text": "The true difference between the groups turning out smaller than planned"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b",
+        "c"
+      ],
+      "explanation": "Power rises with larger n, a larger alpha (a less strict rejection threshold), and lower variability, because each makes a real effect easier to distinguish from noise. A stricter alpha lowers power, and a smaller true difference is harder to distinguish from noise, so power falls (sizing a study for a smaller effect raises power only because it increases n)."
+    },
+    {
+      "id": "statistics-fundamentals-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "An A/B test tracked 20 metrics, each tested at alpha = 0.05. Only one metric was significant. The product manager wants to ship on that basis. What is the correct assessment?",
+      "code": {
+        "language": "plaintext",
+        "source": "metric                 diff     p-value\nrevenue_per_user      +0.4%    0.41\nsessions_per_user     -0.2%    0.67\n...  (16 more, all p > 0.10)\nsupport_tickets       +1.1%    0.22\nwishlist_adds         +3.8%    0.03"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Ship it: p = 0.03 is below 0.05, so the effect is real with 97% confidence"
+        },
+        {
+          "id": "b",
+          "text": "Ship it, but describe the effect as significant at the 0.10 level to be safe"
+        },
+        {
+          "id": "c",
+          "text": "Reject the change: the 19 non-significant metrics show it has no effect"
+        },
+        {
+          "id": "d",
+          "text": "Not convincing: one p < 0.05 among 20 tests is likely by chance and fails Bonferroni"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "If no metric truly changed, P(at least one p < 0.05) = 1 - 0.95^20, about 64%, so a single hit is weak evidence; Bonferroni (0.05 / 20 = 0.0025) or a pre-registered primary metric controls this. The 19 non-significant results are not proof of no effect either."
+    },
+    {
+      "id": "statistics-fundamentals-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Last quarter, the 50 stores with the lowest customer-satisfaction scores received coaching. This quarter their average rose 8 points while the chain average was flat. Leadership credits the coaching. What is the most important problem with that conclusion?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Survivorship bias, because stores that closed during the quarter are excluded"
+        },
+        {
+          "id": "b",
+          "text": "Simpson's paradox, because the stores are spread across different regions"
+        },
+        {
+          "id": "c",
+          "text": "Regression to the mean: stores chosen for extreme lows tend to improve anyway"
+        },
+        {
+          "id": "d",
+          "text": "An 8-point rise needs a chi-square test before it can be called a real improvement"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Selecting units because their scores were extreme guarantees that part of the low score was noise, which will not repeat, so they improve on average even with no intervention. Randomly assigning coaching among low scorers (or comparing to similar uncoached stores) separates the coaching effect from regression to the mean; nothing in the scenario suggests closures or regional confounding."
+    },
+    {
+      "id": "statistics-fundamentals-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "An analyst checks an A/B test's p-value every morning and plans to stop the test the first day it drops below 0.05. On day 9 it reads 0.047. What is the issue?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Stopping at the first p < 0.05 inflates false positives; fix n in advance or use a sequential test"
+        },
+        {
+          "id": "b",
+          "text": "No issue: the test is valid as long as the p-value at the moment of stopping is below 0.05"
+        },
+        {
+          "id": "c",
+          "text": "The test should switch to one-sided after a few days, once the direction of the effect is clear"
+        },
+        {
+          "id": "d",
+          "text": "The test is underpowered; keep checking daily and stop only when p falls below 0.01"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Every daily look is another chance for random fluctuation to cross 0.05, so optional stopping produces far more than 5% false positives; a pre-computed fixed sample size or a sequential method with alpha spending keeps the error rate honest. Waiting for p < 0.01 while still peeking daily repeats the same problem with a different threshold."
+    },
+    {
+      "id": "statistics-fundamentals-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A test of a new onboarding flow reports the result below. The VP says, \"Not significant, so the new flow doesn't work; kill it.\" Which assessment is correct?",
+      "code": {
+        "language": "plaintext",
+        "source": "conversion lift: +2.1 percentage points\n95% CI: [-1.8, +6.0]\ncontrol 30.0% vs new flow 32.1%  (n = 1,080 per arm)\np = 0.29"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The VP is right: p > 0.05 shows the true effect is zero"
+        },
+        {
+          "id": "b",
+          "text": "Ship it: p = 0.29 means there is a 71% chance the new flow is better"
+        },
+        {
+          "id": "c",
+          "text": "Report the 90% interval instead and declare a win if it excludes zero"
+        },
+        {
+          "id": "d",
+          "text": "Inconclusive: the interval includes both a meaningful loss and a meaningful gain"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Failing to reject the null is not evidence that the effect is zero; the 95% CI shows the data are compatible with anything from a 1.8-point loss to a 6.0-point gain, so the test is underpowered for a decision. Treating 1 - p as the probability the flow is better is a misreading of the p-value, and switching interval levels after the fact is p-hacking."
     }
   ]
 }

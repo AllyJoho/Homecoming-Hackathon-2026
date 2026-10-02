@@ -2,104 +2,220 @@
   "id": "systems-analysis",
   "title": "Systems Analysis",
   "skillSlug": "systems-analysis",
-  "description": "Test your understanding of systems analysis. Studying existing business processes and information systems to identify problems and propose improvements.",
-  "timeLimitSeconds": 600,
+  "description": "Analyze systems with SDLC models, feasibility, use cases, DFDs, UML diagrams, and as-is/to-be process analysis.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "systems-analysis-1",
       "type": "multiple_choice",
-      "prompt": "What best describes As-is process?",
+      "difficulty": "BEGINNER",
+      "prompt": "A team follows the V-model. While the business analyst is writing the user requirements specification, the test lead is asked to start planning the test level that will be checked against that document. Which test level is it?",
       "options": [
-        {
-          "id": "a",
-          "text": "describes how work is performed in the current state"
-        },
-        {
-          "id": "b",
-          "text": "is the final deployed design"
-        },
-        {
-          "id": "c",
-          "text": "is a database backup"
-        },
-        {
-          "id": "d",
-          "text": "is an employee evaluation"
-        }
+        { "id": "a", "text": "Unit testing" },
+        { "id": "b", "text": "Acceptance testing" },
+        { "id": "c", "text": "Integration testing" },
+        { "id": "d", "text": "System testing" }
       ],
-      "correctOptionId": "a",
-      "explanation": "As-is process describes how work is performed in the current state.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "b",
+      "explanation": "The V-model pairs each development phase with a test level: user requirements with acceptance testing, system specification with system testing, architecture with integration testing, and detailed design with unit testing. System testing checks the system specification, not the user requirements."
     },
     {
       "id": "systems-analysis-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Gap analysis?",
+      "difficulty": "BEGINNER",
+      "prompt": "A hospital is evaluating a new nurse scheduling system. The software works and fits the budget, but nurses say they will keep using the paper roster because the new screens add steps during shift handover. Which feasibility dimension does this concern raise?",
       "options": [
-        {
-          "id": "a",
-          "text": "compares the current state with a desired future state to identify differences"
-        },
-        {
-          "id": "b",
-          "text": "removes all project risks"
-        },
-        {
-          "id": "c",
-          "text": "writes code without requirements"
-        },
-        {
-          "id": "d",
-          "text": "measures only page load time"
-        }
+        { "id": "a", "text": "Technical feasibility" },
+        { "id": "b", "text": "Economic feasibility" },
+        { "id": "c", "text": "Schedule feasibility" },
+        { "id": "d", "text": "Operational feasibility" }
       ],
-      "correctOptionId": "a",
-      "explanation": "Gap analysis compares the current state with a desired future state to identify differences.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "d",
+      "explanation": "Operational feasibility asks whether the system will actually be used and will work within the organization's processes and culture. The technology works and the budget fits, so technical and economic feasibility are already satisfied."
     },
     {
       "id": "systems-analysis-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Feasibility study?",
+      "difficulty": "BEGINNER",
+      "prompt": "A new invoicing system costs $120,000 up front. It will save $45,000 per year in labor and cost $5,000 per year to maintain. Ignoring the time value of money, what is the payback period?",
       "options": [
-        {
-          "id": "a",
-          "text": "evaluates whether a proposed solution is practical within constraints"
-        },
-        {
-          "id": "b",
-          "text": "guarantees stakeholder agreement"
-        },
-        {
-          "id": "c",
-          "text": "replaces user testing"
-        },
-        {
-          "id": "d",
-          "text": "is a source-control operation"
-        }
+        { "id": "a", "text": "3.0 years" },
+        { "id": "b", "text": "2.67 years" },
+        { "id": "c", "text": "2.4 years" },
+        { "id": "d", "text": "3.43 years" }
       ],
       "correctOptionId": "a",
-      "explanation": "Feasibility study evaluates whether a proposed solution is practical within constraints.",
-      "difficulty": "ADVANCED"
+      "explanation": "Net annual benefit is $45,000 - $5,000 = $40,000, and $120,000 / $40,000 = 3.0 years. 2.67 years comes from forgetting the maintenance cost, and 2.4 years from adding it to the savings instead of subtracting it."
     },
     {
       "id": "systems-analysis-4",
-      "type": "true_false",
-      "prompt": "True or false: As-is process describes how work is performed in the current state.",
-      "correctAnswer": true,
-      "explanation": "As-is process describes how work is performed in the current state.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "You are drawing the use case diagram for an ATM's \"Withdraw Cash\" use case. The customer starts the withdrawal, and the ATM asks the bank's core banking system to authorize it. Which of these is a secondary (supporting) actor?",
+      "options": [
+        { "id": "a", "text": "The bank customer" },
+        { "id": "b", "text": "The ATM's own software" },
+        { "id": "c", "text": "The bank's core banking system" },
+        { "id": "d", "text": "The ATM's card reader" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "A secondary actor is an external party the system relies on to complete the use case; the core banking system sits outside the ATM and provides authorization. The customer is the primary actor who starts the use case, and the ATM software and card reader are part of the system itself, not actors."
     },
     {
       "id": "systems-analysis-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: evaluates whether a proposed solution is practical within constraints?",
-      "acceptedAnswers": [
-        "Feasibility study"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: In a data flow diagram, data may flow directly from one data store to another data store without passing through a process.",
+      "correctAnswer": false,
+      "explanation": "DFD rules (Gane-Sarson and Yourdon-DeMarco alike) require a process to move or transform data between stores; data cannot move by itself. The same rule forbids direct flows between an external entity and a data store."
+    },
+    {
+      "id": "systems-analysis-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "In an online store, the \"Place Order\" use case always runs \"Verify Payment\". A customer may also optionally run \"Apply Coupon\" at a defined point during Place Order. How should these relationships be modeled in UML?",
+      "options": [
+        { "id": "a", "text": "Place Order <<include>> Verify Payment; Apply Coupon <<extend>> Place Order" },
+        { "id": "b", "text": "Place Order <<extend>> Verify Payment; Apply Coupon <<include>> Place Order" },
+        { "id": "c", "text": "Place Order <<include>> Verify Payment and <<include>> Apply Coupon" },
+        { "id": "d", "text": "Verify Payment <<extend>> Place Order; Place Order <<include>> Apply Coupon" }
       ],
-      "explanation": "The term is Feasibility study.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "a",
+      "explanation": "In UML, <<include>> points from the base use case to behavior it always performs, while <<extend>> points from optional, conditional behavior to the base use case it extends at an extension point. Including Apply Coupon would wrongly make it mandatory on every order."
+    },
+    {
+      "id": "systems-analysis-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "An analyst decomposes the context diagram into a Level 0 diagram. Which balancing errors does the Level 0 diagram contain?",
+      "code": { "language": "plaintext", "source": "CONTEXT DIAGRAM (process 0: Order System)\n  Customer      --Order details-->  0\n  0             --Invoice-------->  Customer\n  0             --Pick list------>  Warehouse\n\nLEVEL 0 DIAGRAM\n  Customer      --Order details-->  1.0 Validate Order\n  Credit Bureau --Credit score--->  1.0 Validate Order\n  1.0           --Valid order---->  D1 Orders\n  D1 Orders     --Valid order---->  2.0 Bill Customer\n  2.0           --Invoice-------->  Customer" },
+      "options": [
+        { "id": "a", "text": "D1 Orders must also appear on the context diagram, and 2.0 cannot read from D1" },
+        { "id": "b", "text": "The Level 0 diagram should contain only one process, the same as the context diagram" },
+        { "id": "c", "text": "Credit score from Credit Bureau appears only at Level 0, and the Pick list to Warehouse is missing" },
+        { "id": "d", "text": "Invoice must flow through a data store before it can reach the Customer entity" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Balancing requires a child diagram to have exactly the same external inputs and outputs as its parent; Level 0 adds a new external flow (Credit score) and drops one (Pick list). Internal data stores like D1 are normally introduced at Level 0 and are not shown on the context diagram."
+    },
+    {
+      "id": "systems-analysis-8",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Read this UML class diagram excerpt. Multiplicities are written next to the class they count, and the filled diamond marks composition. Select all statements that are true.",
+      "code": { "language": "plaintext", "source": "Customer [0..1] -------------------- [*] Order\nOrder    [1]    <filled diamond>----- [1..*] OrderLine" },
+      "options": [
+        { "id": "a", "text": "Every Order has at least one OrderLine." },
+        { "id": "b", "text": "Deleting an Order also deletes its OrderLines." },
+        { "id": "c", "text": "Every Order must be linked to exactly one Customer." },
+        { "id": "d", "text": "One OrderLine can belong to two different Orders." },
+        { "id": "e", "text": "A Customer can exist with no Orders." }
+      ],
+      "correctOptionIds": ["a", "b", "e"],
+      "explanation": "1..* next to OrderLine means each Order has one or more lines; composition ties each line's lifetime to its single owning Order; * next to Order allows a Customer with zero orders. The 0..1 next to Customer means an Order may have no Customer (for example, a guest checkout), and the 1 next to Order means a line belongs to exactly one Order."
+    },
+    {
+      "id": "systems-analysis-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A new business rule says: \"Customers may cancel an order at any point before it ships.\" How should the state machine diagram below be changed?",
+      "code": { "language": "plaintext", "source": "[*]       --create-->   Draft\nDraft     --submit-->   Submitted\nSubmitted --approve-->  Approved\nSubmitted --reject-->   Rejected\nApproved  --ship-->     Shipped\nShipped   --deliver-->  Delivered" },
+      "options": [
+        { "id": "a", "text": "Add a Cancelled state reachable only from Draft, since submitted orders are already in the workflow" },
+        { "id": "b", "text": "Add a Shipped --cancel--> Cancelled transition so shipped orders can still be stopped" },
+        { "id": "c", "text": "Model cancel as an internal activity of Submitted so the order stays in the same state" },
+        { "id": "d", "text": "Add a Cancelled state with cancel transitions from Draft, Submitted, and Approved" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Every state before Shipped (Draft, Submitted, Approved) needs a cancel transition to a Cancelled state, and Shipped must not have one. Allowing cancellation only from Draft misses two states the rule covers."
+    },
+    {
+      "id": "systems-analysis-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A company is replacing its payroll system for 4,000 employees. Pay errors are unacceptable, the legacy system can keep running for two more pay cycles, and the payroll team can process both. The CFO wants proof that the new system produces correct paychecks before any employee is paid from it. Which conversion strategy fits?",
+      "options": [
+        { "id": "a", "text": "Direct cutover on the first day of a new pay period" },
+        { "id": "b", "text": "Parallel conversion, running both systems and comparing results" },
+        { "id": "c", "text": "Pilot conversion, moving one department to the new system first" },
+        { "id": "d", "text": "Phased conversion, moving one payroll module at a time" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Parallel conversion runs old and new systems on the same inputs so every result can be compared while employees are still paid from the legacy system, which is exactly the CFO's requirement and is affordable here. A pilot or phased rollout pays at least some employees from the unproven system before its output has been checked."
+    },
+    {
+      "id": "systems-analysis-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "An analyst maps the as-is account-opening process. Total cycle time averages about 4.3 days. Which to-be change targets the largest share of that cycle time?",
+      "code": { "language": "plaintext", "source": "Step                  | Work time | Wait before next step\n1. Receive application | 15 min    | 2 hours\n2. Credit check       | 20 min    | 1 day\n3. Manager approval   |  5 min    | 3 days\n4. Account setup      | 45 min    | 4 hours" },
+      "options": [
+        { "id": "a", "text": "Automate account setup, since it is the step with the most work time" },
+        { "id": "b", "text": "Integrate an automated credit bureau check to remove the 20 minutes of manual work" },
+        { "id": "c", "text": "Cut the 3-day wait for manager approval, for example with auto-approval below a risk threshold" },
+        { "id": "d", "text": "Add staff to receive applications so that the 2-hour intake wait disappears" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Cycle time is dominated by waiting, not working: the 3-day approval queue is about 70% of the roughly 4.3 days, while all four steps together take only 85 minutes of work. Automating setup attacks the largest work step but saves under an hour."
+    },
+    {
+      "id": "systems-analysis-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A steering committee must choose one project and the company uses a 10% discount rate. The committee favors Option A because it pays back faster. Which conclusion is correct?",
+      "code": { "language": "plaintext", "source": "Option | Up-front cost | Net savings per year | Years of savings\nA      | $100,000      | $60,000              | 2\nB      | $100,000      | $30,000              | 6\n\nPV factor at 10%:  2-year annuity 1.7355   6-year annuity 4.3553" },
+      "options": [
+        { "id": "a", "text": "Choose B: its NPV is about $30.7k versus $4.1k for A; payback ignores B's later savings" },
+        { "id": "b", "text": "Choose A: payback is the standard economic feasibility test, and A recovers cost in 1.7 years" },
+        { "id": "c", "text": "Choose A: once savings are discounted at 10%, A has the higher NPV because cash arrives sooner" },
+        { "id": "d", "text": "Choose neither: both options have a negative NPV at a 10% discount rate" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "NPV(A) = 60,000 x 1.7355 - 100,000 = about $4,130; NPV(B) = 30,000 x 4.3553 - 100,000 = about $30,660, so B creates far more value. Payback period ignores cash flows after the payback point and the time value of money, which is why it favors A here."
+    },
+    {
+      "id": "systems-analysis-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "While validating the process and data models for an order system, an analyst builds the CRUD matrix below (C = create, R = read, U = update, D = delete). What gap does it reveal?",
+      "code": { "language": "plaintext", "source": "Process            | Customer | Product | Order | Invoice\nRegister customer  | C        |         |       |\nUpdate profile     | RU       |         |       |\nPlace order        | R        | R       | C     |\nShip order         | R        | R       | RU    |\nBill order         | R        |         | R     | C\nSales report       |          | R       | R     | R" },
+      "options": [
+        { "id": "a", "text": "Every entity must have C, R, U, and D somewhere, so Customer, Order, and Invoice are all invalid" },
+        { "id": "b", "text": "No process creates or maintains Product, so a catalog maintenance process or source is missing" },
+        { "id": "c", "text": "Order is read by four processes, so it should be split into separate entities for each process" },
+        { "id": "d", "text": "Sales report only reads data, so it should be removed from the matrix as a non-process" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "A CRUD matrix check confirms each entity has a process that creates it; Product is read by three processes but never created or updated, so the model is missing a process or an external data source. Not every entity needs a delete (retention rules often forbid it), and read-only processes such as reports belong in the matrix."
+    },
+    {
+      "id": "systems-analysis-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Reviewing this sequence diagram (written as text) for the checkout use case, what design flaw should the analyst raise?",
+      "code": { "language": "plaintext", "source": "Customer       -> WebApp:          placeOrder(cart)\nWebApp         -> PaymentService:  charge(card, total)\nPaymentService --> WebApp:          approved\nWebApp         -> Inventory:       reserve(items)\nInventory      --> WebApp:          outOfStock\nWebApp         --> Customer:        \"Order failed\"" },
+      "options": [
+        { "id": "a", "text": "WebApp should call PaymentService and Inventory in parallel to reduce checkout latency" },
+        { "id": "b", "text": "The Customer should call PaymentService directly so that WebApp never handles card data" },
+        { "id": "c", "text": "The dashed return messages should be redrawn as synchronous calls to the original caller" },
+        { "id": "d", "text": "The card is charged before stock is reserved, and nothing refunds it when reservation fails" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "On the out-of-stock path the customer has been charged but receives only \"Order failed\", with no void or refund message. The fix is to reserve stock first (or authorize, then capture after reservation) or add a compensating refund; calling both in parallel would still leave the same failure path."
+    },
+    {
+      "id": "systems-analysis-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "As-is: paper purchase requests are routed by hand to a supervisor, a department head, and finance, averaging 9 days. Requests under $500 are approved 99.6% of the time. The proposed to-be is a web form emailed to the same three approvers in sequence. What is the main weakness of this to-be design?",
+      "options": [
+        { "id": "a", "text": "Paper forms should be kept as a backup until email routing has proven reliable" },
+        { "id": "b", "text": "A fourth approver from internal audit should be added because the process is now electronic" },
+        { "id": "c", "text": "It automates the as-is steps without asking whether low-value approvals add any value" },
+        { "id": "d", "text": "Email routing is less secure than signed paper, so finance approval must stay on paper" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Digitizing an existing process without questioning its steps (\"paving the cow path\") keeps the non-value-adding approvals that cause the delay; the data shows three sign-offs almost never change the outcome under $500, so the to-be should rethink them, for example with an approval threshold. Keeping paper as a backup preserves the same slow design."
     }
   ]
 }

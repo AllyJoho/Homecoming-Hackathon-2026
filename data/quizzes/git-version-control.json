@@ -2,104 +2,415 @@
   "id": "git-version-control",
   "title": "Git & Version Control",
   "skillSlug": "git-version-control",
-  "description": "Test your understanding of git & version control. Using Git for commits, branching, merging, and collaborating through pull requests.",
-  "timeLimitSeconds": 600,
+  "description": "Commits, branching, merging, rebasing, history recovery, and pull-request collaboration with Git.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "git-version-control-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Commit?",
+      "difficulty": "BEGINNER",
+      "prompt": "You edited app.js and ran `git add app.js`. Then you edited app.js again and created notes.txt. `git status` now shows the output below. What will `git commit -m \"Fix header\"` record?",
+      "code": {
+        "language": "plaintext",
+        "source": "On branch main\nChanges to be committed:\n  (use \"git restore --staged <file>...\" to unstage)\n        modified:   app.js\n\nChanges not staged for commit:\n  (use \"git add <file>...\" to update what will be committed)\n        modified:   app.js\n\nUntracked files:\n  (use \"git add <file>...\" to include in what will be committed)\n        notes.txt"
+      },
       "options": [
         {
           "id": "a",
-          "text": "is a recorded snapshot of changes in a repository"
+          "text": "app.js as it was when you ran `git add`; the later edits and notes.txt stay uncommitted"
         },
         {
           "id": "b",
-          "text": "a temporary editor tab"
+          "text": "The current app.js including the later edits, but not notes.txt"
         },
         {
           "id": "c",
-          "text": "a deployed server"
+          "text": "Both versions of app.js plus notes.txt, since all three appear in the status"
         },
         {
           "id": "d",
-          "text": "a database index"
+          "text": "Nothing, because app.js has unstaged changes that must be staged first"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Commit is a recorded snapshot of changes in a repository.",
-      "difficulty": "BEGINNER"
+      "explanation": "A commit records the index (staging area), which holds app.js as of the `git add`; later working-tree edits and untracked files are not included until staged. Git does not refuse to commit just because the same file also has unstaged changes."
     },
     {
       "id": "git-version-control-2",
-      "type": "multiple_choice",
-      "prompt": "What best describes Branch?",
-      "options": [
-        {
-          "id": "a",
-          "text": "is an independent line of development pointing to a series of commits"
-        },
-        {
-          "id": "b",
-          "text": "a type of merge conflict"
-        },
-        {
-          "id": "c",
-          "text": "a package registry"
-        },
-        {
-          "id": "d",
-          "text": "a code formatter"
-        }
-      ],
-      "correctOptionId": "a",
-      "explanation": "Branch is an independent line of development pointing to a series of commits.",
-      "difficulty": "INTERMEDIATE"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "A teammate committed config/local.env last month. You add `config/local.env` to .gitignore and commit that change. True or false: Git will now stop tracking changes to config/local.env.",
+      "correctAnswer": false,
+      "explanation": ".gitignore only affects untracked files; a file already in the index stays tracked. You must also run `git rm --cached config/local.env` (and, if it held secrets, rotate them, since it remains in history)."
     },
     {
       "id": "git-version-control-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Merge conflict?",
+      "difficulty": "BEGINNER",
+      "prompt": "You are on main and run `git merge feature/login`. Git stops with a conflict in auth.js, shown below. Which statement is correct?",
+      "code": {
+        "language": "plaintext",
+        "source": "function maxLoginAttempts() {\n<<<<<<< HEAD\n  return 5;\n=======\n  return 3;\n>>>>>>> feature/login\n}"
+      },
       "options": [
         {
           "id": "a",
-          "text": "happens when Git cannot automatically reconcile competing changes"
+          "text": "`return 5;` is feature/login's version and `return 3;` is main's"
         },
         {
           "id": "b",
-          "text": "a failed DNS lookup"
+          "text": "`return 5;` is main's version (your current branch) and `return 3;` is feature/login's"
         },
         {
           "id": "c",
-          "text": "an expired access token"
+          "text": "Git already chose `return 5;`; the lower block is shown only for reference"
         },
         {
           "id": "d",
-          "text": "a missing CSS reset"
+          "text": "Running `git commit` without editing keeps both lines automatically"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Merge conflict happens when Git cannot automatically reconcile competing changes.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "b",
+      "explanation": "The block between `<<<<<<< HEAD` and `=======` is the checked-out branch (main); the block before `>>>>>>> feature/login` is the incoming branch. Git has chosen neither: you must edit the file, `git add` it, and then commit, and Git refuses to commit while unmerged paths remain."
     },
     {
       "id": "git-version-control-4",
-      "type": "true_false",
-      "prompt": "True or false: Commit is a recorded snapshot of changes in a repository.",
-      "correctAnswer": true,
-      "explanation": "Commit is a recorded snapshot of changes in a repository.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A teammate says they pushed a fix to origin/main. You have uncommitted work on your own branch and want to inspect their commits without changing any of your local branches or files. What should you run first?",
+      "options": [
+        {
+          "id": "a",
+          "text": "`git pull origin main`"
+        },
+        {
+          "id": "b",
+          "text": "`git fetch origin`"
+        },
+        {
+          "id": "c",
+          "text": "`git merge origin/main`"
+        },
+        {
+          "id": "d",
+          "text": "`git rebase origin/main`"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "`git fetch` only downloads objects and updates remote-tracking refs like origin/main, which you can then inspect with `git log origin/main`. `git pull` is fetch plus a merge (or rebase) into your current branch, which changes your branch."
     },
     {
       "id": "git-version-control-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: happens when Git cannot automatically reconcile competing changes?",
-      "acceptedAnswers": [
-        "Merge conflict"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "You pushed a commit to the shared main branch that broke the build, and teammates have already pulled it. What is the safest way to undo it?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Run `git reset --hard HEAD~1`, then `git push --force`"
+        },
+        {
+          "id": "b",
+          "text": "Run `git commit --amend` to remove the changes, then push"
+        },
+        {
+          "id": "c",
+          "text": "Run `git revert <commit-sha>` and push the new commit"
+        },
+        {
+          "id": "d",
+          "text": "Delete the remote main branch and push your local copy again"
+        }
       ],
-      "explanation": "The term is Merge conflict.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "`git revert` adds a new commit that undoes the change, so shared history is preserved and teammates can simply pull. Resetting and force-pushing rewrites history others already have, causing diverged branches and possibly lost work."
+    },
+    {
+      "id": "git-version-control-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "You are on main, nobody else has pushed, and the log looks like the output below. You run `git merge feature/search`. What happens?",
+      "code": {
+        "language": "plaintext",
+        "source": "$ git log --oneline --graph --all\n* 3f2a1c9 (feature/search) Add search results page\n* 8b7d4e2 Add search API client\n* 1c0e9a7 (HEAD -> main, origin/main) Update README\n* 5d3b2f1 Initial commit"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Git creates a new merge commit with two parents"
+        },
+        {
+          "id": "b",
+          "text": "Git reports a conflict because both branches touch the same files"
+        },
+        {
+          "id": "c",
+          "text": "Git rebases feature/search onto main, rewriting both of its commits"
+        },
+        {
+          "id": "d",
+          "text": "main fast-forwards to 3f2a1c9 and no new commit is created"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "main's tip (1c0e9a7) is an ancestor of feature/search, so Git just moves the main pointer forward; there is nothing to reconcile and no conflict is possible. A merge commit is created only if you pass `--no-ff` or the branches have diverged."
+    },
+    {
+      "id": "git-version-control-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "You rebased your already-pushed feature branch onto the latest main. A reviewer may also have pushed a small fix commit to that remote branch since your last fetch. Which push is appropriate?",
+      "options": [
+        {
+          "id": "a",
+          "text": "`git push --force-with-lease`"
+        },
+        {
+          "id": "b",
+          "text": "`git push --force`"
+        },
+        {
+          "id": "c",
+          "text": "`git push`, since the rebased commits contain the same changes"
+        },
+        {
+          "id": "d",
+          "text": "`git push --set-upstream origin feature`"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "After a rebase the remote branch is no longer an ancestor, so a plain push is rejected as non-fast-forward. `--force-with-lease` overwrites only if the remote still matches what you last fetched, so it refuses rather than silently discarding the reviewer's commit the way `--force` would."
+    },
+    {
+      "id": "git-version-control-8",
+      "type": "order_lines",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Starting from an up-to-date main, put the steps of a typical feature-branch pull request workflow in order.",
+      "lines": [
+        {
+          "id": "k3",
+          "text": "`git switch -c feature/rate-limit` to create a branch from main"
+        },
+        {
+          "id": "p7",
+          "text": "Commit your changes on the feature branch"
+        },
+        {
+          "id": "m2",
+          "text": "`git push -u origin feature/rate-limit`"
+        },
+        {
+          "id": "x9",
+          "text": "Open a pull request targeting main"
+        },
+        {
+          "id": "d4",
+          "text": "Push additional commits to the same branch to address review feedback"
+        },
+        {
+          "id": "t1",
+          "text": "Merge the pull request once checks and approvals pass"
+        }
+      ],
+      "explanation": "You branch first so work is isolated, commit locally, publish the branch so a PR can reference it, then iterate on review by pushing to the same branch (the PR updates automatically). Merging comes last, after required checks and approvals."
+    },
+    {
+      "id": "git-version-control-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "You accidentally ran `git reset --hard HEAD~3` on your local feature branch, discarding three commits that were never pushed. `git reflog` shows the output below. Which command restores the branch exactly as it was before the reset?",
+      "code": {
+        "language": "plaintext",
+        "source": "a1b2c3d (HEAD -> feature/pay) HEAD@{0}: reset: moving to HEAD~3\n9f8e7d6 HEAD@{1}: commit: Add payment retry logic\n4c5d6e7 HEAD@{2}: commit: Add retry config\n2b3c4d5 HEAD@{3}: commit: Extract payment client\na1b2c3d HEAD@{4}: checkout: moving from main to feature/pay"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "`git revert HEAD~3`"
+        },
+        {
+          "id": "b",
+          "text": "`git reset --hard 9f8e7d6`"
+        },
+        {
+          "id": "c",
+          "text": "`git reset --hard 2b3c4d5`"
+        },
+        {
+          "id": "d",
+          "text": "None; `reset --hard` deletes the commits, so they must be rewritten"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "HEAD@{1} (9f8e7d6) is where the branch pointed just before the reset, and the commits still exist as objects, reachable through the reflog. 2b3c4d5 is only the first of the three commits, so resetting there would lose the other two."
+    },
+    {
+      "id": "git-version-control-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Branch release/2.4 is in production. A security fix was committed to main as e41f0a2, and main also contains many unreleased features. How do you ship only the fix as 2.4.1?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Check out release/2.4 and run `git merge main`"
+        },
+        {
+          "id": "b",
+          "text": "Check out release/2.4 and run `git rebase main`"
+        },
+        {
+          "id": "c",
+          "text": "Check out release/2.4 and run `git cherry-pick e41f0a2`"
+        },
+        {
+          "id": "d",
+          "text": "Check out release/2.4 and run `git reset --hard e41f0a2`"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Cherry-pick applies just that commit's changes as a new commit on the release branch. Merging, rebasing onto, or resetting to main would each bring along unreleased feature commits that are ancestors of the fix."
+    },
+    {
+      "id": "git-version-control-11",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Your branch has been pushed and others may have pulled it. Which of these operations replace existing commits with new ones (new SHAs), so publishing the result requires a force-push? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "`git commit --amend` on the last pushed commit"
+        },
+        {
+          "id": "b",
+          "text": "`git revert <sha>`"
+        },
+        {
+          "id": "c",
+          "text": "`git rebase -i HEAD~4` to squash commits"
+        },
+        {
+          "id": "d",
+          "text": "`git merge main`"
+        },
+        {
+          "id": "e",
+          "text": "`git cherry-pick <sha>` from another branch"
+        },
+        {
+          "id": "f",
+          "text": "`git filter-repo --path secrets.txt --invert-paths`"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c",
+        "f"
+      ],
+      "explanation": "Amend, interactive rebase, and filter-repo all rewrite existing commits, so the remote branch is no longer an ancestor of yours. Revert, merge, and cherry-pick only add new commits on top, so a normal fast-forward push works."
+    },
+    {
+      "id": "git-version-control-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "You are running `git bisect` to find which of about 800 commits introduced a rendering bug. The commit Git checks out next fails to compile because of an unrelated build break that was fixed a few commits later, so you can't test for the bug there. What should you do?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Mark it `git bisect bad`, since the build is broken"
+        },
+        {
+          "id": "b",
+          "text": "Mark it `git bisect good`, since the bug can't be observed"
+        },
+        {
+          "id": "c",
+          "text": "Run `git bisect reset` and restart with a narrower range"
+        },
+        {
+          "id": "d",
+          "text": "Run `git bisect skip` so Git tests a nearby commit instead"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Marking an untestable commit good or bad feeds false information into the binary search and can point at the wrong culprit. `git bisect skip` (exit code 125 under `git bisect run`) excludes it; at worst Git reports a small range of candidates instead of one commit."
+    },
+    {
+      "id": "git-version-control-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Twenty minutes ago a developer pushed a commit containing a production AWS access key to a public GitHub repository. What should be done first?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Rewrite history with git filter-repo and force-push so no commit contains the key"
+        },
+        {
+          "id": "b",
+          "text": "Make the repository private and ask anyone who cloned it to delete their copy"
+        },
+        {
+          "id": "c",
+          "text": "Deactivate the key, issue a replacement, and review CloudTrail for use of the leaked key"
+        },
+        {
+          "id": "d",
+          "text": "Push a new commit that deletes the key and adds the file to .gitignore"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Public repositories are scraped for credentials within minutes, so the key must be treated as compromised and revoked first (GitHub's guidance on exposed secrets). Rewriting history is a cleanup step; it cannot recall clones, forks, or caches that already contain the key."
+    },
+    {
+      "id": "git-version-control-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "You branched feature/b off feature/a. feature/a was then squash-merged into main as a single new commit. Running `git rebase main` on feature/b now hits conflicts while replaying feature/a's original commits. Your local feature/a still points at its pre-squash tip. Which command replays only feature/b's own commits onto main?",
+      "options": [
+        {
+          "id": "a",
+          "text": "`git rebase --onto main feature/a feature/b`"
+        },
+        {
+          "id": "b",
+          "text": "`git rebase -X theirs main` while on feature/b"
+        },
+        {
+          "id": "c",
+          "text": "`git merge --squash main` while on feature/b"
+        },
+        {
+          "id": "d",
+          "text": "`git cherry-pick main..feature/b` while on main"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "`--onto main feature/a` takes only the commits in feature/a..feature/b and replays them on main, skipping feature/a's originals that the squash already represents. `main..feature/b` still includes feature/a's original commits, because the squash commit has different SHAs, so the cherry-pick hits the same conflicts."
+    },
+    {
+      "id": "git-version-control-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Branch payments was merged into main (merge commit M), found buggy, and undone with `git revert -m 1 M`. The team then added two fix commits on payments and merged it into main again. The fixes arrived, but most of the original payments code is still missing from main. Why, and what fixes it?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The second merge was a fast-forward that skipped commits; redo it with `--no-ff`"
+        },
+        {
+          "id": "b",
+          "text": "`-m 1` deleted the original commits from history; cherry-pick them back from the reflog"
+        },
+        {
+          "id": "c",
+          "text": "The default merge strategy ignores reverted commits; redo the merge with `-s recursive`"
+        },
+        {
+          "id": "d",
+          "text": "Git considers the original commits already merged, so the revert still applies; revert the revert commit"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "A revert undoes a merge's changes but not its history: the original commits are still ancestors of main, so re-merging brings in only the new commits. The fix, per Git's revert-a-faulty-merge guidance, is to revert the revert (then merge the fixes)."
     }
   ]
 }

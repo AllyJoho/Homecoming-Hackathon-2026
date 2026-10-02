@@ -2,104 +2,411 @@
   "id": "web-accessibility",
   "title": "Web Accessibility",
   "skillSlug": "web-accessibility",
-  "description": "Test your understanding of web accessibility. Building pages that work with screen readers and keyboard navigation, following WCAG guidelines and ARIA basics.",
-  "timeLimitSeconds": 600,
+  "description": "Build and audit accessible pages with semantic HTML, ARIA, keyboard support and WCAG 2.2.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "web-accessibility-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Semantic element?",
+      "difficulty": "BEGINNER",
+      "prompt": "A site's header logo is an <img> that is the only content inside a link to the home page. Which alt attribute is appropriate?",
+      "code": {
+        "language": "markup",
+        "source": "<a href=\"/\">\n  <img src=\"/img/acme-logo.svg\" alt=\"???\">\n</a>"
+      },
       "options": [
         {
           "id": "a",
-          "text": "communicates structure and purpose to browsers and assistive technology"
+          "text": "alt=\"\" because logos are decorative"
         },
         {
           "id": "b",
-          "text": "is always visually hidden"
+          "text": "alt=\"acme-logo.svg\""
         },
         {
           "id": "c",
-          "text": "must be styled with animation"
+          "text": "alt=\"Acme home\""
         },
         {
           "id": "d",
-          "text": "can only contain images"
+          "text": "alt=\"Blue Acme logo with a stylised mountain\""
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Semantic element communicates structure and purpose to browsers and assistive technology.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "c",
+      "explanation": "When an image is the only content of a link, its alt text becomes the link's accessible name, so it should say where the link goes. An empty alt leaves the link with no name, and a visual description says what the logo looks like but not what the link does."
     },
     {
       "id": "web-accessibility-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Keyboard focus?",
+      "difficulty": "BEGINNER",
+      "prompt": "Keyboard users can't activate the control below. Which fix is the most robust?",
+      "code": {
+        "language": "markup",
+        "source": "<div class=\"btn\" onclick=\"saveDraft()\">Save draft</div>"
+      },
       "options": [
         {
           "id": "a",
-          "text": "indicates which interactive control will receive keyboard input"
+          "text": "Replace it with <button type=\"button\">, which is focusable and activates with Enter and Space"
         },
         {
           "id": "b",
-          "text": "is a database lock"
+          "text": "Add tabindex=\"0\" to the div so it can receive keyboard focus"
         },
         {
           "id": "c",
-          "text": "is the browser download cache"
+          "text": "Add role=\"button\" to the div so screen readers announce it as a button"
         },
         {
           "id": "d",
-          "text": "is a color palette"
+          "text": "Add an onmouseover handler as an alternative way to trigger saveDraft()"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Keyboard focus indicates which interactive control will receive keyboard input.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "A native <button> provides focus, Enter/Space activation, and the button role with no extra code. tabindex=\"0\" makes the div focusable, but pressing Enter or Space still does nothing without custom key handlers."
     },
     {
       "id": "web-accessibility-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Alternative text?",
+      "difficulty": "BEGINNER",
+      "prompt": "What is the accessibility problem with this field, and what is the fix?",
+      "code": {
+        "language": "markup",
+        "source": "<input type=\"email\" id=\"email\" placeholder=\"Email address\">"
+      },
       "options": [
         {
           "id": "a",
-          "text": "describes the purpose or meaning of a meaningful image"
+          "text": "The input needs aria-hidden=\"true\" so screen readers read the placeholder instead"
         },
         {
           "id": "b",
-          "text": "replaces every visible heading"
+          "text": "Screen readers can't handle type=\"email\", so the input should use type=\"text\""
         },
         {
           "id": "c",
-          "text": "encrypts an image URL"
+          "text": "The input needs a title attribute repeating the placeholder text exactly"
         },
         {
           "id": "d",
-          "text": "makes decorative images interactive"
+          "text": "A placeholder isn't a reliable label and vanishes on typing; add a visible <label for=\"email\">"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Alternative text describes the purpose or meaning of a meaningful image.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "d",
+      "explanation": "A placeholder disappears once the user types, often has low contrast, and isn't consistently treated as a label, so use a programmatically associated visible <label> (SC 1.3.1, 3.3.2). aria-hidden would remove the field from the accessibility tree entirely."
     },
     {
       "id": "web-accessibility-4",
       "type": "true_false",
-      "prompt": "True or false: Semantic element communicates structure and purpose to browsers and assistive technology.",
-      "correctAnswer": true,
-      "explanation": "Semantic element communicates structure and purpose to browsers and assistive technology.",
-      "difficulty": "BEGINNER"
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: Adding role=\"button\" to a <div> makes it focusable and operable with the Enter and Space keys.",
+      "correctAnswer": false,
+      "explanation": "ARIA roles only change what assistive technology announces; they add no behaviour. The div still needs tabindex=\"0\" and keydown handlers for Enter and Space, which is why a native <button> is preferred."
     },
     {
       "id": "web-accessibility-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: describes the purpose or meaning of a meaningful image?",
-      "acceptedAnswers": [
-        "Alternative text"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A page marks up its section titles as <div class=\"section-title\"> styled large and bold, rather than as heading elements. Sighted users see a clear structure. What is the main impact on screen reader users?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Screen readers skip the section-title text entirely because it's inside a div"
+        },
+        {
+          "id": "b",
+          "text": "They can't jump between sections with heading navigation, and the structure isn't conveyed (SC 1.3.1)"
+        },
+        {
+          "id": "c",
+          "text": "The page fails contrast requirements because divs aren't checked for contrast"
+        },
+        {
+          "id": "d",
+          "text": "There is no impact, because screen readers infer headings from font size and weight"
+        }
       ],
-      "explanation": "The term is Alternative text.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "b",
+      "explanation": "Screen reader users often navigate by headings, and visual-only styling doesn't put that structure in the accessibility tree, which fails SC 1.3.1 Info and Relationships. The text is still read; it's just not identified as a heading."
+    },
+    {
+      "id": "web-accessibility-6",
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "This formatting bar must give every icon-only button an accessible name. Which line contains the error?",
+      "code": {
+        "language": "markup",
+        "source": "<div class=\"format-bar\">\n  <button type=\"button\" aria-pressed=\"false\" aria-label=\"Bold\">\n    <svg aria-hidden=\"true\" focusable=\"false\"><use href=\"#i-bold\"></use></svg>\n  </button>\n  <button type=\"button\" aria-pressed=\"false\" aria-label=\"Italic\">\n    <svg aria-hidden=\"true\" focusable=\"false\"><use href=\"#i-italic\"></use></svg>\n  </button>\n  <button type=\"button\" aria-pressed=\"false\">\n    <svg aria-hidden=\"true\" focusable=\"false\"><use href=\"#i-underline\"></use></svg>\n  </button>\n</div>"
+      },
+      "bugLines": [
+        8
+      ],
+      "explanation": "The underline button on line 8 has no aria-label or text, and its only content is an aria-hidden SVG, so it is announced as just 'toggle button' with no name (SC 4.1.2). Hiding decorative SVGs with aria-hidden is correct; the name belongs on the button."
+    },
+    {
+      "id": "web-accessibility-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A code review finds this custom checkbox. What should the reviewer recommend, following the first rule of ARIA?",
+      "code": {
+        "language": "markup",
+        "source": "<div role=\"checkbox\" tabindex=\"0\" aria-checked=\"false\"\n     onclick=\"toggle(this)\">\n  Subscribe to newsletter\n</div>"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Add aria-label=\"checkbox\" so the control type is announced by screen readers"
+        },
+        {
+          "id": "b",
+          "text": "Use a native <input type=\"checkbox\"> with a <label>, which has built-in role, state and keys"
+        },
+        {
+          "id": "c",
+          "text": "Add aria-pressed=\"false\" next to aria-checked so both states are exposed"
+        },
+        {
+          "id": "d",
+          "text": "Change tabindex to 1 so the checkbox is reached first in the tab order"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "The first rule of ARIA (W3C 'Using ARIA') is to use a native HTML element with the needed semantics and behaviour instead of repurposing one with ARIA. This div also has no Space-key handler. Positive tabindex values break the natural focus order and are an anti-pattern."
+    },
+    {
+      "id": "web-accessibility-8",
+      "type": "order_lines",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Order the keyboard focus behaviour of an accessible modal dialog, per the WAI-ARIA Authoring Practices Guide, from opening to closing.",
+      "lines": [
+        {
+          "id": "q7",
+          "text": "User activates the 'Edit profile' button"
+        },
+        {
+          "id": "d2",
+          "text": "Focus moves to an element inside the dialog, such as its first field"
+        },
+        {
+          "id": "m9",
+          "text": "Tab and Shift+Tab cycle only through focusable elements inside the dialog"
+        },
+        {
+          "id": "b4",
+          "text": "User presses Escape and the dialog closes"
+        },
+        {
+          "id": "x1",
+          "text": "Focus returns to the 'Edit profile' button"
+        }
+      ],
+      "explanation": "The APG Dialog (Modal) pattern moves focus into the dialog when it opens, keeps Tab inside it while it's open, closes it on Escape, and returns focus to the element that opened it. Without that last step, keyboard users lose their place on the page."
+    },
+    {
+      "id": "web-accessibility-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A site has a sticky cookie banner fixed to the bottom of the viewport. When keyboard users tab to links near the bottom of the page, the focused link is completely hidden behind the banner. Which WCAG 2.2 Level AA success criterion does this fail?",
+      "options": [
+        {
+          "id": "a",
+          "text": "2.4.7 Focus Visible"
+        },
+        {
+          "id": "b",
+          "text": "2.4.13 Focus Appearance"
+        },
+        {
+          "id": "c",
+          "text": "1.4.11 Non-text Contrast"
+        },
+        {
+          "id": "d",
+          "text": "2.4.11 Focus Not Obscured (Minimum)"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "SC 2.4.11 (new in WCAG 2.2, Level AA) requires that a focused component isn't entirely hidden by author-created content such as sticky banners. 2.4.7 only requires that a focus indicator exists, which it does here (it's just covered), and 2.4.13 is Level AAA."
+    },
+    {
+      "id": "web-accessibility-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "After 'Add to cart', the function below runs, but screen reader users often hear nothing. Which fix announces the message most reliably without moving the user's focus?",
+      "code": {
+        "language": "javascript",
+        "source": "function showCartStatus(msg) {\n  const el = document.createElement('div');\n  el.setAttribute('role', 'status');\n  el.textContent = msg;\n  document.body.appendChild(el);\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Render an empty role=\"status\" container at page load and update its text when an item is added"
+        },
+        {
+          "id": "b",
+          "text": "Add aria-atomic=\"true\" to the new element before it is appended to the page"
+        },
+        {
+          "id": "c",
+          "text": "Add aria-hidden=\"false\" to the new element so screen readers are told to read it"
+        },
+        {
+          "id": "d",
+          "text": "Add tabindex=\"-1\" to the new element so screen readers treat it as interactive"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Screen readers watch live regions that already exist for changes. A region inserted together with its content is often missed, so the container needs to be in the DOM first (SC 4.1.3 Status Messages). aria-atomic only controls how much of a region is read; it doesn't make a newly inserted region announce."
+    },
+    {
+      "id": "web-accessibility-11",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Which of these targets pass WCAG 2.2 SC 2.5.8 Target Size (Minimum)? Assume no other targets are nearby unless stated. Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "A 24 x 24 CSS px close button"
+        },
+        {
+          "id": "b",
+          "text": "A row of 16 x 16 px icon buttons with 2 px gaps between them"
+        },
+        {
+          "id": "c",
+          "text": "A text link inside a sentence of body copy"
+        },
+        {
+          "id": "d",
+          "text": "A 20 x 20 px button whose centre is 30 px from the centre of the only nearby 20 x 20 px button"
+        },
+        {
+          "id": "e",
+          "text": "Two 18 x 18 px checkboxes whose centres are 20 px apart"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c",
+        "d"
+      ],
+      "explanation": "Targets of at least 24 x 24 px pass, and inline links in text are exempt. An undersized target passes under the spacing exception if a 24 px-diameter circle centred on it doesn't intersect another target or that target's circle, which works at 30 px apart. At 18 px (16 + 2) and 20 px apart the circles overlap, so those targets fail."
+    },
+    {
+      "id": "web-accessibility-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A speech-input user says 'Click Buy now', but the button below doesn't respond. Which WCAG success criterion is failed, and what is the fix?",
+      "code": {
+        "language": "markup",
+        "source": "<button type=\"submit\" aria-label=\"Purchase item\">Buy now</button>"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "4.1.2 Name, Role, Value; add role=\"button\" so the control exposes its role"
+        },
+        {
+          "id": "b",
+          "text": "2.4.6 Headings and Labels; make the label more descriptive, e.g. 'Purchase item now'"
+        },
+        {
+          "id": "c",
+          "text": "2.5.3 Label in Name; remove the aria-label, or make the accessible name start with 'Buy now'"
+        },
+        {
+          "id": "d",
+          "text": "1.1.1 Non-text Content; add a title=\"Buy now\" attribute to the button"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "aria-label overrides the visible text, so the accessible name 'Purchase item' doesn't contain the visible label 'Buy now', and speech users can't activate it by what they see (SC 2.5.3, Level A). A native <button> already has the button role, so role=\"button\" fixes nothing."
+    },
+    {
+      "id": "web-accessibility-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "When this off-canvas drawer is closed, keyboard focus seems to disappear for several Tab presses and the screen reader announces nothing. What is the correct fix for the closed state?",
+      "code": {
+        "language": "markup",
+        "source": "<nav id=\"drawer\" class=\"offscreen\" aria-hidden=\"true\">\n  <a href=\"/account\">Account</a>\n  <a href=\"/orders\">Orders</a>\n</nav>\n<!-- .offscreen { transform: translateX(-100%); } -->"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Add role=\"presentation\" to each link so screen readers stop treating them as links"
+        },
+        {
+          "id": "b",
+          "text": "Remove aria-hidden so screen readers announce the links while the drawer is closed"
+        },
+        {
+          "id": "c",
+          "text": "Add aria-expanded=\"false\" to the <nav> element so its closed state is announced"
+        },
+        {
+          "id": "d",
+          "text": "Apply the inert attribute or display: none to the closed drawer so its links can't take focus"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "aria-hidden removes content from the accessibility tree but doesn't stop it getting focus, so the off-screen links still receive focus and have no announced name. inert (or display: none / visibility: hidden) removes them from both. aria-expanded belongs on the toggle button, not the drawer, and it doesn't stop focus anyway."
+    },
+    {
+      "id": "web-accessibility-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "An audit against WCAG 2.2 AA includes the finding below. How should it be reported?",
+      "code": {
+        "language": "plaintext",
+        "source": "Finding 17 | SC 4.1.1 Parsing (A) | FAIL\nThe checkout and newsletter forms both contain <input id=\"email\">.\nThe newsletter's <label for=\"email\"> resolves to the checkout input,\nso the newsletter email field has no accessible name."
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Drop the 4.1.1 reference, which is obsolete in WCAG 2.2, and report the broken label under 1.3.1 and 4.1.2"
+        },
+        {
+          "id": "b",
+          "text": "Keep it as a 4.1.1 failure, since duplicate ids are always a Level A failure"
+        },
+        {
+          "id": "c",
+          "text": "Close the finding, because 4.1.1 was removed and duplicate ids can no longer cause failures"
+        },
+        {
+          "id": "d",
+          "text": "Report it only under 2.4.6 Headings and Labels, since the label's wording is the issue"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "WCAG 2.2 removed 4.1.1 Parsing as obsolete, but the actual user impact here (an input with no programmatic label) still fails 1.3.1 Info and Relationships and 4.1.2 Name, Role, Value. Closing the finding ignores a real barrier just because the old criterion is gone."
+    },
+    {
+      "id": "web-accessibility-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "In a React single-page app, clicking a nav link swaps the main content without a page load. Screen reader users hear nothing, and focus stays on the nav link. Which handling is recommended?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Put aria-live=\"assertive\" on <main> so all of the new content is read out automatically"
+        },
+        {
+          "id": "b",
+          "text": "Move focus to <body> after each route change and make no other changes"
+        },
+        {
+          "id": "c",
+          "text": "After the new view renders, update document.title and move focus to its <h1> (with tabindex=\"-1\")"
+        },
+        {
+          "id": "d",
+          "text": "Add aria-current=\"page\" to the clicked nav link and make no other changes"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Updating the title and moving focus to the new view's heading tells screen reader users the page changed and starts them at the new content, much like a full page load would. An assertive live region on <main> would read out the entire view and interrupt the user, and aria-current alone gives no announcement of the change."
     }
   ]
 }

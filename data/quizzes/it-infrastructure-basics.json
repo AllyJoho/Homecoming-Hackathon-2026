@@ -2,104 +2,402 @@
   "id": "it-infrastructure-basics",
   "title": "IT Infrastructure Basics",
   "skillSlug": "it-infrastructure-basics",
-  "description": "Test your understanding of it infrastructure basics. Fundamentals of networks, servers, operating systems, and storage.",
-  "timeLimitSeconds": 600,
+  "description": "Subnetting, DNS, DHCP, VLANs, virtualization, storage, and backup design for everyday IT operations.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "it-infrastructure-basics-1",
       "type": "multiple_choice",
-      "prompt": "What best describes DNS?",
+      "difficulty": "BEGINNER",
+      "prompt": "A branch office needs one IPv4 subnet for 50 hosts, and you want to waste as few addresses as possible. Which prefix length should you assign?",
       "options": [
         {
           "id": "a",
-          "text": "maps human-readable domain names to network addresses"
+          "text": "/24"
         },
         {
           "id": "b",
-          "text": "encrypts hard drives"
+          "text": "/25"
         },
         {
           "id": "c",
-          "text": "assigns project budgets"
+          "text": "/26"
         },
         {
           "id": "d",
-          "text": "renders HTML"
+          "text": "/27"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "DNS maps human-readable domain names to network addresses.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "c",
+      "explanation": "A /26 has 64 addresses, or 62 usable once the network and broadcast addresses are removed, which fits 50 hosts. A /27 gives only 30 usable addresses, too few, while a /25 (126 usable) wastes more than it needs to."
     },
     {
       "id": "it-infrastructure-basics-2",
-      "type": "multiple_choice",
-      "prompt": "What best describes Virtual machine?",
-      "options": [
+      "type": "order_lines",
+      "difficulty": "BEGINNER",
+      "prompt": "Put the DHCPv4 messages a new laptop exchanges to get its first address lease (RFC 2131) in order.",
+      "lines": [
         {
-          "id": "a",
-          "text": "emulates a computer system using software on a physical host"
+          "id": "w3",
+          "text": "Client broadcasts DHCPDISCOVER"
         },
         {
-          "id": "b",
-          "text": "is a physical cable"
+          "id": "k8",
+          "text": "Server responds with DHCPOFFER proposing an address"
         },
         {
-          "id": "c",
-          "text": "is a spreadsheet formula"
+          "id": "b1",
+          "text": "Client broadcasts DHCPREQUEST for the offered address"
         },
         {
-          "id": "d",
-          "text": "is a user requirement"
+          "id": "t6",
+          "text": "Server confirms with DHCPACK and the lease begins"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Virtual machine emulates a computer system using software on a physical host.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "The exchange is Discover, Offer, Request, Acknowledge (DORA). The client broadcasts its Request, rather than unicasting it, so any other servers that made offers can see which one was accepted and withdraw theirs."
     },
     {
       "id": "it-infrastructure-basics-3",
       "type": "multiple_choice",
-      "prompt": "What best describes RAID?",
+      "difficulty": "BEGINNER",
+      "prompt": "Your company's store, shop.example.com, is hosted by a SaaS vendor at stores.vendor.example, and the vendor warns its IP addresses can change without notice. Which DNS record should you create for shop.example.com?",
       "options": [
         {
           "id": "a",
-          "text": "combines disks to improve redundancy, performance, or both"
+          "text": "A CNAME record pointing to stores.vendor.example"
         },
         {
           "id": "b",
-          "text": "is an API authentication token"
+          "text": "An A record pointing to the vendor's current IP address"
         },
         {
           "id": "c",
-          "text": "is a web accessibility standard"
+          "text": "An MX record pointing to stores.vendor.example"
         },
         {
           "id": "d",
-          "text": "is a code review"
+          "text": "A PTR record mapping the vendor's IP to shop.example.com"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "RAID combines disks to improve redundancy, performance, or both.",
-      "difficulty": "ADVANCED"
+      "explanation": "A CNAME makes shop.example.com an alias of the vendor's hostname, so resolution follows the vendor's own records when its IPs change. An A record hard-codes today's IP and breaks after the next change. MX records only route email."
     },
     {
       "id": "it-infrastructure-basics-4",
-      "type": "true_false",
-      "prompt": "True or false: DNS maps human-readable domain names to network addresses.",
-      "correctAnswer": true,
-      "explanation": "DNS maps human-readable domain names to network addresses.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A server has four 4 TB drives configured as a single RAID 5 array. What is its usable capacity, and how many drive failures can it survive without data loss?",
+      "options": [
+        {
+          "id": "a",
+          "text": "16 TB usable; it survives no drive failures"
+        },
+        {
+          "id": "b",
+          "text": "12 TB usable; it survives one drive failure"
+        },
+        {
+          "id": "c",
+          "text": "8 TB usable; it survives two drive failures"
+        },
+        {
+          "id": "d",
+          "text": "12 TB usable; it survives two drive failures"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "RAID 5 uses one drive's worth of capacity for distributed parity: (4 - 1) x 4 TB = 12 TB, and it tolerates exactly one failure. Surviving two failures takes RAID 6 (8 TB here). 16 TB with no redundancy describes RAID 0."
     },
     {
       "id": "it-infrastructure-basics-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: combines disks to improve redundancy, performance, or both?",
-      "acceptedAnswers": [
-        "RAID"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: Like a virtual machine, each container on a Docker host runs its own separate guest operating system kernel.",
+      "correctAnswer": false,
+      "explanation": "Containers share the host's kernel and are isolated with namespaces and cgroups. That is why they start in seconds, and why a Linux container can't run natively on a Windows kernel. Each VM boots its own full guest OS on top of a hypervisor."
+    },
+    {
+      "id": "it-infrastructure-basics-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A desktop can reach other hosts in 192.168.10.65-192.168.10.94 but nothing outside that range. Its configuration is shown. What is the cause?",
+      "code": {
+        "language": "plaintext",
+        "source": "Ethernet adapter Ethernet:\n\n   IPv4 Address. . . . . . . . . . . : 192.168.10.70\n   Subnet Mask . . . . . . . . . . . : 255.255.255.224\n   Default Gateway . . . . . . . . . : 192.168.10.62"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "192.168.10.70 is the broadcast address of its subnet, so it can't be assigned to a host"
+        },
+        {
+          "id": "b",
+          "text": "192.168.10.70 is the network address of its subnet, so traffic sent to it is dropped"
+        },
+        {
+          "id": "c",
+          "text": "A 255.255.255.224 mask allows only 14 usable hosts, so the subnet is already full"
+        },
+        {
+          "id": "d",
+          "text": "The gateway 192.168.10.62 is outside the host's 192.168.10.64/27 subnet, so it can't be reached directly"
+        }
       ],
-      "explanation": "The term is RAID.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "d",
+      "explanation": "With a /27 mask, the host's subnet is 192.168.10.64-95 (usable .65-.94), while .62 belongs to the .32/27 subnet. The host can't ARP for a gateway off its own subnet, so it can't route anywhere else. The broadcast address here is .95, the network address is .64, and /27 allows 30 usable hosts (14 is /28)."
+    },
+    {
+      "id": "it-infrastructure-basics-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The order database's current backup design is shown below. Which change brings it into line with the business requirement?",
+      "code": {
+        "language": "plaintext",
+        "source": "Service:      Order database\nRequirement:  RPO = 1 hour, RTO = 4 hours\nCurrent:      Full backup nightly at 01:00 to backup appliance\n              Retention 7 days; last restore test took 2.5 hours"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Move the restore target to faster storage so restores finish in under an hour"
+        },
+        {
+          "id": "b",
+          "text": "Add hourly transaction-log (or incremental) backups between the nightly fulls"
+        },
+        {
+          "id": "c",
+          "text": "Keep 30 days of nightly backups instead of 7 so older restore points are available"
+        },
+        {
+          "id": "d",
+          "text": "Move the nightly full backup to 23:00 so it captures more of the business day"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "RPO is the maximum acceptable data loss. With only a nightly full, a failure late in the day loses up to about 24 hours, so you need restore points at least hourly. Faster restore storage improves RTO, which the tested 2.5-hour restore already meets."
+    },
+    {
+      "id": "it-infrastructure-basics-8",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A storage admin presents a 2 TB iSCSI LUN from the SAN to a Windows file server. Select the TWO statements that are true.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The server sees the LUN as a raw block device and formats it with its own file system"
+        },
+        {
+          "id": "b",
+          "text": "The storage traffic travels over an IP network, usually a dedicated storage VLAN"
+        },
+        {
+          "id": "c",
+          "text": "Other servers can safely mount the same LUN with NTFS at the same time without clustering"
+        },
+        {
+          "id": "d",
+          "text": "Clients reach the LUN as a file-level share over SMB or NFS"
+        },
+        {
+          "id": "e",
+          "text": "The SAN tracks files and folders on the LUN and enforces NTFS permissions on them"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b"
+      ],
+      "explanation": "A SAN provides block-level storage: the host owns the file system, and iSCSI carries SCSI commands over TCP/IP. Mounting the same NTFS volume on several hosts without a cluster-aware file system corrupts it. File-level SMB/NFS shares are what a NAS provides."
+    },
+    {
+      "id": "it-infrastructure-basics-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "On Saturday you will move www.example.com to a new server with a new IP address. The A record currently has a TTL of 86400 seconds. What should you do so that users switch over quickly?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Change the record on Saturday and flush your DNS server's cache, which also clears external resolvers"
+        },
+        {
+          "id": "b",
+          "text": "Raise the TTL to 172800 now so resolvers hold the record steady through the migration"
+        },
+        {
+          "id": "c",
+          "text": "At least a day beforehand, lower the TTL to about 300, then change the A record at cutover"
+        },
+        {
+          "id": "d",
+          "text": "Add a second A record with the new IP now so clients find the new server early"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Resolvers can cache the old answer for a full TTL, so lowering it at least one old-TTL period ahead means caches refresh within minutes at cutover. Flushing your own server does nothing for ISP or public resolvers. A second A record would send some users to the new server before it's ready."
+    },
+    {
+      "id": "it-infrastructure-basics-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "PCs in VLAN 10 (10.1.10.0/24) and VLAN 20 (10.1.20.0/24) are on the same Layer 2 access switch. Hosts can talk within each VLAN but not across VLANs. What is required to allow inter-VLAN traffic?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A Layer 3 device routing between the VLANs, such as SVIs on a Layer 3 switch or a router-on-a-stick"
+        },
+        {
+          "id": "b",
+          "text": "Changing both subnet masks to 255.255.0.0 so all the PCs end up on the same IP network"
+        },
+        {
+          "id": "c",
+          "text": "Configuring every PC's access port as an 802.1Q trunk that carries both VLANs"
+        },
+        {
+          "id": "d",
+          "text": "Enabling Spanning Tree Protocol so the switch can forward frames between the VLANs"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "VLANs are separate broadcast domains, so traffic between them must be routed. Widening the mask makes hosts ARP directly for peers in the other VLAN, and the switch won't forward those frames across VLANs. STP only prevents loops."
+    },
+    {
+      "id": "it-infrastructure-basics-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A virtualization admin takes nightly hypervisor snapshots of a file-server VM, keeps them on the same datastore as the VM, and calls this the backup strategy. What is the core flaw?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Hypervisors can't snapshot a VM while it is powered on, so the nightly snapshots are all empty"
+        },
+        {
+          "id": "b",
+          "text": "Each snapshot is a full copy of the virtual disk, so the datastore will fill up within days"
+        },
+        {
+          "id": "c",
+          "text": "Reverting to a snapshot requires reinstalling the guest operating system before data can be read"
+        },
+        {
+          "id": "d",
+          "text": "Snapshots depend on the base disk and the same storage, so losing either destroys every restore point"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "A snapshot is a delta chain tied to the parent virtual disk on the same datastore, so it is not an independent copy. Long chains also degrade performance, and vendors such as VMware advise against keeping snapshots long-term. Snapshots are deltas, not full copies, and live snapshots are routine."
+    },
+    {
+      "id": "it-infrastructure-basics-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Your internal recursive resolver (10.0.1.53) resolves most domains, but a few large DNSSEC-signed zones return SERVFAIL. A packet capture shows upstream answers arriving with the TC (truncated) flag set. Its outbound firewall rules are shown. What is the fix?",
+      "code": {
+        "language": "plaintext",
+        "source": "Rule  Source      Destination  Proto  DstPort  Action\n10    10.0.1.53   any          UDP    53       allow\n20    10.0.1.53   any          UDP    123      allow\n99    any         any          any    any      deny"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Raise the resolver's EDNS buffer to 65,535 bytes so every answer fits in one UDP datagram"
+        },
+        {
+          "id": "b",
+          "text": "Allow UDP 853 outbound so the resolver can fall back to DNS over TLS for large answers"
+        },
+        {
+          "id": "c",
+          "text": "Allow TCP 53 outbound from the resolver so truncated answers can be retried over TCP"
+        },
+        {
+          "id": "d",
+          "text": "Lower the cache TTL so the failed answers are requested again more quickly"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "A truncated UDP response tells the resolver to retry over TCP, and RFC 7766 requires DNS implementations to support TCP. Huge EDNS buffers cause IP fragmentation that networks often drop (DNS Flag Day 2020 recommends 1232 bytes). DNS over TLS runs on TCP 853, not UDP."
+    },
+    {
+      "id": "it-infrastructure-basics-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "An 8 x 16 TB RAID 5 array has lost one drive, and the rebuild onto the hot spare is estimated at more than 30 hours. What is the main risk, and what should the replacement array design be?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Only degraded performance during the rebuild; RAID 5 still protects all the data until it finishes"
+        },
+        {
+          "id": "b",
+          "text": "A second failure or unrecoverable read error during the rebuild loses the array; use RAID 6 or RAID 10"
+        },
+        {
+          "id": "c",
+          "text": "Data loss only if the new drive comes from a different batch; buy drives from one lot next time"
+        },
+        {
+          "id": "d",
+          "text": "Redundancy is now permanently reduced; convert to RAID 0 so future rebuilds run faster"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "A degraded RAID 5 array has no redundancy left, and the rebuild must read every sector of the seven remaining large drives, so a URE or another failure during that long window is a real risk. That is why dual parity (RAID 6) or mirroring is standard for large drives. RAID 0 has no redundancy at all."
+    },
+    {
+      "id": "it-infrastructure-basics-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Clients on new VLAN 30 get 169.254.x.x addresses. The DHCP server (10.1.10.5) has an active 10.1.30.0/24 scope with router option 10.1.30.1. The Layer 3 core switch config is shown. Which change fixes it?",
+      "code": {
+        "language": "plaintext",
+        "source": "interface Vlan10\n description Servers (DHCP server 10.1.10.5)\n ip address 10.1.10.1 255.255.255.0\n!\ninterface Vlan30\n description Floor 3 clients\n ip address 10.1.30.1 255.255.255.0"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Add ip helper-address 10.1.10.5 under interface Vlan10"
+        },
+        {
+          "id": "b",
+          "text": "Add ip helper-address 10.1.30.1 under interface Vlan30"
+        },
+        {
+          "id": "c",
+          "text": "Change the scope's router option to 10.1.10.1"
+        },
+        {
+          "id": "d",
+          "text": "Add ip helper-address 10.1.10.5 under interface Vlan30"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "DHCPDISCOVER is a broadcast that doesn't cross routers, so the SVI facing the clients (Vlan30) must relay it to the server. The relay's address in the forwarded packet (giaddr) is also how the server picks the 10.1.30.0/24 scope. A helper on Vlan10 never sees VLAN 30 broadcasts."
+    },
+    {
+      "id": "it-infrastructure-basics-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Ransomware operators who had domain admin rights deleted the backup jobs and encrypted the domain-joined backup NAS along with production. Which design change most directly prevents a repeat?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Keep a copy that is immutable (object lock/WORM) or offline, with admin credentials separate from the domain"
+        },
+        {
+          "id": "b",
+          "text": "Increase backup frequency to hourly so less data is lost when production is encrypted"
+        },
+        {
+          "id": "c",
+          "text": "Replicate the backup NAS to a second domain-joined NAS in another building every night"
+        },
+        {
+          "id": "d",
+          "text": "Encrypt the backup files with AES-256 so the ransomware cannot read or modify them"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "The failure was that the attacker's domain credentials could reach and destroy the backups. An immutable or offline copy managed outside the production identity plane survives a full domain compromise. A second domain-joined NAS is exposed to the same credentials, and encryption doesn't stop deletion or re-encryption."
     }
   ]
 }
