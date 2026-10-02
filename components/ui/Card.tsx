@@ -56,7 +56,7 @@ export function Card({
       <div className="flex min-w-0 flex-1 flex-col">
         {(title || action) && (
           <header
-            className={`flex ${headerAlign === 'center' ? 'items-center' : 'items-start'} justify-between gap-4 border-b border-zinc-200 px-5 py-4 dark:border-zinc-800`}
+            className={`flex ${headerAlign === 'center' ? 'items-center' : 'items-start'} justify-between gap-4 border-b border-zinc-200 px-5 py-4 dark:border-surface-border`}
           >
             <div className="min-w-0">
               {typeof title === 'string' ? (
@@ -75,7 +75,7 @@ export function Card({
         <div className={flush ? 'flex-1' : 'flex-1 px-5 py-4'}>{children}</div>
 
         {footer && (
-          <footer className="border-t border-zinc-200 px-5 py-3 dark:border-zinc-800">
+          <footer className="border-t border-zinc-200 px-5 py-3 dark:border-surface-border">
             {footer}
           </footer>
         )}

@@ -118,7 +118,7 @@ export function SkillCatalogBrowser({ catalog }: SkillCatalogBrowserProps) {
           aria-label="Search skills"
           // bg-white explicitly: the page is tinted now, and an input with no
           // fill would take the tint and stop reading as something you type in.
-          className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm outline-none focus:border-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:focus:border-zinc-50"
+          className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm outline-none focus:border-zinc-900 dark:border-surface-border dark:bg-surface dark:focus:border-zinc-50"
         />
         {query.trim() && (
           <p aria-live="polite" className="text-xs text-zinc-500 dark:text-zinc-400">

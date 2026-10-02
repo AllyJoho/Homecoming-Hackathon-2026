@@ -115,7 +115,7 @@ export function SiteHeader({ userName }: SiteHeaderProps) {
   return (
     // `supports-[backdrop-filter]` keeps the bar opaque where blur isn't
     // available, rather than leaving content showing through a flat 80% white.
-    <header className="sticky top-0 z-40 border-b border-zinc-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:border-zinc-800 dark:bg-zinc-950/80 dark:supports-[backdrop-filter]:bg-zinc-950/60">
+    <header className="sticky top-0 z-40 border-b border-zinc-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:border-surface-border dark:bg-surface/80 dark:supports-[backdrop-filter]:bg-surface/60">
       <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-6 px-6">
         <Link href="/" className="flex shrink-0 items-center gap-2">
           <Logo className="h-6 w-6" />
@@ -181,7 +181,7 @@ export function SiteHeader({ userName }: SiteHeaderProps) {
       {open && (
         <div
           id="site-menu"
-          className="border-t border-zinc-200 px-6 py-3 md:hidden dark:border-zinc-800"
+          className="border-t border-zinc-200 px-6 py-3 md:hidden dark:border-surface-border"
         >
           <nav aria-label="Main">
             <ul className="flex flex-col gap-1">
@@ -204,7 +204,7 @@ export function SiteHeader({ userName }: SiteHeaderProps) {
             </ul>
           </nav>
 
-          <div className="mt-3 flex items-center justify-between border-t border-zinc-200 pt-3 dark:border-zinc-800">
+          <div className="mt-3 flex items-center justify-between border-t border-zinc-200 pt-3 dark:border-surface-border">
             <span className="flex min-w-0 items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
               <UserIcon />
               <span className="truncate">{userName}</span>

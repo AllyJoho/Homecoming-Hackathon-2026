@@ -33,7 +33,7 @@ export function CodeBlock({ code, selectedLines = [], onToggleLine, disabled }: 
   return (
     <Highlight code={source} language={code.language} theme={CLASS_ONLY_THEME}>
       {({ tokens, getLineProps, getTokenProps }) => (
-        <div className="code-block overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 py-3 font-mono text-sm leading-6 dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="code-block overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 py-3 font-mono text-sm leading-6 dark:border-surface-border dark:bg-surface-raised">
           {/* Not a <table>: screen readers should read this as code, so the
               numbers are hidden from them and the lines read top to bottom. */}
           <pre className="min-w-max" aria-label={`${code.language} code`}>

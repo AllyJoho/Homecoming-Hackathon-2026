@@ -13,7 +13,7 @@ export function TrueFalse({ question, answer, onChange, disabled }: QuestionProp
       {[true, false].map((value) => (
         <label
           key={String(value)}
-          className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-3 text-sm hover:bg-zinc-50 has-checked:border-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900 dark:has-checked:border-zinc-50"
+          className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-3 text-sm hover:bg-zinc-50 has-checked:border-zinc-900 dark:border-surface-border dark:bg-surface dark:hover:bg-surface-raised dark:has-checked:border-zinc-50"
         >
           <input
             type="radio"

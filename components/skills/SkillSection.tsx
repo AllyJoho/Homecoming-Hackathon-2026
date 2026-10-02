@@ -46,7 +46,7 @@ export function SkillSection({
       </header>
 
       {skills.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-zinc-200 px-4 py-6 text-center text-sm text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+        <p className="rounded-xl border border-dashed border-zinc-200 px-4 py-6 text-center text-sm text-zinc-500 dark:border-surface-border dark:text-zinc-400">
           {emptyMessage}
         </p>
       ) : (

@@ -54,7 +54,7 @@ export function AddSkillForm() {
           disabled={pending}
           placeholder="e.g. JavaScript, SQL, Figma"
           aria-label="Skill"
-          className="flex-1 rounded-lg border border-zinc-200 px-3 py-2 text-sm outline-none focus:border-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:focus:border-zinc-50"
+          className="flex-1 rounded-lg border border-zinc-200 px-3 py-2 text-sm outline-none focus:border-zinc-900 dark:border-surface-border dark:bg-surface dark:focus:border-zinc-50"
         />
         <Button type="submit" disabled={pending || !value.trim()}>
           {pending ? 'Adding…' : 'Add'}

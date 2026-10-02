@@ -38,7 +38,7 @@ export function Modal({ open, onClose, title, children, footer }: ModalProps) {
         // clicks on children bubble from inside the inner div.
         if (event.target === ref.current) onClose();
       }}
-      className="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-xl border border-zinc-200 bg-white p-0 backdrop:bg-black/40 dark:border-zinc-800 dark:bg-zinc-950"
+      className="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-xl border border-zinc-200 bg-white p-0 backdrop:bg-black/40 dark:border-surface-border dark:bg-surface"
     >
       <div className="p-5">
         {title && (

@@ -16,7 +16,7 @@ export const LABEL_CLASS = 'block text-sm font-medium text-zinc-700 dark:text-zi
 // wider than its slot. Composed by INPUT_CLASS and by custom click surfaces.
 export const INPUT_SURFACE =
   'w-full min-w-0 rounded-lg border border-zinc-300 bg-white px-3 py-2 ' +
-  'dark:border-zinc-700 dark:bg-zinc-950 ' +
+  'dark:border-zinc-700 dark:bg-surface ' +
   'focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500';
 
 // Appended on a field-local validation error. The Tailwind `!` suffix is what
@@ -30,7 +30,7 @@ export const FIELD_ERROR_CLASS = 'mt-1 text-xs text-red-600 dark:text-red-400';
 export const FIELD_HELPER_CLASS = 'mt-1 text-xs text-zinc-500 dark:text-zinc-400';
 
 export const DISABLED_INPUT_CLASS =
-  ' bg-zinc-50 text-zinc-500 cursor-not-allowed dark:bg-zinc-900 dark:text-zinc-500';
+  ' bg-zinc-50 text-zinc-500 cursor-not-allowed dark:bg-surface-raised dark:text-zinc-500';
 
 export const DISABLED_CONTROL = 'disabled:cursor-not-allowed disabled:opacity-50';
 
@@ -106,7 +106,7 @@ export const ICON_BUTTON_VARIANT_CLASSES: Record<IconButtonVariant, string> = {
 // ── Surfaces ─────────────────────────────────────────────────────────────────
 
 export const CARD_SURFACE =
-  'rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-950';
+  'rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-surface-border dark:bg-surface';
 
 // A one-step shadow grow, appended to a card surface. Static panels skip it.
 export const CARD_HOVER = 'transition-shadow hover:shadow-md';

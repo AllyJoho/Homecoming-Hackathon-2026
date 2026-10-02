@@ -95,7 +95,7 @@ export function ResumeForm({ quizBySkill }: { quizBySkill: Record<string, string
           rows={14}
           spellCheck={false}
           placeholder="Jane Cougar&#10;BYU — Information Systems, expected 2027&#10;&#10;Projects&#10;• Built a course-planning app in Next.js with a Postgres backend…"
-          className="w-full resize-y rounded-lg border border-zinc-300 bg-white px-3 py-2 font-mono text-xs leading-relaxed text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+          className="w-full resize-y rounded-lg border border-zinc-300 bg-white px-3 py-2 font-mono text-xs leading-relaxed text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:bg-surface-raised dark:text-zinc-50"
         />
       </Card>
 
@@ -152,7 +152,7 @@ export function ResumeForm({ quizBySkill }: { quizBySkill: Record<string, string
           )}
 
           {(reading.saved.upgraded.length > 0 || reading.saved.removed.length > 0) && (
-            <div className="mt-5 border-t border-zinc-200 pt-4 dark:border-zinc-800">
+            <div className="mt-5 border-t border-zinc-200 pt-4 dark:border-surface-border">
               <p className={GROUP_HEADING}>What changed on your profile</p>
               <ul className="mt-1.5 flex flex-col gap-1 text-sm text-zinc-600 dark:text-zinc-400">
                 {reading.saved.upgraded.length > 0 && (
