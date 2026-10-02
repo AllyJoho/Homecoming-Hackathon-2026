@@ -14,7 +14,12 @@
 /** Backends a task can run on. Selected globally by AI_PROVIDER. */
 export type AiProviderId = 'anthropic' | 'ollama';
 
-export type AiTaskId = 'job-skill-extraction' | 'resume-extraction' | 'quiz-coaching';
+export type AiTaskId =
+  | 'job-skill-extraction'
+  | 'resume-extraction'
+  | 'quiz-coaching'
+  | 'experience-reword'
+  | 'resume-review';
 
 /** Whether a task needs a schema-shaped answer or free prose. */
 export type AiShape = 'object' | 'text';
@@ -96,6 +101,31 @@ export const AI_TASKS: Record<AiTaskId, AiTaskSpec> = {
       "502 with the API message; the question's coach shows it in red, keeps the thread, and puts their question back in the box to retry.",
     frequency:
       'Once per question the student opens, plus once per follow-up. ~500 input tokens for the first turn — one question with its answer key, not the whole attempt — growing by the transcript after that, since the model is stateless and the thread is resent each turn. The thread is capped at 6 replies (lib/quiz/coachTurns.ts).',
+  },
+
+  'experience-reword': {
+    label: 'Bullet rewording',
+    trigger: 'Student presses "Reword with AI" while editing one experience entry',
+    callSite: 'lib/profile/reword.ts → POST /api/experience/reword',
+    shape: 'object',
+    models: { anthropic: CLAUDE_VOLUME, ollama: LOCAL_DEFAULT },
+    // One rewritten line per bullet, capped at 12 bullets by the form.
+    maxOutputTokens: 1200,
+    onFailure: 'The panel reports it and the bullets are left exactly as typed.',
+    frequency:
+      'Once per press, on one entry at a time — a few hundred input tokens. Nothing is written until the student accepts a rewrite, so a press costs a call and changes nothing.',
+  },
+
+  'resume-review': {
+    label: 'Resume review',
+    trigger: 'Student presses "Review my resume" on /resume',
+    callSite: 'lib/profile/resumeReview.ts → POST /api/resume/review',
+    shape: 'object',
+    models: { anthropic: CLAUDE_VOLUME, ollama: LOCAL_DEFAULT },
+    maxOutputTokens: 1500,
+    onFailure: 'The card reports it; the counted findings above it are computed without a model and still show.',
+    frequency:
+      'Once per press. ~1-2k input tokens — every experience entry plus the counts and the career match, which are arithmetic (@/lib/careers/match) rather than a second call.',
   },
 };
 
