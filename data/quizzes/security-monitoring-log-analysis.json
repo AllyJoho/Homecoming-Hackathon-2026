@@ -1,0 +1,105 @@
+{
+  "id": "security-monitoring-log-analysis",
+  "title": "Security Monitoring & Log Analysis",
+  "skillSlug": "security-monitoring-log-analysis",
+  "description": "Test your understanding of security monitoring & log analysis. Collecting and reviewing logs and alerts from systems and SIEM tools to spot suspicious activity.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "security-monitoring-log-analysis-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes SIEM?",
+      "options": [
+        {
+          "id": "a",
+          "text": "collects and correlates security events to support monitoring and investigation"
+        },
+        {
+          "id": "b",
+          "text": "is a source-control branch"
+        },
+        {
+          "id": "c",
+          "text": "is a disk redundancy array"
+        },
+        {
+          "id": "d",
+          "text": "is a UI wireframe"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "SIEM collects and correlates security events to support monitoring and investigation.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "security-monitoring-log-analysis-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Indicator of compromise?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is an observable artifact that may signal malicious activity"
+        },
+        {
+          "id": "b",
+          "text": "is a guaranteed benign event"
+        },
+        {
+          "id": "c",
+          "text": "is a project milestone"
+        },
+        {
+          "id": "d",
+          "text": "is an encryption algorithm"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Indicator of compromise is an observable artifact that may signal malicious activity.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "security-monitoring-log-analysis-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Baseline?",
+      "options": [
+        {
+          "id": "a",
+          "text": "describes expected behavior so meaningful deviations can be investigated"
+        },
+        {
+          "id": "b",
+          "text": "is a list of known passwords"
+        },
+        {
+          "id": "c",
+          "text": "is always a firewall block"
+        },
+        {
+          "id": "d",
+          "text": "is a completed incident report"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Baseline describes expected behavior so meaningful deviations can be investigated.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "security-monitoring-log-analysis-4",
+      "type": "true_false",
+      "prompt": "True or false: SIEM collects and correlates security events to support monitoring and investigation.",
+      "correctAnswer": true,
+      "explanation": "SIEM collects and correlates security events to support monitoring and investigation.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "security-monitoring-log-analysis-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: describes expected behavior so meaningful deviations can be investigated?",
+      "acceptedAnswers": [
+        "Baseline"
+      ],
+      "explanation": "The term is Baseline.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "id": "data-visualization",
+  "title": "Data Visualization",
+  "skillSlug": "data-visualization",
+  "description": "Test your understanding of data visualization. Choosing chart types and building dashboards that show data accurately and clearly.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "data-visualization-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Bar chart?",
+      "options": [
+        {
+          "id": "a",
+          "text": "compares values across discrete categories"
+        },
+        {
+          "id": "b",
+          "text": "shows only network topology"
+        },
+        {
+          "id": "c",
+          "text": "is best for encrypting data"
+        },
+        {
+          "id": "d",
+          "text": "always proves causation"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Bar chart compares values across discrete categories.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "data-visualization-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Line chart?",
+      "options": [
+        {
+          "id": "a",
+          "text": "shows how a measure changes across an ordered sequence such as time"
+        },
+        {
+          "id": "b",
+          "text": "is only for text labels"
+        },
+        {
+          "id": "c",
+          "text": "cannot show trends"
+        },
+        {
+          "id": "d",
+          "text": "replaces statistical tests"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Line chart shows how a measure changes across an ordered sequence such as time.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "data-visualization-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Dashboard?",
+      "options": [
+        {
+          "id": "a",
+          "text": "combines coordinated visual summaries to support monitoring or decisions"
+        },
+        {
+          "id": "b",
+          "text": "is a raw database dump"
+        },
+        {
+          "id": "c",
+          "text": "must contain every available metric"
+        },
+        {
+          "id": "d",
+          "text": "is a password manager"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Dashboard combines coordinated visual summaries to support monitoring or decisions.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "data-visualization-4",
+      "type": "true_false",
+      "prompt": "True or false: Bar chart compares values across discrete categories.",
+      "correctAnswer": true,
+      "explanation": "Bar chart compares values across discrete categories.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "data-visualization-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: combines coordinated visual summaries to support monitoring or decisions?",
+      "acceptedAnswers": [
+        "Dashboard"
+      ],
+      "explanation": "The term is Dashboard.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

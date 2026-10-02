@@ -2,16 +2,17 @@
 // Per-question AI coaching on a finished attempt. Called by the Coaching card
 // on the results screen (components/quiz/FeedbackPanel).
 //
-// Reads the stored answer sheet back, re-grades it, and asks Claude to explain
-// only what the student got wrong. Non-streaming: the output is a few
-// paragraphs. If it grows, switch to `anthropic.messages.stream()` and return
-// `stream.toReadableStream()` so the page can render as it arrives.
+// Reads the stored answer sheet back, re-grades it, and asks the model to
+// explain only what the student got wrong. Which model that is depends on
+// AI_PROVIDER — see @/lib/ai/tasks under 'quiz-coaching'.
+//
+// Non-streaming: the output is a few paragraphs, and streaming it would mean
+// implementing it once per backend.
 
-import Anthropic from '@anthropic-ai/sdk';
 import { NextResponse } from 'next/server';
 
 import type { AnswerSheet } from '@/types/quiz';
-import { FAST_MODEL, aiEnabled, anthropic } from '@/lib/ai/client';
+import { AiError, aiReady, aiUnavailableReason, generateText } from '@/lib/ai/provider';
 import { FEEDBACK_SYSTEM_PROMPT } from '@/lib/ai/prompts';
 import { getSessionUser, unauthorized } from '@/lib/auth/session';
 import { getAttempt, loadQuiz } from '@/prisma/queries';
@@ -25,8 +26,8 @@ export async function POST(
   if (!user) return unauthorized();
   const { resultId } = await params;
 
-  if (!aiEnabled) {
-    return NextResponse.json({ error: 'ANTHROPIC_API_KEY is not set.' }, { status: 503 });
+  if (!aiReady()) {
+    return NextResponse.json({ error: aiUnavailableReason() }, { status: 503 });
   }
 
   const attempt = await getAttempt(resultId);
@@ -69,34 +70,17 @@ export async function POST(
   });
 
   try {
-    const response = await anthropic.messages.create({
-      // Haiku: this runs once per graded attempt rather than once per
-      // session, and explaining a known-wrong answer against a known answer
-      // key is mechanical work, not a judgment call.
-      model: FAST_MODEL,
-      max_tokens: 16000,
+    const feedback = await generateText({
+      task: 'quiz-coaching',
       system: FEEDBACK_SYSTEM_PROMPT,
-      messages: [
-        {
-          role: 'user',
-          content: `Quiz: ${quiz.title}\nScore: ${result.score}%\n\nMissed questions (with the answer key and what the student chose):\n${JSON.stringify(review, null, 2)}`,
-        },
-      ],
+      prompt: `Quiz: ${quiz.title}\nScore: ${result.score}%\n\nMissed questions (with the answer key and what the student chose):\n${JSON.stringify(review, null, 2)}`,
     });
-
-    // content is a discriminated union — narrow before reading .text.
-    const feedback = response.content
-      .filter((block) => block.type === 'text')
-      .map((block) => block.text)
-      .join('\n\n');
 
     return NextResponse.json({ feedback });
   } catch (error) {
-    if (error instanceof Anthropic.APIError) {
-      return NextResponse.json(
-        { error: `Claude API error ${error.status}: ${error.message}` },
-        { status: 502 },
-      );
+    // AiError messages are already written for the student to read.
+    if (error instanceof AiError) {
+      return NextResponse.json({ error: error.message }, { status: 502 });
     }
     throw error;
   }

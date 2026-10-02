@@ -1,0 +1,105 @@
+{
+  "id": "cryptography-basics",
+  "title": "Cryptography Basics",
+  "skillSlug": "cryptography-basics",
+  "description": "Test your understanding of cryptography basics. Symmetric and asymmetric encryption, hashing, digital signatures, TLS, and key management.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "cryptography-basics-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Hash?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is a one-way digest commonly used to detect changes or store password verifiers"
+        },
+        {
+          "id": "b",
+          "text": "is reversible encryption with a public key"
+        },
+        {
+          "id": "c",
+          "text": "is a network cable"
+        },
+        {
+          "id": "d",
+          "text": "is a user role"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Hash is a one-way digest commonly used to detect changes or store password verifiers.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "cryptography-basics-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Symmetric encryption?",
+      "options": [
+        {
+          "id": "a",
+          "text": "uses a shared secret key to encrypt and decrypt data"
+        },
+        {
+          "id": "b",
+          "text": "uses no key"
+        },
+        {
+          "id": "c",
+          "text": "always uses two unrelated keys"
+        },
+        {
+          "id": "d",
+          "text": "only signs documents"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Symmetric encryption uses a shared secret key to encrypt and decrypt data.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "cryptography-basics-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Digital signature?",
+      "options": [
+        {
+          "id": "a",
+          "text": "provides evidence of integrity and the signer through asymmetric cryptography"
+        },
+        {
+          "id": "b",
+          "text": "hides data from every reader"
+        },
+        {
+          "id": "c",
+          "text": "is a database index"
+        },
+        {
+          "id": "d",
+          "text": "is the same as compression"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Digital signature provides evidence of integrity and the signer through asymmetric cryptography.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "cryptography-basics-4",
+      "type": "true_false",
+      "prompt": "True or false: Hash is a one-way digest commonly used to detect changes or store password verifiers.",
+      "correctAnswer": true,
+      "explanation": "Hash is a one-way digest commonly used to detect changes or store password verifiers.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "cryptography-basics-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: provides evidence of integrity and the signer through asymmetric cryptography?",
+      "acceptedAnswers": [
+        "Digital signature"
+      ],
+      "explanation": "The term is Digital signature.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

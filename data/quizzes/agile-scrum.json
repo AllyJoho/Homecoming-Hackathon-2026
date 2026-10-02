@@ -1,0 +1,105 @@
+{
+  "id": "agile-scrum",
+  "title": "Agile & Scrum",
+  "skillSlug": "agile-scrum",
+  "description": "Test your understanding of agile & scrum. Running iterative delivery with sprints, backlogs, standups, and retrospectives.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "agile-scrum-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Sprint?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is a fixed timebox in which a team creates a usable increment"
+        },
+        {
+          "id": "b",
+          "text": "is an annual budget review"
+        },
+        {
+          "id": "c",
+          "text": "is an incident ticket"
+        },
+        {
+          "id": "d",
+          "text": "is a database migration only"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Sprint is a fixed timebox in which a team creates a usable increment.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "agile-scrum-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Product backlog?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is an ordered list of product work and opportunities"
+        },
+        {
+          "id": "b",
+          "text": "is a fixed legal contract"
+        },
+        {
+          "id": "c",
+          "text": "is a server log"
+        },
+        {
+          "id": "d",
+          "text": "is a presentation deck"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Product backlog is an ordered list of product work and opportunities.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "agile-scrum-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Retrospective?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is a regular meeting where a team inspects its process and chooses improvements"
+        },
+        {
+          "id": "b",
+          "text": "ranks customers by revenue"
+        },
+        {
+          "id": "c",
+          "text": "approves every budget change"
+        },
+        {
+          "id": "d",
+          "text": "replaces product discovery"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Retrospective is a regular meeting where a team inspects its process and chooses improvements.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "agile-scrum-4",
+      "type": "true_false",
+      "prompt": "True or false: Sprint is a fixed timebox in which a team creates a usable increment.",
+      "correctAnswer": true,
+      "explanation": "Sprint is a fixed timebox in which a team creates a usable increment.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "agile-scrum-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: is a regular meeting where a team inspects its process and chooses improvements?",
+      "acceptedAnswers": [
+        "Retrospective"
+      ],
+      "explanation": "The term is Retrospective.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

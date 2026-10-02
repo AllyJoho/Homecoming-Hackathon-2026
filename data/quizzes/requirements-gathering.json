@@ -1,0 +1,105 @@
+{
+  "id": "requirements-gathering",
+  "title": "Requirements Gathering",
+  "skillSlug": "requirements-gathering",
+  "description": "Test your understanding of requirements gathering. Eliciting, documenting, and validating what stakeholders need from a system.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "requirements-gathering-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Acceptance criterion?",
+      "options": [
+        {
+          "id": "a",
+          "text": "states an observable condition that must be met for a requirement to be accepted"
+        },
+        {
+          "id": "b",
+          "text": "is a vague project aspiration"
+        },
+        {
+          "id": "c",
+          "text": "is a database password"
+        },
+        {
+          "id": "d",
+          "text": "is a visual design token"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Acceptance criterion states an observable condition that must be met for a requirement to be accepted.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "requirements-gathering-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Stakeholder interview?",
+      "options": [
+        {
+          "id": "a",
+          "text": "elicits needs, constraints, and context directly from an affected person or group"
+        },
+        {
+          "id": "b",
+          "text": "is a deployment rollback"
+        },
+        {
+          "id": "c",
+          "text": "is an automated unit test"
+        },
+        {
+          "id": "d",
+          "text": "is a network scan"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Stakeholder interview elicits needs, constraints, and context directly from an affected person or group.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "requirements-gathering-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Nonfunctional requirement?",
+      "options": [
+        {
+          "id": "a",
+          "text": "specifies a quality or constraint such as performance, security, or availability"
+        },
+        {
+          "id": "b",
+          "text": "describes only a button label"
+        },
+        {
+          "id": "c",
+          "text": "is always optional"
+        },
+        {
+          "id": "d",
+          "text": "is a row in a fact table"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Nonfunctional requirement specifies a quality or constraint such as performance, security, or availability.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "requirements-gathering-4",
+      "type": "true_false",
+      "prompt": "True or false: Acceptance criterion states an observable condition that must be met for a requirement to be accepted.",
+      "correctAnswer": true,
+      "explanation": "Acceptance criterion states an observable condition that must be met for a requirement to be accepted.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "requirements-gathering-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: specifies a quality or constraint such as performance, security, or availability?",
+      "acceptedAnswers": [
+        "Nonfunctional requirement"
+      ],
+      "explanation": "The term is Nonfunctional requirement.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "id": "database-design",
+  "title": "Database Design & Modeling",
+  "skillSlug": "database-design",
+  "description": "Test your understanding of database design & modeling. Creating entity-relationship diagrams and normalized schemas for relational databases.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "database-design-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Normalization?",
+      "options": [
+        {
+          "id": "a",
+          "text": "reduces redundancy by organizing data into related tables with clear dependencies"
+        },
+        {
+          "id": "b",
+          "text": "stores every field in one JSON string"
+        },
+        {
+          "id": "c",
+          "text": "removes all relationships"
+        },
+        {
+          "id": "d",
+          "text": "is the same as a backup"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Normalization reduces redundancy by organizing data into related tables with clear dependencies.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "database-design-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Primary key?",
+      "options": [
+        {
+          "id": "a",
+          "text": "uniquely identifies each row and cannot be NULL"
+        },
+        {
+          "id": "b",
+          "text": "must contain a person name"
+        },
+        {
+          "id": "c",
+          "text": "is always a foreign key"
+        },
+        {
+          "id": "d",
+          "text": "stores only encrypted values"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Primary key uniquely identifies each row and cannot be NULL.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "database-design-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Foreign key?",
+      "options": [
+        {
+          "id": "a",
+          "text": "references a key in another table to represent a relationship"
+        },
+        {
+          "id": "b",
+          "text": "must be globally unique across all tables"
+        },
+        {
+          "id": "c",
+          "text": "is a chart filter"
+        },
+        {
+          "id": "d",
+          "text": "is a password hash algorithm"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Foreign key references a key in another table to represent a relationship.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "database-design-4",
+      "type": "true_false",
+      "prompt": "True or false: Normalization reduces redundancy by organizing data into related tables with clear dependencies.",
+      "correctAnswer": true,
+      "explanation": "Normalization reduces redundancy by organizing data into related tables with clear dependencies.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "database-design-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: references a key in another table to represent a relationship?",
+      "acceptedAnswers": [
+        "Foreign key"
+      ],
+      "explanation": "The term is Foreign key.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

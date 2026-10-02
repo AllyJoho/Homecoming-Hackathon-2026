@@ -1,0 +1,105 @@
+{
+  "id": "identity-access-management",
+  "title": "Identity & Access Management",
+  "skillSlug": "identity-access-management",
+  "description": "Test your understanding of identity & access management. Managing authentication, authorization, least privilege, and account lifecycles.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "identity-access-management-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Least privilege?",
+      "options": [
+        {
+          "id": "a",
+          "text": "gives a principal only the access needed for its task"
+        },
+        {
+          "id": "b",
+          "text": "gives every user administrator rights"
+        },
+        {
+          "id": "c",
+          "text": "removes all auditing"
+        },
+        {
+          "id": "d",
+          "text": "shares one account with everyone"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Least privilege gives a principal only the access needed for its task.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "identity-access-management-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Multi-factor authentication?",
+      "options": [
+        {
+          "id": "a",
+          "text": "requires two or more independent types of evidence to verify identity"
+        },
+        {
+          "id": "b",
+          "text": "uses two passwords of the same type"
+        },
+        {
+          "id": "c",
+          "text": "is only a firewall rule"
+        },
+        {
+          "id": "d",
+          "text": "removes the need for usernames"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Multi-factor authentication requires two or more independent types of evidence to verify identity.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "identity-access-management-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Role-based access control?",
+      "options": [
+        {
+          "id": "a",
+          "text": "assigns permissions through job or system roles"
+        },
+        {
+          "id": "b",
+          "text": "grants permissions only by IP address"
+        },
+        {
+          "id": "c",
+          "text": "stores data in a spreadsheet"
+        },
+        {
+          "id": "d",
+          "text": "encrypts network traffic"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Role-based access control assigns permissions through job or system roles.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "identity-access-management-4",
+      "type": "true_false",
+      "prompt": "True or false: Least privilege gives a principal only the access needed for its task.",
+      "correctAnswer": true,
+      "explanation": "Least privilege gives a principal only the access needed for its task.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "identity-access-management-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: assigns permissions through job or system roles?",
+      "acceptedAnswers": [
+        "Role-based access control"
+      ],
+      "explanation": "The term is Role-based access control.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

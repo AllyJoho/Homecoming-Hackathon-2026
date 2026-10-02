@@ -1,0 +1,105 @@
+{
+  "id": "testing-and-debugging",
+  "title": "Testing & Debugging",
+  "skillSlug": "testing-and-debugging",
+  "description": "Test your understanding of testing & debugging. Writing unit and integration tests, reading stack traces, and isolating the cause of defects.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "testing-and-debugging-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Unit test?",
+      "options": [
+        {
+          "id": "a",
+          "text": "checks a small piece of code in isolation"
+        },
+        {
+          "id": "b",
+          "text": "deploys production servers"
+        },
+        {
+          "id": "c",
+          "text": "replaces source control"
+        },
+        {
+          "id": "d",
+          "text": "measures internet bandwidth"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Unit test checks a small piece of code in isolation.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "testing-and-debugging-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Stack trace?",
+      "options": [
+        {
+          "id": "a",
+          "text": "shows the call path that led to an error"
+        },
+        {
+          "id": "b",
+          "text": "is a database schema"
+        },
+        {
+          "id": "c",
+          "text": "is a UI color token"
+        },
+        {
+          "id": "d",
+          "text": "is a release checklist"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Stack trace shows the call path that led to an error.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "testing-and-debugging-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Regression test?",
+      "options": [
+        {
+          "id": "a",
+          "text": "checks that a previously working behavior still works after a change"
+        },
+        {
+          "id": "b",
+          "text": "tests only brand-new features"
+        },
+        {
+          "id": "c",
+          "text": "deletes old test data"
+        },
+        {
+          "id": "d",
+          "text": "measures CPU temperature"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Regression test checks that a previously working behavior still works after a change.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "testing-and-debugging-4",
+      "type": "true_false",
+      "prompt": "True or false: Unit test checks a small piece of code in isolation.",
+      "correctAnswer": true,
+      "explanation": "Unit test checks a small piece of code in isolation.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "testing-and-debugging-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: checks that a previously working behavior still works after a change?",
+      "acceptedAnswers": [
+        "Regression test"
+      ],
+      "explanation": "The term is Regression test.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "id": "data-cleaning",
+  "title": "Data Cleaning & Preparation",
+  "skillSlug": "data-cleaning",
+  "description": "Test your understanding of data cleaning & preparation. Finding and fixing missing values, duplicates, and inconsistent formats before analysis.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "data-cleaning-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Missing-value analysis?",
+      "options": [
+        {
+          "id": "a",
+          "text": "determines why values are absent and how that should be handled"
+        },
+        {
+          "id": "b",
+          "text": "always replaces blanks with zero"
+        },
+        {
+          "id": "c",
+          "text": "deletes every incomplete row"
+        },
+        {
+          "id": "d",
+          "text": "sorts data alphabetically"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Missing-value analysis determines why values are absent and how that should be handled.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "data-cleaning-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Duplicate record?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is a repeated representation of the same real-world entity or event"
+        },
+        {
+          "id": "b",
+          "text": "a valid foreign key"
+        },
+        {
+          "id": "c",
+          "text": "a chart axis label"
+        },
+        {
+          "id": "d",
+          "text": "a model hyperparameter"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Duplicate record is a repeated representation of the same real-world entity or event.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "data-cleaning-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Normalization?",
+      "options": [
+        {
+          "id": "a",
+          "text": "standardizes values into a consistent representation for analysis"
+        },
+        {
+          "id": "b",
+          "text": "encrypts a database"
+        },
+        {
+          "id": "c",
+          "text": "increases screen brightness"
+        },
+        {
+          "id": "d",
+          "text": "trains a neural network"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Normalization standardizes values into a consistent representation for analysis.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "data-cleaning-4",
+      "type": "true_false",
+      "prompt": "True or false: Missing-value analysis determines why values are absent and how that should be handled.",
+      "correctAnswer": true,
+      "explanation": "Missing-value analysis determines why values are absent and how that should be handled.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "data-cleaning-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: standardizes values into a consistent representation for analysis?",
+      "acceptedAnswers": [
+        "Normalization"
+      ],
+      "explanation": "The term is Normalization.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}
