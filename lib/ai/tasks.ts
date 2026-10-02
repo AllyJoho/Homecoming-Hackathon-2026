@@ -7,7 +7,7 @@
 // "where are we using AI, and what does it cost" without grepping.
 //
 // Adding an AI feature means: add an entry here, give it an id, then call
-// generateText/generateObject from @/lib/ai/provider with that id. The call is
+// generateText/generateChat/generateObject from @/lib/ai/provider with that id. The call is
 // logged under the id, so it shows up in the console and in `npm run ai:report`
 // the moment it runs.
 
@@ -84,14 +84,18 @@ export const AI_TASKS: Record<AiTaskId, AiTaskSpec> = {
 
   'quiz-coaching': {
     label: 'Quiz coaching',
-    trigger: 'Student clicks "Explain what I missed" on a quiz result',
+    trigger:
+      'Student clicks "Explain what I missed" under one question on a quiz result, and every follow-up they ask in that thread',
     callSite: 'app/api/results/[resultId]/feedback/route.ts',
     shape: 'text',
     models: { anthropic: CLAUDE_VOLUME, ollama: LOCAL_DEFAULT },
-    maxOutputTokens: 2000,
-    onFailure: '502 with the API message; the Coaching card shows it in red.',
+    // One reply at a time, and the prompt asks for ~120 words. A cap this
+    // size exists to stop a runaway, not to shape the answer.
+    maxOutputTokens: 800,
+    onFailure:
+      "502 with the API message; the question's coach shows it in red, keeps the thread, and puts their question back in the box to retry.",
     frequency:
-      'Once per graded attempt the student asks about. Scales with questions missed — ~3.8k input tokens for all 15 SQL questions.',
+      'Once per question the student opens, plus once per follow-up. ~500 input tokens for the first turn — one question with its answer key, not the whole attempt — growing by the transcript after that, since the model is stateless and the thread is resent each turn. The thread is capped at 6 replies (lib/quiz/coachTurns.ts).',
   },
 };
 

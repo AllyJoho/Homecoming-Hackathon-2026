@@ -21,11 +21,12 @@
 import { z } from 'zod';
 
 import { CANONICAL_SKILLS, skillBySlug } from '@/lib/profile/skills';
-import { AiError, generateObject } from '@/lib/ai/provider';
+import { AiError, generateObject, providerFor } from '@/lib/ai/provider';
 import { buildExtractionSystemPrompt, buildExtractionUserMessage } from '@/lib/ai/prompts';
 import { greenhouseSource } from '@/lib/jobs/sources/greenhouse';
 import type { JobSource, RawListing } from '@/lib/jobs/sources/types';
-import { listJobIds, upsertJob } from '@/prisma/queries';
+import { listJobIds, upsertJob, type UpsertJobInput } from '@/prisma/queries';
+import { writeJobCache } from '@/lib/jobs/cache';
 
 const ExtractedSkillSchema = z.object({
   slug: z.string().describe('A slug from the vocabulary, copied exactly'),
@@ -80,6 +81,23 @@ function isPlausible(listing: RawListing): boolean {
 
 /** Guard against a pathological description blowing up one call's input. */
 const MAX_DESCRIPTION_CHARS = 12_000;
+
+/**
+ * How many listings to extract at once against the API.
+ *
+ * Extraction is generation-bound at ~2s per listing, so a batch of 8 ran for
+ * ~16 seconds in a row — long enough that "Load more listings" felt broken.
+ * Running them concurrently overlaps that wait.
+ *
+ * Five, not fifty: the gain flattens out (the measured speedup on small calls
+ * was only 1.6x, so the ceiling is lower than the arithmetic suggests), and a
+ * modest number stays well inside the rate limit without any backoff logic.
+ *
+ * Forced to 1 on a local model: Ollama serves one request at a time, so
+ * concurrency there just queues and makes the progress output arrive in a
+ * useless burst at the end.
+ */
+const API_CONCURRENCY = 5;
 
 /**
  * Most required skills a real listing can plausibly have.
@@ -137,6 +155,8 @@ export interface IngestResult {
   irrelevant: number;
   failed: number;
   stored: string[];
+  /** Listings in data/jobs/ingested.json after this run. */
+  cached: number;
 }
 
 export interface IngestOptions {
@@ -180,7 +200,12 @@ export async function ingestJobs({
     irrelevant: 0,
     failed: 0,
     stored: [],
+    cached: 0,
   };
+
+  // Everything written this run, mirrored to disk at the end so a db:reset
+  // doesn't throw away what the extraction cost.
+  const toCache: UpsertJobInput[] = [];
 
   // The vocabulary is identical for every listing, so build the system prompt
   // once rather than per call.
@@ -212,77 +237,108 @@ export async function ingestJobs({
     `${result.fetched} fetched · ${result.alreadyStored} already stored · ${result.filteredOut} filtered out · ${queue.length} candidates, extracting up to ${limit} (most student-appropriate first)`,
   );
 
-  // Sequential, not parallel: a local model serves one request at a time
-  // anyway, and against the API this keeps a long run under the rate limit
-  // without any backoff logic.
-  for (const listing of queue) {
+  // Only take as many candidates as we could possibly store. Some will be
+  // dropped as irrelevant, so overshoot a little rather than running a second
+  // round — but not by so much that a limit of 8 extracts 40 listings.
+  const planned = queue.slice(0, Math.ceil(limit * 1.5));
+
+  const concurrency = providerFor('job-skill-extraction') === 'ollama' ? 1 : API_CONCURRENCY;
+
+  // Extract in concurrent batches, then handle results in order. Extraction is
+  // a pure read, so overlapping it is safe; the writes below stay sequential so
+  // the stored count can't overshoot `limit`.
+  for (let i = 0; i < planned.length; i += concurrency) {
     if (result.stored.length >= limit) break;
 
-    let extracted;
-    try {
-      extracted = await generateObject({
-        task: 'job-skill-extraction',
-        system,
-        prompt: buildExtractionUserMessage({
-          ...listing,
-          description: listing.description.slice(0, MAX_DESCRIPTION_CHARS),
-        }),
-        schema: ExtractionSchema,
-      });
-    } catch (error) {
-      result.failed += 1;
-      report(`  ✗ ${listing.title} — ${error instanceof AiError ? error.message : error}`);
-      continue;
-    }
-
-    if (!extracted) {
-      result.failed += 1;
-      report(`  ✗ ${listing.title} — model returned nothing usable`);
-      continue;
-    }
-
-    result.extracted += 1;
-
-    // Step 4. A slug the model invented would render as a dead "take the quiz"
-    // chip, so unknown slugs are dropped rather than trusted.
-    const skills = cleanSkills(extracted.skills);
-    const required = skills.filter((skill) => skill.required).map((skill) => skill.slug);
-    const nice = skills.filter((skill) => !skill.required).map((skill) => skill.slug);
-
-    if (required.length > MAX_REQUIRED_SKILLS) {
-      // Treated as a failure, not stored: a listing tagged with half the
-      // vocabulary is worse than no listing at all.
-      result.failed += 1;
-      report(
-        `  ✗ ${listing.title} — ${required.length} required skills, over the ${MAX_REQUIRED_SKILLS} cap; the model dumped the vocabulary`,
-      );
-      continue;
-    }
-
-    if (skills.length === 0) {
-      result.irrelevant += 1;
-      report(`  – ${listing.title} — no skills in our vocabulary`);
-      continue;
-    }
-
-    await upsertJob({
-      id: listing.id,
-      title: listing.title,
-      company: listing.company,
-      location: listing.location,
-      remote: listing.remote,
-      level: extracted.level,
-      salaryRange: extracted.salaryRange,
-      description: listing.description,
-      url: listing.url,
-      skills,
-    });
-
-    result.stored.push(listing.id);
-    report(
-      `  ✓ ${listing.title} [${extracted.level}] — ${required.join(', ') || '(none required)'}${nice.length ? ` · nice: ${nice.join(', ')}` : ''}`,
+    const batch = planned.slice(i, i + concurrency);
+    const settled = await Promise.all(
+      batch.map(async (listing) => {
+        try {
+          const extracted = await generateObject({
+            task: 'job-skill-extraction',
+            system,
+            prompt: buildExtractionUserMessage({
+              ...listing,
+              description: listing.description.slice(0, MAX_DESCRIPTION_CHARS),
+            }),
+            schema: ExtractionSchema,
+          });
+          return { listing, extracted, error: null as string | null };
+        } catch (error) {
+          return {
+            listing,
+            extracted: null,
+            error: error instanceof AiError ? error.message : String(error),
+          };
+        }
+      }),
     );
+
+    for (const { listing, extracted, error } of settled) {
+      if (result.stored.length >= limit) break;
+
+      if (error) {
+        result.failed += 1;
+        report(`  ✗ ${listing.title} — ${error}`);
+        continue;
+      }
+
+      if (!extracted) {
+        result.failed += 1;
+        report(`  ✗ ${listing.title} — model returned nothing usable`);
+        continue;
+      }
+
+      result.extracted += 1;
+
+      // Step 4. A slug the model invented would render as a dead "take the
+      // quiz" chip, so unknown slugs are dropped rather than trusted.
+      const skills = cleanSkills(extracted.skills);
+      const required = skills.filter((skill) => skill.required).map((skill) => skill.slug);
+      const nice = skills.filter((skill) => !skill.required).map((skill) => skill.slug);
+
+      if (required.length > MAX_REQUIRED_SKILLS) {
+        // Treated as a failure, not stored: a listing tagged with half the
+        // vocabulary is worse than no listing at all.
+        result.failed += 1;
+        report(
+          `  ✗ ${listing.title} — ${required.length} required skills, over the ${MAX_REQUIRED_SKILLS} cap; the model dumped the vocabulary`,
+        );
+        continue;
+      }
+
+      if (skills.length === 0) {
+        result.irrelevant += 1;
+        report(`  – ${listing.title} — no skills in our vocabulary`);
+        continue;
+      }
+
+      const record: UpsertJobInput = {
+        id: listing.id,
+        title: listing.title,
+        company: listing.company,
+        location: listing.location,
+        remote: listing.remote,
+        level: extracted.level,
+        salaryRange: extracted.salaryRange,
+        description: listing.description,
+        url: listing.url,
+        skills,
+      };
+
+      await upsertJob(record);
+      toCache.push(record);
+
+      result.stored.push(listing.id);
+      report(
+        `  ✓ ${listing.title} [${extracted.level}] — ${required.join(', ') || '(none required)'}${nice.length ? ` · nice: ${nice.join(', ')}` : ''}`,
+      );
+    }
   }
+
+  // One write at the end rather than per listing: the file is rewritten whole,
+  // and a partial run still saves everything it got through.
+  result.cached = writeJobCache(toCache);
 
   return result;
 }

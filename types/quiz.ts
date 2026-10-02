@@ -132,6 +132,12 @@ export interface GradedQuestion {
   pointsEarned: number;
   pointsPossible: number;
   explanation?: string;
+  /**
+   * What the student put down, in words — option text rather than ids, so the
+   * review screen can show it as-is. Built by `describeStudentAnswer`, and
+   * reads "(left blank)" for a skipped question.
+   */
+  yourAnswer: string;
 }
 
 export interface QuizResult {

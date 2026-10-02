@@ -9,7 +9,7 @@ import type { ZodType } from 'zod';
 
 import type { AiTaskSpec } from '@/lib/ai/tasks';
 import { anthropic } from '@/lib/ai/client';
-import type { AiBackend, AiReadiness, AiResult } from './types';
+import type { AiBackend, AiMessage, AiReadiness, AiResult } from './types';
 
 /** Typed SDK errors, most specific first — a rate limit is retryable, a bad key isn't. */
 function describe(error: unknown): string | null {
@@ -40,14 +40,16 @@ export const anthropicBackend: AiBackend = {
       : { ok: false, reason: 'ANTHROPIC_API_KEY is not set — add it to .env' };
   },
 
-  async text(spec: AiTaskSpec, system, prompt): Promise<AiResult<string>> {
+  async text(spec: AiTaskSpec, system, messages: AiMessage[]): Promise<AiResult<string>> {
     const model = spec.models.anthropic;
     try {
       const response = await anthropic.messages.create({
         model,
         max_tokens: spec.maxOutputTokens,
+        // The system prompt is sent separately from the turns, so it stays the
+        // stable prefix as a coaching conversation grows.
         system,
-        messages: [{ role: 'user', content: prompt }],
+        messages,
       });
 
       // content is a discriminated union — narrow before reading .text.

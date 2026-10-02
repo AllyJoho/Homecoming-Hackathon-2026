@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import type { Answer, AnswerSheet, PublicQuiz } from '@/types/quiz';
-import { Button } from '@/components/ui';
+import { Button, Modal } from '@/components/ui';
 import { QuestionRenderer } from './QuestionRenderer';
 
 export interface QuizRunnerProps {
@@ -23,6 +23,7 @@ export function QuizRunner({ quiz }: QuizRunnerProps) {
   const [answers, setAnswers] = useState<AnswerSheet>({});
   const [current, setCurrent] = useState(0);
   const [submitting, setSubmitting] = useState(false);
+  const [confirmingBlanks, setConfirmingBlanks] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const question = quiz.questions[current];
@@ -33,7 +34,20 @@ export function QuizRunner({ quiz }: QuizRunnerProps) {
     setAnswers((prev) => ({ ...prev, [question.id]: answer }));
   }
 
+  const blankCount = quiz.questions.length - answeredCount;
+
+  // Unanswered questions grade as incorrect, so confirm before submitting
+  // rather than blocking it — and only at the moment it matters.
+  function handleSubmitClick() {
+    if (blankCount > 0) {
+      setConfirmingBlanks(true);
+      return;
+    }
+    void submit();
+  }
+
   async function submit() {
+    setConfirmingBlanks(false);
     setSubmitting(true);
     setError(null);
 
@@ -88,6 +102,7 @@ export function QuizRunner({ quiz }: QuizRunnerProps) {
       <div className="flex items-center justify-between">
         <Button
           variant="secondary"
+          className="bg-white dark:bg-zinc-950"
           onClick={() => setCurrent((i) => Math.max(0, i - 1))}
           disabled={current === 0 || submitting}
         >
@@ -95,7 +110,7 @@ export function QuizRunner({ quiz }: QuizRunnerProps) {
         </Button>
 
         {isLast ? (
-          <Button onClick={submit} disabled={submitting}>
+          <Button onClick={handleSubmitClick} disabled={submitting}>
             {submitting ? 'Grading…' : 'Submit quiz'}
           </Button>
         ) : (
@@ -108,14 +123,24 @@ export function QuizRunner({ quiz }: QuizRunnerProps) {
         )}
       </div>
 
-      {/* Unanswered questions grade as incorrect, so warn before the submit
-          rather than blocking it. */}
-      {isLast && answeredCount < quiz.questions.length && (
-        <p className="text-xs text-amber-700 dark:text-amber-400">
-          {quiz.questions.length - answeredCount} question(s) still blank — those will be marked
+      <Modal
+        open={confirmingBlanks}
+        onClose={() => setConfirmingBlanks(false)}
+        title="Submit with blank answers?"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setConfirmingBlanks(false)}>
+              Keep working
+            </Button>
+            <Button onClick={submit}>Submit anyway</Button>
+          </>
+        }
+      >
+        <p>
+          {blankCount} question{blankCount === 1 ? '' : 's'} still blank. Blank answers are marked
           incorrect.
         </p>
-      )}
+      </Modal>
     </div>
   );
 }

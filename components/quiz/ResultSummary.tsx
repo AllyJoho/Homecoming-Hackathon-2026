@@ -10,13 +10,13 @@ import Link from 'next/link';
 import type { PublicQuiz, QuizResult } from '@/types/quiz';
 import { LEVEL_TONE, levelMinPercent, nextLevel } from '@/lib/quiz/levels';
 import { Card, Tag } from '@/components/ui';
-import { FeedbackPanel } from '@/components/quiz/FeedbackPanel';
+import { QuestionCoach } from '@/components/quiz/QuestionCoach';
 import { CodeBlock } from '@/components/quiz/CodeBlock';
 
 export interface ResultSummaryProps {
   quiz: PublicQuiz;
   result: QuizResult;
-  /** QuizAttempt id, so the Coaching card can ask for feedback on it. */
+  /** QuizAttempt id, so each question's coach can ask for feedback on it. */
   attemptId: string;
   /** Present when this attempt earned a certificate. */
   certificateSlug?: string | null;
@@ -29,7 +29,6 @@ export function ResultSummary({
   certificateSlug,
 }: ResultSummaryProps) {
   const next = nextLevel(result.pointsEarned, result.pointsPossible);
-  const missedCount = result.graded.filter((graded) => !graded.correct).length;
 
   return (
     <div className="flex flex-col gap-6">
@@ -83,12 +82,11 @@ export function ResultSummary({
         )}
       </Card>
 
-      {/* Above the per-question list on purpose: the explanation of *why* a
-          question was missed is what moves the next attempt up a level, and
-          the level is now the whole outcome. Hidden on a perfect score, which
-          the feedback route would only answer with a no-op. */}
-      {missedCount > 0 && <FeedbackPanel attemptId={attemptId} missedCount={missedCount} />}
-
+      {/* The coaching used to be one card above this list, explaining every
+          missed question at once. It's inside the list now, one tutor per
+          question: the student doesn't have to match an explanation back to a
+          question, and the thread knows what it's about, so they can ask
+          follow-ups. See components/quiz/QuestionCoach. */}
       <Card title="Question review">
         <ol className="flex flex-col gap-4">
           {result.graded.map((graded, i) => {
@@ -101,9 +99,31 @@ export function ResultSummary({
                   {/* A "what does this log?" prompt means nothing without its
                       snippet, so the review shows it again. */}
                   {question?.code && <CodeBlock code={question.code} />}
+                  {/* whitespace-pre-line because an order_lines answer is a
+                      numbered list, not one line. */}
+                  <p className="whitespace-pre-line text-zinc-600 dark:text-zinc-400">
+                    Your answer:{' '}
+                    <span
+                      className={
+                        graded.correct
+                          ? 'font-medium text-zinc-900 dark:text-zinc-50'
+                          : 'font-medium text-amber-700 dark:text-amber-400'
+                      }
+                    >
+                      {graded.yourAnswer}
+                    </span>
+                  </p>
                   {graded.explanation && (
                     <p className="text-zinc-600 dark:text-zinc-400">{graded.explanation}</p>
                   )}
+                  {/* Offered on correct questions too — a lucky guess is worth
+                      asking about, and the button says which case it is. */}
+                  <QuestionCoach
+                    attemptId={attemptId}
+                    questionId={graded.questionId}
+                    correct={graded.correct}
+                    language={question?.code?.language}
+                  />
                 </div>
               </li>
             );

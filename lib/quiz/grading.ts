@@ -6,6 +6,7 @@
 // anywhere else it's missing (see the `never` exhaustiveness check).
 
 import type { Answer, GradedQuestion, Question } from '@/types/quiz';
+import { describeStudentAnswer } from './describe';
 
 /** Case-insensitive, whitespace-collapsed compare for short answers. */
 function loose(s: string): string {
@@ -33,6 +34,7 @@ export function gradeQuestion(question: Question, answer: Answer | undefined): G
     pointsEarned: correct ? pointsPossible : 0,
     pointsPossible,
     explanation: question.explanation,
+    yourAnswer: describeStudentAnswer(question, answer),
   };
 }
 

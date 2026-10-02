@@ -74,7 +74,7 @@ export function CareerMatchCard({ matches, quizBySkill = {} }: CareerMatchCardPr
           {top.career.field}
         </span>{' '}
         · {top.provenSkills.length} of {top.career.skills.length} skills proven
-        {top.claimedSkills.length > 0 && `, ${top.claimedSkills.length} self-reported`}
+        {top.claimedSkills.length > 0 && `, ${top.claimedSkills.length} not yet proven`}
       </p>
 
       {top.career.description && (

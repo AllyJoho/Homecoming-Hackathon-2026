@@ -14,8 +14,10 @@
 // are created with credentials and nothing else — no skills, resume, or
 // experience — so a fresh database starts every account at onboarding.
 //
-// Job listings are NOT seeded — they are ingested from real job boards by
-// `npm run jobs:ingest`. This script leaves the Job table alone.
+// Job listings are not authored: they're ingested from real job boards by
+// `npm run jobs:ingest`, which caches what it extracted to
+// data/jobs/ingested.json. This script replays that cache, so a db:reset
+// doesn't throw away work the AI was paid to do.
 // Seed script: console.log is the script's UI.
 
 import { PrismaClient } from '@/lib/generated/prisma/client';
@@ -24,6 +26,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import { join } from 'node:path';
 import skills from '@/data/skills.json';
+import { readJobCache } from '@/lib/jobs/cache';
 import type { QuestionType } from '@/lib/generated/prisma/enums';
 import { auth } from '@/lib/auth/server';
 
@@ -253,14 +256,55 @@ async function main() {
   console.log(`  ✔ ${quizFiles.length} quizzes, ${questionCount} questions`);
 
   // ── Jobs ─────────────────────────────────────────────────
-  // Not seeded. Listings come from real job boards via `npm run jobs:ingest`
-  // (lib/jobs/ingest.ts), which upserts them and never deletes.
+  // Restored from data/jobs/ingested.json, which `npm run jobs:ingest` writes
+  // every run. NOT authored content — these are real listings pulled from job
+  // boards, and the file is a cache of the AI extraction that turned each
+  // description into weighted skill slugs.
   //
-  // This block used to read data/jobs/listings.json — 20 hand-written listings
-  // with invented companies. They're gone: a career site whose jobs aren't
-  // real is a demo of nothing. Deliberately NOT replaced with a no-op delete
-  // either, because this script is re-run often and wiping ingested listings
-  // would mean re-paying for extraction every time.
+  // The restore exists because a `db:reset` once dropped 64 extracted listings
+  // and the only way back was to pay for the extraction again. Replaying the
+  // cache costs nothing and works with no network.
+  //
+  // Jobs already present are left alone and the cache is merged over them, so
+  // re-seeding never destroys a listing ingested since the file was written.
+  const cachedJobs = readJobCache();
+
+  if (cachedJobs.length === 0) {
+    console.log('  – no job cache; run `npm run jobs:ingest` to pull listings');
+  } else {
+    for (const job of cachedJobs) {
+      const links = job.skills.flatMap(({ slug, weight, required }) => {
+        const skillId = skillIdBySlug.get(slug);
+        // A slug that left data/skills.json shouldn't fail the whole seed —
+        // the listing is still worth having without that one link.
+        return skillId ? [{ skillId, weight, required }] : [];
+      });
+
+      const fields = {
+        title: job.title,
+        company: job.company,
+        location: job.location,
+        remote: job.remote,
+        level: job.level,
+        salaryRange: job.salaryRange ?? null,
+        description: job.description,
+        url: job.url ?? null,
+      };
+
+      await prisma.job.upsert({
+        where: { id: job.id },
+        update: fields,
+        create: { id: job.id, ...fields },
+      });
+      await prisma.jobSkill.deleteMany({ where: { jobId: job.id } });
+      if (links.length > 0) {
+        await prisma.jobSkill.createMany({
+          data: links.map((link) => ({ jobId: job.id, ...link })),
+        });
+      }
+    }
+    console.log(`  ✔ ${cachedJobs.length} job listings restored from cache`);
+  }
 
   // ── Demo users ───────────────────────────────────────────
   // Created through Better Auth rather than with a plain prisma.create, so the
