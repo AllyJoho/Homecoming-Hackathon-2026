@@ -23,6 +23,14 @@ export interface CardProps {
   accent?: string;
   /** Drops the body padding, for a card whose child owns its own spacing. */
   flush?: boolean;
+  /**
+   * Vertical alignment of the header row. `'start'` (the default, and what
+   * every existing card renders) tops-aligns the title with its action, which
+   * is right when the action is a tag the same height as the text. `'center'`
+   * is for a taller action — an icon button — where top-aligning leaves the
+   * title sitting high against it.
+   */
+  headerAlign?: 'start' | 'center';
   className?: string;
   children: ReactNode;
 }
@@ -35,6 +43,7 @@ export function Card({
   hover = false,
   accent,
   flush = false,
+  headerAlign = 'start',
   className = '',
   children,
 }: CardProps) {
@@ -46,7 +55,9 @@ export function Card({
 
       <div className="flex min-w-0 flex-1 flex-col">
         {(title || action) && (
-          <header className="flex items-start justify-between gap-4 border-b border-zinc-200 px-5 py-4 dark:border-zinc-800">
+          <header
+            className={`flex ${headerAlign === 'center' ? 'items-center' : 'items-start'} justify-between gap-4 border-b border-zinc-200 px-5 py-4 dark:border-zinc-800`}
+          >
             <div className="min-w-0">
               {typeof title === 'string' ? (
                 <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">{title}</h2>

@@ -14,7 +14,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Card, TextField } from '@/components/ui';
+import { Button, Card, Logo, TextField } from '@/components/ui';
 import { APP_NAME } from '@/lib/appConfig';
 import { demoLogin, signIn, signUp } from '@/lib/auth/client';
 
@@ -78,8 +78,10 @@ export default function LoginPage() {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center gap-6 px-6">
+      {/* The mark carries the branding on the one screen with no app bar. */}
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">{APP_NAME}</h1>
+        <Logo className="h-9 w-9" />
+        <h1 className="mt-3 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">{APP_NAME}</h1>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
           Prove your skills, earn certificates, find jobs that fit.
         </p>

@@ -6,6 +6,8 @@ export { Button } from './Button';
 export type { ButtonProps, ButtonVariant, ButtonSize } from './Button';
 export { Card } from './Card';
 export type { CardProps } from './Card';
+export { Logo } from './Logo';
+export type { LogoProps } from './Logo';
 export { Modal } from './Modal';
 export type { ModalProps } from './Modal';
 export { Tag } from './Tag';
@@ -27,6 +29,9 @@ export { Toast, ToastStack } from './Toast';
 export type { ToastProps, ToastType } from './Toast';
 export { Confetti } from './Confetti';
 export type { ConfettiProps } from './Confetti';
+
+export { categoryColor, CATEGORY_COLORS, CATEGORY_NAMES } from './categoryColors';
+export type { CategoryColor } from './categoryColors';
 
 // The shared class strings, for feature components that need to match the
 // primitives without wrapping one (see ./styles).

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Tab icon. Same geometry as @/components/ui/Logo.tsx, with the indigo-600
+       token inlined: a file convention can't import from the component tree. -->
+  <rect width="32" height="32" rx="8" fill="#4f46e5"/>
+  <g fill="#ffffff">
+    <rect x="10.5" y="6" width="11" height="5" rx="2.5"/>
+    <rect x="8" y="13.5" width="16" height="5" rx="2.5"/>
+    <rect x="5.5" y="21" width="21" height="5" rx="2.5"/>
+  </g>
+</svg>

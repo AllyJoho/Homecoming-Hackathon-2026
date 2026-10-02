@@ -5,16 +5,21 @@
 
 import type { AnswerSheet, Question, Quiz, QuizOption, QuizResult } from '@/types/quiz';
 import type {
+  CatalogSkill,
   Certification,
   Profile,
   ProfileSkill,
   SkillCatalog,
 } from '@/types/profile';
 import type { Job } from '@/types/job';
+import type { Application, ApplicationStatus, NewApplication } from '@/types/application';
 import type { Career } from '@/types/career';
+import type { Experience, ExperienceInput } from '@/types/experience';
 import { Prisma } from '@/lib/generated/prisma/client';
 import { prisma } from '@/prisma/client';
 import { normalizeSkill, skillBySlug } from '@/lib/profile/skills';
+import { suggestRelatedSkills } from '@/lib/profile/related';
+import type { HeldSkill, SkillGroup } from '@/lib/profile/related';
 import type { ProficiencyLevel as DbProficiencyLevel } from '@/lib/generated/prisma/enums';
 import type { ProficiencyLevel } from '@/lib/quiz/levels';
 
@@ -96,33 +101,31 @@ async function ensureSkillRow(slug: string) {
   return prisma.skill.upsert({
     where: { slug },
     update: {},
-    create: {
-      slug,
-      name: known?.name ?? slug,
-      category: known?.category,
-    },
+    create: { slug, name: known?.name ?? slug, category: known?.category },
   });
 }
 
 /**
- * Every skill in the vocabulary, bucketed for the three sections of the
- * skills grid: certified (quiz passed), mine (self-reported) and available
- * (everything else).
+ * Every skill in the vocabulary, bucketed for the sections of the skills grid:
+ * certified (quiz passed), mine (claimed), recommended (unclaimed, but goes
+ * with what they have) and available (everything else).
  *
  * One query per table rather than a per-skill subquery: it's ~46 skills, two
- * handfuls of user rows and a couple of quizzes, so three reads and a join in
+ * handfuls of user rows and the full quiz catalog, so a few reads and a join in
  * memory beats anything cleverer. The bucket is derived here rather than
  * stored, so passing a quiz moves a card between sections with no extra write
- * beyond the `source` upgrade recordAttempt already does.
+ * beyond the `source` upgrade recordAttempt already does — and the
+ * recommendations re-rank themselves off the new evidence for free.
  */
 export async function listSkillCatalog(userId: string): Promise<SkillCatalog> {
-  const [skills, userSkills, certifications, quizzes] = await Promise.all([
+  const [skills, userSkills, certifications, quizzes, groups] = await Promise.all([
     prisma.skill.findMany({ orderBy: [{ category: 'asc' }, { name: 'asc' }] }),
     prisma.userSkill.findMany({ where: { userId } }),
     prisma.certification.findMany({ where: { userId } }),
     // A skill can in principle have several authored quizzes; the card links
     // to one, so the first by id wins and the rest are ignored.
     prisma.quiz.findMany({ select: { id: true, skillId: true }, orderBy: { id: 'asc' } }),
+    listSkillGroups(),
   ]);
 
   const sourceBySkillId = new Map(userSkills.map((row) => [row.skillId, row.source]));
@@ -132,7 +135,13 @@ export async function listSkillCatalog(userId: string): Promise<SkillCatalog> {
     if (!quizIdBySkillId.has(quiz.skillId)) quizIdBySkillId.set(quiz.skillId, quiz.id);
   }
 
-  const catalog: SkillCatalog = { certified: [], mine: [], available: [] };
+  const catalog: SkillCatalog = { certified: [], mine: [], recommended: [], available: [] };
+
+  // What the recommender works from: the skills they hold, each with the
+  // evidence behind it (which decides how much pull it has), and the cards for
+  // the ones still unclaimed, to copy onto the shelf below.
+  const held: HeldSkill[] = [];
+  const unclaimedBySlug = new Map<string, CatalogSkill>();
 
   for (const skill of skills) {
     const base = {
@@ -143,31 +152,175 @@ export async function listSkillCatalog(userId: string): Promise<SkillCatalog> {
       quizId: quizIdBySkillId.get(skill.id),
     };
 
+    const source = sourceBySkillId.get(skill.id);
+
     // A QUIZ-sourced row is the authority on "certified": recordAttempt writes
     // the UserSkill upgrade and the Certification in the same transaction, so
     // the certificate fields are read off the cert row when it's there and the
     // card still renders as certified if it somehow isn't.
-    if (sourceBySkillId.get(skill.id) === 'QUIZ') {
+    if (source === 'QUIZ') {
       const cert = certBySkillId.get(skill.id);
       catalog.certified.push({
         ...base,
         status: 'CERTIFIED',
         score: cert?.score,
+        level: cert?.level,
         shareSlug: cert?.shareSlug,
         certifiedAt: cert?.earnedAt.toISOString(),
       });
-    } else if (sourceBySkillId.has(skill.id)) {
+    } else if (source) {
       catalog.mine.push({ ...base, status: 'MINE' });
     } else {
-      catalog.available.push({ ...base, status: 'AVAILABLE' });
+      const card: CatalogSkill = { ...base, status: 'AVAILABLE' };
+      catalog.available.push(card);
+      unclaimedBySlug.set(skill.slug, card);
     }
+
+    if (source) held.push({ ...base, source });
   }
 
   // Newest certificate first; the other two keep the category/name ordering
   // the query already produced.
   catalog.certified.sort((a, b) => (b.certifiedAt ?? '').localeCompare(a.certifiedAt ?? ''));
 
+  // Promoted out of `available` rather than copied into `recommended`, so a
+  // suggested card isn't also sitting in the full list below the shelf.
+  const suggestions = suggestRelatedSkills({ held, candidates: catalog.available, groups });
+  const promoted = new Set(suggestions.map((suggestion) => suggestion.slug));
+
+  catalog.recommended = suggestions.map((suggestion) => ({
+    ...unclaimedBySlug.get(suggestion.slug)!,
+    reason: suggestion.reason,
+  }));
+  catalog.available = catalog.available.filter((skill) => !promoted.has(skill.slug));
+
   return catalog;
+}
+
+/**
+ * The weighted skill bundles the recommender reads co-occurrence from: the
+ * authored career archetypes and the ingested listings.
+ *
+ * Careers come first because a tie in the reason resolves to whichever group
+ * was seen first, and an occupation is a steadier thing to show a student than
+ * one company's posting. Listings are capped: the ingest can run the Job table
+ * up into the hundreds and the signal saturates long before that, while the
+ * careers are a fixed 26 and all of them count.
+ */
+async function listSkillGroups(): Promise<SkillGroup[]> {
+  const [careers, jobs] = await Promise.all([
+    prisma.career.findMany({
+      select: {
+        title: true,
+        careerSkills: { select: { weight: true, skill: { select: { slug: true } } } },
+      },
+    }),
+    prisma.job.findMany({
+      take: 200,
+      select: {
+        title: true,
+        skills: { select: { weight: true, skill: { select: { slug: true } } } },
+      },
+    }),
+  ]);
+
+  const flatten = (rows: { weight: number; skill: { slug: string } }[]) =>
+    rows.map((row) => ({ slug: row.skill.slug, weight: row.weight }));
+
+  return [
+    ...careers.map((career) => ({
+      kind: 'career' as const,
+      label: career.title,
+      skills: flatten(career.careerSkills),
+    })),
+    ...jobs.map((job) => ({ kind: 'job' as const, label: job.title, skills: flatten(job.skills) })),
+  ];
+}
+
+export interface ResumeSkillWrite {
+  slug: string;
+  evidence: string;
+}
+
+export interface ResumeSaveResult {
+  added: string[];
+  upgraded: string[];
+  alreadyProven: string[];
+  removed: string[];
+}
+
+/**
+ * Replace the skills a student's resume accounts for.
+ *
+ * The rules exist because `source` is an evidence ranking, and a weaker source
+ * must never overwrite a stronger one:
+ *
+ *   no row yet            → create as RESUME
+ *   SELF_REPORTED         → upgrade to RESUME (a document beats a checkbox)
+ *   QUIZ                  → leave alone (a pass beats a document)
+ *   RESUME, now absent    → delete (re-pasting replaces the last reading)
+ *
+ * That last rule is what makes this idempotent: pasting a corrected resume
+ * removes what the previous one wrongly claimed, while leaving every skill the
+ * student typed in or earned untouched.
+ */
+export async function saveResumeSkills(
+  userId: string,
+  skills: ResumeSkillWrite[],
+): Promise<ResumeSaveResult> {
+  const wanted = new Map(skills.map((skill) => [skill.slug, skill]));
+
+  const skillRows = await prisma.skill.findMany({
+    where: { slug: { in: [...wanted.keys()] } },
+    select: { id: true, slug: true },
+  });
+
+  const existing = await prisma.userSkill.findMany({
+    where: { userId },
+    include: { skill: { select: { id: true, slug: true } } },
+  });
+  const bySlug = new Map(existing.map((row) => [row.skill.slug, row]));
+
+  const result: ResumeSaveResult = { added: [], upgraded: [], alreadyProven: [], removed: [] };
+
+  const creates: { userId: string; skillId: string; source: 'RESUME' }[] = [];
+  const upgrades: string[] = [];
+
+  for (const { id: skillId, slug } of skillRows) {
+    const current = bySlug.get(slug);
+
+    if (!current) {
+      creates.push({ userId, skillId, source: 'RESUME' });
+      result.added.push(slug);
+    } else if (current.source === 'QUIZ') {
+      result.alreadyProven.push(slug);
+    } else if (current.source === 'SELF_REPORTED') {
+      upgrades.push(current.id);
+      result.upgraded.push(slug);
+    }
+    // Already RESUME — nothing to do, and it survives the delete below.
+  }
+
+  // Rows from an earlier reading that this one doesn't account for.
+  const stale = existing.filter((row) => row.source === 'RESUME' && !wanted.has(row.skill.slug));
+  result.removed = stale.map((row) => row.skill.slug);
+
+  await prisma.$transaction(async (tx) => {
+    if (stale.length > 0) {
+      await tx.userSkill.deleteMany({ where: { id: { in: stale.map((r) => r.id) } } });
+    }
+    if (upgrades.length > 0) {
+      await tx.userSkill.updateMany({
+        where: { id: { in: upgrades } },
+        data: { source: 'RESUME' },
+      });
+    }
+    if (creates.length > 0) {
+      await tx.userSkill.createMany({ data: creates });
+    }
+  });
+
+  return result;
 }
 
 // ── Attempts & certificates ──────────────────────────────────────────────────
@@ -256,10 +409,7 @@ export async function recordAttempt(args: {
 }
 
 export function getAttempt(attemptId: string) {
-  return prisma.attempt.findUnique({
-    where: { id: attemptId },
-    include: { certification: true },
-  });
+  return prisma.attempt.findUnique({ where: { id: attemptId }, include: { certification: true } });
 }
 
 export async function listCertifications(userId: string): Promise<Certification[]> {
@@ -428,6 +578,156 @@ export async function loadQuiz(quizId: string): Promise<Quiz | null> {
   return row ? toQuiz(row) : null;
 }
 
+// ── Experience ───────────────────────────────────────────────────────────────
+
+type ExperienceRow = {
+  id: string;
+  kind: string;
+  title: string;
+  organization: string;
+  location: string | null;
+  startDate: string | null;
+  endDate: string | null;
+  current: boolean;
+  bullets: string[];
+  sortOrder: number;
+  source: string;
+};
+
+function toExperience(row: ExperienceRow): Experience {
+  return {
+    id: row.id,
+    kind: row.kind as Experience['kind'],
+    title: row.title,
+    organization: row.organization,
+    location: row.location ?? undefined,
+    startDate: row.startDate ?? undefined,
+    endDate: row.endDate ?? undefined,
+    current: row.current,
+    bullets: row.bullets,
+    sortOrder: row.sortOrder,
+    source: row.source as Experience['source'],
+  };
+}
+
+/**
+ * A student's experience entries, in print order.
+ *
+ * Ordered by the student's own `sortOrder` rather than by date, because the
+ * dates are free text ("Summer 2026") and can't be compared. `createdAt`
+ * breaks ties so a fresh entry lands predictably at the end of its section.
+ */
+export async function listExperiences(userId: string): Promise<Experience[]> {
+  const rows = await prisma.experience.findMany({
+    where: { userId },
+    orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
+  });
+  return rows.map(toExperience);
+}
+
+export async function createExperience(
+  userId: string,
+  input: ExperienceInput,
+  source: Experience['source'] = 'MANUAL',
+): Promise<Experience> {
+  // New entries go to the end of their own section.
+  const last = await prisma.experience.findFirst({
+    where: { userId, kind: input.kind },
+    orderBy: { sortOrder: 'desc' },
+    select: { sortOrder: true },
+  });
+
+  const row = await prisma.experience.create({
+    data: {
+      userId,
+      source,
+      kind: input.kind,
+      title: input.title,
+      organization: input.organization,
+      location: input.location ?? null,
+      startDate: input.startDate ?? null,
+      endDate: input.endDate ?? null,
+      current: input.current,
+      bullets: input.bullets,
+      sortOrder: (last?.sortOrder ?? -1) + 1,
+    },
+  });
+  return toExperience(row);
+}
+
+/**
+ * Edit one entry. Returns null when it isn't this user's, so the route can
+ * answer 404 without confirming the id exists.
+ *
+ * Editing promotes a parsed entry to MANUAL: once a student has corrected it
+ * by hand, a later re-paste must not silently delete their edit.
+ */
+export async function updateExperience(
+  userId: string,
+  id: string,
+  input: ExperienceInput,
+): Promise<Experience | null> {
+  const existing = await prisma.experience.findUnique({ where: { id } });
+  if (!existing || existing.userId !== userId) return null;
+
+  const row = await prisma.experience.update({
+    where: { id },
+    data: {
+      source: 'MANUAL',
+      kind: input.kind,
+      title: input.title,
+      organization: input.organization,
+      location: input.location ?? null,
+      startDate: input.startDate ?? null,
+      endDate: input.endDate ?? null,
+      current: input.current,
+      bullets: input.bullets,
+    },
+  });
+  return toExperience(row);
+}
+
+/** True when a row was deleted, false when it wasn't this user's. */
+export async function deleteExperience(userId: string, id: string): Promise<boolean> {
+  const { count } = await prisma.experience.deleteMany({ where: { id, userId } });
+  return count > 0;
+}
+
+/**
+ * Replace the entries a pasted resume accounts for.
+ *
+ * Only RESUME-sourced rows are cleared, so hand-written entries and entries
+ * the student has since edited survive a re-paste. Same rule as
+ * `saveResumeSkills`: a weaker source never destroys a stronger one.
+ */
+export async function replaceResumeExperiences(
+  userId: string,
+  entries: ExperienceInput[],
+): Promise<number> {
+  return prisma.$transaction(async (tx) => {
+    await tx.experience.deleteMany({ where: { userId, source: 'RESUME' } });
+
+    if (entries.length === 0) return 0;
+
+    await tx.experience.createMany({
+      data: entries.map((input, index) => ({
+        userId,
+        source: 'RESUME' as const,
+        kind: input.kind,
+        title: input.title,
+        organization: input.organization,
+        location: input.location ?? null,
+        startDate: input.startDate ?? null,
+        endDate: input.endDate ?? null,
+        current: input.current,
+        bullets: input.bullets,
+        sortOrder: index,
+      })),
+    });
+    return entries.length;
+  });
+}
+
 // ── Careers ──────────────────────────────────────────────────────────────────
 
 const CAREER_INCLUDE = {
@@ -443,10 +743,7 @@ const CAREER_INCLUDE = {
  * right wherever the rows land.
  */
 export async function listCareers(): Promise<Career[]> {
-  const rows = await prisma.career.findMany({
-    include: CAREER_INCLUDE,
-    orderBy: { title: 'asc' },
-  });
+  const rows = await prisma.career.findMany({ include: CAREER_INCLUDE, orderBy: { title: 'asc' } });
 
   return rows.map((row) => ({
     slug: row.slug,
@@ -464,12 +761,12 @@ export async function listCareers(): Promise<Career[]> {
 }
 
 // ── Jobs ─────────────────────────────────────────────────────────────────────
-// Also seeded from JSON (data/jobs/listings.json). The required /
+// Ingested from real job boards, not seeded. The required /
 // nice-to-have split is stored as a flag on the join row and split back out
 // here, so @/types/job is unchanged.
 
 const JOB_INCLUDE = {
-  skills: { include: { skill: { select: { slug: true } } } },
+  skills: { include: { skill: { select: { slug: true, name: true } } } },
 } as const;
 
 type JobRow = {
@@ -482,10 +779,21 @@ type JobRow = {
   salaryRange: string | null;
   description: string;
   url: string | null;
-  skills: { required: boolean; skill: { slug: string } }[];
+  skills: { required: boolean; weight: number; skill: { slug: string; name: string } }[];
 };
 
 function toJob(row: JobRow): Job {
+  // Heaviest first, so "what this job mostly wants" is just the head of the
+  // list wherever it's rendered.
+  const skills = row.skills
+    .map((s) => ({
+      slug: s.skill.slug,
+      name: s.skill.name,
+      weight: s.weight,
+      required: s.required,
+    }))
+    .sort((a, b) => b.weight - a.weight);
+
   return {
     id: row.id,
     title: row.title,
@@ -494,8 +802,9 @@ function toJob(row: JobRow): Job {
     remote: row.remote,
     level: row.level as Job['level'],
     salaryRange: row.salaryRange ?? undefined,
-    requiredSkills: row.skills.filter((s) => s.required).map((s) => s.skill.slug),
-    niceToHaveSkills: row.skills.filter((s) => !s.required).map((s) => s.skill.slug),
+    skills,
+    requiredSkills: skills.filter((s) => s.required).map((s) => s.slug),
+    niceToHaveSkills: skills.filter((s) => !s.required).map((s) => s.slug),
     description: row.description,
     url: row.url ?? undefined,
   };
@@ -511,10 +820,250 @@ export async function getJob(id: string): Promise<Job | null> {
   return row ? toJob(row) : null;
 }
 
+/** Ids already stored, so ingest can skip them before spending a model call. */
+export async function listJobIds(): Promise<string[]> {
+  const rows = await prisma.job.findMany({ select: { id: true } });
+  return rows.map((row) => row.id);
+}
+
+export async function countJobs(): Promise<number> {
+  return prisma.job.count();
+}
+
+export interface UpsertJobInput {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  remote: boolean;
+  level: string;
+  salaryRange?: string;
+  description: string;
+  url?: string;
+  /**
+   * Canonical slugs with weights. Unknown slugs are dropped by the caller, not
+   * here. `weight` is the extraction step's 1-5 judgment of centrality.
+   */
+  skills: { slug: string; weight: number; required: boolean }[];
+}
+
+/**
+ * Write one ingested listing and its skill links.
+ *
+ * Skills are replaced wholesale rather than diffed: re-extracting a listing
+ * should leave exactly what the model just said, and `JobSkill` carries no
+ * data of its own worth preserving. In a transaction so a listing is never
+ * left with a half-written skill set.
+ *
+ * A slug with no `Skill` row is skipped — the canonical vocabulary is seeded,
+ * so this only happens if a slug was added to data/skills.json without a
+ * re-seed, and a missing join row is better than a failed ingest run.
+ */
+export async function upsertJob(input: UpsertJobInput): Promise<void> {
+  const skillRows = await prisma.skill.findMany({
+    where: { slug: { in: input.skills.map((s) => s.slug) } },
+    select: { id: true, slug: true },
+  });
+  const idBySlug = new Map(skillRows.map((row) => [row.slug, row.id]));
+
+  const links = input.skills.flatMap(({ slug, weight, required }) => {
+    const skillId = idBySlug.get(slug);
+    return skillId ? [{ skillId, weight, required }] : [];
+  });
+
+  const fields = {
+    title: input.title,
+    company: input.company,
+    location: input.location,
+    remote: input.remote,
+    level: input.level,
+    salaryRange: input.salaryRange ?? null,
+    description: input.description,
+    url: input.url ?? null,
+  };
+
+  await prisma.$transaction(async (tx) => {
+    await tx.job.upsert({
+      where: { id: input.id },
+      update: fields,
+      create: { id: input.id, ...fields },
+    });
+    await tx.jobSkill.deleteMany({ where: { jobId: input.id } });
+    if (links.length > 0) {
+      await tx.jobSkill.createMany({ data: links.map((link) => ({ jobId: input.id, ...link })) });
+    }
+  });
+}
+
 /** Join model output (which returns ids) back to full listings, order preserved. */
 export async function jobsById(ids: string[]): Promise<Job[]> {
   if (ids.length === 0) return [];
   const rows = await prisma.job.findMany({ where: { id: { in: ids } }, include: JOB_INCLUDE });
   const byId = new Map(rows.map((row) => [row.id, toJob(row)]));
   return ids.map((id) => byId.get(id)).filter((job): job is Job => Boolean(job));
+}
+
+// ── Applications ─────────────────────────────────────────────────────────────
+// The student's own tracker. Everything above in the jobs section is content
+// the ingest owns and replaces; this is history, so these functions are the
+// only ones here that must never destroy a row as a side effect of a refresh.
+
+type ApplicationRow = {
+  id: string;
+  jobId: string | null;
+  title: string;
+  company: string;
+  location: string | null;
+  url: string | null;
+  status: ApplicationStatus;
+  notes: string | null;
+  appliedAt: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+// Dates cross to the client as ISO strings: a server component may not hand a
+// Date to a client component, and the tracker is a client component.
+function toApplication(row: ApplicationRow): Application {
+  return {
+    id: row.id,
+    jobId: row.jobId,
+    title: row.title,
+    company: row.company,
+    location: row.location ?? undefined,
+    url: row.url ?? undefined,
+    status: row.status,
+    notes: row.notes ?? undefined,
+    appliedAt: row.appliedAt?.toISOString(),
+    createdAt: row.createdAt.toISOString(),
+    updatedAt: row.updatedAt.toISOString(),
+  };
+}
+
+/**
+ * One student's applications, most recently touched first.
+ *
+ * Ordered by `updatedAt` rather than `createdAt` because the tracker is a
+ * working list: the thing you just moved to Interviewing is the thing you care
+ * about, not the oldest row you saved.
+ */
+export async function listApplications(userId: string): Promise<Application[]> {
+  const rows = await prisma.application.findMany({
+    where: { userId },
+    orderBy: { updatedAt: 'desc' },
+  });
+  return rows.map(toApplication);
+}
+
+/** The job ids this student has already tracked, so the Save button can show state. */
+export async function listTrackedJobIds(userId: string): Promise<string[]> {
+  const rows = await prisma.application.findMany({
+    where: { userId, jobId: { not: null } },
+    select: { jobId: true },
+  });
+  return rows.map((row) => row.jobId).filter((id): id is string => id !== null);
+}
+
+/**
+ * Track a job, from either entry path.
+ *
+ * `jobId` set means it came from an ingested listing — the listing's own
+ * fields are read here rather than trusted from the request, so a client can't
+ * store a different company than the one it displayed. Without it, the caller's
+ * typed-in values are all there is.
+ *
+ * Returns null when `jobId` names a listing that doesn't exist, so the route
+ * can answer 400 instead of storing an orphan.
+ */
+export async function createApplication(
+  userId: string,
+  input: NewApplication,
+): Promise<Application | null> {
+  let fields = {
+    title: input.title,
+    company: input.company,
+    location: input.location ?? null,
+    url: input.url ?? null,
+  };
+
+  if (input.jobId) {
+    const job = await prisma.job.findUnique({
+      where: { id: input.jobId },
+      select: { title: true, company: true, location: true, url: true },
+    });
+    if (!job) return null;
+    fields = { title: job.title, company: job.company, location: job.location, url: job.url };
+  }
+
+  const status = input.status ?? 'SAVED';
+
+  // Upsert rather than create so saving the same listing twice — two tabs, a
+  // double click — updates the row instead of tripping the unique constraint.
+  // Only reachable for an ingested job: a manual row has a null jobId, which
+  // Postgres treats as distinct, so each one is genuinely new.
+  const row = input.jobId
+    ? await prisma.application.upsert({
+        where: { userId_jobId: { userId, jobId: input.jobId } },
+        update: {},
+        create: {
+          userId,
+          jobId: input.jobId,
+          ...fields,
+          status,
+          notes: input.notes ?? null,
+          appliedAt: status === 'SAVED' ? null : new Date(),
+        },
+      })
+    : await prisma.application.create({
+        data: {
+          userId,
+          ...fields,
+          status,
+          notes: input.notes ?? null,
+          appliedAt: status === 'SAVED' ? null : new Date(),
+        },
+      });
+
+  return toApplication(row);
+}
+
+/**
+ * Move an application along the pipeline, or edit its notes.
+ *
+ * `appliedAt` is stamped the first time a row leaves SAVED and then left
+ * alone: moving on to Interviewing shouldn't rewrite the date you applied, and
+ * dropping back to SAVED shouldn't erase it either.
+ *
+ * Scoped by userId in the `where`, so one student can't reach another's row.
+ */
+export async function updateApplication(
+  userId: string,
+  id: string,
+  changes: { status?: ApplicationStatus; notes?: string | null },
+): Promise<Application | null> {
+  const existing = await prisma.application.findFirst({
+    where: { id, userId },
+    select: { appliedAt: true },
+  });
+  if (!existing) return null;
+
+  const stampApplied =
+    changes.status !== undefined && changes.status !== 'SAVED' && existing.appliedAt === null;
+
+  const row = await prisma.application.update({
+    where: { id },
+    data: {
+      ...(changes.status !== undefined && { status: changes.status }),
+      ...(changes.notes !== undefined && { notes: changes.notes }),
+      ...(stampApplied && { appliedAt: new Date() }),
+    },
+  });
+
+  return toApplication(row);
+}
+
+/** Untrack. Returns false when the row isn't this student's, for the 404 path. */
+export async function deleteApplication(userId: string, id: string): Promise<boolean> {
+  const { count } = await prisma.application.deleteMany({ where: { id, userId } });
+  return count > 0;
 }

@@ -44,13 +44,12 @@ function parseProvider(raw: string | undefined): AiProviderId | null {
  * The backend for one task, which may differ from the global default.
  *
  * Per-task overrides exist because the right answer isn't the same for every
- * call: locally, quiz coaching finishes in ~30s and reads fine, while ranking
- * 20 listings into a constrained schema takes over two minutes — long enough
- * that you stop clicking it. Set `AI_PROVIDER_JOB_RANKING=anthropic` to keep
- * that one on the API (a cent a click on Haiku) while coaching stays free.
+ * call. Quiz coaching reads fine off a local model. Skill extraction does not:
+ * mistral returned 37 of the 46 skills for one listing, and a row like that
+ * matches everyone — so that task is pinned to the API in .env.
  *
- * Env var name is the task id upper-snake-cased: 'job-ranking' →
- * AI_PROVIDER_JOB_RANKING.
+ * Env var name is the task id upper-snake-cased: 'quiz-coaching' →
+ * AI_PROVIDER_QUIZ_COACHING.
  */
 export function providerFor(task: AiTaskId): AiProviderId {
   const key = `AI_PROVIDER_${task.replace(/-/g, '_').toUpperCase()}`;

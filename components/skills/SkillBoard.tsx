@@ -151,6 +151,10 @@ export function SkillBoard({ catalog }: SkillBoardProps) {
  * never touched: the only transition a user can trigger from this board is
  * between those two, and certification is earned by passing a quiz.
  */
+// Note: this component is no longer mounted — /skills renders
+// SkillCatalogBrowser, which is where the recommended shelf lives. The two
+// `recommended` lines below exist only so the file still typechecks against
+// SkillCatalog; it carries no shelf of its own.
 function rebucket(catalog: SkillCatalog, move: Move): SkillCatalog {
   const mine: CatalogSkill[] = [];
   const available: CatalogSkill[] = [];
@@ -166,6 +170,7 @@ function rebucket(catalog: SkillCatalog, move: Move): SkillCatalog {
   return {
     certified: catalog.certified,
     mine: byCategoryThenName(mine),
+    recommended: catalog.recommended,
     available: byCategoryThenName(available),
   };
 }
@@ -189,6 +194,7 @@ function filterCatalog(catalog: SkillCatalog, query: string): SkillCatalog {
   return {
     certified: catalog.certified.filter(match),
     mine: catalog.mine.filter(match),
+    recommended: catalog.recommended.filter(match),
     available: catalog.available.filter(match),
   };
 }

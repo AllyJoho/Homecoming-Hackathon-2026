@@ -7,20 +7,30 @@
 import Link from 'next/link';
 import type { JobMatchWithJob } from '@/types/job';
 import { Card, Tag } from '@/components/ui';
+import { SaveJobButton } from '@/components/applications/SaveJobButton';
+import { JobTitle } from './JobTitle';
 
 export interface JobCardProps {
   match: JobMatchWithJob;
   /** slug → quizId, for "take the quiz" links. Built by the page. */
   quizBySkill?: Record<string, string>;
+  /** True when this listing is already in the student's tracker. */
+  tracked?: boolean;
 }
 
-export function JobCard({ match, quizBySkill = {} }: JobCardProps) {
+export function JobCard({ match, quizBySkill = {}, tracked = false }: JobCardProps) {
   const { job, score, reasons, missingSkills } = match;
 
   return (
     <Card
-      title={job.title}
-      action={<Tag tone={score >= 80 ? 'success' : score >= 50 ? 'info' : 'neutral'}>{score}% fit</Tag>}
+      title={<JobTitle title={job.title} url={job.url} />}
+      headerAlign="center"
+      action={
+        <div className="flex items-center gap-2">
+          <Tag tone={score >= 80 ? 'success' : score >= 50 ? 'info' : 'neutral'}>{score}% fit</Tag>
+          <SaveJobButton jobId={job.id} tracked={tracked} />
+        </div>
+      }
     >
       <p className="text-sm text-zinc-700 dark:text-zinc-300">
         {job.company} · {job.remote ? `${job.location} (remote)` : job.location} · {job.level}
@@ -57,17 +67,6 @@ export function JobCard({ match, quizBySkill = {} }: JobCardProps) {
             })}
           </ul>
         </div>
-      )}
-
-      {job.url && (
-        <a
-          href={job.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-4 inline-block text-sm font-medium underline underline-offset-4"
-        >
-          View listing
-        </a>
       )}
     </Card>
   );
