@@ -16,14 +16,8 @@
 // the two matchers.
 
 import type { SkillSource } from '@/types/profile';
-
-/**
- * What each kind of evidence is worth, mirroring @/lib/jobs/match: a quiz pass
- * is proof, a resume is a claim with a document behind it, a checkbox is a
- * claim. A skill they merely ticked still pulls in neighbours, just less
- * confidently than one they proved.
- */
-const CREDIT: Record<SkillSource, number> = { QUIZ: 1, RESUME: 0.7, SELF_REPORTED: 0.5 };
+import type { ProficiencyLevel } from '@/lib/quiz/levels';
+import { creditFor } from '@/lib/profile/credit';
 
 /** Weights are authored 1–5; dividing by the top of that scale keeps scores readable. */
 const MAX_WEIGHT = 5;
@@ -33,6 +27,8 @@ export interface HeldSkill {
   slug: string;
   name: string;
   source: SkillSource;
+  /** The band a QUIZ-sourced skill was certified at. Grades its pull. */
+  level?: ProficiencyLevel;
   /** Only read by the category fallback at the bottom of this file. */
   category?: string;
 }
@@ -163,7 +159,7 @@ export function suggestRelatedSkills({
     for (const candidate of openInGroup) {
       for (const { skill, weight } of heldInGroup) {
         const contribution =
-          (weight / MAX_WEIGHT) * (candidate.weight / MAX_WEIGHT) * CREDIT[skill.source];
+          (weight / MAX_WEIGHT) * (candidate.weight / MAX_WEIGHT) * creditFor(skill);
 
         scores.set(candidate.slug, (scores.get(candidate.slug) ?? 0) + contribution);
 
@@ -282,7 +278,7 @@ function byCategory({
   for (const skill of held) {
     if (!skill.category) continue;
     const banked = creditByCategory.get(skill.category) ?? 0;
-    creditByCategory.set(skill.category, banked + CREDIT[skill.source]);
+    creditByCategory.set(skill.category, banked + creditFor(skill));
     if (!exampleByCategory.has(skill.category)) exampleByCategory.set(skill.category, skill.name);
   }
 

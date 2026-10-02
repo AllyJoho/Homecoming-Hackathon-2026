@@ -7,25 +7,15 @@
 // arithmetic, which means ranking is instant, free, identical on every run,
 // and explainable from its own numbers rather than from prose a model wrote.
 //
-// Same shape and the same credit rules as @/lib/careers/match, deliberately:
-// a student shouldn't see two different ideas of what their skills are worth
-// depending on which page they're on.
+// Same shape as @/lib/careers/match, and now literally the same credit rules:
+// both import creditFor from @/lib/profile/credit rather than each keeping a
+// copy of the table. A student shouldn't see two different ideas of what their
+// skills are worth depending on which page they're on, and a shared import is
+// the only version of that promise a typecheck can keep.
 
 import type { Job, JobMatch, JobMatchWithJob, JobSkillWeight } from '@/types/job';
-import type { Profile, SkillSource } from '@/types/profile';
-
-/**
- * What each kind of evidence is worth against a quiz pass.
- *
- * A resume sits between the two because it is a claim with a document behind
- * it — better than a checkbox, short of a graded assessment. The gap is the
- * product: it's what makes "prove this with a quiz" worth clicking.
- */
-const CREDIT: Record<SkillSource, number> = {
-  QUIZ: 1,
-  RESUME: 0.7,
-  SELF_REPORTED: 0.5,
-};
+import type { Profile, ProfileSkill } from '@/types/profile';
+import { creditFor } from '@/lib/profile/credit';
 
 /** Nice-to-haves count, but a must-have you lack should hurt more. */
 const NICE_TO_HAVE_DISCOUNT = 0.4;
@@ -72,10 +62,10 @@ export function matchJobs(
   profile: Profile,
   { minScore = 1, limit }: JobMatchOptions = {},
 ): JobMatchWithJob[] {
-  const sourceBySlug = new Map(profile.skills.map((skill) => [skill.slug, skill.source]));
+  const evidenceBySlug = new Map(profile.skills.map((skill) => [skill.slug, skill]));
 
   const matches = jobs
-    .map((job) => scoreJob(job, sourceBySlug))
+    .map((job) => scoreJob(job, evidenceBySlug))
     .filter((match) => match.score >= minScore)
     .sort((a, b) => b.score - a.score);
 
@@ -84,7 +74,7 @@ export function matchJobs(
 
 function scoreJob(
   job: Job,
-  sourceBySlug: Map<string, SkillSource>,
+  evidenceBySlug: Map<string, ProfileSkill>,
 ): JobMatchWithJob {
   let earned = 0;
   let total = 0;
@@ -99,14 +89,14 @@ function scoreJob(
     const stake = skill.required ? skill.weight : skill.weight * NICE_TO_HAVE_DISCOUNT;
     total += stake;
 
-    const source = sourceBySlug.get(skill.slug);
-    if (!source) {
+    const evidence = evidenceBySlug.get(skill.slug);
+    if (!evidence) {
       missing.push(skill);
       continue;
     }
 
-    earned += stake * CREDIT[source];
-    (source === 'QUIZ' ? proven : claimed).push(skill);
+    earned += stake * creditFor(evidence);
+    (evidence.source === 'QUIZ' ? proven : claimed).push(skill);
   }
 
   // Coverage of what the listing asked for, damped by how much it asked.
