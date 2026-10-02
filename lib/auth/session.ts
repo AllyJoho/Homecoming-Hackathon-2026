@@ -7,7 +7,7 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { redirect } from 'next/navigation';
-import { getUserById } from '@/lib/db/queries';
+import { getUserById } from '@/prisma/queries';
 
 const COOKIE_NAME = 'hh_session';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // one week

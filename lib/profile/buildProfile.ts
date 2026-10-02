@@ -8,7 +8,7 @@
 // would use, both make the model's ranking worse.
 
 import type { Profile, ProfileSkill } from '@/types/profile';
-import { getProfile } from '@/lib/db/queries';
+import { getProfile } from '@/prisma/queries';
 
 export async function buildProfile(userId: string): Promise<Profile | null> {
   const profile = await getProfile(userId);

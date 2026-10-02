@@ -3,7 +3,7 @@
 // choice rather than a surprise.
 
 import { requireSessionUser } from '@/lib/auth/session';
-import { listCertifications } from '@/lib/db/queries';
+import { listCertifications } from '@/prisma/queries';
 import { listQuizzes } from '@/lib/quiz/loadQuiz';
 import { QuizCard } from '@/components/quiz/QuizCard';
 

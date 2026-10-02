@@ -4,38 +4,16 @@
 // (`requiredSkills`), the AI prompt — refers to skills by these slugs, so
 // "JS" typed on the home screen and "JavaScript" in a listing are one skill.
 //
-// This list is the seed for the `Skill` table (see prisma/seed.ts).
+// The list itself lives in data/skills.json and is the seed for the `Skill`
+// table (see prisma/seed.ts).
 
 import type { Skill } from '@/types/profile';
+import skillsJson from '@/data/skills.json';
 
-export const CANONICAL_SKILLS: Skill[] = [
-  { slug: 'javascript', name: 'JavaScript', category: 'language' },
-  { slug: 'typescript', name: 'TypeScript', category: 'language' },
-  { slug: 'python', name: 'Python', category: 'language' },
-  { slug: 'java', name: 'Java', category: 'language' },
-  { slug: 'cpp', name: 'C++', category: 'language' },
-  { slug: 'csharp', name: 'C#', category: 'language' },
-  { slug: 'sql', name: 'SQL', category: 'language' },
-  { slug: 'html-css', name: 'HTML & CSS', category: 'language' },
-  { slug: 'react', name: 'React', category: 'framework' },
-  { slug: 'nextjs', name: 'Next.js', category: 'framework' },
-  { slug: 'node', name: 'Node.js', category: 'framework' },
-  { slug: 'django', name: 'Django', category: 'framework' },
-  { slug: 'tailwind', name: 'Tailwind CSS', category: 'framework' },
-  { slug: 'git', name: 'Git', category: 'tool' },
-  { slug: 'docker', name: 'Docker', category: 'tool' },
-  { slug: 'aws', name: 'AWS', category: 'tool' },
-  { slug: 'figma', name: 'Figma', category: 'tool' },
-  { slug: 'excel', name: 'Excel', category: 'tool' },
-  { slug: 'data-analysis', name: 'Data Analysis', category: 'domain' },
-  { slug: 'data-viz', name: 'Data Visualization', category: 'domain' },
-  { slug: 'machine-learning', name: 'Machine Learning', category: 'domain' },
-  { slug: 'ui-ux', name: 'UI/UX Design', category: 'domain' },
-  { slug: 'project-management', name: 'Project Management', category: 'domain' },
-  { slug: 'technical-writing', name: 'Technical Writing', category: 'domain' },
-  { slug: 'communication', name: 'Communication', category: 'soft' },
-  { slug: 'public-speaking', name: 'Public Speaking', category: 'soft' },
-];
+// The vocabulary itself is data, so it lives in data/skills.json — the same
+// file prisma/seed.ts loads into the Skill table. Editing that JSON changes
+// both the normalizer and the seed, so the two can't drift.
+export const CANONICAL_SKILLS: Skill[] = skillsJson;
 
 const BY_SLUG = new Map(CANONICAL_SKILLS.map((s) => [s.slug, s]));
 

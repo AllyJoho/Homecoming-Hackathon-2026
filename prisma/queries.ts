@@ -1,4 +1,4 @@
-// @/lib/db/queries.ts
+// @/prisma/queries.ts
 // Every database read/write the app does, in one place. Route handlers and
 // server components call these instead of touching `prisma` directly — so the
 // award-a-certificate transaction can't be half-copied into two routes.
@@ -6,7 +6,7 @@
 import type { AnswerSheet, Quiz, QuizResult } from '@/types/quiz';
 import type { Certification, Profile, ProfileSkill } from '@/types/profile';
 import { Prisma } from '@/lib/generated/prisma/client';
-import { prisma } from '@/lib/db/client';
+import { prisma } from '@/prisma/client';
 import { normalizeSkill, skillBySlug } from '@/lib/profile/skills';
 
 // Authored JSON quizzes aren't tiered the way the Question bank is, so every

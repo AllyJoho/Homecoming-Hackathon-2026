@@ -14,13 +14,15 @@ import { PrismaClient } from '@/lib/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { CANONICAL_SKILLS } from '@/lib/profile/skills';
+import skills from '@/data/skills.json';
 
 // Standalone script, so it opens its own adapter rather than importing the
 // app's shared client.
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 const DATA_DIR = join(process.cwd(), 'data');
+
+type SkillJson = { slug: string; name: string; category?: string };
 
 type CareerJson = {
   slug: string;
@@ -42,10 +44,11 @@ async function main() {
   console.log('🌱 Seeding database...');
 
   // ── Skills ───────────────────────────────────────────────
-  // lib/profile/skills.ts is the single source of truth for the vocabulary:
-  // normalizeSkill() rejects anything outside it, so the table has to match.
+  // data/skills.json is the single source of truth for the vocabulary — the
+  // normalizer in lib/profile/skills.ts reads the same file, so the table and
+  // the accepted input set can't drift apart.
   const skillIdBySlug = new Map<string, string>();
-  for (const skill of CANONICAL_SKILLS) {
+  for (const skill of skills as SkillJson[]) {
     const row = await prisma.skill.upsert({
       where: { slug: skill.slug },
       update: { name: skill.name, category: skill.category },
@@ -53,7 +56,7 @@ async function main() {
     });
     skillIdBySlug.set(skill.slug, row.id);
   }
-  console.log(`  ✔ ${CANONICAL_SKILLS.length} canonical skills`);
+  console.log(`  ✔ ${skills.length} canonical skills`);
 
   // ── Careers ──────────────────────────────────────────────
   const careers = readJson<CareerJson[]>(join(DATA_DIR, 'careers.json'));
@@ -72,7 +75,7 @@ async function main() {
       if (!skillId) {
         throw new Error(
           `Career "${c.slug}" references "${cs.skill}", which is not a canonical ` +
-            `skill slug. Add it to CANONICAL_SKILLS in lib/profile/skills.ts.`,
+            `skill slug. Add it to data/skills.json.`,
         );
       }
       return { careerId: career.id, skillId, weight: Math.min(5, Math.max(1, Math.round(cs.weight))) };

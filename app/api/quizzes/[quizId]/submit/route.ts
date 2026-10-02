@@ -8,7 +8,7 @@
 import { NextResponse } from 'next/server';
 import type { AnswerSheet } from '@/types/quiz';
 import { getSessionUser, unauthorized } from '@/lib/auth/session';
-import { recordAttempt } from '@/lib/db/queries';
+import { recordAttempt } from '@/prisma/queries';
 import { loadQuiz } from '@/lib/quiz/loadQuiz';
 import { scoreQuiz } from '@/lib/quiz/scoring';
 

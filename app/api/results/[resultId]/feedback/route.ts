@@ -13,7 +13,7 @@ import type { AnswerSheet } from '@/types/quiz';
 import { MODEL, aiEnabled, anthropic } from '@/lib/ai/client';
 import { FEEDBACK_SYSTEM_PROMPT } from '@/lib/ai/prompts';
 import { getSessionUser, unauthorized } from '@/lib/auth/session';
-import { getAttempt } from '@/lib/db/queries';
+import { getAttempt } from '@/prisma/queries';
 import { loadQuiz } from '@/lib/quiz/loadQuiz';
 import { scoreQuiz } from '@/lib/quiz/scoring';
 

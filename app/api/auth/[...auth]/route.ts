@@ -8,7 +8,7 @@
 
 import { NextResponse } from 'next/server';
 import { createSession, destroySession } from '@/lib/auth/session';
-import { findOrCreateUserByEmail } from '@/lib/db/queries';
+import { findOrCreateUserByEmail } from '@/prisma/queries';
 
 export async function POST(request: Request, { params }: { params: Promise<{ auth: string[] }> }) {
   const { auth } = await params;

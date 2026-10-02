@@ -9,7 +9,7 @@
 import { notFound } from 'next/navigation';
 import type { AnswerSheet } from '@/types/quiz';
 import { requireSessionUser } from '@/lib/auth/session';
-import { getAttempt } from '@/lib/db/queries';
+import { getAttempt } from '@/prisma/queries';
 import { loadQuiz, toPublicQuiz } from '@/lib/quiz/loadQuiz';
 import { scoreQuiz } from '@/lib/quiz/scoring';
 import { ResultSummary } from '@/components/quiz/ResultSummary';
