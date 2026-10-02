@@ -6,10 +6,28 @@
 // sign-in and account creation.
 //
 // Statistics below are all from the cited sources at the bottom of the page.
-// The "example result" card in the hero is an illustration, not real data.
+//
+// The hero visual renders the REAL CertificateView and the REAL Tag, with
+// illustrative data. It used to be bespoke markup, and it had drifted into
+// describing a different product: a progress bar reading "18 of 20 test cases
+// passed", when this app asks fifteen questions and awards a level. Rendering
+// the actual components is what stops that happening again — the example can
+// only look wrong now if the certificate itself looks wrong.
 
+// Signed-in users never see this page: it carries no site nav (it sits outside
+// the (main) group on purpose, so a visitor isn't shown an app bar they can't
+// use), and without the redirect below a signed-in student clicking "Home"
+// landed here with no way back into the app and nothing but /login to click.
+//
+// `getSessionUser` rather than `requireSessionUser`: a visitor with no session
+// is the audience for this page, not someone to bounce to /login.
+
+import { redirect } from 'next/navigation';
+import { getSessionUser } from '@/lib/auth/session';
 import Link from 'next/link';
 import { APP_NAME } from '@/lib/appConfig';
+import { CertificateView } from '@/components/certificate/CertificateView';
+import { Tag } from '@/components/ui';
 
 const LOGIN_HREF = '/login';
 
@@ -45,29 +63,72 @@ const PROBLEM_STATS: Stat[] = [
   },
 ];
 
+/**
+ * The hero certificate. Illustrative, but it obeys the real rules: 13 of 15
+ * correct is 87%, which @/lib/quiz/levels puts in the Proficient band (>= 80%,
+ * under Expert's 93.3%), and "JavaScript Fundamentals" is a real quiz title
+ * from data/quizzes. Fixed date so the page doesn't change day to day.
+ */
+const EXAMPLE_CERTIFICATE = {
+  holderName: 'Jordan Avery',
+  title: 'JavaScript Fundamentals',
+  level: 'Proficient' as const,
+  correct: 13,
+  questions: 15,
+  score: 87,
+  issuedAt: '2026-09-18T12:00:00.000Z',
+};
+
+/**
+ * Two ranked listings shaped like @/components/recommendations/JobCard: a
+ * percentage fit rather than "4 of 5 skills", because the real matcher scores
+ * weighted coverage of what a listing asked for (@/lib/jobs/match); the
+ * company/location/level line; and the skills that are not proven yet, which
+ * inside the app link to the quiz that would prove them. Titles are real
+ * occupation names from data/careers.json.
+ */
+const EXAMPLE_MATCHES = [
+  {
+    title: 'Software Developers',
+    company: 'Northgate Labs',
+    location: 'Provo, UT',
+    level: 'internship',
+    score: 84,
+    notProven: null,
+  },
+  {
+    title: 'Web Developers',
+    company: 'Mesa Interactive',
+    location: 'Remote',
+    level: 'entry',
+    score: 61,
+    notProven: 'Database Design & Modeling',
+  },
+];
+
 const STEPS = [
   {
     title: 'Take a skills test',
-    body: 'Pick from tests covering programming languages, frameworks, and algorithms and data structures. Write real code in the browser.',
+    body: 'Pick from 46 skills across engineering, data, security, design, and the business side. Fifteen questions each: multiple choice, true/false, multi-select, short answer, and code questions where you find the bug or put the lines back in order.',
   },
   {
     title: 'Get graded automatically',
-    body: 'Your code runs against test cases. Pass or fail depends on what your code does, not on who reads it.',
+    body: 'Every answer is checked against the answer key the moment you submit. The same answers always earn the same score, and nobody reads your work and forms an opinion about it.',
   },
   {
     title: 'Earn a certificate',
-    body: 'Each passed test earns a certification with a public link and badge you can add to your resume, portfolio, or profiles.',
+    body: 'Score 53% or better and you earn a certificate at one of three levels, Foundational, Proficient or Expert, with a public link you can add to a resume, portfolio, or profile.',
   },
   {
     title: 'See jobs that match',
-    body: 'Your verified skills are matched against job listings, so you can see where you fit and which skills to build next.',
+    body: 'Your skills are scored against the weighted requirements on each listing, so every job shows a percentage fit and names the skills that would raise it.',
   },
 ];
 
 const TRUST_POINTS = [
   {
-    title: 'Graded by code, not opinion',
-    body: 'Every submission is run against automated test cases. Two people who write the same working solution get the same result.',
+    title: 'Graded against an answer key, not an opinion',
+    body: 'Every question carries its correct answer, and grading is a direct comparison run the moment you submit. Two people who answer the same way always get the same result.',
   },
   {
     title: 'Anyone can check it',
@@ -93,7 +154,10 @@ const PRIMARY_BUTTON = `inline-flex items-center justify-center rounded-lg bg-zi
 
 const SECONDARY_BUTTON = `inline-flex items-center justify-center rounded-lg border border-zinc-300 px-5 py-3 text-base font-medium text-zinc-900 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900 ${LINK_FOCUS}`;
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Already signed in? The dashboard is the useful page, not the pitch.
+  if (await getSessionUser()) redirect('/home');
+
   return (
     <div className="flex min-h-screen flex-col bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5">
@@ -134,54 +198,68 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Illustrative example: the one visual "moment" on the page. */}
-          <figure
-            aria-label="Illustration of a test result and job matches"
-            className="rounded-2xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-900"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400">Certificate</p>
-                <p className="mt-1 text-xl font-semibold">Python</p>
-              </div>
+          {/* The one visual "moment" on the page. `showScore` is false so this
+              is exactly what the public share link renders for a recruiter —
+              the student's own score lives in the strip underneath, which is
+              where the app shows it. */}
+          <figure className="flex flex-col gap-4">
+            <figcaption className="flex items-baseline justify-between gap-4">
+              <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                What a recruiter opens
+              </span>
               <span className="rounded-full border border-zinc-300 px-3 py-1 text-xs text-zinc-600 dark:border-zinc-700 dark:text-zinc-400">
                 Example only
               </span>
-            </div>
-            <p className="mt-4 text-sm text-zinc-700 dark:text-zinc-300">
-              18 of 20 test cases passed
-            </p>
-            <div
-              className="mt-2 h-2 rounded-full bg-zinc-200 dark:bg-zinc-800"
-              role="img"
-              aria-label="18 of 20 test cases passed"
-            >
-              <div className="h-2 w-[90%] rounded-full bg-indigo-600 dark:bg-indigo-400" />
-            </div>
+            </figcaption>
 
-            <hr className="my-6 border-zinc-200 dark:border-zinc-800" />
+            <CertificateView
+              size="compact"
+              showScore={false}
+              holderName={EXAMPLE_CERTIFICATE.holderName}
+              title={EXAMPLE_CERTIFICATE.title}
+              level={EXAMPLE_CERTIFICATE.level}
+              score={EXAMPLE_CERTIFICATE.score}
+              issuedAt={EXAMPLE_CERTIFICATE.issuedAt}
+            />
 
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">Jobs that match your skills</p>
-            <ul className="mt-3 flex flex-col gap-4">
-              <li>
-                <div className="flex items-baseline justify-between gap-4">
-                  <span className="font-medium">Backend developer</span>
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">4 of 5 skills</span>
-                </div>
-                <div className="mt-2 h-1.5 rounded-full bg-zinc-200 dark:bg-zinc-800">
-                  <div className="h-1.5 w-4/5 rounded-full bg-indigo-600 dark:bg-indigo-400" />
-                </div>
-              </li>
-              <li>
-                <div className="flex items-baseline justify-between gap-4">
-                  <span className="font-medium">Data analyst</span>
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">3 of 5 skills</span>
-                </div>
-                <div className="mt-2 h-1.5 rounded-full bg-zinc-200 dark:bg-zinc-800">
-                  <div className="h-1.5 w-3/5 rounded-full bg-indigo-600 dark:bg-indigo-400" />
-                </div>
-              </li>
-            </ul>
+            <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-5 dark:border-zinc-800 dark:bg-zinc-900">
+              <p className="text-xs font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+                Your result
+              </p>
+              <p className="mt-1.5 text-sm tabular-nums text-zinc-700 dark:text-zinc-300">
+                {EXAMPLE_CERTIFICATE.correct} of {EXAMPLE_CERTIFICATE.questions} correct ·{' '}
+                {EXAMPLE_CERTIFICATE.score}% · {EXAMPLE_CERTIFICATE.level}
+              </p>
+
+              <hr className="my-5 border-zinc-200 dark:border-zinc-800" />
+
+              <p className="text-xs font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+                Jobs ranked against your skills
+              </p>
+              <ul className="mt-3 flex flex-col gap-4">
+                {EXAMPLE_MATCHES.map((match) => (
+                  <li key={match.title}>
+                    <div className="flex items-baseline justify-between gap-3">
+                      <span className="font-medium">{match.title}</span>
+                      {/* Same thresholds as JobCard's fit pill. */}
+                      <Tag
+                        variant={match.score >= 80 ? 'success' : match.score >= 50 ? 'info' : 'neutral'}
+                      >
+                        {match.score}% fit
+                      </Tag>
+                    </div>
+                    <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+                      {match.company} · {match.location} · {match.level}
+                    </p>
+                    {match.notProven && (
+                      <p className="mt-1.5 text-sm text-zinc-600 dark:text-zinc-400">
+                        Not proven yet: {match.notProven}
+                      </p>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </figure>
         </section>
 
@@ -259,8 +337,8 @@ export default function HomePage() {
                 Why you can trust your results
               </h2>
               <p className="mt-4 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
-                A certificate is only useful if people believe it. Ours is based on what your code
-                does.
+                A certificate is only useful if people believe it. Ours names the level you
+                reached and what you reached it in.
               </p>
             </div>
             <ul className="flex flex-col divide-y divide-zinc-200 dark:divide-zinc-800">
@@ -336,7 +414,8 @@ export default function HomePage() {
           <p>
             Statistics are from the linked sources. The Oxford summary describes a study of young
             job seekers in South Africa that measured communication and numeracy skills. The
-            example result in the page header is an illustration, not real data.
+            certificate and job matches at the top of this page are the real components with
+            illustrative data rather than a real result.
           </p>
           <p className="mt-4">
             &copy; {new Date().getFullYear()} {APP_NAME}

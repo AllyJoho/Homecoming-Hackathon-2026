@@ -241,7 +241,7 @@ What you may change: weak or repetitive verbs, filler, passive constructions, va
 
 What you may NOT change, ever:
 - Numbers. Keep every figure exactly as written. Never add one. If the bullet does not say how many, how much, or how long, your rewrite does not either.
-- Scope and seniority. "Helped with" does not become "led". "Worked on a team" does not become "managed a team". "Assisted" does not become "owned". "Contributed to" does not become "spearheaded".
+- Scope and seniority, in EITHER direction. Do not promote: "helped with" does not become "led", "worked on a team" does not become "managed a team", "assisted" does not become "owned", "contributed to" does not become "spearheaded". Do not demote either: "led a team" stays led — it does not become "contributed to" or "supported". If the student led something, saying so is the accurate version, and quietly shrinking their role costs them the credit they earned. Keep the verb at the strength they wrote it.
 - Technologies, tools, and company or product names. Do not add one that isn't there, and do not drop one that is.
 - Outcomes. If the bullet does not claim a result, your rewrite does not invent one. "Built a dashboard" must not become "built a dashboard that improved decision-making".
 - Cause. Do not explain how or why something happened when the bullet doesn't say. "Cut review time by 6 hours a week" must not become "cut review time by 6 hours a week through automated reporting" — you do not know that it was.

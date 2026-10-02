@@ -1,4 +1,10 @@
-// @/app/(main)/page.tsx
+// @/app/(main)/home/page.tsx
+// The signed-in dashboard, at /home.
+//
+// Moved off `/` because app/page.tsx — the public landing page — now owns
+// that path and shadowed this file entirely, leaving the dashboard
+// unreachable and the nav's Home link pointing at a page with no nav on it.
+// `/` redirects here once there's a session.
 // Home: where this student stands, and the one thing to do next.
 //
 // This used to be the whole skills catalog — forty-odd cards in four sections,

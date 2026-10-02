@@ -2,10 +2,28 @@
 
 // @/components/ui/Modal.tsx
 // Built on <dialog> so focus trapping and the backdrop come from the platform
-// rather than from us. Escape and backdrop clicks both close.
+// rather than from us.
+//
+// THREE ways out, and all three matter:
+//
+//   Escape          — free, from <dialog>
+//   backdrop click  — the onClick below; a click landing on the dialog element
+//                     itself is outside the panel
+//   the × button    — always rendered
+//
+// The × is not decoration. Without it this component had NO visible dismiss
+// affordance, and three of its four callers passed no footer buttons either —
+// so a career detail popup was a screen you could only leave if you happened
+// to guess at Escape. A modal has to show you the exit.
+//
+// The height cap matters for the same reason: `m-auto` on a dialog taller than
+// the viewport clips it top and bottom with nothing scrollable, which traps
+// the reader in content they can't finish or escape. The body scrolls instead.
 
 import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
+
+import { FiX } from './icons';
 
 export interface ModalProps {
   open: boolean;
@@ -13,9 +31,18 @@ export interface ModalProps {
   title?: string;
   children: ReactNode;
   footer?: ReactNode;
+  /** Accessible name for the × button. Override when "Close" is ambiguous. */
+  closeLabel?: string;
 }
 
-export function Modal({ open, onClose, title, children, footer }: ModalProps) {
+export function Modal({
+  open,
+  onClose,
+  title,
+  children,
+  footer,
+  closeLabel = 'Close',
+}: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -31,6 +58,7 @@ export function Modal({ open, onClose, title, children, footer }: ModalProps) {
   return (
     <dialog
       ref={ref}
+      aria-label={title ? undefined : closeLabel}
       // Fires on Escape too, so the parent's state stays in sync.
       onClose={onClose}
       onClick={(event) => {
@@ -38,15 +66,39 @@ export function Modal({ open, onClose, title, children, footer }: ModalProps) {
         // clicks on children bubble from inside the inner div.
         if (event.target === ref.current) onClose();
       }}
-      className="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-xl border border-zinc-200 bg-white p-0 backdrop:bg-black/40 dark:border-surface-border dark:bg-surface"
+      className="m-auto flex max-h-[85vh] w-[min(32rem,calc(100vw-2rem))] flex-col rounded-xl border border-zinc-200 bg-white p-0 backdrop:bg-black/40 dark:border-surface-border dark:bg-surface"
     >
-      <div className="p-5">
-        {title && (
-          <h2 className="mb-3 text-base font-semibold text-zinc-900 dark:text-zinc-50">{title}</h2>
+      {/* Outside the scrolling region, not sticky: only the body below
+          scrolls, so the title and the exit stay put without position tricks. */}
+      <div className="flex items-start justify-between gap-4 px-5 pt-5 pb-3">
+        {title ? (
+          <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">{title}</h2>
+        ) : (
+          <span />
         )}
-        <div className="text-sm text-zinc-700 dark:text-zinc-300">{children}</div>
-        {footer && <div className="mt-5 flex justify-end gap-2">{footer}</div>}
+
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label={closeLabel}
+          className="-mt-1 -mr-1 shrink-0 cursor-pointer rounded-md p-1.5 text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
+        >
+          <FiX className="h-4 w-4" aria-hidden />
+        </button>
       </div>
+
+      {/* min-h-0 is what lets this shrink inside the flex column so
+          overflow-y-auto actually engages, rather than the body growing and
+          pushing the dialog past max-h. */}
+      <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-5 text-sm text-zinc-700 dark:text-zinc-300">
+        {children}
+      </div>
+
+      {footer && (
+        <div className="flex justify-end gap-2 border-t border-zinc-200 px-5 py-3 dark:border-surface-border">
+          {footer}
+        </div>
+      )}
     </dialog>
   );
 }

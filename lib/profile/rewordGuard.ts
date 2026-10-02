@@ -86,6 +86,30 @@ export function extractFigures(text: string): Set<string> {
 }
 
 /**
+ * Verbs that say the student took part in something rather than owning it.
+ *
+ * The one scope change worth checking mechanically. Everything else about
+ * tone is judgment, but "helped the analytics team with their SQL queries"
+ * becoming "wrote SQL queries for the analytics team" is a different claim —
+ * and it's the claim an interviewer opens with. Measured on Haiku, with the
+ * prompt already forbidding it in both directions.
+ *
+ * A hedge may be swapped for another hedge freely; what's refused is a hedged
+ * bullet coming back with no hedge at all.
+ */
+const HEDGE_VERBS = [
+  'helped',
+  'assisted',
+  'supported',
+  'contributed',
+  'participated',
+  'collaborated',
+  'aided',
+  'volunteered',
+  'shadowed',
+];
+
+/**
  * Shortest context string worth matching. Below this, a title like "IT" would
  * hit inside ordinary words and reject good rewrites.
  */
@@ -122,16 +146,24 @@ export function checkReword(
   }
 
   // Measured failure, not a hypothetical: asked to polish four bullets under
-  // "Data Analyst Intern — Wasatch Health Group", Haiku appended "at Wasatch
+  // "Data Analyst Intern — Wasatch Health Group", mistral appended "at Wasatch
   // Health Group" to all four. On a resume the organization is already in the
   // heading directly above, so repeating it in every line is both padding and
   // information the bullet didn't carry. The prompt now forbids it; this is
-  // what makes the ban hold.
+  // what makes the ban hold on a model that doesn't listen.
   const inserted = contextInserted(original, rewrite, context);
   if (inserted) {
     return {
       ok: false,
       reason: `worked "${inserted}" into the line, which your resume already shows in the heading above`,
+    };
+  }
+
+  if (hedgeLost(original, rewrite)) {
+    return {
+      ok: false,
+      reason:
+        'turns helping with something into having done it yourself, which is a bigger claim than your line makes',
     };
   }
 
@@ -189,4 +221,20 @@ function contextInserted(
   }
 
   return null;
+}
+
+/**
+ * True when the original hedged its ownership and the rewrite doesn't.
+ *
+ * Only the opening verb is examined on the original: a bullet that *starts*
+ * "Helped…" is making a hedged claim about the whole line, whereas "helped"
+ * appearing later is usually incidental. The rewrite is searched anywhere,
+ * because a faithful rewrite is free to move the hedge.
+ */
+function hedgeLost(original: string, rewrite: string): boolean {
+  const opener = original.trim().toLowerCase();
+  if (!HEDGE_VERBS.some((verb) => opener.startsWith(verb))) return false;
+
+  const after = rewrite.toLowerCase();
+  return !HEDGE_VERBS.some((verb) => after.includes(verb));
 }

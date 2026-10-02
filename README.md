@@ -25,6 +25,8 @@ model on page load.
 | --- | --- | --- |
 | **Job ranking** | "Find my matches" on `/recommendations` | Scores the shortlisted listings against the profile, with reasons and missing skills |
 | **Quiz coaching** | "Explain what I missed" under a question on a quiz result | Explains that one question, then answers follow-ups about it in a thread |
+| **Bullet rewording** | "Reword with AI" while editing an experience entry | Suggests wording for each bullet side by side with the original; a rewrite that invents a figure or pads in the entry's own heading is refused, not shown (`lib/profile/rewordGuard.ts`, `npm run check:reword`) |
+| **Resume review** | "Review my resume" on `/resume` | Says what story the entries tell and which lines to fix. The counts and the weak lines are measured in code; only the judgment is a model call |
 
 `lib/ai/tasks.ts` is the inventory: every AI call site, which model serves it,
 what it costs, and what the student sees when it fails. The providers read

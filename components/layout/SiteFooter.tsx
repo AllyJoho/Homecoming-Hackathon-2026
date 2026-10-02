@@ -13,8 +13,10 @@ import Link from 'next/link';
 import { APP_NAME } from '@/lib/appConfig';
 import { Logo } from '@/components/ui';
 
+// This footer only renders inside the (main) group, so Home is the signed-in
+// dashboard at /home, not the public landing page at /.
 const LINKS = [
-  { href: '/', label: 'Home' },
+  { href: '/home', label: 'Home' },
   { href: '/careers', label: 'Career' },
   { href: '/recommendations', label: 'Job matches' },
 ];

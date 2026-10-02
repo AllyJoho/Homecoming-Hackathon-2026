@@ -48,14 +48,14 @@ export default async function CareersPage() {
           title="Nothing to rank yet"
           description="Add the skills you already have, then prove them with a quiz. Careers reorder as you go."
           action={
-            <Link href="/">
+            <Link href="/skills">
               <Button size="sm">Add skills</Button>
             </Link>
           }
         />
       )}
 
-      <CareerList matches={matches} />
+      <CareerList matches={matches} quizBySkill={quizBySkill} />
     </div>
   );
 }
