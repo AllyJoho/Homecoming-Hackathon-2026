@@ -230,6 +230,7 @@ export async function reviewResume(
         withoutFigures: counts.withoutFigures,
         dutyPhrased: counts.dutyPhrased,
       },
+      weakLines: counted,
       target,
     }),
     schema: ReviewSchema,
@@ -239,13 +240,22 @@ export async function reviewResume(
     throw new ResumeReviewError('The model did not return a usable review. Try again.');
   }
 
+  // A "strength" that is just an entry's name carries no information — the
+  // model does this when it runs out of things to praise. Dropping them is
+  // better than rendering a heading with nothing under it.
+  const labels = new Set(
+    experiences.map((entry) => (entry.title || entry.organization || '').toLowerCase()),
+  );
+
   return {
     counts,
     counted,
     target,
     throughLine: review.throughLine.trim(),
     focus: review.focus.trim(),
-    strengths: review.strengths.map((s) => s.trim()).filter(Boolean),
+    strengths: review.strengths
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0 && !labels.has(s.toLowerCase()) && s.split(/\s+/).length >= 5),
     fixes: review.fixes
       .map((fix) => ({
         where: fix.where.trim(),

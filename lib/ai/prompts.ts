@@ -307,13 +307,16 @@ Return:
 
 - "throughLine": in one sentence, the story these entries currently tell a reader who skims them in ten seconds. Describe what is there, not what is missing.
 - "focus": two or three sentences on whether the entries point one direction or several, and what that costs or buys them. Say plainly if they are scattered. If they are already focused, say that instead of manufacturing a problem.
-- "strengths": one to three things genuinely working. Name the entry. No flattery and no filler — if only one thing is working, return one.
-- "fixes": two to five specific changes, strongest first. Each has "where" (the entry's title, copied as given), "problem" (what is weak about that line, in one sentence), and "suggestion" (what to do about it, concretely enough to act on tonight). Point at lines that exist; do not suggest adding experience they don't have.
+- "strengths": one to three things genuinely working, each a full sentence that says what is good and names the entry it is about. "Your Wasatch Health Group bullets are the only ones with real numbers in them" is a strength; "Data Analyst Intern" is not — a bare entry name says nothing. No flattery and no filler: if only one thing is working, return one.
+- "fixes": two to five specific changes, strongest first. Each has "where" (copy the entry's \`label\` line exactly as given, nothing added), "problem" (what is weak about that entry, in one sentence), and "suggestion" (what to do about it, concretely enough to act on tonight). Point at entries that exist; do not suggest adding experience they don't have.
+
+Never put a number in a suggestion unless the student's own text already contains it. This matters more than it looks: a student reads "Built the scheduling logic for 500 students" as a line to paste in, and you do not know that it was 500. When a bullet needs a figure, name the KIND of figure and leave a bracketed placeholder for them to fill — "Built the scheduling logic for [how many] students" or "managed a [size] budget". Never "500", never "10%", never "three".
 
 Rules:
 - Never comment on employment gaps, how long they stayed somewhere, the prestige of their school, or how hireable or risky they seem. Those are not fixable tonight and not yours to judge. Review the writing.
+- An Education entry with no bullets is normal and correct on a student resume. Do not ask them to add bullets to it, and do not count it as a weakness.
 - Do not invent accomplishments they could claim. You have not seen their work.
-- Address them as "you".
+- Address them as "you" throughout, in every field. Not "the student" and not "their resume".
 - Plain sentences. No markdown, no headings, no asterisks, no bullet characters — the app lays these fields out itself.`;
 
 /** The per-student half of the review call. */
@@ -321,17 +324,37 @@ export function buildResumeReviewUserMessage(input: {
   entries: { kind: string; title: string; organization: string; bullets: string[] }[];
   /** Counted in code, not by the model — see @/lib/profile/resumeReview. */
   counts: { entries: number; bullets: number; withoutFigures: number; dutyPhrased: number };
+  /**
+   * The specific weak lines, already located in code.
+   *
+   * Passed in because the counts alone are not enough to advise on: told only
+   * that five bullets state no number, the model suggested adding a figure to
+   * the one bullet that already said "40-table". With the weak lines named, it
+   * points at lines that are actually weak.
+   */
+  weakLines: { where: string; bullet: string; reason: string }[];
   /** Where the skill profile currently points, from the free career matcher. */
   target: { title: string; percent: number } | null;
 }): string {
+  // `label` is on its own line and is the only thing "where" may contain, so a
+  // fix points at the same string the counted findings use and the two lists
+  // read as being about one resume. Measured: given the section, title and
+  // organization on one line, the model echoed all three back as the label.
   const entries = input.entries
     .map((entry) => {
-      const head = `[${entry.kind}] ${entry.title}${entry.organization ? ` — ${entry.organization}` : ''}`;
       const bullets =
         entry.bullets.length > 0
           ? entry.bullets.map((bullet) => `  - ${bullet}`).join('\n')
           : '  (no bullets)';
-      return `${head}\n${bullets}`;
+      return [
+        `label: ${entry.title || entry.organization || 'Untitled entry'}`,
+        `section: ${entry.kind}`,
+        entry.organization ? `organization: ${entry.organization}` : null,
+        'bullets:',
+        bullets,
+      ]
+        .filter(Boolean)
+        .join('\n');
     })
     .join('\n\n');
 
@@ -341,12 +364,28 @@ export function buildResumeReviewUserMessage(input: {
     `${input.counts.dutyPhrased} bullets open by describing a duty rather than something done`,
   ].join('\n');
 
+  const weak =
+    input.weakLines.length > 0
+      ? input.weakLines
+          .map((line) =>
+            line.bullet
+              ? `- under "${line.where}", this line ${line.reason}:\n    ${line.bullet}`
+              : `- "${line.where}" ${line.reason}`,
+          )
+          .join('\n')
+      : '- none; every bullet opens on an action and states a figure';
+
   return `Entries:
 
 ${entries}
 
 Already measured in code (treat these counts as correct; don't recount):
 ${measured}
+
+The specific lines those counts refer to. These are the weak ones — do not
+suggest adding a number to any bullet that is not listed here, because the
+others already have one:
+${weak}
 
 Where their skill profile points: ${
     input.target
