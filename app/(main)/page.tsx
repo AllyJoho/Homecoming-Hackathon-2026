@@ -1,98 +1,81 @@
 // @/app/(main)/page.tsx
-// Home: the student's skills, the certificates they've earned, and every quiz
-// they can take.
+// Home: the quizzes a student can take right now, then every skill on the
+// site in three sections — Certified Skills (quiz passed), My Skills
+// (claimed) and Skills (the rest of the vocabulary).
 //
-// A server component, so the profile is read directly from the database — no
-// loading state, no client fetch. The two interactive pieces (AddSkillForm,
-// SkillList) are the only client components on the page.
+// The quiz list lives here rather than behind /quizzes because the plan puts
+// quiz selection on the home screen. /quizzes still exists and still works —
+// this is the same list, where a student actually lands.
+//
+// A server component, so the catalog is read straight from the database — no
+// loading state, no client fetch. SkillBoard is the one client component, and
+// it owns only the search filter and the optimistic add/remove.
 
 import Link from 'next/link';
 import { requireSessionUser } from '@/lib/auth/session';
-import { buildProfile } from '@/lib/profile/buildProfile';
-import { listQuizzes } from '@/lib/quiz/loadQuiz';
-import { AddSkillForm } from '@/components/skills/AddSkillForm';
-import { SkillList } from '@/components/skills/SkillList';
-import { CertList } from '@/components/certifications/CertList';
+import { listQuizzes, listSkillCatalog } from '@/prisma/queries';
 import { QuizCard } from '@/components/quiz/QuizCard';
-import { Card } from '@/components/ui';
+import { SkillBoard } from '@/components/skills/SkillBoard';
 
 export default async function HomePage() {
   const user = await requireSessionUser();
-  const profile = await buildProfile(user.id);
+  const [catalog, quizzes] = await Promise.all([listSkillCatalog(user.id), listQuizzes()]);
 
-  // The layout guard means the session is valid, so a missing profile here
-  // would be a genuine inconsistency.
-  if (!profile) throw new Error(`No profile for session user ${user.id}`);
+  const claimed = catalog.certified.length + catalog.mine.length;
 
-  // Retaking a passed quiz mints a new certificate (one per attempt), so keep
-  // only the newest per quiz. getProfile sorts newest-first, so the first one
-  // seen for each quizId wins.
-  const certifications = profile.certifications.filter(
-    (cert, i, all) => all.findIndex((other) => other.quizId === cert.quizId) === i,
-  );
-
-  const quizzes = listQuizzes();
-  const earned = new Set(certifications.map((cert) => cert.quizId));
+  // The certified section already carries the quiz that earned each
+  // certificate, so "have I passed this one?" needs no second query — and no
+  // dedupe, since Certification is unique per user per skill and upserted on
+  // a retake rather than duplicated.
+  const earned = new Set(catalog.certified.map((skill) => skill.quizId).filter(Boolean));
 
   return (
     <div className="flex flex-col gap-8">
-      <div>
-        <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-          Hi, {profile.name.split(' ')[0]}
-        </h1>
-        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-          {certifications.length > 0
-            ? 'Your matches update as you earn more certificates.'
-            : 'Add the skills you have, then prove them with a quiz.'}
-        </p>
-      </div>
-
-      <Card
-        title="Your skills"
-        action={
-          // A styled Link rather than <Link><Button/></Link>: a button inside a
-          // link is invalid HTML and gives keyboard users two tab stops.
-          // Copy your Button's `secondary` + `sm` classes here so they match.
-          <Link
-            href="#quizzes"
-            className="rounded-lg border border-zinc-200 px-3 py-1.5 text-sm font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-50 dark:hover:bg-zinc-900"
-          >
-            Prove a skill
-          </Link>
-        }
-        footer={<AddSkillForm />}
-      >
-        <SkillList skills={profile.skills} />
-        <p className="mt-3 text-xs text-zinc-500 dark:text-zinc-400">
-          A ✓ means you passed the quiz for it — job matches weight those higher.
-        </p>
-      </Card>
-
-      <section className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">Certificates</h2>
-          <Link
-            href="/recommendations"
-            className="text-sm font-medium underline underline-offset-4"
-          >
-            See job matches
-          </Link>
+      <header className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
+            Hi, {user.name.split(' ')[0]}
+          </h1>
+          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+            {catalog.certified.length > 0
+              ? `${catalog.certified.length} certified of ${claimed} skills you've claimed — your matches update as you earn more.`
+              : 'Add the skills you have, then prove them with a quiz.'}
+          </p>
         </div>
-        <CertList certifications={certifications} />
-      </section>
+        <Link href="/recommendations" className="text-sm font-medium underline underline-offset-4">
+          See job matches
+        </Link>
+      </header>
 
-      <section id="quizzes" className="flex scroll-mt-6 flex-col gap-4">
-        <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">Quizzes</h2>
+      {/* Above the skill catalog on purpose: only a couple of the forty-odd
+          skills have an authored quiz, so the question "what can I actually
+          get certified in today?" is the one a student can act on, and the
+          catalog below buries it. */}
+      <section className="flex flex-col gap-4">
+        <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">Quizzes</h2>
+          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+            {quizzes.length}
+          </span>
+          <p className="w-full text-sm text-zinc-600 dark:text-zinc-400">
+            Pass one to earn a certificate and mark the skill as certified.
+          </p>
+        </header>
+
         {quizzes.length === 0 ? (
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">No quizzes available yet.</p>
+          <p className="rounded-xl border border-dashed border-zinc-200 px-4 py-6 text-center text-sm text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+            No quizzes available yet.
+          </p>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {quizzes.map((quiz) => (
               <QuizCard key={quiz.id} quiz={quiz} earned={earned.has(quiz.id)} />
             ))}
           </div>
         )}
       </section>
+
+      <SkillBoard catalog={catalog} />
     </div>
   );
 }

@@ -1,21 +1,31 @@
 {
   "id": "sql",
   "title": "SQL Essentials",
-  "skillSlug": "sql",
+  "skillSlug": "sql-fundamentals",
   "description": "Joins, aggregation, and the clause order that trips everyone up.",
-  "passingScore": 70,
-  "timeLimitSeconds": 600,
+  "timeLimitSeconds": 900,
   "questions": [
     {
       "id": "sql-1",
       "type": "multiple_choice",
       "prompt": "Which join returns every row from the left table, even with no match on the right?",
-      "points": 1,
       "options": [
-        { "id": "a", "text": "INNER JOIN" },
-        { "id": "b", "text": "LEFT JOIN" },
-        { "id": "c", "text": "CROSS JOIN" },
-        { "id": "d", "text": "RIGHT JOIN" }
+        {
+          "id": "a",
+          "text": "INNER JOIN"
+        },
+        {
+          "id": "b",
+          "text": "LEFT JOIN"
+        },
+        {
+          "id": "c",
+          "text": "CROSS JOIN"
+        },
+        {
+          "id": "d",
+          "text": "RIGHT JOIN"
+        }
       ],
       "correctOptionId": "b",
       "explanation": "LEFT JOIN keeps all left rows, filling unmatched right columns with NULL."
@@ -24,12 +34,23 @@
       "id": "sql-2",
       "type": "multiple_choice",
       "prompt": "You want to filter on an aggregate like COUNT(*). Which clause do you use?",
-      "points": 1,
       "options": [
-        { "id": "a", "text": "WHERE" },
-        { "id": "b", "text": "HAVING" },
-        { "id": "c", "text": "ORDER BY" },
-        { "id": "d", "text": "LIMIT" }
+        {
+          "id": "a",
+          "text": "WHERE"
+        },
+        {
+          "id": "b",
+          "text": "HAVING"
+        },
+        {
+          "id": "c",
+          "text": "ORDER BY"
+        },
+        {
+          "id": "d",
+          "text": "LIMIT"
+        }
       ],
       "correctOptionId": "b",
       "explanation": "WHERE filters rows before grouping; HAVING filters groups after aggregation."
@@ -38,7 +59,6 @@
       "id": "sql-3",
       "type": "true_false",
       "prompt": "`SELECT COUNT(*)` and `SELECT COUNT(column)` always return the same number.",
-      "points": 1,
       "correctAnswer": false,
       "explanation": "COUNT(column) skips NULLs in that column; COUNT(*) counts every row."
     },
@@ -46,23 +66,243 @@
       "id": "sql-4",
       "type": "multi_select",
       "prompt": "Which statements modify data rather than schema? Select all that apply.",
-      "points": 2,
       "options": [
-        { "id": "a", "text": "INSERT" },
-        { "id": "b", "text": "ALTER TABLE" },
-        { "id": "c", "text": "UPDATE" },
-        { "id": "d", "text": "DELETE" }
+        {
+          "id": "a",
+          "text": "INSERT"
+        },
+        {
+          "id": "b",
+          "text": "ALTER TABLE"
+        },
+        {
+          "id": "c",
+          "text": "UPDATE"
+        },
+        {
+          "id": "d",
+          "text": "DELETE"
+        }
       ],
-      "correctOptionIds": ["a", "c", "d"],
+      "correctOptionIds": [
+        "a",
+        "c",
+        "d"
+      ],
       "explanation": "INSERT, UPDATE, and DELETE are DML. ALTER TABLE is DDL — it changes the schema."
     },
     {
       "id": "sql-5",
       "type": "short_answer",
       "prompt": "Which keyword removes duplicate rows from a SELECT's results?",
-      "points": 1,
-      "acceptedAnswers": ["DISTINCT", "distinct"],
+      "acceptedAnswers": [
+        "DISTINCT",
+        "distinct"
+      ],
       "explanation": "SELECT DISTINCT dedupes on the full selected row."
+    },
+    {
+      "id": "sql-6",
+      "type": "multiple_choice",
+      "prompt": "Which clause runs LAST in a SELECT query?",
+      "options": [
+        {
+          "id": "a",
+          "text": "WHERE"
+        },
+        {
+          "id": "b",
+          "text": "GROUP BY"
+        },
+        {
+          "id": "c",
+          "text": "ORDER BY"
+        },
+        {
+          "id": "d",
+          "text": "FROM"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Logical order is FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT."
+    },
+    {
+      "id": "sql-7",
+      "type": "multiple_choice",
+      "prompt": "What does a PRIMARY KEY guarantee about a column?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Values are unique and not NULL"
+        },
+        {
+          "id": "b",
+          "text": "Values are unique but may be NULL"
+        },
+        {
+          "id": "c",
+          "text": "Values are indexed but may repeat"
+        },
+        {
+          "id": "d",
+          "text": "Values auto-increment"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "A primary key is UNIQUE plus NOT NULL. Auto-increment is a separate, optional default."
+    },
+    {
+      "id": "sql-8",
+      "type": "true_false",
+      "prompt": "`WHERE column = NULL` finds rows where that column is NULL.",
+      "correctAnswer": false,
+      "explanation": "NULL isn't equal to anything, including itself. You need `IS NULL`."
+    },
+    {
+      "id": "sql-9",
+      "type": "multiple_choice",
+      "prompt": "What does a FOREIGN KEY do?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Speeds up joins by caching them"
+        },
+        {
+          "id": "b",
+          "text": "Requires the value to exist in another table's key column"
+        },
+        {
+          "id": "c",
+          "text": "Makes the column unique across both tables"
+        },
+        {
+          "id": "d",
+          "text": "Automatically creates the join for you"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "It enforces referential integrity — you can't reference a row that doesn't exist."
+    },
+    {
+      "id": "sql-10",
+      "type": "multi_select",
+      "prompt": "Which of these are aggregate functions? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "SUM()"
+        },
+        {
+          "id": "b",
+          "text": "UPPER()"
+        },
+        {
+          "id": "c",
+          "text": "AVG()"
+        },
+        {
+          "id": "d",
+          "text": "MAX()"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c",
+        "d"
+      ],
+      "explanation": "UPPER() is a scalar function — one row in, one row out. The others collapse many rows into one."
+    },
+    {
+      "id": "sql-11",
+      "type": "multiple_choice",
+      "prompt": "You run `UPDATE users SET active = false` with no WHERE clause. What happens?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Nothing — the database rejects it"
+        },
+        {
+          "id": "b",
+          "text": "Only the first row is updated"
+        },
+        {
+          "id": "c",
+          "text": "Every row in the table is updated"
+        },
+        {
+          "id": "d",
+          "text": "It errors asking for a WHERE clause"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "No WHERE means every row. This is why you run the SELECT first."
+    },
+    {
+      "id": "sql-12",
+      "type": "short_answer",
+      "prompt": "Which keyword limits how many rows a query returns, in Postgres?",
+      "acceptedAnswers": [
+        "LIMIT",
+        "limit"
+      ],
+      "explanation": "Postgres and MySQL use LIMIT; SQL Server uses TOP."
+    },
+    {
+      "id": "sql-13",
+      "type": "multiple_choice",
+      "prompt": "Which operator matches a pattern, as in finding names that start with \"Jo\"?",
+      "options": [
+        {
+          "id": "a",
+          "text": "MATCHES"
+        },
+        {
+          "id": "b",
+          "text": "LIKE"
+        },
+        {
+          "id": "c",
+          "text": "CONTAINS"
+        },
+        {
+          "id": "d",
+          "text": "REGEX"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "`WHERE name LIKE 'Jo%'` — % matches any sequence of characters, _ matches exactly one."
+    },
+    {
+      "id": "sql-14",
+      "type": "multiple_choice",
+      "prompt": "What is an index for?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Making reads faster, at the cost of slower writes and more storage"
+        },
+        {
+          "id": "b",
+          "text": "Making both reads and writes faster"
+        },
+        {
+          "id": "c",
+          "text": "Enforcing that a column is never NULL"
+        },
+        {
+          "id": "d",
+          "text": "Compressing the table on disk"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "An index is a tradeoff: lookups get much faster, every INSERT/UPDATE has to maintain it."
+    },
+    {
+      "id": "sql-15",
+      "type": "true_false",
+      "prompt": "A transaction that is rolled back leaves no trace of its changes in the table.",
+      "correctAnswer": true,
+      "explanation": "ROLLBACK undoes everything since BEGIN — that's the atomicity guarantee."
     }
   ]
 }

@@ -3,14 +3,15 @@
 //
 // The attempt id arrives as ?attempt=… and the result is re-graded from the
 // stored answer sheet rather than passed through the URL. That's why
-// QuizAttempt keeps `answers` as JSON: this page, and the [stretch] AI
-// feedback route, both rebuild the grading from it.
+// QuizAttempt keeps `answers` as JSON: this page, and the AI feedback route
+// behind the Coaching card, both rebuild the grading from it.
 
 import { notFound } from 'next/navigation';
 import type { AnswerSheet } from '@/types/quiz';
 import { requireSessionUser } from '@/lib/auth/session';
-import { getAttempt } from '@/lib/db/queries';
-import { loadQuiz, toPublicQuiz } from '@/lib/quiz/loadQuiz';
+import { getAttempt } from '@/prisma/queries';
+import { loadQuiz } from '@/prisma/queries';
+import { toPublicQuiz } from '@/lib/quiz/publicQuiz';
 import { scoreQuiz } from '@/lib/quiz/scoring';
 import { ResultSummary } from '@/components/quiz/ResultSummary';
 
@@ -26,8 +27,7 @@ export default async function ResultsPage({
 
   if (!attemptId) notFound();
 
-  const quiz = loadQuiz(quizId);
-  const attempt = await getAttempt(attemptId);
+  const [quiz, attempt] = await Promise.all([loadQuiz(quizId), getAttempt(attemptId)]);
 
   // 404 on someone else's attempt as well as on a missing one — don't confirm
   // that an id exists.
@@ -41,6 +41,7 @@ export default async function ResultsPage({
     <ResultSummary
       quiz={toPublicQuiz(quiz)}
       result={result}
+      attemptId={attemptId}
       certificateSlug={attempt.certification?.shareSlug ?? null}
     />
   );

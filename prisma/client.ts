@@ -1,4 +1,4 @@
-// @/lib/db/client.ts
+// @/prisma/client.ts
 // Shared Prisma client instance, reused across hot reloads in dev to avoid too
 // many database connections.
 

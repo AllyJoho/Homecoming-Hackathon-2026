@@ -1,21 +1,31 @@
 {
   "id": "javascript",
   "title": "JavaScript Fundamentals",
-  "skillSlug": "javascript",
+  "skillSlug": "javascript-fundamentals",
   "description": "Types, scope, async, and the array methods you reach for daily.",
-  "passingScore": 70,
-  "timeLimitSeconds": 600,
+  "timeLimitSeconds": 900,
   "questions": [
     {
       "id": "js-1",
       "type": "multiple_choice",
       "prompt": "What does `typeof null` evaluate to?",
-      "points": 1,
       "options": [
-        { "id": "a", "text": "\"null\"" },
-        { "id": "b", "text": "\"object\"" },
-        { "id": "c", "text": "\"undefined\"" },
-        { "id": "d", "text": "\"boolean\"" }
+        {
+          "id": "a",
+          "text": "\"null\""
+        },
+        {
+          "id": "b",
+          "text": "\"object\""
+        },
+        {
+          "id": "c",
+          "text": "\"undefined\""
+        },
+        {
+          "id": "d",
+          "text": "\"boolean\""
+        }
       ],
       "correctOptionId": "b",
       "explanation": "A longstanding bug kept for backwards compatibility: null's type tag is the object tag."
@@ -24,12 +34,23 @@
       "id": "js-2",
       "type": "multiple_choice",
       "prompt": "Which array method returns a new array rather than mutating the original?",
-      "points": 1,
       "options": [
-        { "id": "a", "text": "push()" },
-        { "id": "b", "text": "sort()" },
-        { "id": "c", "text": "map()" },
-        { "id": "d", "text": "splice()" }
+        {
+          "id": "a",
+          "text": "push()"
+        },
+        {
+          "id": "b",
+          "text": "sort()"
+        },
+        {
+          "id": "c",
+          "text": "map()"
+        },
+        {
+          "id": "d",
+          "text": "splice()"
+        }
       ],
       "correctOptionId": "c",
       "explanation": "map() builds a new array. push, sort, and splice all mutate in place."
@@ -38,7 +59,6 @@
       "id": "js-3",
       "type": "true_false",
       "prompt": "`const` prevents the contents of an object from being changed.",
-      "points": 1,
       "correctAnswer": false,
       "explanation": "const binds the variable, not the value — you can still mutate the object it points at."
     },
@@ -46,26 +66,52 @@
       "id": "js-4",
       "type": "multi_select",
       "prompt": "Which of these values are falsy in JavaScript? Select all that apply.",
-      "points": 2,
       "options": [
-        { "id": "a", "text": "0" },
-        { "id": "b", "text": "\"\" (empty string)" },
-        { "id": "c", "text": "[] (empty array)" },
-        { "id": "d", "text": "NaN" }
+        {
+          "id": "a",
+          "text": "0"
+        },
+        {
+          "id": "b",
+          "text": "\"\" (empty string)"
+        },
+        {
+          "id": "c",
+          "text": "[] (empty array)"
+        },
+        {
+          "id": "d",
+          "text": "NaN"
+        }
       ],
-      "correctOptionIds": ["a", "b", "d"],
+      "correctOptionIds": [
+        "a",
+        "b",
+        "d"
+      ],
       "explanation": "An empty array is an object, and all objects are truthy. 0, \"\", and NaN are falsy."
     },
     {
       "id": "js-5",
       "type": "multiple_choice",
       "prompt": "What does an `async` function always return?",
-      "points": 1,
       "options": [
-        { "id": "a", "text": "The resolved value" },
-        { "id": "b", "text": "A Promise" },
-        { "id": "c", "text": "undefined" },
-        { "id": "d", "text": "A generator" }
+        {
+          "id": "a",
+          "text": "The resolved value"
+        },
+        {
+          "id": "b",
+          "text": "A Promise"
+        },
+        {
+          "id": "c",
+          "text": "undefined"
+        },
+        {
+          "id": "d",
+          "text": "A generator"
+        }
       ],
       "correctOptionId": "b",
       "explanation": "An async function wraps its return value in a Promise, even if you return a plain value."
@@ -74,9 +120,207 @@
       "id": "js-6",
       "type": "short_answer",
       "prompt": "Which keyword declares a block-scoped variable that can be reassigned?",
-      "points": 1,
-      "acceptedAnswers": ["let"],
+      "acceptedAnswers": [
+        "let"
+      ],
       "explanation": "`let` is block-scoped and reassignable; `var` is function-scoped; `const` can't be reassigned."
+    },
+    {
+      "id": "js-7",
+      "type": "multiple_choice",
+      "prompt": "What is the result of `\"5\" + 3` in JavaScript?",
+      "options": [
+        {
+          "id": "a",
+          "text": "8"
+        },
+        {
+          "id": "b",
+          "text": "\"53\""
+        },
+        {
+          "id": "c",
+          "text": "NaN"
+        },
+        {
+          "id": "d",
+          "text": "A TypeError"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "With a string operand, + concatenates. `\"5\" - 3` would coerce to a number and give 2."
+    },
+    {
+      "id": "js-8",
+      "type": "multiple_choice",
+      "prompt": "Which comparison returns `true`?",
+      "options": [
+        {
+          "id": "a",
+          "text": "0 === \"0\""
+        },
+        {
+          "id": "b",
+          "text": "0 == \"0\""
+        },
+        {
+          "id": "c",
+          "text": "NaN === NaN"
+        },
+        {
+          "id": "d",
+          "text": "null === undefined"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "== coerces the string to a number, so 0 == \"0\". === doesn't coerce, and NaN is never equal to itself."
+    },
+    {
+      "id": "js-9",
+      "type": "multiple_choice",
+      "prompt": "Which array method gives you a single accumulated value from all elements?",
+      "options": [
+        {
+          "id": "a",
+          "text": "filter()"
+        },
+        {
+          "id": "b",
+          "text": "forEach()"
+        },
+        {
+          "id": "c",
+          "text": "reduce()"
+        },
+        {
+          "id": "d",
+          "text": "find()"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "reduce() folds the array into one value using an accumulator."
+    },
+    {
+      "id": "js-10",
+      "type": "true_false",
+      "prompt": "An arrow function has its own `this` binding.",
+      "correctAnswer": false,
+      "explanation": "Arrow functions inherit `this` from the enclosing scope — that's the main reason to use one in a callback."
+    },
+    {
+      "id": "js-11",
+      "type": "multi_select",
+      "prompt": "Which of these create a new array or object rather than modifying the original? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Spread syntax: [...arr]"
+        },
+        {
+          "id": "b",
+          "text": "Object.assign(target, source)"
+        },
+        {
+          "id": "c",
+          "text": "arr.slice(1)"
+        },
+        {
+          "id": "d",
+          "text": "arr.filter(fn)"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c",
+        "d"
+      ],
+      "explanation": "Object.assign mutates its first argument. Spread, slice, and filter all produce something new."
+    },
+    {
+      "id": "js-12",
+      "type": "multiple_choice",
+      "prompt": "What does `await` do inside an async function?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Blocks the whole thread until the Promise settles"
+        },
+        {
+          "id": "b",
+          "text": "Pauses that function until the Promise settles, letting other code run"
+        },
+        {
+          "id": "c",
+          "text": "Converts a Promise into a callback"
+        },
+        {
+          "id": "d",
+          "text": "Retries the Promise until it resolves"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "await suspends only the async function. The event loop keeps running everything else."
+    },
+    {
+      "id": "js-13",
+      "type": "short_answer",
+      "prompt": "What method turns a JSON string into a JavaScript object? (Give the full call, e.g. Thing.method)",
+      "acceptedAnswers": [
+        "JSON.parse",
+        "JSON.parse()",
+        "parse"
+      ],
+      "explanation": "JSON.parse() reads a string into a value; JSON.stringify() goes the other way."
+    },
+    {
+      "id": "js-14",
+      "type": "multiple_choice",
+      "prompt": "What does `arr.find(fn)` return when nothing matches?",
+      "options": [
+        {
+          "id": "a",
+          "text": "undefined"
+        },
+        {
+          "id": "b",
+          "text": "null"
+        },
+        {
+          "id": "c",
+          "text": "An empty array"
+        },
+        {
+          "id": "d",
+          "text": "-1"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "find() returns undefined on no match. findIndex() is the one that returns -1."
+    },
+    {
+      "id": "js-15",
+      "type": "multiple_choice",
+      "prompt": "What is the `?.` operator called, and what does it do?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Ternary — picks between two values"
+        },
+        {
+          "id": "b",
+          "text": "Optional chaining — short-circuits to undefined if the left side is null or undefined"
+        },
+        {
+          "id": "c",
+          "text": "Nullish coalescing — supplies a default value"
+        },
+        {
+          "id": "d",
+          "text": "Non-null assertion — tells the compiler a value exists"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "`a?.b` gives undefined instead of throwing when `a` is null or undefined. `??` is nullish coalescing."
     }
   ]
 }

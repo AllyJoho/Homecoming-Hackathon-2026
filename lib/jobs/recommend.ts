@@ -15,7 +15,8 @@ import type { JobMatchWithJob } from '@/types/job';
 import type { Profile } from '@/types/profile';
 import { MODEL, aiEnabled, anthropic } from '@/lib/ai/client';
 import { RECOMMEND_SYSTEM_PROMPT, buildRecommendUserMessage } from '@/lib/ai/prompts';
-import { getJob, shortlistJobs } from '@/lib/jobs/listings';
+import { shortlistJobs } from '@/lib/jobs/shortlist';
+import { jobsById, listJobs } from '@/prisma/queries';
 
 const JobMatchSchema = z.object({
   jobId: z.string().describe('The id of the listing, copied exactly'),
@@ -43,7 +44,7 @@ export async function recommendJobs(profile: Profile): Promise<JobMatchWithJob[]
     throw new RecommendationError('ANTHROPIC_API_KEY is not set — add it to .env');
   }
 
-  const candidates = shortlistJobs(profile);
+  const candidates = shortlistJobs(await listJobs(), profile);
   if (candidates.length === 0) return [];
 
   try {
@@ -62,16 +63,18 @@ export async function recommendJobs(profile: Profile): Promise<JobMatchWithJob[]
       throw new RecommendationError('The model did not return a usable ranking. Try again.');
     }
 
-    return (
-      parsed.matches
-        // The model echoes ids back; drop anything that isn't a real listing
-        // rather than trusting it blindly.
-        .flatMap((match) => {
-          const job = getJob(match.jobId);
-          return job ? [{ ...match, job }] : [];
-        })
-        .sort((a, b) => b.score - a.score)
+    // The model echoes ids back; drop anything that isn't a real listing
+    // rather than trusting it blindly. One query for the whole set.
+    const byId = new Map(
+      (await jobsById(parsed.matches.map((m) => m.jobId))).map((job) => [job.id, job]),
     );
+
+    return parsed.matches
+      .flatMap((match) => {
+        const job = byId.get(match.jobId);
+        return job ? [{ ...match, job }] : [];
+      })
+      .sort((a, b) => b.score - a.score);
   } catch (error) {
     if (error instanceof RecommendationError) throw error;
 

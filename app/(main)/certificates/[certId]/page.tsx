@@ -10,7 +10,7 @@
 // sibling of the groups) so the (main) layout's guard doesn't wrap it.
 
 import { notFound } from 'next/navigation';
-import { getCertificationByShareSlug } from '@/lib/db/queries';
+import { getCertificationByShareSlug } from '@/prisma/queries';
 import { CertificateView } from '@/components/certificate/CertificateView';
 import { ShareButton } from '@/components/certificate/ShareButton';
 
@@ -30,6 +30,7 @@ export default async function CertificatePage({
         holderName={certification.holderName}
         title={certification.title}
         score={certification.score}
+        level={certification.level}
         issuedAt={certification.issuedAt}
       />
       <div className="flex justify-center">

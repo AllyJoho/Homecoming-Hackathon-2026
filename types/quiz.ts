@@ -1,11 +1,14 @@
 // @/types/quiz.ts
-// The quiz content model. Quizzes are authored as JSON in data/quizzes/ and
-// validated against these types when loaded — see @/lib/quiz/loadQuiz.
+// The quiz content model. Quizzes are authored as JSON in data/quizzes/,
+// seeded into Postgres by prisma/seed.ts, and rebuilt into these types by the
+// loaders in @/prisma/queries.
 //
 // `Question` is a discriminated union on `type`. That one decision drives three
 // other files: QuestionRenderer picks a component by it, grading.ts picks a
 // grader by it, and the registry in components/quiz/questions/index.ts is the
 // map between them. Adding a question type means touching exactly those three.
+
+import type { ProficiencyLevel } from '@/lib/quiz/levels';
 
 export type QuestionType =
   | 'multiple_choice'
@@ -64,8 +67,6 @@ export interface Quiz {
   /** Canonical skill slug this quiz certifies — see @/lib/profile/skills. */
   skillSlug: string;
   description: string;
-  /** Percentage needed to pass and earn the certificate, 0–100. */
-  passingScore: number;
   /** Optional countdown for the runner. Not enforced server-side. */
   timeLimitSeconds?: number;
   questions: Question[];
@@ -101,7 +102,8 @@ export interface QuizResult {
   quizId: string;
   /** Rounded percentage, 0–100. */
   score: number;
-  passed: boolean;
+  /** The level this score earns — there is no pass/fail. */
+  level: ProficiencyLevel;
   pointsEarned: number;
   pointsPossible: number;
   graded: GradedQuestion[];
