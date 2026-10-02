@@ -25,39 +25,58 @@ const BACKENDS: Record<AiProviderId, AiBackend> = {
 };
 
 /**
- * Which backend is live, resolved once at module load.
+ * The default backend, resolved once at module load.
  *
- * Defaults to `anthropic`, so a deploy that forgets to set this serves the
- * real thing rather than silently trying to reach a localhost daemon.
+ * Defaults to `anthropic`, so a deploy that forgets to set AI_PROVIDER serves
+ * the real thing rather than silently trying to reach a localhost daemon.
  */
-export const AI_PROVIDER: AiProviderId = resolveProvider();
+export const AI_PROVIDER: AiProviderId = parseProvider(process.env.AI_PROVIDER) ?? 'anthropic';
 
-function resolveProvider(): AiProviderId {
-  const raw = process.env.AI_PROVIDER?.trim().toLowerCase();
+function parseProvider(raw: string | undefined): AiProviderId | null {
+  const value = raw?.trim().toLowerCase();
   // 'local' accepted as an alias because that's what people type.
-  if (raw === 'ollama' || raw === 'local') return 'ollama';
-  return 'anthropic';
+  if (value === 'ollama' || value === 'local') return 'ollama';
+  if (value === 'anthropic') return 'anthropic';
+  return null;
 }
 
-const backend = BACKENDS[AI_PROVIDER];
+/**
+ * The backend for one task, which may differ from the global default.
+ *
+ * Per-task overrides exist because the right answer isn't the same for every
+ * call: locally, quiz coaching finishes in ~30s and reads fine, while ranking
+ * 20 listings into a constrained schema takes over two minutes — long enough
+ * that you stop clicking it. Set `AI_PROVIDER_JOB_RANKING=anthropic` to keep
+ * that one on the API (a cent a click on Haiku) while coaching stays free.
+ *
+ * Env var name is the task id upper-snake-cased: 'job-ranking' →
+ * AI_PROVIDER_JOB_RANKING.
+ */
+export function providerFor(task: AiTaskId): AiProviderId {
+  const key = `AI_PROVIDER_${task.replace(/-/g, '_').toUpperCase()}`;
+  return parseProvider(process.env[key]) ?? AI_PROVIDER;
+}
 
 /** Thrown for every AI failure, with a message already fit to show a user. */
 export class AiError extends Error {}
 
-/** True when the live backend can serve. Routes use this to degrade, not 500. */
-export function aiReady(): boolean {
-  return backend.readiness().ok;
+/**
+ * True when the backend for a task can serve. Routes use this to degrade
+ * rather than 500. Omit the task to check the global default.
+ */
+export function aiReady(task?: AiTaskId): boolean {
+  return aiUnavailableReason(task) === null;
 }
 
 /** Why it can't serve, or null when it can. */
-export function aiUnavailableReason(): string | null {
-  const readiness = backend.readiness();
+export function aiUnavailableReason(task?: AiTaskId): string | null {
+  const readiness = BACKENDS[task ? providerFor(task) : AI_PROVIDER].readiness();
   return readiness.ok ? null : readiness.reason;
 }
 
 /** The model serving a given task right now — for UI that wants to say so. */
 export function modelFor(task: AiTaskId): string {
-  return AI_TASKS[task].models[AI_PROVIDER];
+  return AI_TASKS[task].models[providerFor(task)];
 }
 
 interface Request {
@@ -68,7 +87,7 @@ interface Request {
 
 /** Prose, for tasks whose output a person reads directly. */
 export async function generateText(request: Request): Promise<string> {
-  return run(request, (spec) => backend.text(spec, request.system, request.prompt));
+  return run(request, (backend, spec) => backend.text(spec, request.system, request.prompt));
 }
 
 /**
@@ -82,7 +101,7 @@ export async function generateText(request: Request): Promise<string> {
 export async function generateObject<T>(
   request: Request & { schema: ZodType<T> },
 ): Promise<T | null> {
-  return run(request, (spec) =>
+  return run(request, (backend, spec) =>
     backend.object(spec, request.system, request.prompt, request.schema),
   );
 }
@@ -90,25 +109,29 @@ export async function generateObject<T>(
 /** Readiness gate, timing, logging, and error normalization in one place. */
 async function run<T>(
   request: Request,
-  call: (spec: (typeof AI_TASKS)[AiTaskId]) => Promise<{
+  call: (
+    backend: AiBackend,
+    spec: (typeof AI_TASKS)[AiTaskId],
+  ) => Promise<{
     value: T;
     model: string;
     inputTokens?: number;
     outputTokens?: number;
   }>,
 ): Promise<T> {
-  const reason = aiUnavailableReason();
+  const reason = aiUnavailableReason(request.task);
   if (reason) throw new AiError(reason);
 
+  const provider = providerFor(request.task);
   const spec = AI_TASKS[request.task];
   const startedAt = Date.now();
 
   try {
-    const result = await call(spec);
+    const result = await call(BACKENDS[provider], spec);
 
     logAiCall({
       task: request.task,
-      provider: AI_PROVIDER,
+      provider,
       model: result.model,
       ms: Date.now() - startedAt,
       inputTokens: result.inputTokens,
@@ -120,8 +143,8 @@ async function run<T>(
   } catch (error) {
     logAiCall({
       task: request.task,
-      provider: AI_PROVIDER,
-      model: spec.models[AI_PROVIDER],
+      provider,
+      model: spec.models[provider],
       ms: Date.now() - startedAt,
       ok: false,
       error: error instanceof Error ? error.message : String(error),

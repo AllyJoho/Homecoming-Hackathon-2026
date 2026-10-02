@@ -6,30 +6,37 @@
 // providers also read — so this can't drift from what actually runs.
 
 import { AI_TASKS, MODEL_PRICING, type AiTaskId } from '@/lib/ai/tasks';
-import { AI_PROVIDER, aiUnavailableReason } from '@/lib/ai/provider';
+import { AI_PROVIDER, aiUnavailableReason, providerFor } from '@/lib/ai/provider';
 
 const ids = Object.keys(AI_TASKS) as AiTaskId[];
 
-console.log(`\nAI provider: ${AI_PROVIDER}`);
-const reason = aiUnavailableReason();
-console.log(reason ? `  NOT READY — ${reason}` : '  ready');
+console.log(`\nDefault AI provider: ${AI_PROVIDER}  (AI_PROVIDER)`);
 console.log(`\n${ids.length} AI call site${ids.length === 1 ? '' : 's'} in this app:\n`);
 
 for (const id of ids) {
   const spec = AI_TASKS[id];
-  const model = spec.models[AI_PROVIDER];
+  const provider = providerFor(id);
+  const model = spec.models[provider];
   const price = MODEL_PRICING[model];
+  const reason = aiUnavailableReason(id);
+  const override = provider === AI_PROVIDER ? '' : '  ← overridden for this task';
 
   console.log(`  ${spec.label}  [${id}]`);
   console.log(`    runs when   ${spec.trigger}`);
   console.log(`    code        ${spec.callSite}`);
   console.log(`    output      ${spec.shape === 'object' ? 'schema-constrained JSON' : 'prose'}`);
-  console.log(`    model now   ${AI_PROVIDER}/${model}`);
+  console.log(`    model now   ${provider}/${model}${override}`);
   console.log(
-    `    other model ${Object.entries(spec.models)
-      .filter(([provider]) => provider !== AI_PROVIDER)
-      .map(([provider, m]) => `${provider}/${m}`)
+    `    status      ${reason ? `NOT READY — ${reason}` : 'ready'}`,
+  );
+  console.log(
+    `    other       ${Object.entries(spec.models)
+      .filter(([other]) => other !== provider)
+      .map(([other, m]) => `${other}/${m}`)
       .join(', ')}`,
+  );
+  console.log(
+    `    override    AI_PROVIDER_${id.replace(/-/g, '_').toUpperCase()}=anthropic|ollama`,
   );
   console.log(
     `    price       ${price ? `$${price.input}/$${price.output} per Mtok in/out` : 'free (local)'}`,
