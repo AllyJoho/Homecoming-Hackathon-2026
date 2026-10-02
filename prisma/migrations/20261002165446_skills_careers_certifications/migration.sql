@@ -4,6 +4,9 @@
   - You are about to drop the `users` table. If the table is not empty, all the data it contains will be lost.
 
 */
+-- CreateEnum
+CREATE TYPE "SkillSource" AS ENUM ('SELF_REPORTED', 'QUIZ');
+
 -- DropTable
 DROP TABLE "users";
 
@@ -22,10 +25,21 @@ CREATE TABLE "Skill" (
     "id" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "category" TEXT NOT NULL,
+    "category" TEXT,
     "description" TEXT,
 
     CONSTRAINT "Skill_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "UserSkill" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "skillId" TEXT NOT NULL,
+    "source" "SkillSource" NOT NULL DEFAULT 'SELF_REPORTED',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "UserSkill_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -47,6 +61,7 @@ CREATE TABLE "Attempt" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "skillId" TEXT NOT NULL,
+    "quizId" TEXT,
     "level" TEXT NOT NULL,
     "score" INTEGER NOT NULL,
     "passed" BOOLEAN NOT NULL,
@@ -61,7 +76,12 @@ CREATE TABLE "Certification" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "skillId" TEXT NOT NULL,
+    "attemptId" TEXT,
+    "quizId" TEXT,
+    "title" TEXT NOT NULL,
     "level" TEXT NOT NULL,
+    "score" INTEGER NOT NULL,
+    "shareSlug" TEXT NOT NULL,
     "earnedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Certification_pkey" PRIMARY KEY ("id")
@@ -94,16 +114,37 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "Skill_slug_key" ON "Skill"("slug");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "UserSkill_userId_skillId_key" ON "UserSkill"("userId", "skillId");
+
+-- CreateIndex
 CREATE INDEX "Question_skillId_difficulty_idx" ON "Question"("skillId", "difficulty");
 
 -- CreateIndex
 CREATE INDEX "Attempt_userId_skillId_idx" ON "Attempt"("userId", "skillId");
 
 -- CreateIndex
+CREATE INDEX "Attempt_userId_quizId_idx" ON "Attempt"("userId", "quizId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Certification_attemptId_key" ON "Certification"("attemptId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Certification_shareSlug_key" ON "Certification"("shareSlug");
+
+-- CreateIndex
+CREATE INDEX "Certification_userId_idx" ON "Certification"("userId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Certification_userId_skillId_key" ON "Certification"("userId", "skillId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Career_slug_key" ON "Career"("slug");
+
+-- AddForeignKey
+ALTER TABLE "UserSkill" ADD CONSTRAINT "UserSkill_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UserSkill" ADD CONSTRAINT "UserSkill_skillId_fkey" FOREIGN KEY ("skillId") REFERENCES "Skill"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Question" ADD CONSTRAINT "Question_skillId_fkey" FOREIGN KEY ("skillId") REFERENCES "Skill"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -119,6 +160,9 @@ ALTER TABLE "Certification" ADD CONSTRAINT "Certification_userId_fkey" FOREIGN K
 
 -- AddForeignKey
 ALTER TABLE "Certification" ADD CONSTRAINT "Certification_skillId_fkey" FOREIGN KEY ("skillId") REFERENCES "Skill"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Certification" ADD CONSTRAINT "Certification_attemptId_fkey" FOREIGN KEY ("attemptId") REFERENCES "Attempt"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "CareerSkill" ADD CONSTRAINT "CareerSkill_careerId_fkey" FOREIGN KEY ("careerId") REFERENCES "Career"("id") ON DELETE CASCADE ON UPDATE CASCADE;
