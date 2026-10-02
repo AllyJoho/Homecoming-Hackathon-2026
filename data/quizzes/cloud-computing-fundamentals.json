@@ -1,0 +1,105 @@
+{
+  "id": "cloud-computing-fundamentals",
+  "title": "Cloud Computing Fundamentals",
+  "skillSlug": "cloud-computing-fundamentals",
+  "description": "Test your understanding of cloud computing fundamentals. Core cloud concepts including IaaS, PaaS, and SaaS, virtual machines, storage, networking, and cost models.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "cloud-computing-fundamentals-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes IaaS?",
+      "options": [
+        {
+          "id": "a",
+          "text": "provides virtualized compute, storage, and networking that the customer manages"
+        },
+        {
+          "id": "b",
+          "text": "provides only a finished business application"
+        },
+        {
+          "id": "c",
+          "text": "is a spreadsheet macro"
+        },
+        {
+          "id": "d",
+          "text": "is a physical office lease"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "IaaS provides virtualized compute, storage, and networking that the customer manages.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "cloud-computing-fundamentals-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes PaaS?",
+      "options": [
+        {
+          "id": "a",
+          "text": "provides a managed application platform so teams focus more on code than infrastructure"
+        },
+        {
+          "id": "b",
+          "text": "requires managing every disk manually"
+        },
+        {
+          "id": "c",
+          "text": "is a cryptographic hash"
+        },
+        {
+          "id": "d",
+          "text": "is a project charter"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "PaaS provides a managed application platform so teams focus more on code than infrastructure.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "cloud-computing-fundamentals-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Elasticity?",
+      "options": [
+        {
+          "id": "a",
+          "text": "allows capacity to expand or contract with workload demand"
+        },
+        {
+          "id": "b",
+          "text": "means data is never backed up"
+        },
+        {
+          "id": "c",
+          "text": "means every service is free"
+        },
+        {
+          "id": "d",
+          "text": "means a server has no operating system"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Elasticity allows capacity to expand or contract with workload demand.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "cloud-computing-fundamentals-4",
+      "type": "true_false",
+      "prompt": "True or false: IaaS provides virtualized compute, storage, and networking that the customer manages.",
+      "correctAnswer": true,
+      "explanation": "IaaS provides virtualized compute, storage, and networking that the customer manages.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "cloud-computing-fundamentals-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: allows capacity to expand or contract with workload demand?",
+      "acceptedAnswers": [
+        "Elasticity"
+      ],
+      "explanation": "The term is Elasticity.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

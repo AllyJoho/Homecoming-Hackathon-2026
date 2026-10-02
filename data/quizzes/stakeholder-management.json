@@ -1,0 +1,105 @@
+{
+  "id": "stakeholder-management",
+  "title": "Stakeholder Management",
+  "skillSlug": "stakeholder-management",
+  "description": "Test your understanding of stakeholder management. Identifying stakeholders, setting expectations, and handling conflicting priorities.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "stakeholder-management-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Power-interest grid?",
+      "options": [
+        {
+          "id": "a",
+          "text": "groups stakeholders by influence and interest to guide engagement"
+        },
+        {
+          "id": "b",
+          "text": "is a sprint burndown"
+        },
+        {
+          "id": "c",
+          "text": "is a database schema"
+        },
+        {
+          "id": "d",
+          "text": "is a color contrast test"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Power-interest grid groups stakeholders by influence and interest to guide engagement.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "stakeholder-management-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes RACI?",
+      "options": [
+        {
+          "id": "a",
+          "text": "clarifies who is responsible, accountable, consulted, and informed for work"
+        },
+        {
+          "id": "b",
+          "text": "is a risk scoring formula"
+        },
+        {
+          "id": "c",
+          "text": "is a cloud storage tier"
+        },
+        {
+          "id": "d",
+          "text": "is a usability heuristic"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "RACI clarifies who is responsible, accountable, consulted, and informed for work.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "stakeholder-management-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Expectation management?",
+      "options": [
+        {
+          "id": "a",
+          "text": "sets a shared understanding of outcomes, constraints, timing, and tradeoffs"
+        },
+        {
+          "id": "b",
+          "text": "promises every request immediately"
+        },
+        {
+          "id": "c",
+          "text": "avoids communicating bad news"
+        },
+        {
+          "id": "d",
+          "text": "only reports final results"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Expectation management sets a shared understanding of outcomes, constraints, timing, and tradeoffs.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "stakeholder-management-4",
+      "type": "true_false",
+      "prompt": "True or false: Power-interest grid groups stakeholders by influence and interest to guide engagement.",
+      "correctAnswer": true,
+      "explanation": "Power-interest grid groups stakeholders by influence and interest to guide engagement.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "stakeholder-management-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: sets a shared understanding of outcomes, constraints, timing, and tradeoffs?",
+      "acceptedAnswers": [
+        "Expectation management"
+      ],
+      "explanation": "The term is Expectation management.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

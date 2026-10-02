@@ -1,0 +1,105 @@
+{
+  "id": "python-for-data",
+  "title": "Python for Data Analysis",
+  "skillSlug": "python-for-data",
+  "description": "Test your understanding of python for data analysis. Using Python with libraries like pandas and NumPy to load, transform, and analyze datasets.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "python-for-data-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes DataFrame?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is a labeled two-dimensional table commonly used in pandas"
+        },
+        {
+          "id": "b",
+          "text": "is a Python package installer"
+        },
+        {
+          "id": "c",
+          "text": "is a neural-network layer only"
+        },
+        {
+          "id": "d",
+          "text": "is a browser DOM node"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "DataFrame is a labeled two-dimensional table commonly used in pandas.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "python-for-data-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Vectorization?",
+      "options": [
+        {
+          "id": "a",
+          "text": "applies an operation to an array or column without an explicit Python loop over each item"
+        },
+        {
+          "id": "b",
+          "text": "turns code into HTML"
+        },
+        {
+          "id": "c",
+          "text": "encrypts a CSV file"
+        },
+        {
+          "id": "d",
+          "text": "creates a Git branch"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Vectorization applies an operation to an array or column without an explicit Python loop over each item.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "python-for-data-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes NumPy array?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is a homogeneous, multidimensional structure designed for numerical operations"
+        },
+        {
+          "id": "b",
+          "text": "is a relational database"
+        },
+        {
+          "id": "c",
+          "text": "is a Markdown document"
+        },
+        {
+          "id": "d",
+          "text": "is a web server route"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "NumPy array is a homogeneous, multidimensional structure designed for numerical operations.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "python-for-data-4",
+      "type": "true_false",
+      "prompt": "True or false: DataFrame is a labeled two-dimensional table commonly used in pandas.",
+      "correctAnswer": true,
+      "explanation": "DataFrame is a labeled two-dimensional table commonly used in pandas.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "python-for-data-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: is a homogeneous, multidimensional structure designed for numerical operations?",
+      "acceptedAnswers": [
+        "NumPy array"
+      ],
+      "explanation": "The term is NumPy array.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

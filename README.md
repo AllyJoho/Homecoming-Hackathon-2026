@@ -18,7 +18,7 @@ Setup steps and project layout: [docs/SETUP.md](docs/SETUP.md).
 
 ## How Quizzes Work
 
-- Each quiz has **15 questions**.
+- Quiz banks contain **5–15 questions**, depending on the skill; the two original authored banks have 15 and the full skill catalog now has a focused bank for every skill.
 - The result is a **percentage**.
 - The percentage maps to one of four levels: **Beginner, Intermediate, Proficient, Advanced**.
 - The level is printed on the **certificate**.
@@ -31,7 +31,7 @@ Setup steps and project layout: [docs/SETUP.md](docs/SETUP.md).
 | --- | --- |
 | Home | Section with the user's certificates from quizzes taken, and a section with the available skill quizzes (this section is where users pick a quiz; there is no separate quiz selection page) |
 | Login / Logout | Very simple, email only |
-| Quiz questions | The 15-question quiz |
+| Quiz questions | The skill quiz |
 | Results | Percentage and level, with link to the certificate |
 | View certificate | Accessible by link |
 | Job search | List of job titles; each lists its required skills/quizzes with links |

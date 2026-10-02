@@ -1,0 +1,105 @@
+{
+  "id": "technical-support-troubleshooting",
+  "title": "Technical Support & Troubleshooting",
+  "skillSlug": "technical-support-troubleshooting",
+  "description": "Test your understanding of technical support & troubleshooting. Diagnosing hardware, software, and connectivity problems and walking users through fixes.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "technical-support-troubleshooting-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Reproduction step?",
+      "options": [
+        {
+          "id": "a",
+          "text": "recreates a problem under known conditions so its cause can be isolated"
+        },
+        {
+          "id": "b",
+          "text": "is a final billing receipt"
+        },
+        {
+          "id": "c",
+          "text": "is an encryption key"
+        },
+        {
+          "id": "d",
+          "text": "is a design color"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Reproduction step recreates a problem under known conditions so its cause can be isolated.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "technical-support-troubleshooting-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Least-invasive fix?",
+      "options": [
+        {
+          "id": "a",
+          "text": "starts with a low-risk change before attempting disruptive remediation"
+        },
+        {
+          "id": "b",
+          "text": "always replaces all hardware"
+        },
+        {
+          "id": "c",
+          "text": "deletes logs first"
+        },
+        {
+          "id": "d",
+          "text": "skips confirmation with the user"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Least-invasive fix starts with a low-risk change before attempting disruptive remediation.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "technical-support-troubleshooting-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Root cause?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is the underlying condition that allows a problem to occur"
+        },
+        {
+          "id": "b",
+          "text": "is only the visible symptom"
+        },
+        {
+          "id": "c",
+          "text": "is a user password"
+        },
+        {
+          "id": "d",
+          "text": "is a support ticket number"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Root cause is the underlying condition that allows a problem to occur.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "technical-support-troubleshooting-4",
+      "type": "true_false",
+      "prompt": "True or false: Reproduction step recreates a problem under known conditions so its cause can be isolated.",
+      "correctAnswer": true,
+      "explanation": "Reproduction step recreates a problem under known conditions so its cause can be isolated.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "technical-support-troubleshooting-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: is the underlying condition that allows a problem to occur?",
+      "acceptedAnswers": [
+        "Root cause"
+      ],
+      "explanation": "The term is Root cause.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "id": "presentation-skills",
+  "title": "Presentation Skills",
+  "skillSlug": "presentation-skills",
+  "description": "Test your understanding of presentation skills. Structuring and delivering talks and demos tailored to the audience.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "presentation-skills-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Audience adaptation?",
+      "options": [
+        {
+          "id": "a",
+          "text": "selects content and delivery based on what listeners need to decide or do"
+        },
+        {
+          "id": "b",
+          "text": "uses identical detail for every audience"
+        },
+        {
+          "id": "c",
+          "text": "removes the main point"
+        },
+        {
+          "id": "d",
+          "text": "avoids examples entirely"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Audience adaptation selects content and delivery based on what listeners need to decide or do.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "presentation-skills-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Signposting?",
+      "options": [
+        {
+          "id": "a",
+          "text": "uses verbal or visual cues to show where a presentation is going"
+        },
+        {
+          "id": "b",
+          "text": "hides the structure from listeners"
+        },
+        {
+          "id": "c",
+          "text": "is a database operation"
+        },
+        {
+          "id": "d",
+          "text": "is a form validation rule"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Signposting uses verbal or visual cues to show where a presentation is going.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "presentation-skills-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Slide hierarchy?",
+      "options": [
+        {
+          "id": "a",
+          "text": "makes the main message and supporting points visually distinguishable"
+        },
+        {
+          "id": "b",
+          "text": "gives every word equal emphasis"
+        },
+        {
+          "id": "c",
+          "text": "uses as many colors as possible"
+        },
+        {
+          "id": "d",
+          "text": "replaces rehearsal"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Slide hierarchy makes the main message and supporting points visually distinguishable.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "presentation-skills-4",
+      "type": "true_false",
+      "prompt": "True or false: Audience adaptation selects content and delivery based on what listeners need to decide or do.",
+      "correctAnswer": true,
+      "explanation": "Audience adaptation selects content and delivery based on what listeners need to decide or do.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "presentation-skills-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: makes the main message and supporting points visually distinguishable?",
+      "acceptedAnswers": [
+        "Slide hierarchy"
+      ],
+      "explanation": "The term is Slide hierarchy.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

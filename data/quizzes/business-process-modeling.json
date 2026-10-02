@@ -1,0 +1,105 @@
+{
+  "id": "business-process-modeling",
+  "title": "Business Process Modeling",
+  "skillSlug": "business-process-modeling",
+  "description": "Test your understanding of business process modeling. Mapping workflows with notations like BPMN and flowcharts to find inefficiencies.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "business-process-modeling-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Swimlane?",
+      "options": [
+        {
+          "id": "a",
+          "text": "groups process steps by the role, team, or system responsible for them"
+        },
+        {
+          "id": "b",
+          "text": "is a database partition key"
+        },
+        {
+          "id": "c",
+          "text": "is an encryption mode"
+        },
+        {
+          "id": "d",
+          "text": "is a chart color"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Swimlane groups process steps by the role, team, or system responsible for them.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "business-process-modeling-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes BPMN gateway?",
+      "options": [
+        {
+          "id": "a",
+          "text": "represents a decision or branching point in a business process"
+        },
+        {
+          "id": "b",
+          "text": "stores customer passwords"
+        },
+        {
+          "id": "c",
+          "text": "renders CSS grid columns"
+        },
+        {
+          "id": "d",
+          "text": "identifies a Git commit"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "BPMN gateway represents a decision or branching point in a business process.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "business-process-modeling-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Bottleneck?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is a step that limits the throughput of the overall process"
+        },
+        {
+          "id": "b",
+          "text": "is always the first step"
+        },
+        {
+          "id": "c",
+          "text": "is a type of stakeholder"
+        },
+        {
+          "id": "d",
+          "text": "is a completed audit"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Bottleneck is a step that limits the throughput of the overall process.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "business-process-modeling-4",
+      "type": "true_false",
+      "prompt": "True or false: Swimlane groups process steps by the role, team, or system responsible for them.",
+      "correctAnswer": true,
+      "explanation": "Swimlane groups process steps by the role, team, or system responsible for them.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "business-process-modeling-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: is a step that limits the throughput of the overall process?",
+      "acceptedAnswers": [
+        "Bottleneck"
+      ],
+      "explanation": "The term is Bottleneck.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

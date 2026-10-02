@@ -1,0 +1,105 @@
+{
+  "id": "incident-response",
+  "title": "Incident Response",
+  "skillSlug": "incident-response",
+  "description": "Test your understanding of incident response. Detecting, containing, and recovering from security incidents and documenting what happened.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "incident-response-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Containment?",
+      "options": [
+        {
+          "id": "a",
+          "text": "limits an incident so the threat or damage cannot spread further"
+        },
+        {
+          "id": "b",
+          "text": "deletes all evidence immediately"
+        },
+        {
+          "id": "c",
+          "text": "writes a marketing plan"
+        },
+        {
+          "id": "d",
+          "text": "restores every system before investigation"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Containment limits an incident so the threat or damage cannot spread further.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "incident-response-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Evidence preservation?",
+      "options": [
+        {
+          "id": "a",
+          "text": "protects relevant artifacts so they can be analyzed and trusted later"
+        },
+        {
+          "id": "b",
+          "text": "changes timestamps intentionally"
+        },
+        {
+          "id": "c",
+          "text": "reboots every system without notes"
+        },
+        {
+          "id": "d",
+          "text": "publishes logs publicly"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Evidence preservation protects relevant artifacts so they can be analyzed and trusted later.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "incident-response-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Eradication?",
+      "options": [
+        {
+          "id": "a",
+          "text": "removes the threat and its persistence from affected systems"
+        },
+        {
+          "id": "b",
+          "text": "is the same as detection"
+        },
+        {
+          "id": "c",
+          "text": "only informs customers"
+        },
+        {
+          "id": "d",
+          "text": "means ignoring the root cause"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Eradication removes the threat and its persistence from affected systems.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "incident-response-4",
+      "type": "true_false",
+      "prompt": "True or false: Containment limits an incident so the threat or damage cannot spread further.",
+      "correctAnswer": true,
+      "explanation": "Containment limits an incident so the threat or damage cannot spread further.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "incident-response-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: removes the threat and its persistence from affected systems?",
+      "acceptedAnswers": [
+        "Eradication"
+      ],
+      "explanation": "The term is Eradication.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

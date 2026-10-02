@@ -1,0 +1,105 @@
+{
+  "id": "web-accessibility",
+  "title": "Web Accessibility",
+  "skillSlug": "web-accessibility",
+  "description": "Test your understanding of web accessibility. Building pages that work with screen readers and keyboard navigation, following WCAG guidelines and ARIA basics.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "web-accessibility-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Semantic element?",
+      "options": [
+        {
+          "id": "a",
+          "text": "communicates structure and purpose to browsers and assistive technology"
+        },
+        {
+          "id": "b",
+          "text": "is always visually hidden"
+        },
+        {
+          "id": "c",
+          "text": "must be styled with animation"
+        },
+        {
+          "id": "d",
+          "text": "can only contain images"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Semantic element communicates structure and purpose to browsers and assistive technology.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "web-accessibility-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Keyboard focus?",
+      "options": [
+        {
+          "id": "a",
+          "text": "indicates which interactive control will receive keyboard input"
+        },
+        {
+          "id": "b",
+          "text": "is a database lock"
+        },
+        {
+          "id": "c",
+          "text": "is the browser download cache"
+        },
+        {
+          "id": "d",
+          "text": "is a color palette"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Keyboard focus indicates which interactive control will receive keyboard input.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "web-accessibility-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Alternative text?",
+      "options": [
+        {
+          "id": "a",
+          "text": "describes the purpose or meaning of a meaningful image"
+        },
+        {
+          "id": "b",
+          "text": "replaces every visible heading"
+        },
+        {
+          "id": "c",
+          "text": "encrypts an image URL"
+        },
+        {
+          "id": "d",
+          "text": "makes decorative images interactive"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Alternative text describes the purpose or meaning of a meaningful image.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "web-accessibility-4",
+      "type": "true_false",
+      "prompt": "True or false: Semantic element communicates structure and purpose to browsers and assistive technology.",
+      "correctAnswer": true,
+      "explanation": "Semantic element communicates structure and purpose to browsers and assistive technology.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "web-accessibility-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: describes the purpose or meaning of a meaningful image?",
+      "acceptedAnswers": [
+        "Alternative text"
+      ],
+      "explanation": "The term is Alternative text.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

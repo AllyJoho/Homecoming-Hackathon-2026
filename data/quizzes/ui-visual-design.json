@@ -1,0 +1,105 @@
+{
+  "id": "ui-visual-design",
+  "title": "UI & Visual Design",
+  "skillSlug": "ui-visual-design",
+  "description": "Test your understanding of ui & visual design. Applying typography, color, spacing, and layout to build consistent, accessible interfaces.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "ui-visual-design-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Contrast?",
+      "options": [
+        {
+          "id": "a",
+          "text": "creates enough visual difference between elements to support hierarchy and readability"
+        },
+        {
+          "id": "b",
+          "text": "makes every element identical"
+        },
+        {
+          "id": "c",
+          "text": "is only a server setting"
+        },
+        {
+          "id": "d",
+          "text": "removes text labels"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Contrast creates enough visual difference between elements to support hierarchy and readability.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "ui-visual-design-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Typography hierarchy?",
+      "options": [
+        {
+          "id": "a",
+          "text": "uses size, weight, and spacing to show relationships between text levels"
+        },
+        {
+          "id": "b",
+          "text": "uses one size for everything"
+        },
+        {
+          "id": "c",
+          "text": "is a database relationship"
+        },
+        {
+          "id": "d",
+          "text": "is a deployment strategy"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Typography hierarchy uses size, weight, and spacing to show relationships between text levels.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "ui-visual-design-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Spacing system?",
+      "options": [
+        {
+          "id": "a",
+          "text": "uses consistent distance rules to create rhythm and grouping"
+        },
+        {
+          "id": "b",
+          "text": "adds random gaps to every screen"
+        },
+        {
+          "id": "c",
+          "text": "replaces content structure"
+        },
+        {
+          "id": "d",
+          "text": "is an encryption standard"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Spacing system uses consistent distance rules to create rhythm and grouping.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "ui-visual-design-4",
+      "type": "true_false",
+      "prompt": "True or false: Contrast creates enough visual difference between elements to support hierarchy and readability.",
+      "correctAnswer": true,
+      "explanation": "Contrast creates enough visual difference between elements to support hierarchy and readability.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "ui-visual-design-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: uses consistent distance rules to create rhythm and grouping?",
+      "acceptedAnswers": [
+        "Spacing system"
+      ],
+      "explanation": "The term is Spacing system.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}
