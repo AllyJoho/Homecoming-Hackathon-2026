@@ -33,14 +33,24 @@ A successful seed prints:
 ```
 ✔ 46 canonical skills
 ✔ 26 careers
-✔ Quiz javascript: 15 questions
-✔ Quiz sql: 15 questions
-✔ 2 quizzes, 30 questions
-✔ 20 job listings
+✔ Quiz agile-scrum: 5 questions
+...
+✔ 46 quizzes, 250 questions
+✔ User: Michelle Johanson (credential created)
+✔ User: Rubber Duck (credential created)
 ```
 
 The seed is idempotent — it upserts, and prunes skills and careers that are no
 longer in the JSON. Re-run it as often as you like.
+
+Two things it deliberately does not write:
+
+- **Job listings.** They come from real job boards via `npm run jobs:ingest`,
+  not from a JSON file.
+- **Per-user profile data.** The demo accounts are created with a password and
+  nothing else — no skills, resume, or experience — so every account starts at
+  onboarding. Skills arrive the way a real user's do: a pasted resume, the
+  skill board, or a quiz.
 
 ## How data flows
 
@@ -93,7 +103,6 @@ data/                       # seed input, loaded by `npm run db:seed`
   skills.json               # 46 skills — the canonical vocabulary
   careers.json              # 26 careers
   quizzes/*.json            # one file per quiz, 15 questions each
-  jobs/listings.json        # 20 listings
 types/                      # quiz.ts, profile.ts, job.ts — no Prisma types leak out
 ```
 
@@ -146,7 +155,8 @@ types/                      # quiz.ts, profile.ts, job.ts — no Prisma types le
 | A question | append to that quiz's `questions` array, then re-seed. Ids are `<quiz>-<n>` and array order is the display order |
 | A question type | the `Question` union in `types/quiz.ts`, a case in `lib/quiz/grading.ts`, a component in `components/quiz/questions/` + the registry there, and `QuestionType` in `prisma/schema.prisma` |
 | A skill | `data/skills.json`, then re-seed. Quiz `skillSlug` and job `requiredSkills` must use these slugs or the seed throws |
-| A job or career | `data/jobs/listings.json` / `data/careers.json`, then re-seed |
+| A career | `data/careers.json`, then re-seed |
+| A job listing | not authored — `npm run jobs:ingest` pulls real ones |
 
 ## Changing the schema
 

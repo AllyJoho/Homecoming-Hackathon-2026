@@ -1,55 +1,70 @@
 // @/app/(main)/recommendations/page.tsx
-// AI job matches.
+// Job matches: real listings, ranked against the student's skills.
 //
-// The model call is triggered by the user rather than run during render: it
-// costs money and takes seconds, so a page load shouldn't spend one. The page
-// shell is a server component; the button and result list below it are client.
+// Ranked HERE, on the server, during the render — no button, no spinner, no
+// cost. That's possible because the model's judgment was already paid for at
+// ingest: each listing's skills carry a 1-5 weight assigned when it was
+// extracted, so ranking is arithmetic over stored numbers (@/lib/jobs/match).
+//
+// There used to be a "Find my matches" button that spent ~$0.055 and 16s per
+// press on an Opus ranking. The weights replaced it. The remaining AI on this
+// page is behind "Load more listings", which extracts newly fetched listings.
 
 import { requireSessionUser } from '@/lib/auth/session';
 import { buildProfile } from '@/lib/profile/buildProfile';
-import { matchCareers } from '@/lib/careers/match';
-import { listCareers, listQuizzes } from '@/prisma/queries';
-import { CareerMatchCard } from '@/components/careers/CareerMatchCard';
+import { matchJobs } from '@/lib/jobs/match';
+import { listJobs, listQuizzes, listTrackedJobIds } from '@/prisma/queries';
+import { PageHeader } from '@/components/ui';
 import { RecommendationsPanel } from './RecommendationsPanel';
 
-/** The headline career plus three alternates — see CareerMatchCard. */
-const CAREER_MATCH_COUNT = 4;
+// Listings are stored permanently and "Load more listings" calls
+// router.refresh(), which must see what it just wrote.
+export const dynamic = 'force-dynamic';
 
 export default async function RecommendationsPage() {
   const user = await requireSessionUser();
   const profile = await buildProfile(user.id);
   if (!profile) throw new Error(`No profile for session user ${user.id}`);
 
-  const [quizzes, careers] = await Promise.all([listQuizzes(), listCareers()]);
+  const [quizzes, jobs, trackedJobIds] = await Promise.all([
+    listQuizzes(),
+    listJobs(),
+    listTrackedJobIds(user.id),
+  ]);
 
   // skill slug → quiz id, so "not proven yet" chips can link to the quiz that
   // would fix them. Built here because the quiz list is server-side data.
   const quizBySkill = Object.fromEntries(quizzes.map((quiz) => [quiz.skillSlug, quiz.id]));
 
-  // Free and synchronous, unlike the job ranking below it — so it renders with
-  // the page instead of waiting for a button.
-  const careerMatches = matchCareers(careers, profile, CAREER_MATCH_COUNT);
-  const hasCareerMatch = (careerMatches[0]?.score ?? 0) > 0;
+  // Anything with at least some overlap. A profile with no skills scores
+  // everything at 0 and gets the unranked browse list instead.
+  const matches = matchJobs(jobs, profile, { minScore: 1 });
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">Job matches</h1>
-        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-          Ranked against your {profile.skills.length} skill
-          {profile.skills.length === 1 ? '' : 's'} and {profile.certifications.length} certificate
-          {profile.certifications.length === 1 ? '' : 's'}.
-        </p>
-      </div>
-
-      {hasCareerMatch && (
-        <CareerMatchCard matches={careerMatches} quizBySkill={quizBySkill} />
-      )}
+      <PageHeader
+        title="Job matches"
+        description={describe(jobs.length, matches.length, profile.skills.length)}
+      />
 
       <RecommendationsPanel
-        hasSkills={profile.skills.length > 0}
+        matches={matches}
+        jobs={jobs}
+        skills={profile.skills}
         quizBySkill={quizBySkill}
+        trackedJobIds={trackedJobIds}
       />
     </div>
   );
+}
+
+function describe(jobs: number, matches: number, skills: number): string {
+  if (jobs === 0) return 'No listings stored yet — load some to get started.';
+  if (skills === 0) {
+    return `${jobs} real listings stored. Add a few skills and they'll rank themselves against you.`;
+  }
+  if (matches === 0) {
+    return `${jobs} real listings stored, none overlapping your ${skills} skill${skills === 1 ? '' : 's'} yet.`;
+  }
+  return `${matches} of ${jobs} real listings overlap your ${skills} skill${skills === 1 ? '' : 's'}, best fit first.`;
 }

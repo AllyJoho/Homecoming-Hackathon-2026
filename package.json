@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "ai:report": "tsx --env-file=.env scripts/ai-report.ts",
+    "jobs:ingest": "tsx --env-file=.env scripts/ingest-jobs.ts",
+    "jobs:boards": "tsx scripts/check-boards.ts",
     "postinstall": "prisma generate",
     "db:up": "docker compose -f docker-compose.local.yaml up -d",
     "db:down": "docker compose -f docker-compose.local.yaml down",
@@ -25,6 +27,7 @@
     "prism-react-renderer": "^2.4.1",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "react-icons": "^5.7.0",
     "zod": "^4.6.5"
   },
   "devDependencies": {

@@ -6,9 +6,16 @@
 // Safe to re-run: skills and careers upsert by slug, and each career's skill
 // weights are replaced from the JSON so edits there take effect.
 //
-// Everything in data/ ends up in Postgres: skills, careers, quizzes (with
-// their questions) and job listings. Quiz and job content is replaced wholesale
-// on every run, so editing a JSON file and re-seeding is the authoring loop.
+// Everything in data/ ends up in Postgres: skills, careers, and quizzes with
+// their questions. Quiz content is replaced wholesale on every run, so editing
+// a JSON file and re-seeding is the authoring loop.
+//
+// What this script does NOT write is per-user profile data. The demo accounts
+// are created with credentials and nothing else — no skills, resume, or
+// experience — so a fresh database starts every account at onboarding.
+//
+// Job listings are NOT seeded — they are ingested from real job boards by
+// `npm run jobs:ingest`. This script leaves the Job table alone.
 // Seed script: console.log is the script's UI.
 
 import { PrismaClient } from '@/lib/generated/prisma/client';
@@ -64,20 +71,6 @@ type QuestionJson = {
   bugLines?: number[];
   /** order_lines only, authored in the correct order. Stored in `options`. */
   lines?: { id: string; text: string }[];
-};
-
-type JobJson = {
-  id: string;
-  title: string;
-  company: string;
-  location: string;
-  remote: boolean;
-  level: string;
-  salaryRange?: string;
-  requiredSkills: string[];
-  niceToHaveSkills: string[];
-  description: string;
-  url?: string;
 };
 
 // The JSON spells question types in snake_case; the enum is SCREAMING_SNAKE.
@@ -260,43 +253,14 @@ async function main() {
   console.log(`  ✔ ${quizFiles.length} quizzes, ${questionCount} questions`);
 
   // ── Jobs ─────────────────────────────────────────────────
-  await prisma.jobSkill.deleteMany();
-  await prisma.job.deleteMany();
-
-  const jobs = readJson<JobJson[]>(join(DATA_DIR, 'jobs', 'listings.json'));
-  for (const j of jobs) {
-    // required and nice-to-have collapse into one join table with a flag.
-    // A slug in both lists keeps the stronger (required) reading.
-    const links = new Map<string, boolean>();
-    for (const slug of j.niceToHaveSkills) links.set(slug, false);
-    for (const slug of j.requiredSkills) links.set(slug, true);
-
-    const skillLinks = [...links].map(([slug, required]) => {
-      const skillId = skillIdBySlug.get(slug);
-      if (!skillId) {
-        throw new Error(
-          `Job "${j.id}" references "${slug}", which is not in data/skills.json.`,
-        );
-      }
-      return { skillId, required };
-    });
-
-    await prisma.job.create({
-      data: {
-        id: j.id,
-        title: j.title,
-        company: j.company,
-        location: j.location,
-        remote: j.remote,
-        level: j.level,
-        salaryRange: j.salaryRange ?? null,
-        description: j.description,
-        url: j.url ?? null,
-        skills: { create: skillLinks },
-      },
-    });
-  }
-  console.log(`  ✔ ${jobs.length} job listings`);
+  // Not seeded. Listings come from real job boards via `npm run jobs:ingest`
+  // (lib/jobs/ingest.ts), which upserts them and never deletes.
+  //
+  // This block used to read data/jobs/listings.json — 20 hand-written listings
+  // with invented companies. They're gone: a career site whose jobs aren't
+  // real is a demo of nothing. Deliberately NOT replaced with a no-op delete
+  // either, because this script is re-run often and wiping ingested listings
+  // would mean re-paying for extraction every time.
 
   // ── Demo users ───────────────────────────────────────────
   // Created through Better Auth rather than with a plain prisma.create, so the
@@ -340,21 +304,11 @@ async function main() {
     console.log(`  ✔ User: ${u.name} (${credential ? 'password reset' : 'credential created'})`);
   }
 
-  // Give the first demo user a couple of self-reported skills so the
-  // recommendations page has something to rank on a fresh database.
-  const demo = await prisma.user.findUnique({ where: { email: 'mjohans0@byu.edu' } });
-  if (demo) {
-    for (const slug of ['javascript-fundamentals', 'html-css-fundamentals']) {
-      const skillId = skillIdBySlug.get(slug);
-      if (!skillId) continue;
-      await prisma.userSkill.upsert({
-        where: { userId_skillId: { userId: demo.id, skillId } },
-        update: {},
-        create: { userId: demo.id, skillId, source: 'SELF_REPORTED' },
-      });
-    }
-    console.log('  ✔ Demo skills for Michelle');
-  }
+  // No per-user profile data is seeded: no skills, no resume, no experience.
+  // A demo account starts empty, the same as any account created through
+  // sign-up, so the first thing you see is the real onboarding path rather
+  // than someone else's profile. Skills come from the resume paste, the skill
+  // board, or a quiz.
 
   console.log(`✅ Seed complete. Demo accounts sign in with password "${DEMO_PASSWORD}".`);
 }

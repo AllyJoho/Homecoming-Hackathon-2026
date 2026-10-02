@@ -1,44 +1,95 @@
 // @/components/ui/Button.tsx
 // No 'use client' on purpose: this has no hooks, so it renders in both server
 // and client components. A client parent can still pass onClick.
+//
+// The `loading` / `icon` / `pressed` / `fullWidth` ergonomics and the shared
+// class tables come from the purchasing app's general/buttons/Button.
 
-import type { ButtonHTMLAttributes } from 'react';
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import { Spinner } from './Spinner';
+import {
+  BUTTON_ICON_SIZE_CLASSES,
+  BUTTON_PRESSED_CLASSES,
+  BUTTON_SIZE_CLASSES,
+  BUTTON_VARIANT_CLASSES,
+  DISABLED_CONTROL,
+  type ButtonSize,
+  type ButtonVariant,
+} from './styles';
+import { UI_ICONS, type UiIconName } from './icons';
 
-type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
-type Size = 'xs' | 'sm' | 'md' | 'lg';
-
-const VARIANTS: Record<Variant, string> = {
-  primary: 'bg-zinc-900 text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200',
-  secondary:
-    'border border-zinc-300 text-zinc-900 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-800',
-  ghost: 'text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800',
-  danger: 'text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950',
-};
-
-const SIZES: Record<Size, string> = {
-  // For buttons sitting inside a dense tile, where `sm` is still too tall to
-  // sit on a row with 12px link text — see @/components/skills/SkillCard.
-  xs: 'h-7 px-3 text-xs',
-  sm: 'h-8 px-3 text-sm',
-  md: 'h-10 px-4 text-sm',
-  lg: 'h-12 px-6 text-base',
-};
+export type { ButtonVariant, ButtonSize };
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: Variant;
-  size?: Size;
+  variant?: ButtonVariant;
+  /** `'none'` emits no size/padding/gap classes, so a caller can fully supply
+   *  chrome via `className`. */
+  size?: ButtonSize | 'none';
+  /** An icon name from @/components/ui/icons, or any node. */
+  icon?: UiIconName | ReactNode;
+  iconPosition?: 'left' | 'right';
+  /** Swaps the content for a spinner and disables the button. */
+  loading?: boolean;
+  loadingLabel?: string;
+  fullWidth?: boolean;
+  /** Toggle-style sunken look, and sets aria-pressed. */
+  pressed?: boolean;
+}
+
+function isIconName(icon: unknown): icon is UiIconName {
+  return typeof icon === 'string' && icon in UI_ICONS;
 }
 
 export function Button({
   variant = 'primary',
   size = 'md',
+  icon,
+  iconPosition = 'left',
+  loading = false,
+  loadingLabel = 'Loading…',
+  fullWidth = false,
+  pressed = false,
+  disabled,
+  type = 'button',
+  children,
   className = '',
-  ...props
+  ...rest
 }: ButtonProps) {
+  const isDisabled = disabled || loading;
+  const variantCls = pressed ? BUTTON_PRESSED_CLASSES[variant] : BUTTON_VARIANT_CLASSES[variant];
+  // `size="none"` opts out of the size scale entirely; the icon still needs a
+  // dimension, so fall back to md's.
+  const sizeCls = size === 'none' ? '' : BUTTON_SIZE_CLASSES[size];
+  const iconSizeCls =
+    size === 'none' ? BUTTON_ICON_SIZE_CLASSES.md : BUTTON_ICON_SIZE_CLASSES[size];
+
+  const Icon = isIconName(icon) ? UI_ICONS[icon] : null;
+  const iconNode = Icon ? (
+    <Icon className={`${iconSizeCls} shrink-0`} aria-hidden />
+  ) : icon && !isIconName(icon) ? (
+    icon
+  ) : null;
+
   return (
     <button
-      className={`inline-flex items-center justify-center gap-2 rounded-full font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${VARIANTS[variant]} ${SIZES[size]} ${className}`}
-      {...props}
-    />
+      type={type}
+      disabled={isDisabled}
+      aria-pressed={pressed || undefined}
+      className={`inline-flex cursor-pointer items-center justify-center font-medium transition-colors ${DISABLED_CONTROL} ${variantCls} ${sizeCls} ${fullWidth ? 'w-full' : ''} ${className}`.trim()}
+      {...rest}
+    >
+      {loading ? (
+        <>
+          <Spinner className="shrink-0" />
+          <span>{loadingLabel}</span>
+        </>
+      ) : (
+        <>
+          {iconNode && iconPosition === 'left' && iconNode}
+          {children}
+          {iconNode && iconPosition === 'right' && iconNode}
+        </>
+      )}
+    </button>
   );
 }

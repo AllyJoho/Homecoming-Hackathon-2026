@@ -15,8 +15,14 @@ export interface Skill {
   description?: string;
 }
 
-/** Where a skill on a profile came from. Mirrors the Prisma `SkillSource` enum. */
-export type SkillSource = 'SELF_REPORTED' | 'QUIZ';
+/**
+ * Where a skill on a profile came from. Mirrors the Prisma `SkillSource` enum.
+ *
+ * Ordered weakest to strongest evidence, which is how the matcher treats them:
+ * typed in is a claim, read off a resume is a claim with a document behind it,
+ * passed a quiz is proof. @/lib/jobs/match turns that into partial credit.
+ */
+export type SkillSource = 'SELF_REPORTED' | 'RESUME' | 'QUIZ';
 
 export interface ProfileSkill extends Skill {
   source: SkillSource;
@@ -64,15 +70,31 @@ export interface CatalogSkill extends Skill {
   quizId?: string;
   /** Percentage on the passing attempt. CERTIFIED only. */
   score?: number;
+  /** The level the attempt earned. CERTIFIED only — see @/lib/quiz/levels. */
+  level?: ProficiencyLevel;
   /** Share slug for /certificates/[certId]. CERTIFIED only. */
   shareSlug?: string;
   /** ISO timestamp the certificate was earned. CERTIFIED only. */
   certifiedAt?: string;
+  /**
+   * Why this skill was suggested, e.g. "Pairs with SQL Fundamentals in Data
+   * Scientists". Set only on the `recommended` bucket — see
+   * @/lib/profile/related.
+   */
+  reason?: string;
 }
 
-/** The catalog split into the three sections the grid renders. */
+/**
+ * The catalog split into the sections the grid renders.
+ *
+ * `recommended` is a slice taken *out of* `available`, not a copy of part of
+ * it: a suggested skill appears on the recommended shelf instead of down in
+ * the full list, so no card is ever on screen twice.
+ */
 export interface SkillCatalog {
   certified: CatalogSkill[];
   mine: CatalogSkill[];
+  /** Unclaimed skills that go with the ones the student has. Strongest first. */
+  recommended: CatalogSkill[];
   available: CatalogSkill[];
 }

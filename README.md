@@ -1,4 +1,4 @@
-# Homecoming Hackathon
+# SkillStack
 
 Hackathon prompt: **Improving the job hunt.**
 Time limit: **8 hours**. Team: **4 people**. Goal: **creativity**.

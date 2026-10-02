@@ -1,8 +1,30 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
+/* Light is the default; the dark block below swaps the two surface tokens.
+   Everything else is expressed in Tailwind's zinc/indigo scales directly, so
+   this file stays small — the component-level tokens live in
+   @/components/ui/styles.ts. */
 :root {
-  --background: #ffffff;
+  /* indigo-50. The page recedes so the white surfaces on it — cards, inputs,
+     buttons — read as the things you act on. Both used to be #ffffff, which
+     left a card visible only by its border.
+
+     Indigo rather than a truer violet on purpose: violet is the Data &
+     Analytics category hue (see @/components/ui/categoryColors), and a violet
+     page would compete with the category stripes. Indigo is the app's own
+     accent and is deliberately absent from the category map. */
+  --background: #eef2ff;
   --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* The same indigo as a whisper in a near-black, a shade under the zinc-950
+       that cards use — so the ordering (page behind, card in front) matches
+       light mode. At this darkness the separation is still mostly the border. */
+    --background: #0a0a12;
+    --foreground: #fafafa; /* zinc-50 */
+  }
 }
 
 @theme inline {
@@ -10,13 +32,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 /* Syntax colours for components/quiz/CodeBlock. Prism emits `token <kind>`
@@ -58,5 +73,99 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Was a hardcoded Arial stack, which ignored the Geist faces the root layout
+     already loads. */
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Inline code pills. Scoped out of <pre> so code snippets stay plain.
+   Ported from the purchasing app's globals.css. */
+@layer base {
+  :not(pre) > code {
+    @apply rounded bg-zinc-100 px-1 dark:bg-zinc-800;
+  }
+}
+
+/* Nav underline on hover or when marked active. The purchasing app's
+   .nav-link-hover, with the brand navy swapped for the accent.
+   Wipes in from the left rather than toggling `display`, which can't animate.
+   The rule is kept here, not in a component, because the underline has to be a
+   pseudo-element: a real border would shift the link's layout on hover. */
+.nav-link-hover {
+  position: relative;
+}
+
+.nav-link-hover::after {
+  content: '';
+  position: absolute;
+  bottom: -0.3rem;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  border-radius: 1px;
+  background-color: var(--color-indigo-500);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 150ms ease-out;
+}
+
+.nav-link-hover:hover::after,
+.nav-link-hover.nav-link-active::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-link-hover::after {
+    transition: none;
+  }
+}
+
+/* Tie the selection highlight to the accent instead of the browser's blue. */
+::selection {
+  background-color: color-mix(in oklab, var(--color-indigo-500) 25%, transparent);
+}
+
+/* ── Print ───────────────────────────────────────────────────────────────────
+   The resume preview is the only page meant to reach paper, and the browser's
+   print dialog is how it exports ("Save as PDF") — so these rules are the
+   export feature, not a nicety.
+
+   Site chrome is hidden here rather than with `print:hidden` on each
+   component: that way adding a nav item or a footer link later can't
+   accidentally start printing. Page-level controls still opt out individually.
+
+   Scoped to `:has(.resume-document)` so printing any other page keeps the
+   normal chrome — someone printing a certificate should get the header. */
+@media print {
+  body:has(.resume-document) > header,
+  body:has(.resume-document) > footer {
+    display: none !important;
+  }
+
+  body:has(.resume-document) main {
+    /* The document owns its own margins; the app's page padding would stack
+       on top of the printer's and push the first section down a third of a
+       page. */
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  .resume-document {
+    /* Paper is white regardless of the viewer's theme. */
+    background: #fff !important;
+    color: #000 !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  /* Tailwind's default link colour prints as grey; an employer reading this on
+     paper should see plain black text. */
+  .resume-document a {
+    color: #000 !important;
+    text-decoration: none !important;
+  }
+
+  @page {
+    margin: 0.6in;
+  }
 }

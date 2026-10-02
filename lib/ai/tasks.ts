@@ -14,7 +14,7 @@
 /** Backends a task can run on. Selected globally by AI_PROVIDER. */
 export type AiProviderId = 'anthropic' | 'ollama';
 
-export type AiTaskId = 'job-ranking' | 'quiz-coaching';
+export type AiTaskId = 'job-skill-extraction' | 'resume-extraction' | 'quiz-coaching';
 
 /** Whether a task needs a schema-shaped answer or free prose. */
 export type AiShape = 'object' | 'text';
@@ -48,23 +48,38 @@ export interface AiTaskSpec {
 const LOCAL_DEFAULT = process.env.OLLAMA_MODEL?.trim() || 'mistral';
 
 /**
- * Claude Opus 5 for judgment, Claude Haiku 4.5 for volume — see
- * @/lib/ai/client for why the split exists and what Haiku won't accept.
+ * Every remaining task is extraction or explanation against a known answer —
+ * mechanical work, not judgment — so they all run on Haiku. The Opus ranking
+ * that used to live here was replaced by arithmetic over stored skill weights
+ * (@/lib/jobs/match), which is free, instant, and identical on every run.
  */
-const CLAUDE_JUDGMENT = 'claude-opus-5';
 const CLAUDE_VOLUME = 'claude-haiku-4-5';
 
 export const AI_TASKS: Record<AiTaskId, AiTaskSpec> = {
-  'job-ranking': {
-    label: 'Job ranking',
-    trigger: 'Student clicks "Find my matches" on /recommendations',
-    callSite: 'lib/jobs/recommend.ts → POST /api/recommendations',
+  'job-skill-extraction': {
+    label: 'Job skill extraction',
+    trigger:
+      'Ingest only — `npm run jobs:ingest`, or "Load more listings" on /recommendations. Never on a page render.',
+    callSite: 'lib/jobs/ingest.ts',
     shape: 'object',
-    models: { anthropic: CLAUDE_JUDGMENT, ollama: LOCAL_DEFAULT },
-    // Ranking 20 listings with reasons, plus thinking headroom on Opus.
-    maxOutputTokens: 16000,
-    onFailure: 'RecommendationError → 502; the panel shows the message inline.',
-    frequency: 'Once per button press. ~4.6k input tokens at 20 listings.',
+    models: { anthropic: CLAUDE_VOLUME, ollama: LOCAL_DEFAULT },
+    // One small object per listing: level, two skill arrays, maybe a salary.
+    maxOutputTokens: 1000,
+    onFailure: 'That listing is skipped and the run continues; the summary counts it.',
+    frequency:
+      'Once per listing, ONCE EVER — the result is written to JobSkill rows, so a listing is never re-extracted. ~2.2k input tokens each (the 46-skill vocabulary plus one description).',
+  },
+
+  'resume-extraction': {
+    label: 'Resume reading',
+    trigger: 'Student pastes a resume on /resume and presses Read my resume',
+    callSite: 'lib/profile/resume.ts → POST /api/resume',
+    shape: 'object',
+    models: { anthropic: CLAUDE_VOLUME, ollama: LOCAL_DEFAULT },
+    maxOutputTokens: 1500,
+    onFailure: 'The page reports it and nothing is written to the profile.',
+    frequency:
+      'Once per paste. ~2-4k input tokens — the 46-skill vocabulary plus the resume.',
   },
 
   'quiz-coaching': {
@@ -85,6 +100,8 @@ export const MODEL_PRICING: Record<string, { input: number; output: number }> = 
   'claude-opus-5': { input: 5, output: 25 },
   'claude-haiku-4-5': { input: 1, output: 5 },
 };
+// Opus stays in the table rather than being removed: nothing uses it today,
+// but a mis-set env var naming it should still price correctly in the log.
 
 export function estimateCostUsd(model: string, inputTokens = 0, outputTokens = 0): number {
   const price = MODEL_PRICING[model];

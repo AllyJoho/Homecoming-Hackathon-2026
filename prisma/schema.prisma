@@ -32,6 +32,8 @@ model User {
   skills         UserSkill[]
   attempts       Attempt[]
   certifications Certification[]
+  applications   Application[]
+  experiences    Experience[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -135,6 +137,7 @@ model UserSkill {
 
 enum SkillSource {
   SELF_REPORTED // typed in on the home screen
+  RESUME // read off a resume the student pasted in — stronger than a claim, weaker than a pass
   QUIZ // proven by passing a quiz
 }
 
@@ -316,7 +319,8 @@ model Job {
   description String
   url         String?
 
-  skills JobSkill[]
+  skills       JobSkill[]
+  applications Application[]
 }
 
 model JobSkill {
@@ -324,10 +328,130 @@ model JobSkill {
   job      Job     @relation(fields: [jobId], references: [id], onDelete: Cascade)
   skillId  String
   skill    Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
-  // Splits the two authored lists: required vs nice-to-have. Required overlap
-  // is weighted double when shortlisting.
+  // Splits the extracted lists: required vs nice-to-have.
   required Boolean
+  // 1-5 importance to this listing, same scale as CareerSkill.weight, assigned
+  // by the ingest's extraction step. This is what makes matching a query: the
+  // model's judgment about how central a skill is gets paid for once, here,
+  // and every match afterwards is arithmetic over these numbers.
+  //
+  // Default 3 so rows ingested before weights existed still score sensibly;
+  // re-running ingest on a listing replaces them with real ones.
+  weight   Int     @default(3)
 
   @@id([jobId, skillId])
   @@index([skillId])
+}
+
+// ──────────────────────────────────────────────
+// Applications
+// ──────────────────────────────────────────────
+
+// A student's own application tracker. Unlike Job (ingested content that the
+// pipeline owns), this is USER HISTORY — the one thing in the jobs half of the
+// schema that must never be lost to a re-ingest or a content reset.
+//
+// That's why the listing fields are copied in rather than read through `job`:
+// an application to a listing that has since been pulled from the board should
+// still say what it was. `jobId` is the link back to the live listing when
+// there is one, which is also what makes it null for a manually added job.
+model Application {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Null when the student typed this job in themselves. SetNull rather than
+  // Cascade on purpose: deleting a listing must not delete the application.
+  jobId String?
+  job   Job?    @relation(fields: [jobId], references: [id], onDelete: SetNull)
+
+  // Denormalized at save time — see the note above.
+  title    String
+  company  String
+  location String?
+  url      String?
+
+  status    ApplicationStatus @default(SAVED)
+  notes     String?
+  // Set when status first reaches APPLIED, so the list can show "applied 3
+  // days ago" without inferring it from updatedAt.
+  appliedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // One application per listing per student. Postgres treats NULLs as
+  // distinct, so this constrains the ingested-job case without limiting how
+  // many jobs a student can add by hand.
+  @@unique([userId, jobId])
+  @@index([userId, status])
+}
+
+/// The pipeline a student moves an application along. SAVED is the "bookmarked
+/// it, haven't applied" state, which is what the Save button on a job match
+/// creates.
+enum ApplicationStatus {
+  SAVED
+  APPLIED
+  INTERVIEWING
+  OFFER
+  REJECTED
+}
+
+// ──────────────────────────────────────────────
+// Experience
+// ──────────────────────────────────────────────
+
+// What a student has actually done: jobs, projects, schooling, leadership.
+// Two ways in, both landing here: typed in on /resume, or parsed out of a
+// pasted resume by the same extraction call that finds skills.
+//
+// This is the structured half of the resume feature. Skills answer "what can
+// you do" for matching; these answer "what have you done" for a human reader,
+// and they're what a rendered resume is built from.
+model Experience {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  kind         ExperienceKind @default(WORK)
+  title        String // "Data Analyst Intern"
+  organization String // "Wasatch Health Group"
+  location     String?
+
+  // Free text, NOT dates. Students write "Summer 2026" and "May 2026 - Aug
+  // 2026"; a DateTime would demand precision they don't have and force the UI
+  // to invent a day. A resume prints whatever they wrote, so store that.
+  startDate String?
+  endDate   String?
+  current   Boolean @default(false)
+
+  // One resume bullet per entry, in the order they should print.
+  bullets String[]
+
+  // Manual ordering within a kind. Newest-first is the resume convention, but
+  // free-text dates can't be sorted, so the student's order is the order.
+  sortOrder Int @default(0)
+
+  // RESUME when parsed out of a pasted document, MANUAL when typed in. Lets a
+  // re-paste replace what it previously parsed without touching hand-written
+  // entries — the same rule UserSkill.source gives skills.
+  source ExperienceSource @default(MANUAL)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+enum ExperienceKind {
+  WORK
+  PROJECT
+  EDUCATION
+  LEADERSHIP
+}
+
+enum ExperienceSource {
+  MANUAL // typed in by the student
+  RESUME // parsed out of a pasted resume
 }

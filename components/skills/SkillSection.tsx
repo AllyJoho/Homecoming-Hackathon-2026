@@ -18,6 +18,11 @@ export interface SkillSectionProps {
   onRemove?: (slug: string) => void;
   /** Slugs with an add/remove in flight. */
   pendingSlugs?: Set<string>;
+  /**
+   * Whether claimed skills carry a "My skill" tag. Off for a section whose
+   * heading already says it — see SkillCard's `showClaimedTag`.
+   */
+  showClaimedTag?: boolean;
 }
 
 export function SkillSection({
@@ -28,6 +33,7 @@ export function SkillSection({
   onAdd,
   onRemove,
   pendingSlugs,
+  showClaimedTag = true,
 }: SkillSectionProps) {
   return (
     <section className="flex flex-col gap-4">
@@ -52,6 +58,7 @@ export function SkillSection({
               onAdd={onAdd}
               onRemove={onRemove}
               pending={pendingSlugs?.has(skill.slug)}
+              showClaimedTag={showClaimedTag}
             />
           ))}
         </div>

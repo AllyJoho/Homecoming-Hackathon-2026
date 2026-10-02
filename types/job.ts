@@ -1,7 +1,20 @@
 // @/types/job.ts
-// Job listings are authored in data/jobs/listings.json and seeded into
-// Postgres. The shape is kept close to what a real job board API returns, so
-// swapping the loaders in @/prisma/queries for a live fetch stays local.
+// Job listings come from real job boards, ingested by @/lib/jobs/ingest and
+// stored in Postgres. `requiredSkills` / `niceToHaveSkills` hold canonical
+// slugs, which no board publishes — the ingest's AI step is what produces
+// them from a listing's prose. See @/lib/jobs/sources/types for the
+// pre-extraction shape.
+
+/** One skill a listing asks for, with how central it is to the role. */
+export interface JobSkillWeight {
+  /** Canonical slug — must match @/lib/profile/skills. */
+  slug: string;
+  name: string;
+  /** 1-5, assigned by the ingest's extraction step. Same scale as careers. */
+  weight: number;
+  /** Required vs nice-to-have, as the listing framed it. */
+  required: boolean;
+}
 
 export interface Job {
   id: string;
@@ -11,8 +24,14 @@ export interface Job {
   remote: boolean;
   level: 'internship' | 'entry' | 'mid' | 'senior';
   salaryRange?: string;
-  /** Canonical skill slugs — must match @/lib/profile/skills. */
+  /**
+   * Every extracted skill with its weight. This is what @/lib/jobs/match
+   * scores against — the arrays below are convenience views over it.
+   */
+  skills: JobSkillWeight[];
+  /** Slugs only, required ones. Derived from `skills`. */
   requiredSkills: string[];
+  /** Slugs only, the rest. Derived from `skills`. */
   niceToHaveSkills: string[];
   description: string;
   url?: string;
