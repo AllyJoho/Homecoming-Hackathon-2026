@@ -1,13 +1,14 @@
 // @/components/quiz/ResultSummary.tsx
-// The score screen: percentage, the level it earned, and a per-question review.
+// The score screen: percentage, the certificate level it earned (if any), and
+// a per-question review.
 //
-// There is no pass/fail — every completed quiz earns a certificate, and the
-// level is the outcome. The explanations come from `result.graded` (built
+// A certificate needs 8 of 15 correct; the levels and cutoffs live in
+// @/lib/quiz/levels. The explanations come from `result.graded` (built
 // server-side), not from `quiz.questions`, which has them stripped.
 
 import Link from 'next/link';
 import type { PublicQuiz, QuizResult } from '@/types/quiz';
-import { LEVEL_TONE, nextLevelThreshold } from '@/lib/quiz/levels';
+import { LEVEL_TONE, levelMinPercent, nextLevel } from '@/lib/quiz/levels';
 import { Card, Tag } from '@/components/ui';
 import { FeedbackPanel } from '@/components/quiz/FeedbackPanel';
 import { CodeBlock } from '@/components/quiz/CodeBlock';
@@ -27,12 +28,21 @@ export function ResultSummary({
   attemptId,
   certificateSlug,
 }: ResultSummaryProps) {
-  const next = nextLevelThreshold(result.score);
+  const next = nextLevel(result.pointsEarned, result.pointsPossible);
   const missedCount = result.graded.filter((graded) => !graded.correct).length;
 
   return (
     <div className="flex flex-col gap-6">
-      <Card title={quiz.title} action={<Tag tone={LEVEL_TONE[result.level]}>{result.level}</Tag>}>
+      <Card
+        title={quiz.title}
+        action={
+          result.level ? (
+            <Tag tone={LEVEL_TONE[result.level]}>{result.level}</Tag>
+          ) : (
+            <Tag tone="warning">No certificate</Tag>
+          )
+        }
+      >
         <p className="text-4xl font-semibold tabular-nums text-zinc-900 dark:text-zinc-50">
           {result.score}%
         </p>
@@ -40,24 +50,31 @@ export function ResultSummary({
           {result.pointsEarned} of {result.pointsPossible} points
         </p>
 
-        <p className="mt-4 text-sm text-zinc-700 dark:text-zinc-300">
-          You earned a <strong>{result.level}</strong> certificate.{' '}
-          {certificateSlug && (
-            <Link
-              href={`/certificates/${certificateSlug}`}
-              className="font-medium underline underline-offset-4"
-            >
-              View it
-            </Link>
-          )}
-        </p>
+        {result.level ? (
+          <p className="mt-4 text-sm text-zinc-700 dark:text-zinc-300">
+            You earned a <strong>{result.level}</strong> certificate.{' '}
+            {certificateSlug && (
+              <Link
+                href={`/certificates/${certificateSlug}`}
+                className="font-medium underline underline-offset-4"
+              >
+                View it
+              </Link>
+            )}
+          </p>
+        ) : (
+          <p className="mt-4 text-sm text-zinc-700 dark:text-zinc-300">
+            No certificate this time. Review the explanations below, then try again.
+          </p>
+        )}
 
         {/* A retake keeps the better certificate, so there's no downside to
-            pointing at the next level up. */}
+            pointing at the next level up. On an unweighted quiz a point is
+            one question. */}
         {next && (
           <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-            {next.min - result.score} more point{next.min - result.score === 1 ? '' : 's'} would
-            have reached <strong>{next.level}</strong>.{' '}
+            {next.pointsNeeded} more correct answer{next.pointsNeeded === 1 ? '' : 's'} would have
+            earned <strong>{next.level}</strong> ({levelMinPercent(next.level)}%).{' '}
             <Link href={`/quizzes/${quiz.id}`} className="font-medium underline underline-offset-4">
               Retake the quiz
             </Link>

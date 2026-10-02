@@ -1,5 +1,5 @@
 // @/app/(main)/quizzes/[quizId]/results/page.tsx
-// Score, pass/fail, and what the certificate (if any) was.
+// Score, certificate level (if any), and the per-question review.
 //
 // The attempt id arrives as ?attempt=… and the result is re-graded from the
 // stored answer sheet rather than passed through the URL. That's why

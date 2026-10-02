@@ -177,10 +177,6 @@ will have a database that silently disagrees with it.
   verification. It exists so the rest of the app can be written against a real
   session API. Swap the three cookie functions for a provider before this is
   used by anyone outside the demo.
-- **Level cutoffs are provisional.** `lib/quiz/levels.ts` maps a score to
-  Beginner / Intermediate / Proficient / Advanced at 0 / 60 / 75 / 90. The
-  README still lists the cutoffs as an open question; they're isolated in that
-  one array so settling it is a one-line change.
 - **`Question.reviewed` defaults to `false`** in the schema ("only reviewed
   ones count for certification"), but `prisma/seed.ts` sets it `true` for
   authored questions. Nothing reads the flag yet — it's there for a future

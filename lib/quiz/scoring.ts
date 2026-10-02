@@ -1,7 +1,7 @@
 // @/lib/quiz/scoring.ts
-// Turns per-question grades into a score and a proficiency level. Separate
-// from grading.ts because the level bands are a product decision that will get
-// argued about — they live in ./levels so they're changeable in one place.
+// Turns per-question grades into a score and the certificate level it earns
+// (or none). Separate from grading.ts because the level bands are a product
+// decision — they live in ./levels so they're changeable in one place.
 
 import type { AnswerSheet, Quiz, QuizResult } from '@/types/quiz';
 import { gradeQuestion } from './grading';
@@ -23,7 +23,7 @@ export function scoreQuiz(quiz: Quiz, answers: AnswerSheet): QuizResult {
   return {
     quizId: quiz.id,
     score,
-    level: levelFor(score),
+    level: levelFor(pointsEarned, pointsPossible),
     pointsEarned,
     pointsPossible,
     graded,
