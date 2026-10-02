@@ -2,16 +2,17 @@
 // The question-type → component registry, and the props contract every
 // question component shares.
 //
-// This file plus @/lib/quiz/grading are the two places a new question type
-// touches: add the variant to `Question` in @/types/quiz, add a grader, add a
-// component here. `satisfies` below makes the registry fail to compile if a
-// type has no component.
+// Registering a component here is one step of adding a question type — the
+// full checklist is in the README under Quiz Formats. `satisfies` below makes
+// the registry fail to compile if a type has no component.
 
 import type { ComponentType } from 'react';
 import type { Answer, PublicQuestion, QuestionType } from '@/types/quiz';
 
+import { FindTheBug } from './FindTheBug';
 import { MultiSelect } from './MultiSelect';
 import { MultipleChoice } from './MultipleChoice';
+import { OrderLines } from './OrderLines';
 import { ShortAnswer } from './ShortAnswer';
 import { TrueFalse } from './TrueFalse';
 
@@ -35,6 +36,8 @@ export const QUESTION_COMPONENTS = {
   multi_select: MultiSelect,
   true_false: TrueFalse,
   short_answer: ShortAnswer,
+  find_the_bug: FindTheBug,
+  order_lines: OrderLines,
 } satisfies { [T in QuestionType]: ComponentType<QuestionProps<T>> };
 
 /** Props shape after the registry lookup collapses the per-type generics. */

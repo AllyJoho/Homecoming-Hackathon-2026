@@ -178,16 +178,24 @@ model Question {
   difficulty  String? // "BEGINNER" | "INTERMEDIATE" | "ADVANCED"
   reviewed    Boolean      @default(false) // only reviewed ones count for certification
 
+  // Optional snippet rendered under the prompt, for any question type. Both
+  // set or both null — queries.ts only rebuilds `code` when `code` is present.
+  code         String?
+  codeLanguage String? // Prism language id: "javascript", "sql", "python", …
+
   // The answer key. Which columns are populated depends on `type`:
   //   MULTIPLE_CHOICE → options + correctOptionId
   //   MULTI_SELECT    → options + correctOptionIds
   //   TRUE_FALSE      → correctAnswer
   //   SHORT_ANSWER    → acceptedAnswers
-  options          Json? // [{ id, text }] — the choices shown to the user
+  //   FIND_THE_BUG    → code + bugLines
+  //   ORDER_LINES     → options, stored in the CORRECT order (that's the key)
+  options          Json? // [{ id, text }] — the choices (or lines) shown to the user
   correctOptionId  String?
   correctOptionIds String[]
   correctAnswer    Boolean?
   acceptedAnswers  String[]
+  bugLines         Int[] // 1-based line numbers into `code`
 
   @@index([quizId, order])
   @@index([skillId, difficulty])
@@ -207,6 +215,8 @@ enum QuestionType {
   MULTI_SELECT
   TRUE_FALSE
   SHORT_ANSWER
+  FIND_THE_BUG
+  ORDER_LINES
 }
 
 // ──────────────────────────────────────────────

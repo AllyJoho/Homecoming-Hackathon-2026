@@ -8,6 +8,7 @@
     {
       "id": "js-1",
       "type": "multiple_choice",
+      "difficulty": "BEGINNER",
       "prompt": "What does `typeof null` evaluate to?",
       "options": [
         {
@@ -32,32 +33,22 @@
     },
     {
       "id": "js-2",
-      "type": "multiple_choice",
-      "prompt": "Which array method returns a new array rather than mutating the original?",
-      "options": [
-        {
-          "id": "a",
-          "text": "push()"
-        },
-        {
-          "id": "b",
-          "text": "sort()"
-        },
-        {
-          "id": "c",
-          "text": "map()"
-        },
-        {
-          "id": "d",
-          "text": "splice()"
-        }
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "topScores should return the three highest scores without changing the caller's array — but afterwards scores[0] is 97. Click the buggy line.",
+      "code": {
+        "language": "javascript",
+        "source": "function topScores(scores) {\n  const sorted = scores.sort((a, b) => b - a);\n  return sorted.slice(0, 3);\n}\n\nconst scores = [42, 97, 15, 88];\nconst top = topScores(scores);\nconsole.log(scores[0]); // expected 42, got 97\n"
+      },
+      "bugLines": [
+        2
       ],
-      "correctOptionId": "c",
-      "explanation": "map() builds a new array. push, sort, and splice all mutate in place."
+      "explanation": "sort() sorts in place and returns the same array, so the caller's scores gets reordered. Copy first — [...scores].sort(...) — or use scores.toSorted(...)."
     },
     {
       "id": "js-3",
       "type": "true_false",
+      "difficulty": "BEGINNER",
       "prompt": "`const` prevents the contents of an object from being changed.",
       "correctAnswer": false,
       "explanation": "const binds the variable, not the value — you can still mutate the object it points at."
@@ -65,6 +56,7 @@
     {
       "id": "js-4",
       "type": "multi_select",
+      "difficulty": "BEGINNER",
       "prompt": "Which of these values are falsy in JavaScript? Select all that apply.",
       "options": [
         {
@@ -94,6 +86,7 @@
     {
       "id": "js-5",
       "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
       "prompt": "What does an `async` function always return?",
       "options": [
         {
@@ -118,91 +111,111 @@
     },
     {
       "id": "js-6",
-      "type": "short_answer",
-      "prompt": "Which keyword declares a block-scoped variable that can be reassigned?",
-      "acceptedAnswers": [
-        "let"
+      "type": "order_lines",
+      "difficulty": "BEGINNER",
+      "prompt": "Put the lines in order so activeEmails returns the emails of active users only.",
+      "lines": [
+        {
+          "id": "l1",
+          "text": "function activeEmails(users) {"
+        },
+        {
+          "id": "l2",
+          "text": "  return users"
+        },
+        {
+          "id": "l3",
+          "text": "    .filter((u) => u.active)"
+        },
+        {
+          "id": "l4",
+          "text": "    .map((u) => u.email);"
+        },
+        {
+          "id": "l5",
+          "text": "}"
+        }
       ],
-      "explanation": "`let` is block-scoped and reassignable; `var` is function-scoped; `const` can't be reassigned."
+      "explanation": "filter has to come before map: once you've mapped to email strings, there's no `active` field left to filter on."
     },
     {
       "id": "js-7",
       "type": "multiple_choice",
-      "prompt": "What is the result of `\"5\" + 3` in JavaScript?",
+      "difficulty": "BEGINNER",
+      "prompt": "What does this log?",
+      "code": {
+        "language": "javascript",
+        "source": "const total = \"5\" + 3;\nconst diff = \"5\" - 3;\n\nconsole.log(total, diff);\n"
+      },
       "options": [
         {
           "id": "a",
-          "text": "8"
+          "text": "8 2"
         },
         {
           "id": "b",
-          "text": "\"53\""
+          "text": "\"53\" 2"
         },
         {
           "id": "c",
-          "text": "NaN"
+          "text": "\"53\" NaN"
         },
         {
           "id": "d",
-          "text": "A TypeError"
+          "text": "8 \"2\""
         }
       ],
       "correctOptionId": "b",
-      "explanation": "With a string operand, + concatenates. `\"5\" - 3` would coerce to a number and give 2."
+      "explanation": "With a string operand, + concatenates, so \"5\" + 3 is \"53\". Minus has no string meaning, so \"5\" - 3 coerces to numbers and gives 2."
     },
     {
       "id": "js-8",
       "type": "multiple_choice",
-      "prompt": "Which comparison returns `true`?",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "What does this log, in order?",
+      "code": {
+        "language": "javascript",
+        "source": "console.log(0 == \"\");\nconsole.log(0 === \"\");\nconsole.log(null == undefined);\n"
+      },
       "options": [
         {
           "id": "a",
-          "text": "0 === \"0\""
+          "text": "true false true"
         },
         {
           "id": "b",
-          "text": "0 == \"0\""
+          "text": "false false true"
         },
         {
           "id": "c",
-          "text": "NaN === NaN"
+          "text": "true false false"
         },
         {
           "id": "d",
-          "text": "null === undefined"
+          "text": "false false false"
         }
       ],
-      "correctOptionId": "b",
-      "explanation": "== coerces the string to a number, so 0 == \"0\". === doesn't coerce, and NaN is never equal to itself."
+      "correctOptionId": "a",
+      "explanation": "== coerces: \"\" becomes 0, so 0 == \"\" is true. === never coerces, so a number and a string are never equal. null == undefined is a special case that is true (but null === undefined is false)."
     },
     {
       "id": "js-9",
-      "type": "multiple_choice",
-      "prompt": "Which array method gives you a single accumulated value from all elements?",
-      "options": [
-        {
-          "id": "a",
-          "text": "filter()"
-        },
-        {
-          "id": "b",
-          "text": "forEach()"
-        },
-        {
-          "id": "c",
-          "text": "reduce()"
-        },
-        {
-          "id": "d",
-          "text": "find()"
-        }
+      "type": "find_the_bug",
+      "difficulty": "ADVANCED",
+      "prompt": "cartTotal should return 30, but it returns \"[object Object]20\". Click the buggy line.",
+      "code": {
+        "language": "javascript",
+        "source": "const items = [\n  { price: 10, qty: 1 },\n  { price: 5, qty: 4 },\n];\n\nfunction cartTotal(items) {\n  return items.reduce((sum, item) => sum + item.price * item.qty);\n}\n\nconsole.log(cartTotal(items));\n"
+      },
+      "bugLines": [
+        7
       ],
-      "correctOptionId": "c",
-      "explanation": "reduce() folds the array into one value using an accumulator."
+      "explanation": "With no initial value, reduce uses the first ITEM as the starting sum — an object — and object + number concatenates as strings. Pass a starting value: reduce((sum, item) => ..., 0)."
     },
     {
       "id": "js-10",
       "type": "true_false",
+      "difficulty": "INTERMEDIATE",
       "prompt": "An arrow function has its own `this` binding.",
       "correctAnswer": false,
       "explanation": "Arrow functions inherit `this` from the enclosing scope — that's the main reason to use one in a callback."
@@ -210,6 +223,7 @@
     {
       "id": "js-11",
       "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
       "prompt": "Which of these create a new array or object rather than modifying the original? Select all that apply.",
       "options": [
         {
@@ -239,88 +253,113 @@
     {
       "id": "js-12",
       "type": "multiple_choice",
-      "prompt": "What does `await` do inside an async function?",
+      "difficulty": "ADVANCED",
+      "prompt": "In what order are the letters logged?",
+      "code": {
+        "language": "javascript",
+        "source": "console.log(\"A\");\n\nsetTimeout(() => console.log(\"B\"), 0);\n\nPromise.resolve().then(() => console.log(\"C\"));\n\nconsole.log(\"D\");\n"
+      },
       "options": [
         {
           "id": "a",
-          "text": "Blocks the whole thread until the Promise settles"
+          "text": "A B C D"
         },
         {
           "id": "b",
-          "text": "Pauses that function until the Promise settles, letting other code run"
+          "text": "A D B C"
         },
         {
           "id": "c",
-          "text": "Converts a Promise into a callback"
+          "text": "A D C B"
         },
         {
           "id": "d",
-          "text": "Retries the Promise until it resolves"
+          "text": "A C D B"
         }
       ],
-      "correctOptionId": "b",
-      "explanation": "await suspends only the async function. The event loop keeps running everything else."
+      "correctOptionId": "c",
+      "explanation": "Synchronous code runs first (A, D). Then the microtask queue drains — promise callbacks like C — before the next macrotask, which is the setTimeout callback B. A 0ms timeout still waits its turn."
     },
     {
       "id": "js-13",
-      "type": "short_answer",
-      "prompt": "What method turns a JSON string into a JavaScript object? (Give the full call, e.g. Thing.method)",
-      "acceptedAnswers": [
-        "JSON.parse",
-        "JSON.parse()",
-        "parse"
+      "type": "order_lines",
+      "difficulty": "ADVANCED",
+      "prompt": "Put the lines in order so getJson throws on an HTTP error and otherwise returns the parsed body.",
+      "lines": [
+        {
+          "id": "l1",
+          "text": "async function getJson(url) {"
+        },
+        {
+          "id": "l2",
+          "text": "  const res = await fetch(url);"
+        },
+        {
+          "id": "l3",
+          "text": "  if (!res.ok) {"
+        },
+        {
+          "id": "l4",
+          "text": "    throw new Error(`HTTP ${res.status}`);"
+        },
+        {
+          "id": "l5",
+          "text": "  }"
+        },
+        {
+          "id": "l6",
+          "text": "  return res.json();"
+        },
+        {
+          "id": "l7",
+          "text": "}"
+        }
       ],
-      "explanation": "JSON.parse() reads a string into a value; JSON.stringify() goes the other way."
+      "explanation": "fetch only rejects on network failure — a 404 or 500 still resolves. So you check res.ok yourself, before parsing, and throw if it's false."
     },
     {
       "id": "js-14",
       "type": "multiple_choice",
-      "prompt": "What does `arr.find(fn)` return when nothing matches?",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "What happens when this runs?",
+      "code": {
+        "language": "javascript",
+        "source": "const users = [\n  { id: 1, name: \"Ana\" },\n  { id: 2, name: \"Ben\" },\n];\n\nconst user = users.find((u) => u.id === 3);\nconsole.log(user.name);\n"
+      },
       "options": [
         {
           "id": "a",
-          "text": "undefined"
+          "text": "It logs undefined"
         },
         {
           "id": "b",
-          "text": "null"
+          "text": "It logs null"
         },
         {
           "id": "c",
-          "text": "An empty array"
+          "text": "It throws a TypeError"
         },
         {
           "id": "d",
-          "text": "-1"
+          "text": "It logs an empty string"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "find() returns undefined on no match. findIndex() is the one that returns -1."
+      "correctOptionId": "c",
+      "explanation": "find() returns undefined when nothing matches, and reading .name off undefined throws \"Cannot read properties of undefined\". Guard with user?.name or check the result first."
     },
     {
       "id": "js-15",
-      "type": "multiple_choice",
-      "prompt": "What is the `?.` operator called, and what does it do?",
-      "options": [
-        {
-          "id": "a",
-          "text": "Ternary — picks between two values"
-        },
-        {
-          "id": "b",
-          "text": "Optional chaining — short-circuits to undefined if the left side is null or undefined"
-        },
-        {
-          "id": "c",
-          "text": "Nullish coalescing — supplies a default value"
-        },
-        {
-          "id": "d",
-          "text": "Non-null assertion — tells the compiler a value exists"
-        }
+      "type": "find_the_bug",
+      "difficulty": "ADVANCED",
+      "prompt": "loadUserName always returns undefined, even for users that exist. Click the buggy line.",
+      "code": {
+        "language": "javascript",
+        "source": "async function loadUserName(id) {\n  const res = await fetch(`/api/users/${id}`);\n  const user = res.json();\n  return user.name;\n}\n"
+      },
+      "bugLines": [
+        3
       ],
-      "correctOptionId": "b",
-      "explanation": "`a?.b` gives undefined instead of throwing when `a` is null or undefined. `??` is nullish coalescing."
+      "explanation": "res.json() returns a Promise, not the parsed object. Without await, user is a Promise and user.name is undefined. Fix: const user = await res.json();"
     }
   ]
 }

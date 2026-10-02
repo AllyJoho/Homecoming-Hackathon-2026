@@ -8,56 +8,51 @@
     {
       "id": "sql-1",
       "type": "multiple_choice",
-      "prompt": "Which join returns every row from the left table, even with no match on the right?",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "customers has 3 rows (Ana, Ben, Cy). orders has 2 rows for Ana and 1 for Ben. How many rows does this return?",
+      "code": {
+        "language": "sql",
+        "source": "SELECT c.name, o.id\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id;\n"
+      },
       "options": [
         {
           "id": "a",
-          "text": "INNER JOIN"
+          "text": "2"
         },
         {
           "id": "b",
-          "text": "LEFT JOIN"
+          "text": "3"
         },
         {
           "id": "c",
-          "text": "CROSS JOIN"
+          "text": "4"
         },
         {
           "id": "d",
-          "text": "RIGHT JOIN"
+          "text": "6"
         }
       ],
-      "correctOptionId": "b",
-      "explanation": "LEFT JOIN keeps all left rows, filling unmatched right columns with NULL."
+      "correctOptionId": "c",
+      "explanation": "LEFT JOIN keeps every customer. Ana matches twice (2 rows), Ben once (1 row), and Cy has no orders but still appears once with o.id = NULL: 4 rows. An INNER JOIN would drop Cy and return 3."
     },
     {
       "id": "sql-2",
-      "type": "multiple_choice",
-      "prompt": "You want to filter on an aggregate like COUNT(*). Which clause do you use?",
-      "options": [
-        {
-          "id": "a",
-          "text": "WHERE"
-        },
-        {
-          "id": "b",
-          "text": "HAVING"
-        },
-        {
-          "id": "c",
-          "text": "ORDER BY"
-        },
-        {
-          "id": "d",
-          "text": "LIMIT"
-        }
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "This should list customers with more than 5 orders, but Postgres rejects it. Click the buggy line.",
+      "code": {
+        "language": "sql",
+        "source": "SELECT customer_id, COUNT(*) AS order_count\nFROM orders\nWHERE COUNT(*) > 5\nGROUP BY customer_id;\n"
+      },
+      "bugLines": [
+        3
       ],
-      "correctOptionId": "b",
-      "explanation": "WHERE filters rows before grouping; HAVING filters groups after aggregation."
+      "explanation": "WHERE filters rows before grouping, so aggregates like COUNT(*) don't exist yet. Filter groups with HAVING, after GROUP BY: HAVING COUNT(*) > 5."
     },
     {
       "id": "sql-3",
       "type": "true_false",
+      "difficulty": "INTERMEDIATE",
       "prompt": "`SELECT COUNT(*)` and `SELECT COUNT(column)` always return the same number.",
       "correctAnswer": false,
       "explanation": "COUNT(column) skips NULLs in that column; COUNT(*) counts every row."
@@ -65,6 +60,7 @@
     {
       "id": "sql-4",
       "type": "multi_select",
+      "difficulty": "BEGINNER",
       "prompt": "Which statements modify data rather than schema? Select all that apply.",
       "options": [
         {
@@ -93,42 +89,52 @@
     },
     {
       "id": "sql-5",
-      "type": "short_answer",
-      "prompt": "Which keyword removes duplicate rows from a SELECT's results?",
-      "acceptedAnswers": [
-        "DISTINCT",
-        "distinct"
-      ],
-      "explanation": "SELECT DISTINCT dedupes on the full selected row."
-    },
-    {
-      "id": "sql-6",
       "type": "multiple_choice",
-      "prompt": "Which clause runs LAST in a SELECT query?",
+      "difficulty": "ADVANCED",
+      "prompt": "customers.city holds 5 rows: 'Provo', 'Provo', 'Orem', NULL, NULL. How many rows does this return?",
+      "code": {
+        "language": "sql",
+        "source": "SELECT DISTINCT city\nFROM customers;\n"
+      },
       "options": [
         {
           "id": "a",
-          "text": "WHERE"
+          "text": "2"
         },
         {
           "id": "b",
-          "text": "GROUP BY"
+          "text": "3"
         },
         {
           "id": "c",
-          "text": "ORDER BY"
+          "text": "4"
         },
         {
           "id": "d",
-          "text": "FROM"
+          "text": "5"
         }
       ],
-      "correctOptionId": "c",
-      "explanation": "Logical order is FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT."
+      "correctOptionId": "b",
+      "explanation": "DISTINCT treats NULLs as duplicates of each other, so you get Provo, Orem, and one NULL: 3 rows. (COUNT(DISTINCT city), by contrast, ignores NULLs and would give 2.)"
+    },
+    {
+      "id": "sql-6",
+      "type": "find_the_bug",
+      "difficulty": "ADVANCED",
+      "prompt": "This fails with: column \"total\" does not exist. Click the buggy line.",
+      "code": {
+        "language": "sql",
+        "source": "SELECT name, price * qty AS total\nFROM order_items\nWHERE total > 100;\n"
+      },
+      "bugLines": [
+        3
+      ],
+      "explanation": "WHERE runs before SELECT, so the alias `total` hasn't been defined yet. Repeat the expression (WHERE price * qty > 100) or wrap the query in a subquery."
     },
     {
       "id": "sql-7",
       "type": "multiple_choice",
+      "difficulty": "BEGINNER",
       "prompt": "What does a PRIMARY KEY guarantee about a column?",
       "options": [
         {
@@ -153,14 +159,38 @@
     },
     {
       "id": "sql-8",
-      "type": "true_false",
-      "prompt": "`WHERE column = NULL` finds rows where that column is NULL.",
-      "correctAnswer": false,
-      "explanation": "NULL isn't equal to anything, including itself. You need `IS NULL`."
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "orders has 5 rows, and 2 of them have shipped_at set to NULL. What does this query return?",
+      "code": {
+        "language": "sql",
+        "source": "SELECT COUNT(*)\nFROM orders\nWHERE shipped_at = NULL;\n"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "2"
+        },
+        {
+          "id": "b",
+          "text": "0"
+        },
+        {
+          "id": "c",
+          "text": "3"
+        },
+        {
+          "id": "d",
+          "text": "A syntax error"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "NULL isn't equal to anything, including itself — `shipped_at = NULL` is never true, so no rows match. It's valid SQL, which is what makes it a sneaky bug. Use `WHERE shipped_at IS NULL` to get 2."
     },
     {
       "id": "sql-9",
       "type": "multiple_choice",
+      "difficulty": "BEGINNER",
       "prompt": "What does a FOREIGN KEY do?",
       "options": [
         {
@@ -186,6 +216,7 @@
     {
       "id": "sql-10",
       "type": "multi_select",
+      "difficulty": "BEGINNER",
       "prompt": "Which of these are aggregate functions? Select all that apply.",
       "options": [
         {
@@ -214,67 +245,89 @@
     },
     {
       "id": "sql-11",
-      "type": "multiple_choice",
-      "prompt": "You run `UPDATE users SET active = false` with no WHERE clause. What happens?",
-      "options": [
-        {
-          "id": "a",
-          "text": "Nothing — the database rejects it"
-        },
-        {
-          "id": "b",
-          "text": "Only the first row is updated"
-        },
-        {
-          "id": "c",
-          "text": "Every row in the table is updated"
-        },
-        {
-          "id": "d",
-          "text": "It errors asking for a WHERE clause"
-        }
+      "type": "find_the_bug",
+      "difficulty": "ADVANCED",
+      "prompt": "Run against production, this deactivated EVERY user instead of one. Click the buggy line.",
+      "code": {
+        "language": "sql",
+        "source": "-- User 42 asked to close their account\nUPDATE users\nSET active = false;\nWHERE id = 42;\n"
+      },
+      "bugLines": [
+        3
       ],
-      "correctOptionId": "c",
-      "explanation": "No WHERE means every row. This is why you run the SELECT first."
+      "explanation": "The semicolon on line 3 ends the statement, so the UPDATE runs with no WHERE and hits every row. Line 4 then fails as a syntax error on its own — after the damage is done. Run risky updates inside a transaction and check the row count before COMMIT."
     },
     {
       "id": "sql-12",
-      "type": "short_answer",
-      "prompt": "Which keyword limits how many rows a query returns, in Postgres?",
-      "acceptedAnswers": [
-        "LIMIT",
-        "limit"
+      "type": "order_lines",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Put the clauses in the order SQL requires: the top 10 customers by paid spend, counting only those who spent over 100.",
+      "lines": [
+        {
+          "id": "l1",
+          "text": "SELECT customer_id, SUM(total) AS spent"
+        },
+        {
+          "id": "l2",
+          "text": "FROM orders"
+        },
+        {
+          "id": "l3",
+          "text": "WHERE status = 'paid'"
+        },
+        {
+          "id": "l4",
+          "text": "GROUP BY customer_id"
+        },
+        {
+          "id": "l5",
+          "text": "HAVING SUM(total) > 100"
+        },
+        {
+          "id": "l6",
+          "text": "ORDER BY spent DESC"
+        },
+        {
+          "id": "l7",
+          "text": "LIMIT 10;"
+        }
       ],
-      "explanation": "Postgres and MySQL use LIMIT; SQL Server uses TOP."
+      "explanation": "Written order is SELECT → FROM → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT. (It runs in a different order — FROM first, SELECT near the end — which is why WHERE can't see SELECT aliases but ORDER BY can.)"
     },
     {
       "id": "sql-13",
       "type": "multiple_choice",
-      "prompt": "Which operator matches a pattern, as in finding names that start with \"Jo\"?",
+      "difficulty": "ADVANCED",
+      "prompt": "people.name holds: 'Jo', 'John', 'joanna', 'Bjorn'. What does this return in Postgres?",
+      "code": {
+        "language": "sql",
+        "source": "SELECT COUNT(*)\nFROM people\nWHERE name LIKE 'Jo%';\n"
+      },
       "options": [
         {
           "id": "a",
-          "text": "MATCHES"
+          "text": "1"
         },
         {
           "id": "b",
-          "text": "LIKE"
+          "text": "2"
         },
         {
           "id": "c",
-          "text": "CONTAINS"
+          "text": "3"
         },
         {
           "id": "d",
-          "text": "REGEX"
+          "text": "4"
         }
       ],
       "correctOptionId": "b",
-      "explanation": "`WHERE name LIKE 'Jo%'` — % matches any sequence of characters, _ matches exactly one."
+      "explanation": "% matches zero or more characters, so 'Jo' itself matches, as does 'John'. LIKE is case-sensitive in Postgres, so 'joanna' doesn't match (ILIKE would), and 'Bjorn' doesn't start with Jo."
     },
     {
       "id": "sql-14",
       "type": "multiple_choice",
+      "difficulty": "BEGINNER",
       "prompt": "What is an index for?",
       "options": [
         {
@@ -300,6 +353,7 @@
     {
       "id": "sql-15",
       "type": "true_false",
+      "difficulty": "INTERMEDIATE",
       "prompt": "A transaction that is rolled back leaves no trace of its changes in the table.",
       "correctAnswer": true,
       "explanation": "ROLLBACK undoes everything since BEGIN — that's the atomicity guarantee."
