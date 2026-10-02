@@ -55,7 +55,7 @@ export function SkillCard({
 
   return (
     <article
-      className={`flex flex-col gap-3 rounded-xl border border-l-4 border-zinc-200 bg-white p-4 transition-colors hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-700 ${color.stripe}`}
+      className={`flex flex-col gap-3 rounded-xl border border-l-4 border-zinc-200 bg-white p-4 transition-colors hover:border-zinc-300 dark:border-surface-border dark:bg-surface dark:hover:border-zinc-700 ${color.stripe}`}
     >
       <div className="flex items-start justify-between gap-2">
         <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">{skill.name}</h3>

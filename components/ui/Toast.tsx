@@ -67,7 +67,7 @@ export function Toast({ type, title, message, onClose, duration = 5000 }: ToastP
     <div
       role="status"
       aria-live="polite"
-      className={`flex w-full max-w-sm items-start gap-3 rounded-lg border border-zinc-200 border-l-4 bg-white px-4 py-3 shadow-lg transition-all duration-300 dark:border-zinc-800 dark:bg-zinc-900 ${border} ${
+      className={`flex w-full max-w-sm items-start gap-3 rounded-lg border border-zinc-200 border-l-4 bg-white px-4 py-3 shadow-lg transition-all duration-300 dark:border-surface-border dark:bg-surface-raised ${border} ${
         visible ? 'translate-y-0 opacity-100' : 'translate-y-1 opacity-0'
       }`}
     >

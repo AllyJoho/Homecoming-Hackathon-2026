@@ -27,7 +27,7 @@ export function CountBadge({
 }: CountBadgeProps) {
   return (
     <span
-      className={`inline-flex items-center justify-center rounded-full font-bold ring-2 ring-white dark:ring-zinc-950 ${COUNT_BADGE_VARIANT_CLASSES[variant]} ${COUNT_BADGE_SIZE_CLASSES[size]} ${className}`.trim()}
+      className={`inline-flex items-center justify-center rounded-full font-bold ring-2 ring-white dark:ring-surface ${COUNT_BADGE_VARIANT_CLASSES[variant]} ${COUNT_BADGE_SIZE_CLASSES[size]} ${className}`.trim()}
     >
       {children}
     </span>

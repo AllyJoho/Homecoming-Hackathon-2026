@@ -102,7 +102,7 @@ export function QuizRunner({ quiz }: QuizRunnerProps) {
       <div className="flex items-center justify-between">
         <Button
           variant="secondary"
-          className="bg-white dark:bg-zinc-950"
+          className="bg-white dark:bg-surface"
           onClick={() => setCurrent((i) => Math.max(0, i - 1))}
           disabled={current === 0 || submitting}
         >

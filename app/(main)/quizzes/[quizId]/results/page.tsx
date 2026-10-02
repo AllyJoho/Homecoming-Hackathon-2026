@@ -4,7 +4,7 @@
 // The attempt id arrives as ?attempt=… and the result is re-graded from the
 // stored answer sheet rather than passed through the URL. That's why
 // QuizAttempt keeps `answers` as JSON: this page, and the AI feedback route
-// behind the Coaching card, both rebuild the grading from it.
+// behind each question's coach, both rebuild the grading from it.
 
 import { notFound } from 'next/navigation';
 import type { AnswerSheet } from '@/types/quiz';

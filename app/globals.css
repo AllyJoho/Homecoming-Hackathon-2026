@@ -15,21 +15,47 @@
      accent and is deliberately absent from the category map. */
   --background: #eef2ff;
   --foreground: #171717;
+
+  /* The elevation ladder: page behind, --surface for cards and inputs,
+     --surface-raised for anything stacked on a card (menus, modals, code
+     blocks, hover fills). Light mode's surfaces are both white — here the
+     page tint alone carries the depth and shadows do the stacking. */
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-border: #e4e4e7; /* zinc-200 */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* The same indigo as a whisper in a near-black, a shade under the zinc-950
-       that cards use — so the ordering (page behind, card in front) matches
-       light mode. At this darkness the separation is still mostly the border. */
-    --background: #0a0a12;
+    /* Dark mode is a SELECTED ladder, not a flip of the light one.
+
+       It used to be --background #0a0a12 against zinc-950 (#09090b) cards:
+       1.009:1 apart, which is no separation at all, and the card was in fact
+       marginally the DARKER of the two — the inverse of light mode, where the
+       card sits 1.118:1 above its page. So every panel was defined purely by
+       its border, which is the exact fault the light block above records
+       fixing, and the whole app read as one flat sheet of black.
+
+       These four steps restore the light-mode ordering and its felt depth:
+       page → surface is 1.133:1, surface → raised 1.153:1. Text holds at
+       15.6:1 (--foreground) and 6.4:1 (zinc-400), both well clear of AA.
+       The faint indigo cast of the original is kept in every step. */
+    --background: #13131a;
     --foreground: #fafafa; /* zinc-50 */
+    --surface: #1f1f29;
+    --surface-raised: #2a2a36;
+    --surface-border: #3a3a48;
   }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  /* Exposed as colours so the ladder is reachable as bg-surface /
+     border-surface-border rather than a hex repeated across 50 call sites. */
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-border: var(--surface-border);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -126,9 +152,10 @@ body {
 }
 
 /* ── Print ───────────────────────────────────────────────────────────────────
-   The resume preview is the only page meant to reach paper, and the browser's
-   print dialog is how it exports ("Save as PDF") — so these rules are the
-   export feature, not a nicety.
+   The resume preview is the only page meant to reach paper. The real export is
+   a generated PDF from /api/resume/pdf, so these rules are now a fallback for
+   anyone who hits Cmd+P instead — worth keeping, because that is a thing
+   people do, and an unstyled print of an app page looks broken.
 
    Site chrome is hidden here rather than with `print:hidden` on each
    component: that way adding a nav item or a footer link later can't

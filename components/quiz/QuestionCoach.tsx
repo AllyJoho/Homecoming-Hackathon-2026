@@ -143,7 +143,7 @@ export function QuestionCoach({
           ) : (
             <p
               key={i}
-              className="self-end rounded-lg bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-sm dark:bg-zinc-900 dark:text-zinc-300"
+              className="self-end rounded-lg bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-sm dark:bg-surface-raised dark:text-zinc-300"
             >
               {turn.content}
             </p>
@@ -169,7 +169,7 @@ export function QuestionCoach({
             maxLength={COACH_MAX_QUESTION_CHARS}
             placeholder="Ask a follow-up…"
             aria-label="Ask a follow-up about this question"
-            className="min-w-0 flex-1 rounded-full border border-zinc-300 bg-white px-3 py-1.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50"
+            className="min-w-0 flex-1 rounded-full border border-zinc-300 bg-white px-3 py-1.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:bg-surface dark:text-zinc-50"
           />
           <Button
             type="submit"

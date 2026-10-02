@@ -134,7 +134,7 @@ export function ExperienceEditor({ experiences }: ExperienceEditorProps) {
                   ) : (
                     <li
                       key={entry.id}
-                      className="rounded-lg border border-zinc-200 p-3 dark:border-zinc-800"
+                      className="rounded-lg border border-zinc-200 p-3 dark:border-surface-border"
                     >
                       <div className="flex flex-wrap items-start justify-between gap-2">
                         <div className="min-w-0">

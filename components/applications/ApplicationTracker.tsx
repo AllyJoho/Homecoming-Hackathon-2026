@@ -219,7 +219,7 @@ function ApplicationRow({
         value={application.status}
         disabled={pending}
         onChange={(event) => onStatusChange(event.target.value as ApplicationStatus)}
-        className="rounded-lg border border-zinc-200 bg-white px-2 py-1 text-xs outline-none focus:border-zinc-900 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950 dark:focus:border-zinc-50"
+        className="rounded-lg border border-zinc-200 bg-white px-2 py-1 text-xs outline-none focus:border-zinc-900 disabled:opacity-50 dark:border-surface-border dark:bg-surface dark:focus:border-zinc-50"
       >
         {APPLICATION_STATUSES.map((status) => (
           <option key={status} value={status}>

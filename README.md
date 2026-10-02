@@ -24,7 +24,7 @@ model on page load.
 | Feature | Where | What it does |
 | --- | --- | --- |
 | **Job ranking** | "Find my matches" on `/recommendations` | Scores the shortlisted listings against the profile, with reasons and missing skills |
-| **Quiz coaching** | "Explain what I missed" on a quiz result | Explains only the questions the student got wrong |
+| **Quiz coaching** | "Explain what I missed" under a question on a quiz result | Explains that one question, then answers follow-ups about it in a thread |
 
 `lib/ai/tasks.ts` is the inventory: every AI call site, which model serves it,
 what it costs, and what the student sees when it fails. The providers read

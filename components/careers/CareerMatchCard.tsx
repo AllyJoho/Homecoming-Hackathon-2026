@@ -145,7 +145,7 @@ export function CareerMatchCard({ matches, quizBySkill = {} }: CareerMatchCardPr
       )}
 
       {alternates.length > 0 && (
-        <div className="mt-5 border-t border-zinc-200 pt-4 dark:border-zinc-800">
+        <div className="mt-5 border-t border-zinc-200 pt-4 dark:border-surface-border">
           <p className="mb-2 text-xs font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
             Also close
           </p>
