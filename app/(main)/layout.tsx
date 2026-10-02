@@ -8,11 +8,13 @@
 import Link from 'next/link';
 import { requireSessionUser } from '@/lib/auth/session';
 import { APP_NAME } from '@/lib/appConfig';
+import { pageBody } from '@/components/ui';
 import { SignOutButton } from '@/components/auth/SignOutButton';
 
+// No Quizzes entry: every skill on the home screen carries its own quiz, so
+// that is the only way in. /quizzes still resolves for a direct link.
 const NAV = [
   { href: '/', label: 'Home' },
-  { href: '/quizzes', label: 'Quizzes' },
   { href: '/recommendations', label: 'Job matches' },
 ];
 
@@ -31,7 +33,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
+                  className="nav-link-hover text-sm text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
                 >
                   {item.label}
                 </Link>
@@ -45,7 +47,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
         </nav>
       </header>
 
-      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">{children}</main>
+      <main className={`flex-1 ${pageBody('wide')}`}>{children}</main>
     </>
   );
 }

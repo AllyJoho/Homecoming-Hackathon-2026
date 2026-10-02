@@ -14,14 +14,11 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Card } from '@/components/ui';
+import { Button, Card, TextField } from '@/components/ui';
 import { APP_NAME } from '@/lib/appConfig';
 import { demoLogin, signIn, signUp } from '@/lib/auth/client';
 
 type Mode = 'signin' | 'signup';
-
-const FIELD =
-  'rounded-lg border border-zinc-200 px-3 py-2 outline-none focus:border-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:focus:border-zinc-50';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -91,58 +88,47 @@ export default function LoginPage() {
       <Card title={mode === 'signup' ? 'Create an account' : 'Sign in'}>
         <form onSubmit={onSubmit} className="flex flex-col gap-3">
           {mode === 'signup' && (
-            <label className="flex flex-col gap-1 text-sm">
-              <span className="text-zinc-700 dark:text-zinc-300">Name</span>
-              <input
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-                placeholder="Optional — defaults to your email handle"
-                className={FIELD}
-              />
-            </label>
+            <TextField
+              label="Name"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              placeholder="Optional"
+              helper="Defaults to your email handle."
+            />
           )}
 
-          <label className="flex flex-col gap-1 text-sm">
-            <span className="text-zinc-700 dark:text-zinc-300">Email</span>
-            <input
-              type="email"
-              required
-              autoComplete="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="you@byu.edu"
-              className={FIELD}
-            />
-          </label>
+          <TextField
+            label="Email"
+            type="email"
+            required
+            autoComplete="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="you@byu.edu"
+          />
 
-          <label className="flex flex-col gap-1 text-sm">
-            <span className="text-zinc-700 dark:text-zinc-300">Password</span>
-            <input
-              type="password"
-              required
-              minLength={8}
-              autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="At least 8 characters"
-              className={FIELD}
-            />
-          </label>
+          <TextField
+            label="Password"
+            type="password"
+            required
+            minLength={8}
+            autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            placeholder="At least 8 characters"
+            // The form-level failure (bad credentials, email taken) belongs on
+            // the field the user would retype, not in a banner above the form.
+            error={error}
+          />
 
-          {error && (
-            <p role="alert" className="text-sm text-red-700 dark:text-red-400">
-              {error}
-            </p>
-          )}
-
-          <Button type="submit" size="lg" disabled={pending}>
-            {pending
-              ? mode === 'signup'
-                ? 'Creating account…'
-                : 'Signing in…'
-              : mode === 'signup'
-                ? 'Create account'
-                : 'Sign in'}
+          <Button
+            type="submit"
+            size="lg"
+            fullWidth
+            loading={pending}
+            loadingLabel={mode === 'signup' ? 'Creating account…' : 'Signing in…'}
+          >
+            {mode === 'signup' ? 'Create account' : 'Sign in'}
           </Button>
 
           <button
@@ -170,6 +156,9 @@ export default function LoginPage() {
                 key={user.email}
                 type="button"
                 variant="secondary"
+                fullWidth
+                icon="arrowRight"
+                iconPosition="right"
                 onClick={() => onDemo(user.email)}
                 disabled={pending}
               >
