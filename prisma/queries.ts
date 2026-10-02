@@ -6,6 +6,7 @@
 import type { AnswerSheet, Question, Quiz, QuizOption, QuizResult } from '@/types/quiz';
 import type { Certification, Profile, ProfileSkill } from '@/types/profile';
 import type { Job } from '@/types/job';
+import type { Career } from '@/types/career';
 import { Prisma } from '@/lib/generated/prisma/client';
 import { prisma } from '@/prisma/client';
 import { normalizeSkill, skillBySlug } from '@/lib/profile/skills';
@@ -21,17 +22,9 @@ export function getUserById(userId: string) {
   return prisma.user.findUnique({ where: { id: userId } });
 }
 
-/**
- * Hackathon-grade "login": first sight of an email creates the account. Swap
- * this for a real identity provider before anyone outside the demo uses it.
- */
-export function findOrCreateUserByEmail(email: string, name: string) {
-  return prisma.user.upsert({
-    where: { email: email.toLowerCase() },
-    update: {},
-    create: { email: email.toLowerCase(), name },
-  });
-}
+// Account creation goes through Better Auth (lib/auth/server.ts), which hashes
+// the password onto Account.password. There is deliberately no create-user
+// helper here: one would make it possible to mint a credential-less account.
 
 // ── Skills ───────────────────────────────────────────────────────────────────
 
@@ -349,6 +342,41 @@ export async function listQuizzes(): Promise<Quiz[]> {
 export async function loadQuiz(quizId: string): Promise<Quiz | null> {
   const row = await prisma.quiz.findUnique({ where: { id: quizId }, include: QUIZ_INCLUDE });
   return row ? toQuiz(row) : null;
+}
+
+// ── Careers ──────────────────────────────────────────────────────────────────
+
+const CAREER_INCLUDE = {
+  careerSkills: { include: { skill: { select: { slug: true, name: true } } } },
+} as const;
+
+/**
+ * Every career with its weighted skills, heaviest skill first.
+ *
+ * Unpaginated on purpose: it's 26 authored rows, and @/lib/careers/match wants
+ * all of them to rank a profile against the full set. The sort is done here
+ * rather than in the matcher so the "learn this next" ordering is already
+ * right wherever the rows land.
+ */
+export async function listCareers(): Promise<Career[]> {
+  const rows = await prisma.career.findMany({
+    include: CAREER_INCLUDE,
+    orderBy: { title: 'asc' },
+  });
+
+  return rows.map((row) => ({
+    slug: row.slug,
+    title: row.title,
+    field: row.field,
+    description: row.description ?? undefined,
+    skills: row.careerSkills
+      .map((careerSkill) => ({
+        slug: careerSkill.skill.slug,
+        name: careerSkill.skill.name,
+        weight: careerSkill.weight,
+      }))
+      .sort((a, b) => b.weight - a.weight),
+  }));
 }
 
 // ── Jobs ─────────────────────────────────────────────────────────────────────

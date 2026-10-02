@@ -40,6 +40,39 @@ echo 'ANTHROPIC_API_KEY=sk-ant-...' >> .env
 Without it the app runs fine — `/recommendations` reports that the key is
 missing instead of failing.
 
+## Authentication
+
+Better Auth (the same library the ECE purchasing app uses), with a Prisma
+adapter over Postgres. No Okta here — this is an MVP, so email + password is
+the credential — and no Redis, so sessions live in a `Session` table rather
+than in Better Auth's `secondaryStorage`.
+
+- Passwords are scrypt-hashed onto `Account.password`; `User` has no password
+  column. Account creation only ever happens through Better Auth.
+- The session cookie is signed, `httpOnly`, and expires after a week, with a
+  60s signed cookie cache so the common request is no database round trip.
+- `lib/auth/server.ts` is the single auth instance; `app/api/auth/[...all]`
+  re-exports its handlers. `lib/auth/session.ts` is what app code reads
+  (`getSessionUser`, `requireSessionUser`, `unauthorized`).
+- Route guards live in `app/(main)/layout.tsx` for pages and in each route
+  handler for APIs. Every one derives the user from the session, never from
+  the request body.
+
+### Demo sign-in
+
+The seeded accounts (`isDemo = true`) can be entered with one click from the
+login screen, which is the `demoLoginPlugin` in `lib/auth/demoLogin.ts` —
+purchasing's `devLogin` pattern. It is fenced twice: the plugin is only loaded
+when `NODE_ENV !== 'production'`, and the handler additionally refuses any
+account that isn't `isDemo`. They also have a real password, so the credential
+path can be exercised — the seed prints it when it runs.
+
+`BETTER_AUTH_SECRET` signs the cookie; generate one with
+`openssl rand -base64 32`. It's required in production and falls back to an
+insecure dev value locally. `BETTER_AUTH_URL` must match the origin the app is
+served from — Better Auth compares the request `Origin` against it for CSRF,
+so a mismatch makes sign-out and sign-up fail with `INVALID_ORIGIN`.
+
 ## Database scripts
 
 | Command | What it does |
