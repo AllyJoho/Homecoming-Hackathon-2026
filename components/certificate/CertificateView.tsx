@@ -39,10 +39,10 @@ export function CertificateView({
       <p className="text-xs font-medium uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400">
         Certificate of Completion
       </p>
-      <p className="text-3xl font-semibold text-zinc-900 dark:text-zinc-50">{holderName}</p>
+      <p className="font-display text-4xl font-semibold text-zinc-900 dark:text-zinc-50">{holderName}</p>
       <p className="text-sm text-zinc-600 dark:text-zinc-400">has demonstrated</p>
       {/* The level is the point of the certificate, so it outranks the title. */}
-      <p className="text-2xl font-semibold uppercase tracking-wide text-zinc-900 dark:text-zinc-50">
+      <p className="font-display text-2xl font-semibold uppercase tracking-wide text-zinc-900 dark:text-zinc-50">
         {level}
       </p>
       <p className="text-sm text-zinc-600 dark:text-zinc-400">proficiency in</p>
