@@ -3,6 +3,8 @@
 // @/lib/profile/buildProfile from the DB rows — nothing here is a Prisma type,
 // deliberately: the AI prompt should not shift because a column was renamed.
 
+import type { ProficiencyLevel } from '@/lib/quiz/levels';
+
 export interface Skill {
   /** Canonical slug, e.g. "javascript". */
   slug: string;
@@ -18,14 +20,18 @@ export type SkillSource = 'SELF_REPORTED' | 'QUIZ';
 
 export interface ProfileSkill extends Skill {
   source: SkillSource;
+  /** Set when the skill was earned by quiz — the level reached on it. */
+  level?: ProficiencyLevel;
 }
 
 export interface Certification {
   id: string;
   quizId: string;
   title: string;
-  /** Percentage scored on the passing attempt. */
+  /** Percentage scored on the attempt this certificate came from. */
   score: number;
+  /** The proficiency level printed on the certificate. */
+  level: ProficiencyLevel;
   issuedAt: string; // ISO — serializable straight into a client component
   shareSlug: string;
 }

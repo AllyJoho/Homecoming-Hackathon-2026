@@ -152,7 +152,6 @@ model Quiz {
   id               String @id // file stem in data/quizzes/, e.g. "sql"
   title            String
   description      String
-  passingScore     Int // percent needed to pass, 0-100
   timeLimitSeconds Int? // optional countdown; not enforced server-side
   skillId          String
   skill            Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
@@ -194,6 +193,15 @@ model Question {
   @@index([skillId, difficulty])
 }
 
+/// Mirrors the TS union in lib/quiz/levels.ts — the names must match exactly.
+/// A compile-time check in prisma/queries.ts fails the build if they drift.
+enum ProficiencyLevel {
+  Beginner
+  Intermediate
+  Proficient
+  Advanced
+}
+
 enum QuestionType {
   MULTIPLE_CHOICE
   MULTI_SELECT
@@ -215,9 +223,8 @@ model Attempt {
   // data/quizzes/. Null for an attempt generated from the Question bank.
   quizId  String?
 
-  level     String // tier attempted
+  level     ProficiencyLevel // derived from score — see lib/quiz/levels.ts
   score     Int // percent
-  passed    Boolean
   answers   Json? // per-question record, handy for review/analytics
   createdAt DateTime @default(now())
 
@@ -227,9 +234,10 @@ model Attempt {
   @@index([userId, quizId])
 }
 
-// One certification per user per skill: passing a higher tier upgrades the
-// existing row rather than minting a second certificate, so a profile reads as
-// one credential per skill.
+// One certification per user per skill, holding their best result: a retake
+// that scores higher upgrades the existing row rather than minting a second
+// certificate, so a profile reads as one credential per skill. There is no
+// pass/fail — every completed attempt earns a level.
 model Certification {
   id      String @id @default(cuid())
   userId  String
@@ -244,8 +252,8 @@ model Certification {
 
   quizId String? // authored quiz that earned it, when it came from one
   title  String // "JavaScript Fundamentals"
-  level  String // highest level passed
-  score  Int // percent on the passing attempt
+  level  ProficiencyLevel // the level printed on the certificate
+  score  Int // percent on the attempt that earned it
 
   // Public URL at /certificates/[certId]. Separate from `id` so ids stay
   // unguessable even once a certificate is shared.
@@ -253,7 +261,7 @@ model Certification {
 
   earnedAt DateTime @default(now())
 
-  @@unique([userId, skillId]) // upsert when they pass a higher tier
+  @@unique([userId, skillId]) // upsert when they beat their previous score
   @@index([userId])
 }
 

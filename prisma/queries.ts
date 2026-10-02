@@ -15,11 +15,16 @@ import type { Career } from '@/types/career';
 import { Prisma } from '@/lib/generated/prisma/client';
 import { prisma } from '@/prisma/client';
 import { normalizeSkill, skillBySlug } from '@/lib/profile/skills';
+import type { ProficiencyLevel as DbProficiencyLevel } from '@/lib/generated/prisma/enums';
+import type { ProficiencyLevel } from '@/lib/quiz/levels';
 
-// Authored JSON quizzes aren't tiered the way the Question bank is, so every
-// attempt from one is recorded at this single level. Replace this with a real
-// tier once quizzes carry a BEGINNER/INTERMEDIATE/ADVANCED label.
-const QUIZ_ATTEMPT_LEVEL = 'STANDARD';
+// The Prisma `ProficiencyLevel` enum and the TS union in lib/quiz/levels.ts are
+// two declarations of the same thing. These assignments fail to compile if
+// either side gains, loses, or renames a level — cheaper than a runtime check.
+type _LevelsMatchForward = ProficiencyLevel extends DbProficiencyLevel ? true : never;
+type _LevelsMatchBackward = DbProficiencyLevel extends ProficiencyLevel ? true : never;
+const _levelsAgree: [_LevelsMatchForward, _LevelsMatchBackward] = [true, true];
+void _levelsAgree;
 
 // ── Users ────────────────────────────────────────────────────────────────────
 
@@ -168,9 +173,12 @@ export async function listSkillCatalog(userId: string): Promise<SkillCatalog> {
 // ── Attempts & certificates ──────────────────────────────────────────────────
 
 /**
- * Store a graded attempt and, if it passed, mint the certificate and credit
- * the skill — all in one transaction, so a user can never end up with a
- * certificate whose attempt is missing (or vice versa).
+ * Store a graded attempt, award its certificate, and credit the skill — all in
+ * one transaction, so a user can never end up with a certificate whose attempt
+ * is missing (or vice versa).
+ *
+ * There is no pass/fail: every completed attempt earns a certificate, and the
+ * proficiency level derived from the score is what varies.
  */
 export async function recordAttempt(args: {
   userId: string;
@@ -198,45 +206,50 @@ export async function recordAttempt(args: {
         userId,
         skillId: skill.id,
         quizId: quiz.id,
-        level: QUIZ_ATTEMPT_LEVEL,
+        level: result.level,
         score: result.score,
-        passed: result.passed,
         answers: answers as unknown as Prisma.InputJsonValue,
       },
     });
 
-    if (!result.passed) return { attempt, certification: null };
-
-    // Passing upgrades the skill's provenance: a self-reported skill becomes
-    // QUIZ-proven, which is what the recommender weights more heavily.
+    // Completing a quiz upgrades the skill's provenance: a self-reported skill
+    // becomes QUIZ-backed. The level, not the source, is the strength signal.
     await tx.userSkill.upsert({
       where: { userId_skillId: { userId, skillId: skill.id } },
       update: { source: 'QUIZ' },
       create: { userId, skillId: skill.id, source: 'QUIZ' },
     });
 
-    // One certification per user per skill: re-passing upgrades the existing
-    // row (new attempt, new score) instead of minting a duplicate credential.
-    const certification = await tx.certification.upsert({
+    // One certification per user per skill, holding their BEST result — a
+    // retake that scores lower leaves the existing credential alone. Without
+    // this guard the upsert would happily downgrade someone for practising.
+    const existing = await tx.certification.findUnique({
       where: { userId_skillId: { userId, skillId: skill.id } },
-      update: {
-        attemptId: attempt.id,
-        quizId: quiz.id,
-        title: quiz.title,
-        level: QUIZ_ATTEMPT_LEVEL,
-        score: result.score,
-        earnedAt: new Date(),
-      },
-      create: {
-        userId,
-        skillId: skill.id,
-        attemptId: attempt.id,
-        quizId: quiz.id,
-        title: quiz.title,
-        level: QUIZ_ATTEMPT_LEVEL,
-        score: result.score,
-      },
     });
+
+    const certification =
+      existing && existing.score >= result.score
+        ? existing
+        : await tx.certification.upsert({
+            where: { userId_skillId: { userId, skillId: skill.id } },
+            update: {
+              attemptId: attempt.id,
+              quizId: quiz.id,
+              title: quiz.title,
+              level: result.level,
+              score: result.score,
+              earnedAt: new Date(),
+            },
+            create: {
+              userId,
+              skillId: skill.id,
+              attemptId: attempt.id,
+              quizId: quiz.id,
+              title: quiz.title,
+              level: result.level,
+              score: result.score,
+            },
+          });
 
     return { attempt, certification };
   });
@@ -279,6 +292,7 @@ function toCertification(row: {
   quizId: string | null;
   title: string;
   score: number;
+  level: ProficiencyLevel;
   earnedAt: Date;
   shareSlug: string;
 }): Certification {
@@ -287,6 +301,7 @@ function toCertification(row: {
     quizId: row.quizId ?? '',
     title: row.title,
     score: row.score,
+    level: row.level,
     issuedAt: row.earnedAt.toISOString(),
     shareSlug: row.shareSlug,
   };
@@ -333,7 +348,6 @@ type QuizRow = {
   id: string;
   title: string;
   description: string;
-  passingScore: number;
   timeLimitSeconds: number | null;
   skill: { slug: string };
   questions: QuestionRow[];
@@ -397,7 +411,6 @@ function toQuiz(row: QuizRow): Quiz {
     title: row.title,
     skillSlug: row.skill.slug,
     description: row.description,
-    passingScore: row.passingScore,
     timeLimitSeconds: row.timeLimitSeconds ?? undefined,
     questions: row.questions.map(toQuestion),
   };

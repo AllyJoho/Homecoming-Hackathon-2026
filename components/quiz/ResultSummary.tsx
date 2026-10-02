@@ -1,12 +1,13 @@
 // @/components/quiz/ResultSummary.tsx
-// The score screen. Shows per-question outcomes and the explanation text,
-// which the student only sees after grading.
+// The score screen: percentage, the level it earned, and a per-question review.
 //
-// The explanations come from `result.graded` (built server-side), not from
-// `quiz.questions` — toPublicQuiz strips them from the quiz itself.
+// There is no pass/fail — every completed quiz earns a certificate, and the
+// level is the outcome. The explanations come from `result.graded` (built
+// server-side), not from `quiz.questions`, which has them stripped.
 
 import Link from 'next/link';
 import type { PublicQuiz, QuizResult } from '@/types/quiz';
+import { LEVEL_TONE, nextLevelThreshold } from '@/lib/quiz/levels';
 import { Card, Tag } from '@/components/ui';
 import { FeedbackPanel } from '@/components/quiz/FeedbackPanel';
 
@@ -25,49 +26,49 @@ export function ResultSummary({
   attemptId,
   certificateSlug,
 }: ResultSummaryProps) {
+  const next = nextLevelThreshold(result.score);
   const missedCount = result.graded.filter((graded) => !graded.correct).length;
 
   return (
     <div className="flex flex-col gap-6">
-      <Card
-        title={quiz.title}
-        action={
-          result.passed ? <Tag tone="success">Passed</Tag> : <Tag tone="warning">Not yet</Tag>
-        }
-      >
+      <Card title={quiz.title} action={<Tag tone={LEVEL_TONE[result.level]}>{result.level}</Tag>}>
         <p className="text-4xl font-semibold tabular-nums text-zinc-900 dark:text-zinc-50">
           {result.score}%
         </p>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-          {result.pointsEarned} of {result.pointsPossible} points · {quiz.passingScore}% needed
+          {result.pointsEarned} of {result.pointsPossible} points
         </p>
 
-        {result.passed ? (
-          <p className="mt-4 text-sm text-zinc-700 dark:text-zinc-300">
-            Certificate added to your profile.{' '}
-            {certificateSlug && (
-              <Link
-                href={`/certificates/${certificateSlug}`}
-                className="font-medium underline underline-offset-4"
-              >
-                View it
-              </Link>
-            )}
-          </p>
-        ) : (
-          <p className="mt-4 text-sm text-zinc-700 dark:text-zinc-300">
-            Review the answers below and{' '}
+        <p className="mt-4 text-sm text-zinc-700 dark:text-zinc-300">
+          You earned a <strong>{result.level}</strong> certificate.{' '}
+          {certificateSlug && (
+            <Link
+              href={`/certificates/${certificateSlug}`}
+              className="font-medium underline underline-offset-4"
+            >
+              View it
+            </Link>
+          )}
+        </p>
+
+        {/* A retake keeps the better certificate, so there's no downside to
+            pointing at the next level up. */}
+        {next && (
+          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+            {next.min - result.score} more point{next.min - result.score === 1 ? '' : 's'} would
+            have reached <strong>{next.level}</strong>.{' '}
             <Link href={`/quizzes/${quiz.id}`} className="font-medium underline underline-offset-4">
-              try again
+              Retake the quiz
             </Link>
             .
           </p>
         )}
       </Card>
 
-      {/* Above the per-question list on purpose: when a student fails, the
-          explanation of *why* is the thing they came for. Hidden on a perfect
-          score, which the feedback route would only answer with a no-op. */}
+      {/* Above the per-question list on purpose: the explanation of *why* a
+          question was missed is what moves the next attempt up a level, and
+          the level is now the whole outcome. Hidden on a perfect score, which
+          the feedback route would only answer with a no-op. */}
       {missedCount > 0 && <FeedbackPanel attemptId={attemptId} missedCount={missedCount} />}
 
       <Card title="Question review">

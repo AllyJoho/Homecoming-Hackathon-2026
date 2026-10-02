@@ -38,7 +38,6 @@ type QuizJson = {
   title: string;
   skillSlug: string;
   description: string;
-  passingScore: number;
   timeLimitSeconds?: number;
   questions: QuestionJson[];
 };
@@ -193,7 +192,6 @@ async function main() {
         id: quiz.id,
         title: quiz.title,
         description: quiz.description,
-        passingScore: quiz.passingScore,
         timeLimitSeconds: quiz.timeLimitSeconds ?? null,
         skillId,
         questions: {

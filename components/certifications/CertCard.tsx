@@ -3,6 +3,7 @@
 
 import Link from 'next/link';
 import type { Certification } from '@/types/profile';
+import { LEVEL_TONE } from '@/lib/quiz/levels';
 import { Card, Tag } from '@/components/ui';
 
 export interface CertCardProps {
@@ -13,9 +14,12 @@ export function CertCard({ certification }: CertCardProps) {
   return (
     <Card
       title={certification.title}
-      action={<Tag tone="success">{certification.score}%</Tag>}
+      action={<Tag tone={LEVEL_TONE[certification.level]}>{certification.level}</Tag>}
     >
-      <p className="text-xs text-zinc-500 dark:text-zinc-400">
+      <p className="text-sm tabular-nums text-zinc-700 dark:text-zinc-300">
+        {certification.score}%
+      </p>
+      <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
         Earned{' '}
         {new Date(certification.issuedAt).toLocaleDateString('en-US', {
           month: 'short',
