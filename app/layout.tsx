@@ -1,15 +1,22 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Fraunces, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { APP_NAME, APP_DESC } from "@/lib/appConfig";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// The body/UI face (Helvetica) is a system font, not loaded here. See
+// --font-sans in globals.css for the fallback stack.
+
+// Code in quiz questions. Chosen for unambiguous 0/O and 1/l/I — the quizzes
+// ask people to read code closely enough to spot a bug.
+const appMono = JetBrains_Mono({
+  variable: "--font-app-mono",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// Display serif, used only on the certificate (`font-display`) so it reads as
+// a credential. Not wired to `font-serif`, which the resume document uses.
+const appDisplay = Fraunces({
+  variable: "--font-app-display",
   subsets: ["latin"],
 });
 
@@ -38,7 +45,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${appMono.variable} ${appDisplay.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
