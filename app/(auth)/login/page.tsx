@@ -41,9 +41,13 @@ export default function LoginPage() {
 
   // The (main) layout reads the session on the server, so the tree has to be
   // refetched before navigating or the guard still sees no session.
+  //
+  // Straight to /home, the signed-in dashboard. Pushing '/' would land on the
+  // public landing page, which only bounces here after a second server round
+  // trip — and that was the bug: a fresh sign-in showed the marketing pitch.
   function enter() {
     router.refresh();
-    router.push('/');
+    router.push('/home');
   }
 
   async function onSubmit(event: React.FormEvent) {

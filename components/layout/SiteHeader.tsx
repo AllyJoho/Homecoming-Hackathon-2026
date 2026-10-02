@@ -22,7 +22,7 @@ import { SignOutButton } from '@/components/auth/SignOutButton';
 // No Quizzes entry: every skill on the home screen carries its own quiz, so
 // that is the only way in. /quizzes still resolves for a direct link.
 const NAV = [
-  { href: '/', label: 'Home' },
+  { href: '/home', label: 'Home' },
   { href: '/skills', label: 'Skills' },
   { href: '/resume', label: 'Resume' },
   { href: '/careers', label: 'Career' },
@@ -117,7 +117,7 @@ export function SiteHeader({ userName }: SiteHeaderProps) {
     // available, rather than leaving content showing through a flat 80% white.
     <header className="sticky top-0 z-40 border-b border-zinc-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:border-surface-border dark:bg-surface/80 dark:supports-[backdrop-filter]:bg-surface/60">
       <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-6 px-6">
-        <Link href="/" className="flex shrink-0 items-center gap-2">
+        <Link href="/home" className="flex shrink-0 items-center gap-2">
           <Logo className="h-6 w-6" />
           <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">{APP_NAME}</span>
         </Link>
