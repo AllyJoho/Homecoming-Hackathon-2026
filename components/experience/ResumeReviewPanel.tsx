@@ -111,7 +111,7 @@ export function ResumeReviewPanel({ entryCount }: ResumeReviewPanelProps) {
           <p className="text-sm text-zinc-600 dark:text-zinc-400">
             {entryCount === 0
               ? 'Add an entry above, or paste a resume, and this has something to read.'
-              : `Reads all ${entryCount} ${entryCount === 1 ? 'entry' : 'entries'} together and says what a recruiter would notice first. It reviews your writing — not your background.`}
+              : `Reads all ${entryCount} ${entryCount === 1 ? 'entry' : 'entries'} together and says what a recruiter would notice first.`}
           </p>
         )}
 

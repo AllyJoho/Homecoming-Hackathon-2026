@@ -19,6 +19,10 @@
 // The height cap matters for the same reason: `m-auto` on a dialog taller than
 // the viewport clips it top and bottom with nothing scrollable, which traps
 // the reader in content they can't finish or escape. The body scrolls instead.
+//
+// That cap needs a flex column to work, and the column has to be applied as
+// `open:flex` — see the className below for why a bare `flex` left a blank
+// panel sitting in the page.
 
 import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
@@ -66,7 +70,13 @@ export function Modal({
         // clicks on children bubble from inside the inner div.
         if (event.target === ref.current) onClose();
       }}
-      className="m-auto flex max-h-[85vh] w-[min(32rem,calc(100vw-2rem))] flex-col rounded-xl border border-zinc-200 bg-white p-0 backdrop:bg-black/40 dark:border-surface-border dark:bg-surface"
+      // `open:flex`, not `flex`: a plain `display:flex` here is an author
+      // declaration, and it beats the user-agent's `dialog:not([open]) {
+      // display: none }` — so every closed Modal rendered as a blank panel in
+      // the page flow (absolutely positioned, so it surfaced at the top of
+      // whichever page mounted one). Scoping the display to `[open]` lets the
+      // UA keep hiding it while closed.
+      className="m-auto max-h-[85vh] w-[min(32rem,calc(100vw-2rem))] open:flex open:flex-col rounded-xl border border-zinc-200 bg-white p-0 backdrop:bg-black/40 dark:border-surface-border dark:bg-surface"
     >
       {/* Outside the scrolling region, not sticky: only the body below
           scrolls, so the title and the exit stay put without position tricks. */}
