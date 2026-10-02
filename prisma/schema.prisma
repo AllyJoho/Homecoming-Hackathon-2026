@@ -14,13 +14,80 @@ datasource db {
 // ──────────────────────────────────────────────
 
 model User {
-  id             String          @id @default(cuid())
-  email          String          @unique
-  name           String?
-  createdAt      DateTime        @default(now())
+  // Better Auth writes directly into this domain table: its default `user`
+  // model resolves to prisma.user, and identity is matched by email. `name`,
+  // `emailVerified` and `updatedAt` are its required columns.
+  id            String  @id @default(cuid())
+  name          String
+  email         String  @unique
+  emailVerified Boolean @default(false)
+  image         String?
+  // Marks the accounts the seed creates. The demo-login endpoint will only
+  // issue a session for one of these, so it can't be aimed at a real sign-up.
+  isDemo        Boolean @default(false)
+
+  accounts Account[]
+  sessions Session[]
+
   skills         UserSkill[]
   attempts       Attempt[]
   certifications Certification[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+// ──────────────────────────────────────────────
+// Better Auth
+// ──────────────────────────────────────────────
+// Owned by Better Auth, not by app code — nothing outside lib/auth should read
+// or write these. The password hash lives on Account.password (scrypt), which
+// is why there is no password column on User.
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+// Purchasing keeps sessions in Redis (secondaryStorage) and so has no Session
+// table. There's no Redis here, so they live in Postgres instead.
+model Session {
+  id        String   @id
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
 }
 
 // ──────────────────────────────────────────────

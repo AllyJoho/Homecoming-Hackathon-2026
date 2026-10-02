@@ -6,9 +6,22 @@ import Anthropic from '@anthropic-ai/sdk';
 
 /**
  * Claude Opus 5 — see https://docs.claude.com/en/docs/about-claude/models.
- * Pinned in one constant so swapping models is a one-line change.
+ * The judgment calls. These run once per user action (ranking a shortlist), so
+ * the per-call cost barely registers against a demo's worth of clicks.
  */
 export const MODEL = 'claude-opus-5';
+
+/**
+ * Claude Haiku 4.5 — $1/$5 per MTok against Opus 5's $5/$25, for the paths
+ * that run per-item instead of per-click: quiz coaching now, and skill
+ * extraction over fetched listings if live job data lands.
+ *
+ * Two previous-generation differences matter if you reuse this elsewhere: it
+ * rejects `output_config.effort`, and thinking takes `budget_tokens` rather
+ * than `{ type: 'adaptive' }`. Structured outputs behave the same as on Opus,
+ * so `messages.parse` + `zodOutputFormat` ports over unchanged.
+ */
+export const FAST_MODEL = 'claude-haiku-4-5';
 
 const globalForAnthropic = global as unknown as { anthropic: Anthropic | undefined };
 

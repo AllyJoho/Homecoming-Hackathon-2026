@@ -42,3 +42,37 @@ export interface Profile {
   skills: ProfileSkill[];
   certifications: Certification[];
 }
+
+// ── Skill catalog ────────────────────────────────────────────────────────────
+// The home screen groups every skill in the vocabulary into one of three
+// buckets. The bucket is derived, not stored: it falls out of whether the user
+// has a UserSkill row for the skill and what that row's `source` is.
+
+export type SkillStatus =
+  | 'CERTIFIED' // UserSkill.source === 'QUIZ' — passed the quiz
+  | 'MINE' // UserSkill.source === 'SELF_REPORTED' — claimed, not yet proven
+  | 'AVAILABLE'; // no UserSkill row — the rest of the vocabulary
+
+/** One card in the skills grid. */
+export interface CatalogSkill extends Skill {
+  status: SkillStatus;
+  /**
+   * The quiz that certifies this skill, when one has been authored. Skills
+   * without one can't be moved to CERTIFIED yet, and the card says so rather
+   * than linking nowhere.
+   */
+  quizId?: string;
+  /** Percentage on the passing attempt. CERTIFIED only. */
+  score?: number;
+  /** Share slug for /certificates/[certId]. CERTIFIED only. */
+  shareSlug?: string;
+  /** ISO timestamp the certificate was earned. CERTIFIED only. */
+  certifiedAt?: string;
+}
+
+/** The catalog split into the three sections the grid renders. */
+export interface SkillCatalog {
+  certified: CatalogSkill[];
+  mine: CatalogSkill[];
+  available: CatalogSkill[];
+}

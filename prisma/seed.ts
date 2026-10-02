@@ -14,15 +14,22 @@
 import { PrismaClient } from '@/lib/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { readFileSync, readdirSync } from 'node:fs';
+import { randomUUID } from 'node:crypto';
 import { join } from 'node:path';
 import skills from '@/data/skills.json';
 import type { QuestionType } from '@/lib/generated/prisma/enums';
+import { auth } from '@/lib/auth/server';
 
 // Standalone script, so it opens its own adapter rather than importing the
 // app's shared client.
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 const DATA_DIR = join(process.cwd(), 'data');
+
+// The demo accounts get a real password so the credential path can be tested,
+// not just the one-click button. Not a secret: these accounts only exist in a
+// seeded dev database, and the demo-login endpoint is absent in production.
+const DEMO_PASSWORD = 'demo-password-123';
 
 type SkillJson = { slug: string; name: string; category?: string; description?: string };
 
@@ -254,13 +261,45 @@ async function main() {
   console.log(`  ✔ ${jobs.length} job listings`);
 
   // ── Demo users ───────────────────────────────────────────
+  // Created through Better Auth rather than with a plain prisma.create, so the
+  // password is scrypt-hashed onto Account.password the same way a real
+  // sign-up would be — there's no second code path that writes credentials.
+  // `isDemo` is what the demo-login endpoint checks before issuing a session.
   const users = [
     { name: 'Michelle Johanson', email: 'mjohans0@byu.edu' },
     { name: 'Rubber Duck', email: 'duck@byu.edu' },
   ];
+  // Hashed with Better Auth's own hasher, so the stored credential is byte-for
+  // byte what a real sign-up produces. Upserting the row rather than
+  // re-creating it keeps any skills and certifications the account already has.
+  const hashed = await (await auth.$context).password.hash(DEMO_PASSWORD);
+
   for (const u of users) {
-    await prisma.user.upsert({ where: { email: u.email }, update: {}, create: u });
-    console.log(`  ✔ User: ${u.name}`);
+    const user = await prisma.user.upsert({
+      where: { email: u.email },
+      update: { isDemo: true, name: u.name },
+      create: { email: u.email, name: u.name, isDemo: true },
+    });
+
+    // Better Auth looks up a password login by providerId 'credential', with
+    // accountId set to the user id.
+    const credential = await prisma.account.findFirst({
+      where: { userId: user.id, providerId: 'credential' },
+    });
+    if (credential) {
+      await prisma.account.update({ where: { id: credential.id }, data: { password: hashed } });
+    } else {
+      await prisma.account.create({
+        data: {
+          id: randomUUID(),
+          accountId: user.id,
+          providerId: 'credential',
+          userId: user.id,
+          password: hashed,
+        },
+      });
+    }
+    console.log(`  ✔ User: ${u.name} (${credential ? 'password reset' : 'credential created'})`);
   }
 
   // Give the first demo user a couple of self-reported skills so the
@@ -279,7 +318,7 @@ async function main() {
     console.log('  ✔ Demo skills for Michelle');
   }
 
-  console.log('✅ Seed complete.');
+  console.log(`✅ Seed complete. Demo accounts sign in with password "${DEMO_PASSWORD}".`);
 }
 
 main()

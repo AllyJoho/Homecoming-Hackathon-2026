@@ -66,8 +66,9 @@ ${JSON.stringify(listings, null, 2)}`;
 }
 
 /**
- * [stretch] Per-question coaching on a finished attempt, used by
- * /api/results/[resultId]/feedback.
+ * Per-question coaching on a finished attempt, used by
+ * /api/results/[resultId]/feedback. Only the missed questions reach the model,
+ * so there is nothing in context to congratulate the student about.
  */
 export const FEEDBACK_SYSTEM_PROMPT = `You are a patient tutor reviewing a student's completed quiz.
 
