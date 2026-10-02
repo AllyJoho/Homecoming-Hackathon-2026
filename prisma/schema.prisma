@@ -7,17 +7,101 @@ datasource db {
   provider = "postgresql"
 }
 
-// ──────────────────────────────────────────────
-// Starter model — replace with the real domain
-// ──────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
+// Quizzes themselves are NOT in the database — they live as JSON in
+// data/quizzes/ and are referenced by their file-stem id (e.g. "javascript").
+// Only user-generated data is stored here. That keeps authoring a new quiz to
+// "add a JSON file" with no migration.
+// ──────────────────────────────────────────────────────────────────────────────
 
 model User {
-  id    String  @id @default(cuid())
+  id    String @id @default(cuid())
   name  String
-  email String  @unique
+  email String @unique
+
+  skills         UserSkill[]
+  attempts       QuizAttempt[]
+  certifications Certification[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("users")
+}
+
+/// Canonical skill vocabulary. Seeded from lib/profile/skills.ts so that
+/// "JS", "Javascript" and "ECMAScript" all collapse to one row — the AI
+/// recommender gets clean input instead of free text.
+model Skill {
+  id       String  @id @default(cuid())
+  slug     String  @unique // "javascript", "sql", "react"
+  name     String // display form: "JavaScript"
+  category String? // "language", "framework", "tool", …
+
+  users UserSkill[]
+
+  @@map("skills")
+}
+
+/// Join row: this user has this skill, and here's where it came from.
+model UserSkill {
+  id      String      @id @default(cuid())
+  userId  String
+  skillId String
+  source  SkillSource @default(SELF_REPORTED)
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, skillId])
+  @@map("user_skills")
+}
+
+enum SkillSource {
+  SELF_REPORTED // typed in on the home screen
+  QUIZ // proven by passing a quiz
+}
+
+/// One submitted quiz. `answers` is the raw submission kept as JSON so grading
+/// can be re-run (or explained by AI) later without re-taking the quiz.
+model QuizAttempt {
+  id     String @id @default(cuid())
+  userId String
+  quizId String // file stem in data/quizzes/
+
+  score   Int // percentage, 0–100
+  passed  Boolean
+  answers Json // Record<questionId, Answer>
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  certification Certification? // set only when `passed`
+
+  completedAt DateTime @default(now())
+
+  @@index([userId, quizId])
+  @@map("quiz_attempts")
+}
+
+/// Awarded automatically by the submit route when an attempt passes. One per
+/// attempt, so re-taking a passed quiz mints a new certificate rather than
+/// mutating the old one.
+model Certification {
+  id        String @id @default(cuid())
+  userId    String
+  attemptId String @unique
+  quizId    String
+
+  title     String // "JavaScript Fundamentals"
+  score     Int
+  shareSlug String @unique @default(cuid()) // public URL at /certificates/[certId]
+
+  user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attempt QuizAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  issuedAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("certifications")
 }
