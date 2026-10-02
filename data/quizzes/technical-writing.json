@@ -1,0 +1,105 @@
+{
+  "id": "technical-writing",
+  "title": "Technical Writing",
+  "skillSlug": "technical-writing",
+  "description": "Test your understanding of technical writing. Writing clear documentation, procedures, and reports for technical and nontechnical readers.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "technical-writing-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Task procedure?",
+      "options": [
+        {
+          "id": "a",
+          "text": "gives ordered steps that help a reader complete a goal"
+        },
+        {
+          "id": "b",
+          "text": "is a list of unrelated slogans"
+        },
+        {
+          "id": "c",
+          "text": "is a database query plan"
+        },
+        {
+          "id": "d",
+          "text": "is a color palette"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Task procedure gives ordered steps that help a reader complete a goal.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "technical-writing-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Audience analysis?",
+      "options": [
+        {
+          "id": "a",
+          "text": "adapts terminology, context, and detail to the reader"
+        },
+        {
+          "id": "b",
+          "text": "uses the same jargon for everyone"
+        },
+        {
+          "id": "c",
+          "text": "removes all examples"
+        },
+        {
+          "id": "d",
+          "text": "only checks spelling"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Audience analysis adapts terminology, context, and detail to the reader.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "technical-writing-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Information architecture?",
+      "options": [
+        {
+          "id": "a",
+          "text": "organizes content so readers can find and understand it"
+        },
+        {
+          "id": "b",
+          "text": "is a server deployment method"
+        },
+        {
+          "id": "c",
+          "text": "is an encryption key"
+        },
+        {
+          "id": "d",
+          "text": "is a spreadsheet formula"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Information architecture organizes content so readers can find and understand it.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "technical-writing-4",
+      "type": "true_false",
+      "prompt": "True or false: Task procedure gives ordered steps that help a reader complete a goal.",
+      "correctAnswer": true,
+      "explanation": "Task procedure gives ordered steps that help a reader complete a goal.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "technical-writing-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: organizes content so readers can find and understand it?",
+      "acceptedAnswers": [
+        "Information architecture"
+      ],
+      "explanation": "The term is Information architecture.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

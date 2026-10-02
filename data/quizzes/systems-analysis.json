@@ -1,0 +1,105 @@
+{
+  "id": "systems-analysis",
+  "title": "Systems Analysis",
+  "skillSlug": "systems-analysis",
+  "description": "Test your understanding of systems analysis. Studying existing business processes and information systems to identify problems and propose improvements.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "systems-analysis-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes As-is process?",
+      "options": [
+        {
+          "id": "a",
+          "text": "describes how work is performed in the current state"
+        },
+        {
+          "id": "b",
+          "text": "is the final deployed design"
+        },
+        {
+          "id": "c",
+          "text": "is a database backup"
+        },
+        {
+          "id": "d",
+          "text": "is an employee evaluation"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "As-is process describes how work is performed in the current state.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "systems-analysis-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Gap analysis?",
+      "options": [
+        {
+          "id": "a",
+          "text": "compares the current state with a desired future state to identify differences"
+        },
+        {
+          "id": "b",
+          "text": "removes all project risks"
+        },
+        {
+          "id": "c",
+          "text": "writes code without requirements"
+        },
+        {
+          "id": "d",
+          "text": "measures only page load time"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Gap analysis compares the current state with a desired future state to identify differences.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "systems-analysis-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Feasibility study?",
+      "options": [
+        {
+          "id": "a",
+          "text": "evaluates whether a proposed solution is practical within constraints"
+        },
+        {
+          "id": "b",
+          "text": "guarantees stakeholder agreement"
+        },
+        {
+          "id": "c",
+          "text": "replaces user testing"
+        },
+        {
+          "id": "d",
+          "text": "is a source-control operation"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Feasibility study evaluates whether a proposed solution is practical within constraints.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "systems-analysis-4",
+      "type": "true_false",
+      "prompt": "True or false: As-is process describes how work is performed in the current state.",
+      "correctAnswer": true,
+      "explanation": "As-is process describes how work is performed in the current state.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "systems-analysis-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: evaluates whether a proposed solution is practical within constraints?",
+      "acceptedAnswers": [
+        "Feasibility study"
+      ],
+      "explanation": "The term is Feasibility study.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

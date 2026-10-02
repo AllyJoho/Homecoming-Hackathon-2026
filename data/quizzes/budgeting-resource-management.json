@@ -1,0 +1,105 @@
+{
+  "id": "budgeting-resource-management",
+  "title": "Budgeting & Resource Management",
+  "skillSlug": "budgeting-resource-management",
+  "description": "Test your understanding of budgeting & resource management. Tracking project costs and assigning people and tools to work.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "budgeting-resource-management-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Cost baseline?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is the approved time-phased budget used to compare actual performance"
+        },
+        {
+          "id": "b",
+          "text": "is an unapproved wish list"
+        },
+        {
+          "id": "c",
+          "text": "is a password policy"
+        },
+        {
+          "id": "d",
+          "text": "is a UI prototype"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Cost baseline is the approved time-phased budget used to compare actual performance.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "budgeting-resource-management-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Resource leveling?",
+      "options": [
+        {
+          "id": "a",
+          "text": "adjusts work timing to resolve over-allocation of people or equipment"
+        },
+        {
+          "id": "b",
+          "text": "adds unlimited staff for free"
+        },
+        {
+          "id": "c",
+          "text": "deletes project scope automatically"
+        },
+        {
+          "id": "d",
+          "text": "is a database normalization rule"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Resource leveling adjusts work timing to resolve over-allocation of people or equipment.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "budgeting-resource-management-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Cost variance?",
+      "options": [
+        {
+          "id": "a",
+          "text": "compares planned or earned cost with actual cost to show a difference"
+        },
+        {
+          "id": "b",
+          "text": "is always zero at project start"
+        },
+        {
+          "id": "c",
+          "text": "measures only quality defects"
+        },
+        {
+          "id": "d",
+          "text": "is a stakeholder persona"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Cost variance compares planned or earned cost with actual cost to show a difference.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "budgeting-resource-management-4",
+      "type": "true_false",
+      "prompt": "True or false: Cost baseline is the approved time-phased budget used to compare actual performance.",
+      "correctAnswer": true,
+      "explanation": "Cost baseline is the approved time-phased budget used to compare actual performance.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "budgeting-resource-management-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: compares planned or earned cost with actual cost to show a difference?",
+      "acceptedAnswers": [
+        "Cost variance"
+      ],
+      "explanation": "The term is Cost variance.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

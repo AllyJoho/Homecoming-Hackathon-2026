@@ -1,0 +1,105 @@
+{
+  "id": "it-infrastructure-basics",
+  "title": "IT Infrastructure Basics",
+  "skillSlug": "it-infrastructure-basics",
+  "description": "Test your understanding of it infrastructure basics. Fundamentals of networks, servers, operating systems, and storage.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "it-infrastructure-basics-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes DNS?",
+      "options": [
+        {
+          "id": "a",
+          "text": "maps human-readable domain names to network addresses"
+        },
+        {
+          "id": "b",
+          "text": "encrypts hard drives"
+        },
+        {
+          "id": "c",
+          "text": "assigns project budgets"
+        },
+        {
+          "id": "d",
+          "text": "renders HTML"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "DNS maps human-readable domain names to network addresses.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "it-infrastructure-basics-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Virtual machine?",
+      "options": [
+        {
+          "id": "a",
+          "text": "emulates a computer system using software on a physical host"
+        },
+        {
+          "id": "b",
+          "text": "is a physical cable"
+        },
+        {
+          "id": "c",
+          "text": "is a spreadsheet formula"
+        },
+        {
+          "id": "d",
+          "text": "is a user requirement"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Virtual machine emulates a computer system using software on a physical host.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "it-infrastructure-basics-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes RAID?",
+      "options": [
+        {
+          "id": "a",
+          "text": "combines disks to improve redundancy, performance, or both"
+        },
+        {
+          "id": "b",
+          "text": "is an API authentication token"
+        },
+        {
+          "id": "c",
+          "text": "is a web accessibility standard"
+        },
+        {
+          "id": "d",
+          "text": "is a code review"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "RAID combines disks to improve redundancy, performance, or both.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "it-infrastructure-basics-4",
+      "type": "true_false",
+      "prompt": "True or false: DNS maps human-readable domain names to network addresses.",
+      "correctAnswer": true,
+      "explanation": "DNS maps human-readable domain names to network addresses.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "it-infrastructure-basics-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: combines disks to improve redundancy, performance, or both?",
+      "acceptedAnswers": [
+        "RAID"
+      ],
+      "explanation": "The term is RAID.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

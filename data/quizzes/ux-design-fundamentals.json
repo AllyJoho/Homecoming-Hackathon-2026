@@ -1,0 +1,105 @@
+{
+  "id": "ux-design-fundamentals",
+  "title": "UX Design Fundamentals",
+  "skillSlug": "ux-design-fundamentals",
+  "description": "Test your understanding of ux design fundamentals. Usability principles, information architecture, user flows, and evaluating interfaces against heuristics.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "ux-design-fundamentals-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Usability heuristic?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is a general principle used to evaluate how well an interface supports users"
+        },
+        {
+          "id": "b",
+          "text": "is a database index"
+        },
+        {
+          "id": "c",
+          "text": "is a deployment target"
+        },
+        {
+          "id": "d",
+          "text": "is a network packet"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Usability heuristic is a general principle used to evaluate how well an interface supports users.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "ux-design-fundamentals-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes User flow?",
+      "options": [
+        {
+          "id": "a",
+          "text": "maps the steps and decisions a user takes to complete a goal"
+        },
+        {
+          "id": "b",
+          "text": "is a source-control history"
+        },
+        {
+          "id": "c",
+          "text": "is a chart of server costs"
+        },
+        {
+          "id": "d",
+          "text": "is a password policy"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "User flow maps the steps and decisions a user takes to complete a goal.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "ux-design-fundamentals-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Information architecture?",
+      "options": [
+        {
+          "id": "a",
+          "text": "organizes content, navigation, and labels so users can find what they need"
+        },
+        {
+          "id": "b",
+          "text": "is only a visual color choice"
+        },
+        {
+          "id": "c",
+          "text": "is a cloud pricing model"
+        },
+        {
+          "id": "d",
+          "text": "is a unit test"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Information architecture organizes content, navigation, and labels so users can find what they need.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "ux-design-fundamentals-4",
+      "type": "true_false",
+      "prompt": "True or false: Usability heuristic is a general principle used to evaluate how well an interface supports users.",
+      "correctAnswer": true,
+      "explanation": "Usability heuristic is a general principle used to evaluate how well an interface supports users.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "ux-design-fundamentals-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: organizes content, navigation, and labels so users can find what they need?",
+      "acceptedAnswers": [
+        "Information architecture"
+      ],
+      "explanation": "The term is Information architecture.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

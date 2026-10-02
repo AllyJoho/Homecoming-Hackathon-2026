@@ -1,0 +1,105 @@
+{
+  "id": "machine-learning-basics",
+  "title": "Machine Learning Basics",
+  "skillSlug": "machine-learning-basics",
+  "description": "Test your understanding of machine learning basics. Training and evaluating supervised and unsupervised models, and recognizing overfitting and data leakage.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "machine-learning-basics-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Supervised learning?",
+      "options": [
+        {
+          "id": "a",
+          "text": "learns a mapping from examples that include target labels"
+        },
+        {
+          "id": "b",
+          "text": "learns only from unlabeled data"
+        },
+        {
+          "id": "c",
+          "text": "never evaluates predictions"
+        },
+        {
+          "id": "d",
+          "text": "is the same as data backup"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Supervised learning learns a mapping from examples that include target labels.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "machine-learning-basics-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Overfitting?",
+      "options": [
+        {
+          "id": "a",
+          "text": "occurs when a model memorizes training patterns and generalizes poorly"
+        },
+        {
+          "id": "b",
+          "text": "means the model has no parameters"
+        },
+        {
+          "id": "c",
+          "text": "is always caused by missing labels"
+        },
+        {
+          "id": "d",
+          "text": "means test accuracy must be perfect"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Overfitting occurs when a model memorizes training patterns and generalizes poorly.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "machine-learning-basics-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Train-test split?",
+      "options": [
+        {
+          "id": "a",
+          "text": "keeps evaluation examples separate from the data used to fit a model"
+        },
+        {
+          "id": "b",
+          "text": "duplicates every training row"
+        },
+        {
+          "id": "c",
+          "text": "removes the target column from all data"
+        },
+        {
+          "id": "d",
+          "text": "guarantees a causal result"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Train-test split keeps evaluation examples separate from the data used to fit a model.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "machine-learning-basics-4",
+      "type": "true_false",
+      "prompt": "True or false: Supervised learning learns a mapping from examples that include target labels.",
+      "correctAnswer": true,
+      "explanation": "Supervised learning learns a mapping from examples that include target labels.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "machine-learning-basics-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: keeps evaluation examples separate from the data used to fit a model?",
+      "acceptedAnswers": [
+        "Train-test split"
+      ],
+      "explanation": "The term is Train-test split.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

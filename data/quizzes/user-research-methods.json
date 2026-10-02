@@ -1,0 +1,105 @@
+{
+  "id": "user-research-methods",
+  "title": "User Research Methods",
+  "skillSlug": "user-research-methods",
+  "description": "Test your understanding of user research methods. Planning and running interviews, surveys, and usability tests, and turning findings into recommendations.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "user-research-methods-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes User interview?",
+      "options": [
+        {
+          "id": "a",
+          "text": "gathers qualitative evidence by asking people about experiences, needs, and behavior"
+        },
+        {
+          "id": "b",
+          "text": "proves a hypothesis from one person"
+        },
+        {
+          "id": "c",
+          "text": "is a production deployment"
+        },
+        {
+          "id": "d",
+          "text": "is a database migration"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "User interview gathers qualitative evidence by asking people about experiences, needs, and behavior.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "user-research-methods-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Usability test?",
+      "options": [
+        {
+          "id": "a",
+          "text": "observes representative users attempting realistic tasks with a product or prototype"
+        },
+        {
+          "id": "b",
+          "text": "asks only whether users like a color"
+        },
+        {
+          "id": "c",
+          "text": "requires a finished product"
+        },
+        {
+          "id": "d",
+          "text": "replaces all analytics"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Usability test observes representative users attempting realistic tasks with a product or prototype.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "user-research-methods-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Qualitative finding?",
+      "options": [
+        {
+          "id": "a",
+          "text": "captures themes, motivations, or observed behaviors in participants’ words or actions"
+        },
+        {
+          "id": "b",
+          "text": "is always a statistically representative percentage"
+        },
+        {
+          "id": "c",
+          "text": "is a database key"
+        },
+        {
+          "id": "d",
+          "text": "is a UI component"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Qualitative finding captures themes, motivations, or observed behaviors in participants’ words or actions.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "user-research-methods-4",
+      "type": "true_false",
+      "prompt": "True or false: User interview gathers qualitative evidence by asking people about experiences, needs, and behavior.",
+      "correctAnswer": true,
+      "explanation": "User interview gathers qualitative evidence by asking people about experiences, needs, and behavior.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "user-research-methods-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: captures themes, motivations, or observed behaviors in participants’ words or actions?",
+      "acceptedAnswers": [
+        "Qualitative finding"
+      ],
+      "explanation": "The term is Qualitative finding.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

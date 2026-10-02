@@ -1,0 +1,105 @@
+{
+  "id": "backend-apis",
+  "title": "Backend & REST APIs",
+  "skillSlug": "backend-apis",
+  "description": "Test your understanding of backend & rest apis. Designing and building server-side endpoints, handling requests, authentication, and returning structured data.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "backend-apis-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes REST resource?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is a business entity addressed by a URL and manipulated with HTTP methods"
+        },
+        {
+          "id": "b",
+          "text": "a CSS selector"
+        },
+        {
+          "id": "c",
+          "text": "a local browser cookie only"
+        },
+        {
+          "id": "d",
+          "text": "a compiled binary"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "REST resource is a business entity addressed by a URL and manipulated with HTTP methods.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "backend-apis-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes HTTP 401?",
+      "options": [
+        {
+          "id": "a",
+          "text": "indicates that authentication is required or has failed"
+        },
+        {
+          "id": "b",
+          "text": "indicates a successful response"
+        },
+        {
+          "id": "c",
+          "text": "means the server crashed"
+        },
+        {
+          "id": "d",
+          "text": "means the requested resource was permanently moved"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "HTTP 401 indicates that authentication is required or has failed.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "backend-apis-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Idempotent request?",
+      "options": [
+        {
+          "id": "a",
+          "text": "can be repeated without changing the result after the first successful application"
+        },
+        {
+          "id": "b",
+          "text": "must always create a new record"
+        },
+        {
+          "id": "c",
+          "text": "can only be sent over UDP"
+        },
+        {
+          "id": "d",
+          "text": "cannot include a response body"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Idempotent request can be repeated without changing the result after the first successful application.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "backend-apis-4",
+      "type": "true_false",
+      "prompt": "True or false: REST resource is a business entity addressed by a URL and manipulated with HTTP methods.",
+      "correctAnswer": true,
+      "explanation": "REST resource is a business entity addressed by a URL and manipulated with HTTP methods.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "backend-apis-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: can be repeated without changing the result after the first successful application?",
+      "acceptedAnswers": [
+        "Idempotent request"
+      ],
+      "explanation": "The term is Idempotent request.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

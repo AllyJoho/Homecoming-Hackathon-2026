@@ -1,0 +1,105 @@
+{
+  "id": "network-security-basics",
+  "title": "Network Security Basics",
+  "skillSlug": "network-security-basics",
+  "description": "Test your understanding of network security basics. Firewalls, VPNs, network segmentation, and common network attack types.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "network-security-basics-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Firewall?",
+      "options": [
+        {
+          "id": "a",
+          "text": "filters network traffic according to defined rules"
+        },
+        {
+          "id": "b",
+          "text": "compresses backups"
+        },
+        {
+          "id": "c",
+          "text": "creates user stories"
+        },
+        {
+          "id": "d",
+          "text": "renders a web page"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Firewall filters network traffic according to defined rules.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "network-security-basics-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes VPN?",
+      "options": [
+        {
+          "id": "a",
+          "text": "creates an authenticated, encrypted tunnel across an untrusted network"
+        },
+        {
+          "id": "b",
+          "text": "is a public DNS record"
+        },
+        {
+          "id": "c",
+          "text": "is a database index"
+        },
+        {
+          "id": "d",
+          "text": "is a chart type"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "VPN creates an authenticated, encrypted tunnel across an untrusted network.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "network-security-basics-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Network segmentation?",
+      "options": [
+        {
+          "id": "a",
+          "text": "separates networks or hosts to limit reach and contain incidents"
+        },
+        {
+          "id": "b",
+          "text": "puts every device on one flat network"
+        },
+        {
+          "id": "c",
+          "text": "removes the need for authentication"
+        },
+        {
+          "id": "d",
+          "text": "only changes screen layout"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Network segmentation separates networks or hosts to limit reach and contain incidents.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "network-security-basics-4",
+      "type": "true_false",
+      "prompt": "True or false: Firewall filters network traffic according to defined rules.",
+      "correctAnswer": true,
+      "explanation": "Firewall filters network traffic according to defined rules.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "network-security-basics-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: separates networks or hosts to limit reach and contain incidents?",
+      "acceptedAnswers": [
+        "Network segmentation"
+      ],
+      "explanation": "The term is Network segmentation.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

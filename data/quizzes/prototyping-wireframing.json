@@ -1,0 +1,105 @@
+{
+  "id": "prototyping-wireframing",
+  "title": "Prototyping & Wireframing",
+  "skillSlug": "prototyping-wireframing",
+  "description": "Test your understanding of prototyping & wireframing. Sketching wireframes and building clickable prototypes in tools like Figma to test ideas early.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "prototyping-wireframing-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Wireframe?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is a simplified representation of layout, content, and interaction structure"
+        },
+        {
+          "id": "b",
+          "text": "is a production-ready visual design"
+        },
+        {
+          "id": "c",
+          "text": "is a database backup"
+        },
+        {
+          "id": "d",
+          "text": "is a server certificate"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Wireframe is a simplified representation of layout, content, and interaction structure.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "prototyping-wireframing-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Low-fidelity prototype?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is a quick, inexpensive model used to explore structure and interaction early"
+        },
+        {
+          "id": "b",
+          "text": "must include final branding"
+        },
+        {
+          "id": "c",
+          "text": "cannot be changed after review"
+        },
+        {
+          "id": "d",
+          "text": "is a deployed application"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Low-fidelity prototype is a quick, inexpensive model used to explore structure and interaction early.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "prototyping-wireframing-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Clickable prototype?",
+      "options": [
+        {
+          "id": "a",
+          "text": "lets someone move through linked screens to test an interaction flow"
+        },
+        {
+          "id": "b",
+          "text": "only displays one static image"
+        },
+        {
+          "id": "c",
+          "text": "is a network security control"
+        },
+        {
+          "id": "d",
+          "text": "is a spreadsheet pivot"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Clickable prototype lets someone move through linked screens to test an interaction flow.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "prototyping-wireframing-4",
+      "type": "true_false",
+      "prompt": "True or false: Wireframe is a simplified representation of layout, content, and interaction structure.",
+      "correctAnswer": true,
+      "explanation": "Wireframe is a simplified representation of layout, content, and interaction structure.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "prototyping-wireframing-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: lets someone move through linked screens to test an interaction flow?",
+      "acceptedAnswers": [
+        "Clickable prototype"
+      ],
+      "explanation": "The term is Clickable prototype.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "id": "project-planning-scheduling",
+  "title": "Project Planning & Scheduling",
+  "skillSlug": "project-planning-scheduling",
+  "description": "Test your understanding of project planning & scheduling. Defining scope, breaking work into tasks, estimating effort, and building timelines.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "project-planning-scheduling-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Work breakdown structure?",
+      "options": [
+        {
+          "id": "a",
+          "text": "decomposes project scope into smaller deliverables and work packages"
+        },
+        {
+          "id": "b",
+          "text": "is a contact list"
+        },
+        {
+          "id": "c",
+          "text": "is a database backup"
+        },
+        {
+          "id": "d",
+          "text": "is a test assertion"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Work breakdown structure decomposes project scope into smaller deliverables and work packages.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "project-planning-scheduling-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Critical path?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is the sequence of dependent tasks that determines the shortest project duration"
+        },
+        {
+          "id": "b",
+          "text": "is always the cheapest sequence"
+        },
+        {
+          "id": "c",
+          "text": "contains no dependencies"
+        },
+        {
+          "id": "d",
+          "text": "is a stakeholder map"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Critical path is the sequence of dependent tasks that determines the shortest project duration.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "project-planning-scheduling-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Scope baseline?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is the approved reference for what the project will deliver"
+        },
+        {
+          "id": "b",
+          "text": "changes after every casual suggestion"
+        },
+        {
+          "id": "c",
+          "text": "is only a team calendar"
+        },
+        {
+          "id": "d",
+          "text": "is a server configuration"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Scope baseline is the approved reference for what the project will deliver.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "project-planning-scheduling-4",
+      "type": "true_false",
+      "prompt": "True or false: Work breakdown structure decomposes project scope into smaller deliverables and work packages.",
+      "correctAnswer": true,
+      "explanation": "Work breakdown structure decomposes project scope into smaller deliverables and work packages.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "project-planning-scheduling-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: is the approved reference for what the project will deliver?",
+      "acceptedAnswers": [
+        "Scope baseline"
+      ],
+      "explanation": "The term is Scope baseline.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "id": "frontend-frameworks",
+  "title": "Frontend Frameworks",
+  "skillSlug": "frontend-frameworks",
+  "description": "Test your understanding of frontend frameworks. Building component-based user interfaces with a framework such as React or Vue, including state and props.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "frontend-frameworks-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Component?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is a reusable unit of UI markup and behavior"
+        },
+        {
+          "id": "b",
+          "text": "a database table"
+        },
+        {
+          "id": "c",
+          "text": "a DNS record"
+        },
+        {
+          "id": "d",
+          "text": "a build artifact only"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Component is a reusable unit of UI markup and behavior.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "frontend-frameworks-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Props?",
+      "options": [
+        {
+          "id": "a",
+          "text": "are inputs passed from a parent component to a child"
+        },
+        {
+          "id": "b",
+          "text": "private database credentials"
+        },
+        {
+          "id": "c",
+          "text": "CSS files fetched from a CDN"
+        },
+        {
+          "id": "d",
+          "text": "browser history entries"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Props are inputs passed from a parent component to a child.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "frontend-frameworks-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes State?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is data owned by a component that can change and trigger a re-render"
+        },
+        {
+          "id": "b",
+          "text": "a server IP address"
+        },
+        {
+          "id": "c",
+          "text": "a Git tag"
+        },
+        {
+          "id": "d",
+          "text": "an image compression format"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "State is data owned by a component that can change and trigger a re-render.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "frontend-frameworks-4",
+      "type": "true_false",
+      "prompt": "True or false: Component is a reusable unit of UI markup and behavior.",
+      "correctAnswer": true,
+      "explanation": "Component is a reusable unit of UI markup and behavior.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "frontend-frameworks-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: is data owned by a component that can change and trigger a re-render?",
+      "acceptedAnswers": [
+        "State"
+      ],
+      "explanation": "The term is State.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "id": "risk-assessment",
+  "title": "Security Risk Assessment",
+  "skillSlug": "risk-assessment",
+  "description": "Test your understanding of security risk assessment. Identifying assets, threats, and vulnerabilities and rating risk to prioritize controls.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "risk-assessment-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Vulnerability?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is a weakness that could be exploited or cause harm"
+        },
+        {
+          "id": "b",
+          "text": "is the value of an asset"
+        },
+        {
+          "id": "c",
+          "text": "is a completed control"
+        },
+        {
+          "id": "d",
+          "text": "is always an active attack"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Vulnerability is a weakness that could be exploited or cause harm.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "risk-assessment-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Risk rating?",
+      "options": [
+        {
+          "id": "a",
+          "text": "combines factors such as likelihood and impact to prioritize treatment"
+        },
+        {
+          "id": "b",
+          "text": "is based only on asset color"
+        },
+        {
+          "id": "c",
+          "text": "guarantees an incident will happen"
+        },
+        {
+          "id": "d",
+          "text": "is the same as a password"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Risk rating combines factors such as likelihood and impact to prioritize treatment.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "risk-assessment-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Risk treatment?",
+      "options": [
+        {
+          "id": "a",
+          "text": "chooses how to modify, accept, transfer, or avoid a risk"
+        },
+        {
+          "id": "b",
+          "text": "ignores identified weaknesses"
+        },
+        {
+          "id": "c",
+          "text": "only lists employees"
+        },
+        {
+          "id": "d",
+          "text": "is a type of firewall packet"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Risk treatment chooses how to modify, accept, transfer, or avoid a risk.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "risk-assessment-4",
+      "type": "true_false",
+      "prompt": "True or false: Vulnerability is a weakness that could be exploited or cause harm.",
+      "correctAnswer": true,
+      "explanation": "Vulnerability is a weakness that could be exploited or cause harm.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "risk-assessment-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: chooses how to modify, accept, transfer, or avoid a risk?",
+      "acceptedAnswers": [
+        "Risk treatment"
+      ],
+      "explanation": "The term is Risk treatment.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}
