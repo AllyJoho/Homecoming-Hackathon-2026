@@ -1,0 +1,105 @@
+{
+  "id": "html-css-fundamentals",
+  "title": "HTML & CSS Fundamentals",
+  "skillSlug": "html-css-fundamentals",
+  "description": "Test your understanding of html & css fundamentals. Writing semantic HTML and styling pages with CSS, including layout with flexbox and grid.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "html-css-fundamentals-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Semantic HTML?",
+      "options": [
+        {
+          "id": "a",
+          "text": "uses elements that describe the meaning and structure of content"
+        },
+        {
+          "id": "b",
+          "text": "only class names to style every element"
+        },
+        {
+          "id": "c",
+          "text": "JavaScript to draw all page content"
+        },
+        {
+          "id": "d",
+          "text": "tables for page layout"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Semantic HTML uses elements that describe the meaning and structure of content.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "html-css-fundamentals-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Flexbox?",
+      "options": [
+        {
+          "id": "a",
+          "text": "lays out items along one main axis and distributes available space"
+        },
+        {
+          "id": "b",
+          "text": "stores data in browser storage"
+        },
+        {
+          "id": "c",
+          "text": "creates database relationships"
+        },
+        {
+          "id": "d",
+          "text": "compresses image files"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Flexbox lays out items along one main axis and distributes available space.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "html-css-fundamentals-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes CSS Grid?",
+      "options": [
+        {
+          "id": "a",
+          "text": "lays out content across rows and columns"
+        },
+        {
+          "id": "b",
+          "text": "validates a form on the server"
+        },
+        {
+          "id": "c",
+          "text": "changes an HTTP status code"
+        },
+        {
+          "id": "d",
+          "text": "loads a web font"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "CSS Grid lays out content across rows and columns.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "html-css-fundamentals-4",
+      "type": "true_false",
+      "prompt": "True or false: Semantic HTML uses elements that describe the meaning and structure of content.",
+      "correctAnswer": true,
+      "explanation": "Semantic HTML uses elements that describe the meaning and structure of content.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "html-css-fundamentals-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: lays out content across rows and columns?",
+      "acceptedAnswers": [
+        "CSS Grid"
+      ],
+      "explanation": "The term is CSS Grid.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

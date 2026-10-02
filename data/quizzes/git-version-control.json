@@ -1,0 +1,105 @@
+{
+  "id": "git-version-control",
+  "title": "Git & Version Control",
+  "skillSlug": "git-version-control",
+  "description": "Test your understanding of git & version control. Using Git for commits, branching, merging, and collaborating through pull requests.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "git-version-control-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Commit?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is a recorded snapshot of changes in a repository"
+        },
+        {
+          "id": "b",
+          "text": "a temporary editor tab"
+        },
+        {
+          "id": "c",
+          "text": "a deployed server"
+        },
+        {
+          "id": "d",
+          "text": "a database index"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Commit is a recorded snapshot of changes in a repository.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "git-version-control-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Branch?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is an independent line of development pointing to a series of commits"
+        },
+        {
+          "id": "b",
+          "text": "a type of merge conflict"
+        },
+        {
+          "id": "c",
+          "text": "a package registry"
+        },
+        {
+          "id": "d",
+          "text": "a code formatter"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Branch is an independent line of development pointing to a series of commits.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "git-version-control-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Merge conflict?",
+      "options": [
+        {
+          "id": "a",
+          "text": "happens when Git cannot automatically reconcile competing changes"
+        },
+        {
+          "id": "b",
+          "text": "a failed DNS lookup"
+        },
+        {
+          "id": "c",
+          "text": "an expired access token"
+        },
+        {
+          "id": "d",
+          "text": "a missing CSS reset"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Merge conflict happens when Git cannot automatically reconcile competing changes.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "git-version-control-4",
+      "type": "true_false",
+      "prompt": "True or false: Commit is a recorded snapshot of changes in a repository.",
+      "correctAnswer": true,
+      "explanation": "Commit is a recorded snapshot of changes in a repository.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "git-version-control-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: happens when Git cannot automatically reconcile competing changes?",
+      "acceptedAnswers": [
+        "Merge conflict"
+      ],
+      "explanation": "The term is Merge conflict.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "id": "business-writing",
+  "title": "Business Writing",
+  "skillSlug": "business-writing",
+  "description": "Test your understanding of business writing. Writing clear emails, memos, proposals, and status updates that get to the point.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "business-writing-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes BLUF?",
+      "options": [
+        {
+          "id": "a",
+          "text": "puts the bottom line or main conclusion first"
+        },
+        {
+          "id": "b",
+          "text": "buries the request at the end"
+        },
+        {
+          "id": "c",
+          "text": "means every sentence is a heading"
+        },
+        {
+          "id": "d",
+          "text": "is a spreadsheet function"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "BLUF puts the bottom line or main conclusion first.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "business-writing-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Action item?",
+      "options": [
+        {
+          "id": "a",
+          "text": "states what must be done, by whom, and usually by when"
+        },
+        {
+          "id": "b",
+          "text": "is an unowned idea"
+        },
+        {
+          "id": "c",
+          "text": "is a decorative sentence"
+        },
+        {
+          "id": "d",
+          "text": "is a database constraint"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Action item states what must be done, by whom, and usually by when.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "business-writing-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Plain language?",
+      "options": [
+        {
+          "id": "a",
+          "text": "communicates clearly with familiar words and direct sentence structure"
+        },
+        {
+          "id": "b",
+          "text": "maximizes jargon"
+        },
+        {
+          "id": "c",
+          "text": "removes all necessary detail"
+        },
+        {
+          "id": "d",
+          "text": "uses passive voice everywhere"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Plain language communicates clearly with familiar words and direct sentence structure.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "business-writing-4",
+      "type": "true_false",
+      "prompt": "True or false: BLUF puts the bottom line or main conclusion first.",
+      "correctAnswer": true,
+      "explanation": "BLUF puts the bottom line or main conclusion first.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "business-writing-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: communicates clearly with familiar words and direct sentence structure?",
+      "acceptedAnswers": [
+        "Plain language"
+      ],
+      "explanation": "The term is Plain language.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

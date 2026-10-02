@@ -1,0 +1,105 @@
+{
+  "id": "enterprise-systems",
+  "title": "Enterprise Systems (ERP/CRM)",
+  "skillSlug": "enterprise-systems",
+  "description": "Test your understanding of enterprise systems (erp/crm). How ERP and CRM platforms are configured, integrated, and used to run business operations.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "enterprise-systems-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes ERP?",
+      "options": [
+        {
+          "id": "a",
+          "text": "integrates business functions such as finance, supply chain, and operations"
+        },
+        {
+          "id": "b",
+          "text": "is a browser rendering engine"
+        },
+        {
+          "id": "c",
+          "text": "is a network packet format"
+        },
+        {
+          "id": "d",
+          "text": "is a single social-media post"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "ERP integrates business functions such as finance, supply chain, and operations.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "enterprise-systems-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes CRM pipeline?",
+      "options": [
+        {
+          "id": "a",
+          "text": "tracks prospects and customer interactions through stages of a sales process"
+        },
+        {
+          "id": "b",
+          "text": "is a server boot sequence"
+        },
+        {
+          "id": "c",
+          "text": "is a data encryption key"
+        },
+        {
+          "id": "d",
+          "text": "is a CSS layout model"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "CRM pipeline tracks prospects and customer interactions through stages of a sales process.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "enterprise-systems-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Master data?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is shared, relatively stable business information used consistently across systems"
+        },
+        {
+          "id": "b",
+          "text": "is temporary log output"
+        },
+        {
+          "id": "c",
+          "text": "is a random test fixture"
+        },
+        {
+          "id": "d",
+          "text": "is a user-interface animation"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Master data is shared, relatively stable business information used consistently across systems.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "enterprise-systems-4",
+      "type": "true_false",
+      "prompt": "True or false: ERP integrates business functions such as finance, supply chain, and operations.",
+      "correctAnswer": true,
+      "explanation": "ERP integrates business functions such as finance, supply chain, and operations.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "enterprise-systems-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: is shared, relatively stable business information used consistently across systems?",
+      "acceptedAnswers": [
+        "Master data"
+      ],
+      "explanation": "The term is Master data.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

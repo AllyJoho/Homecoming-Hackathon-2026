@@ -1,0 +1,105 @@
+{
+  "id": "cloud-deployment-cicd",
+  "title": "Cloud Deployment & CI/CD",
+  "skillSlug": "cloud-deployment-cicd",
+  "description": "Test your understanding of cloud deployment & ci/cd. Deploying applications to hosting platforms and automating builds and releases with CI/CD pipelines.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "cloud-deployment-cicd-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Continuous integration?",
+      "options": [
+        {
+          "id": "a",
+          "text": "automatically builds and tests changes as they are integrated"
+        },
+        {
+          "id": "b",
+          "text": "manually copies files to every laptop"
+        },
+        {
+          "id": "c",
+          "text": "stores only production passwords"
+        },
+        {
+          "id": "d",
+          "text": "replaces source control"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Continuous integration automatically builds and tests changes as they are integrated.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "cloud-deployment-cicd-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Blue-green deployment?",
+      "options": [
+        {
+          "id": "a",
+          "text": "keeps two production environments so traffic can switch between versions"
+        },
+        {
+          "id": "b",
+          "text": "runs two databases with no backups"
+        },
+        {
+          "id": "c",
+          "text": "changes CSS from blue to green"
+        },
+        {
+          "id": "d",
+          "text": "requires every user to reinstall an app"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Blue-green deployment keeps two production environments so traffic can switch between versions.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "cloud-deployment-cicd-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Environment variable?",
+      "options": [
+        {
+          "id": "a",
+          "text": "provides configuration to an application without hard-coding it in source"
+        },
+        {
+          "id": "b",
+          "text": "is a unit test assertion"
+        },
+        {
+          "id": "c",
+          "text": "is a Git merge strategy"
+        },
+        {
+          "id": "d",
+          "text": "is a database primary key"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Environment variable provides configuration to an application without hard-coding it in source.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "cloud-deployment-cicd-4",
+      "type": "true_false",
+      "prompt": "True or false: Continuous integration automatically builds and tests changes as they are integrated.",
+      "correctAnswer": true,
+      "explanation": "Continuous integration automatically builds and tests changes as they are integrated.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "cloud-deployment-cicd-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: provides configuration to an application without hard-coding it in source?",
+      "acceptedAnswers": [
+        "Environment variable"
+      ],
+      "explanation": "The term is Environment variable.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "id": "etl-data-warehousing",
+  "title": "ETL & Data Warehousing",
+  "skillSlug": "etl-data-warehousing",
+  "description": "Test your understanding of etl & data warehousing. Moving data between systems and organizing it into warehouse schemas such as star and snowflake designs.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "etl-data-warehousing-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes ETL?",
+      "options": [
+        {
+          "id": "a",
+          "text": "extracts data, transforms it, and loads it into a target system"
+        },
+        {
+          "id": "b",
+          "text": "encrypts, tags, and logs a password"
+        },
+        {
+          "id": "c",
+          "text": "tests, deploys, and links a UI"
+        },
+        {
+          "id": "d",
+          "text": "trains, tunes, and labels a model"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "ETL extracts data, transforms it, and loads it into a target system.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "etl-data-warehousing-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Star schema?",
+      "options": [
+        {
+          "id": "a",
+          "text": "uses a central fact table connected to descriptive dimension tables"
+        },
+        {
+          "id": "b",
+          "text": "stores every value in one wide text field"
+        },
+        {
+          "id": "c",
+          "text": "is a network firewall design"
+        },
+        {
+          "id": "d",
+          "text": "is a UI component hierarchy"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Star schema uses a central fact table connected to descriptive dimension tables.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "etl-data-warehousing-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Idempotent pipeline?",
+      "options": [
+        {
+          "id": "a",
+          "text": "produces the same target state when the same input is processed repeatedly"
+        },
+        {
+          "id": "b",
+          "text": "must append duplicates on every run"
+        },
+        {
+          "id": "c",
+          "text": "can only run once"
+        },
+        {
+          "id": "d",
+          "text": "cannot include validation"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Idempotent pipeline produces the same target state when the same input is processed repeatedly.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "etl-data-warehousing-4",
+      "type": "true_false",
+      "prompt": "True or false: ETL extracts data, transforms it, and loads it into a target system.",
+      "correctAnswer": true,
+      "explanation": "ETL extracts data, transforms it, and loads it into a target system.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "etl-data-warehousing-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: produces the same target state when the same input is processed repeatedly?",
+      "acceptedAnswers": [
+        "Idempotent pipeline"
+      ],
+      "explanation": "The term is Idempotent pipeline.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

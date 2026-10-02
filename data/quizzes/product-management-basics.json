@@ -1,0 +1,105 @@
+{
+  "id": "product-management-basics",
+  "title": "Product Management Basics",
+  "skillSlug": "product-management-basics",
+  "description": "Test your understanding of product management basics. Prioritizing a product backlog, writing user stories, and tying features to user needs and business goals.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "product-management-basics-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes User story?",
+      "options": [
+        {
+          "id": "a",
+          "text": "describes a desired capability from a user perspective and its value"
+        },
+        {
+          "id": "b",
+          "text": "is a production server log"
+        },
+        {
+          "id": "c",
+          "text": "is a legal invoice only"
+        },
+        {
+          "id": "d",
+          "text": "is a database backup"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "User story describes a desired capability from a user perspective and its value.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "product-management-basics-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes MVP?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is the smallest useful product version that can test important assumptions"
+        },
+        {
+          "id": "b",
+          "text": "contains every planned feature"
+        },
+        {
+          "id": "c",
+          "text": "is always a throwaway prototype"
+        },
+        {
+          "id": "d",
+          "text": "must be released without feedback"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "MVP is the smallest useful product version that can test important assumptions.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "product-management-basics-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Prioritization?",
+      "options": [
+        {
+          "id": "a",
+          "text": "orders opportunities by factors such as user value, impact, effort, and risk"
+        },
+        {
+          "id": "b",
+          "text": "selects only the newest idea"
+        },
+        {
+          "id": "c",
+          "text": "ignores constraints"
+        },
+        {
+          "id": "d",
+          "text": "means every item is urgent"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Prioritization orders opportunities by factors such as user value, impact, effort, and risk.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "product-management-basics-4",
+      "type": "true_false",
+      "prompt": "True or false: User story describes a desired capability from a user perspective and its value.",
+      "correctAnswer": true,
+      "explanation": "User story describes a desired capability from a user perspective and its value.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "product-management-basics-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: orders opportunities by factors such as user value, impact, effort, and risk?",
+      "acceptedAnswers": [
+        "Prioritization"
+      ],
+      "explanation": "The term is Prioritization.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

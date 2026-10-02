@@ -1,0 +1,105 @@
+{
+  "id": "change-management",
+  "title": "Change Management",
+  "skillSlug": "change-management",
+  "description": "Test your understanding of change management. Preparing people and teams for new systems or processes through communication, training, and adoption tracking.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "change-management-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Change impact assessment?",
+      "options": [
+        {
+          "id": "a",
+          "text": "identifies who and what will be affected by a proposed change"
+        },
+        {
+          "id": "b",
+          "text": "is a code compilation step"
+        },
+        {
+          "id": "c",
+          "text": "is a database index"
+        },
+        {
+          "id": "d",
+          "text": "is a chart legend"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Change impact assessment identifies who and what will be affected by a proposed change.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "change-management-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Adoption metric?",
+      "options": [
+        {
+          "id": "a",
+          "text": "measures whether people are using and benefiting from a new process or system"
+        },
+        {
+          "id": "b",
+          "text": "is only the project start date"
+        },
+        {
+          "id": "c",
+          "text": "is a firewall rule"
+        },
+        {
+          "id": "d",
+          "text": "is a file extension"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Adoption metric measures whether people are using and benefiting from a new process or system.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "change-management-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Change champion?",
+      "options": [
+        {
+          "id": "a",
+          "text": "helps peers understand, practice, and adopt a change"
+        },
+        {
+          "id": "b",
+          "text": "blocks all feedback"
+        },
+        {
+          "id": "c",
+          "text": "owns every technical decision"
+        },
+        {
+          "id": "d",
+          "text": "is a replacement for training materials"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Change champion helps peers understand, practice, and adopt a change.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "change-management-4",
+      "type": "true_false",
+      "prompt": "True or false: Change impact assessment identifies who and what will be affected by a proposed change.",
+      "correctAnswer": true,
+      "explanation": "Change impact assessment identifies who and what will be affected by a proposed change.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "change-management-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: helps peers understand, practice, and adopt a change?",
+      "acceptedAnswers": [
+        "Change champion"
+      ],
+      "explanation": "The term is Change champion.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

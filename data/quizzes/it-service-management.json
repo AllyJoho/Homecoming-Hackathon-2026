@@ -1,0 +1,105 @@
+{
+  "id": "it-service-management",
+  "title": "IT Service Management",
+  "skillSlug": "it-service-management",
+  "description": "Test your understanding of it service management. Handling incidents, requests, and changes through ticketing and ITIL-style service processes.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "it-service-management-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Incident?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is an unplanned interruption or reduction in the quality of an IT service"
+        },
+        {
+          "id": "b",
+          "text": "is a planned feature request"
+        },
+        {
+          "id": "c",
+          "text": "is a database schema"
+        },
+        {
+          "id": "d",
+          "text": "is a completed training course"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Incident is an unplanned interruption or reduction in the quality of an IT service.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "it-service-management-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Service request?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is a user request for a standard, pre-defined service or access item"
+        },
+        {
+          "id": "b",
+          "text": "is always a security breach"
+        },
+        {
+          "id": "c",
+          "text": "is a code merge"
+        },
+        {
+          "id": "d",
+          "text": "is a network cable"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Service request is a user request for a standard, pre-defined service or access item.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "it-service-management-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Change management?",
+      "options": [
+        {
+          "id": "a",
+          "text": "controls planned modifications to services while assessing risk and impact"
+        },
+        {
+          "id": "b",
+          "text": "blocks every change forever"
+        },
+        {
+          "id": "c",
+          "text": "only handles employee hiring"
+        },
+        {
+          "id": "d",
+          "text": "replaces incident diagnosis"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Change management controls planned modifications to services while assessing risk and impact.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "it-service-management-4",
+      "type": "true_false",
+      "prompt": "True or false: Incident is an unplanned interruption or reduction in the quality of an IT service.",
+      "correctAnswer": true,
+      "explanation": "Incident is an unplanned interruption or reduction in the quality of an IT service.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "it-service-management-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: controls planned modifications to services while assessing risk and impact?",
+      "acceptedAnswers": [
+        "Change management"
+      ],
+      "explanation": "The term is Change management.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

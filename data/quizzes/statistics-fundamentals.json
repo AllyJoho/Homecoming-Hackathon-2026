@@ -1,0 +1,105 @@
+{
+  "id": "statistics-fundamentals",
+  "title": "Statistics Fundamentals",
+  "skillSlug": "statistics-fundamentals",
+  "description": "Test your understanding of statistics fundamentals. Descriptive statistics, probability, hypothesis testing, and interpreting confidence intervals.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "statistics-fundamentals-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Median?",
+      "options": [
+        {
+          "id": "a",
+          "text": "is the middle value after observations are ordered"
+        },
+        {
+          "id": "b",
+          "text": "is always the largest value"
+        },
+        {
+          "id": "c",
+          "text": "is the number of observations squared"
+        },
+        {
+          "id": "d",
+          "text": "is a probability of zero"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Median is the middle value after observations are ordered.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "statistics-fundamentals-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes P-value?",
+      "options": [
+        {
+          "id": "a",
+          "text": "measures how surprising the observed result would be if the null hypothesis were true"
+        },
+        {
+          "id": "b",
+          "text": "is the probability the null is true"
+        },
+        {
+          "id": "c",
+          "text": "is the sample mean"
+        },
+        {
+          "id": "d",
+          "text": "is a confidence interval width"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "P-value measures how surprising the observed result would be if the null hypothesis were true.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "statistics-fundamentals-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Confidence interval?",
+      "options": [
+        {
+          "id": "a",
+          "text": "gives a range produced by a method intended to capture a population parameter at a chosen confidence level"
+        },
+        {
+          "id": "b",
+          "text": "guarantees every future value is inside"
+        },
+        {
+          "id": "c",
+          "text": "contains only the sample minimum"
+        },
+        {
+          "id": "d",
+          "text": "is the same as a prediction label"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Confidence interval gives a range produced by a method intended to capture a population parameter at a chosen confidence level.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "statistics-fundamentals-4",
+      "type": "true_false",
+      "prompt": "True or false: Median is the middle value after observations are ordered.",
+      "correctAnswer": true,
+      "explanation": "Median is the middle value after observations are ordered.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "statistics-fundamentals-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: gives a range produced by a method intended to capture a population parameter at a chosen confidence level?",
+      "acceptedAnswers": [
+        "Confidence interval"
+      ],
+      "explanation": "The term is Confidence interval.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

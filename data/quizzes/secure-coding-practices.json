@@ -1,0 +1,105 @@
+{
+  "id": "secure-coding-practices",
+  "title": "Secure Coding Practices",
+  "skillSlug": "secure-coding-practices",
+  "description": "Test your understanding of secure coding practices. Preventing common vulnerabilities such as injection, XSS, and broken authentication in application code.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "secure-coding-practices-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Parameterized query?",
+      "options": [
+        {
+          "id": "a",
+          "text": "keeps SQL code separate from user-provided values to prevent injection"
+        },
+        {
+          "id": "b",
+          "text": "concatenates raw input into SQL"
+        },
+        {
+          "id": "c",
+          "text": "stores passwords in plain text"
+        },
+        {
+          "id": "d",
+          "text": "disables all database constraints"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Parameterized query keeps SQL code separate from user-provided values to prevent injection.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "secure-coding-practices-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Output encoding?",
+      "options": [
+        {
+          "id": "a",
+          "text": "escapes data for its target context before rendering it to reduce XSS risk"
+        },
+        {
+          "id": "b",
+          "text": "executes user input as HTML"
+        },
+        {
+          "id": "c",
+          "text": "removes authentication"
+        },
+        {
+          "id": "d",
+          "text": "turns off browser updates"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Output encoding escapes data for its target context before rendering it to reduce XSS risk.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "secure-coding-practices-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes CSRF protection?",
+      "options": [
+        {
+          "id": "a",
+          "text": "helps ensure a state-changing request came from the intended application context"
+        },
+        {
+          "id": "b",
+          "text": "makes passwords reversible"
+        },
+        {
+          "id": "c",
+          "text": "replaces TLS everywhere"
+        },
+        {
+          "id": "d",
+          "text": "prevents every possible network scan"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "CSRF protection helps ensure a state-changing request came from the intended application context.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "secure-coding-practices-4",
+      "type": "true_false",
+      "prompt": "True or false: Parameterized query keeps SQL code separate from user-provided values to prevent injection.",
+      "correctAnswer": true,
+      "explanation": "Parameterized query keeps SQL code separate from user-provided values to prevent injection.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "secure-coding-practices-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: helps ensure a state-changing request came from the intended application context?",
+      "acceptedAnswers": [
+        "CSRF protection"
+      ],
+      "explanation": "The term is CSRF protection.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}

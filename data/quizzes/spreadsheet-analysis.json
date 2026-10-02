@@ -1,0 +1,105 @@
+{
+  "id": "spreadsheet-analysis",
+  "title": "Spreadsheet Analysis",
+  "skillSlug": "spreadsheet-analysis",
+  "description": "Test your understanding of spreadsheet analysis. Using formulas, pivot tables, and charts in Excel or Google Sheets to summarize data.",
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "spreadsheet-analysis-1",
+      "type": "multiple_choice",
+      "prompt": "What best describes Pivot table?",
+      "options": [
+        {
+          "id": "a",
+          "text": "summarizes and groups rows by fields without changing the source data"
+        },
+        {
+          "id": "b",
+          "text": "encrypts a workbook"
+        },
+        {
+          "id": "c",
+          "text": "is a single-cell comment"
+        },
+        {
+          "id": "d",
+          "text": "is a database server"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Pivot table summarizes and groups rows by fields without changing the source data.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "spreadsheet-analysis-2",
+      "type": "multiple_choice",
+      "prompt": "What best describes Absolute reference?",
+      "options": [
+        {
+          "id": "a",
+          "text": "keeps a cell reference fixed when a formula is copied"
+        },
+        {
+          "id": "b",
+          "text": "always points to the last row"
+        },
+        {
+          "id": "c",
+          "text": "only works in charts"
+        },
+        {
+          "id": "d",
+          "text": "deletes formulas when copied"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Absolute reference keeps a cell reference fixed when a formula is copied.",
+      "difficulty": "INTERMEDIATE"
+    },
+    {
+      "id": "spreadsheet-analysis-3",
+      "type": "multiple_choice",
+      "prompt": "What best describes Lookup?",
+      "options": [
+        {
+          "id": "a",
+          "text": "finds a matching key and returns a related value"
+        },
+        {
+          "id": "b",
+          "text": "formats every cell as currency"
+        },
+        {
+          "id": "c",
+          "text": "creates a presentation slide"
+        },
+        {
+          "id": "d",
+          "text": "removes all blank rows"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Lookup finds a matching key and returns a related value.",
+      "difficulty": "ADVANCED"
+    },
+    {
+      "id": "spreadsheet-analysis-4",
+      "type": "true_false",
+      "prompt": "True or false: Pivot table summarizes and groups rows by fields without changing the source data.",
+      "correctAnswer": true,
+      "explanation": "Pivot table summarizes and groups rows by fields without changing the source data.",
+      "difficulty": "BEGINNER"
+    },
+    {
+      "id": "spreadsheet-analysis-5",
+      "type": "short_answer",
+      "prompt": "What term describes this idea: finds a matching key and returns a related value?",
+      "acceptedAnswers": [
+        "Lookup"
+      ],
+      "explanation": "The term is Lookup.",
+      "difficulty": "INTERMEDIATE"
+    }
+  ]
+}
