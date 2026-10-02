@@ -1,0 +1,68 @@
+{
+  "id": "sql",
+  "title": "SQL Essentials",
+  "skillSlug": "sql",
+  "description": "Joins, aggregation, and the clause order that trips everyone up.",
+  "passingScore": 70,
+  "timeLimitSeconds": 600,
+  "questions": [
+    {
+      "id": "sql-1",
+      "type": "multiple_choice",
+      "prompt": "Which join returns every row from the left table, even with no match on the right?",
+      "points": 1,
+      "options": [
+        { "id": "a", "text": "INNER JOIN" },
+        { "id": "b", "text": "LEFT JOIN" },
+        { "id": "c", "text": "CROSS JOIN" },
+        { "id": "d", "text": "RIGHT JOIN" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "LEFT JOIN keeps all left rows, filling unmatched right columns with NULL."
+    },
+    {
+      "id": "sql-2",
+      "type": "multiple_choice",
+      "prompt": "You want to filter on an aggregate like COUNT(*). Which clause do you use?",
+      "points": 1,
+      "options": [
+        { "id": "a", "text": "WHERE" },
+        { "id": "b", "text": "HAVING" },
+        { "id": "c", "text": "ORDER BY" },
+        { "id": "d", "text": "LIMIT" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "WHERE filters rows before grouping; HAVING filters groups after aggregation."
+    },
+    {
+      "id": "sql-3",
+      "type": "true_false",
+      "prompt": "`SELECT COUNT(*)` and `SELECT COUNT(column)` always return the same number.",
+      "points": 1,
+      "correctAnswer": false,
+      "explanation": "COUNT(column) skips NULLs in that column; COUNT(*) counts every row."
+    },
+    {
+      "id": "sql-4",
+      "type": "multi_select",
+      "prompt": "Which statements modify data rather than schema? Select all that apply.",
+      "points": 2,
+      "options": [
+        { "id": "a", "text": "INSERT" },
+        { "id": "b", "text": "ALTER TABLE" },
+        { "id": "c", "text": "UPDATE" },
+        { "id": "d", "text": "DELETE" }
+      ],
+      "correctOptionIds": ["a", "c", "d"],
+      "explanation": "INSERT, UPDATE, and DELETE are DML. ALTER TABLE is DDL — it changes the schema."
+    },
+    {
+      "id": "sql-5",
+      "type": "short_answer",
+      "prompt": "Which keyword removes duplicate rows from a SELECT's results?",
+      "points": 1,
+      "acceptedAnswers": ["DISTINCT", "distinct"],
+      "explanation": "SELECT DISTINCT dedupes on the full selected row."
+    }
+  ]
+}
