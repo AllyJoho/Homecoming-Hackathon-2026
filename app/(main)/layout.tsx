@@ -8,6 +8,7 @@
 import Link from 'next/link';
 import { requireSessionUser } from '@/lib/auth/session';
 import { APP_NAME } from '@/lib/appConfig';
+import { SignOutButton } from '@/components/auth/SignOutButton';
 
 const NAV = [
   { href: '/', label: 'Home' },
@@ -21,7 +22,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
   return (
     <>
       <header className="border-b border-zinc-200 dark:border-zinc-800">
-        <nav className="mx-auto flex h-14 w-full max-w-4xl items-center gap-6 px-6">
+        <nav className="mx-auto flex h-14 w-full max-w-6xl items-center gap-6 px-6">
           <Link href="/" className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
             {APP_NAME}
           </Link>
@@ -37,11 +38,14 @@ export default async function MainLayout({ children }: { children: React.ReactNo
               </li>
             ))}
           </ul>
-          <span className="text-sm text-zinc-500 dark:text-zinc-400">{user.name}</span>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-zinc-500 dark:text-zinc-400">{user.name}</span>
+            <SignOutButton />
+          </div>
         </nav>
       </header>
 
-      <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">{children}</main>
+      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">{children}</main>
     </>
   );
 }

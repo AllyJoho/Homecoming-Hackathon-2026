@@ -1,47 +1,80 @@
 'use client';
 
 // @/app/(auth)/login/page.tsx
-// ⚠️  HACKATHON PLACEHOLDER AUTH: email only, no password. See
-// @/lib/auth/session for what has to change before this is real.
+// Sign in or create an account, both through Better Auth (see @/lib/auth/server).
+// Passwords are scrypt-hashed onto Account.password; the session cookie is
+// signed, httpOnly, and expires after a week.
+//
+// The demo buttons are a convenience for judging and local work. They call the
+// demo-login endpoint, which only exists outside production and only ever
+// issues a session for a seeded `isDemo` account — see @/lib/auth/demoLogin.
 //
 // This route group has no layout of its own, so it renders without the app
 // nav — a signed-out visitor shouldn't see links they can't use.
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Card } from '@/components/ui';
 import { APP_NAME } from '@/lib/appConfig';
+import { demoLogin, signIn, signUp } from '@/lib/auth/client';
+
+type Mode = 'signin' | 'signup';
+
+const FIELD =
+  'rounded-lg border border-zinc-200 px-3 py-2 outline-none focus:border-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:focus:border-zinc-50';
 
 export default function LoginPage() {
   const router = useRouter();
+  const [mode, setMode] = useState<Mode>('signin');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [demoUsers, setDemoUsers] = useState<{ name: string; email: string }[]>([]);
+
+  // 404s in production, where the endpoint is absent — the buttons just don't
+  // render then.
+  useEffect(() => {
+    fetch('/api/auth/demo-users')
+      .then((res) => (res.ok ? res.json() : { users: [] }))
+      .then((body: { users?: { name: string; email: string }[] }) => setDemoUsers(body.users ?? []))
+      .catch(() => setDemoUsers([]));
+  }, []);
+
+  // The (main) layout reads the session on the server, so the tree has to be
+  // refetched before navigating or the guard still sees no session.
+  function enter() {
+    router.refresh();
+    router.push('/');
+  }
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
     setPending(true);
     setError(null);
 
+    const { error: authError } =
+      mode === 'signup'
+        ? await signUp.email({ email, password, name: name.trim() || email.split('@')[0] })
+        : await signIn.email({ email, password });
+
+    if (authError) {
+      setError(authError.message ?? 'Could not sign in.');
+      setPending(false);
+      return;
+    }
+    enter();
+  }
+
+  async function onDemo(demoEmail: string) {
+    setPending(true);
+    setError(null);
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, name }),
-      });
-
-      if (!response.ok) {
-        const body = (await response.json().catch(() => null)) as { error?: string } | null;
-        throw new Error(body?.error ?? 'Could not sign in.');
-      }
-
-      // The session cookie is set by the route; refresh so the server
-      // components in (main) see it, then navigate.
-      router.refresh();
-      router.push('/');
+      await demoLogin(demoEmail);
+      enter();
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : 'Something went wrong.');
+      setError(caught instanceof Error ? caught.message : 'Demo sign-in failed.');
       setPending(false);
     }
   }
@@ -55,27 +88,44 @@ export default function LoginPage() {
         </p>
       </div>
 
-      <Card title="Sign in">
+      <Card title={mode === 'signup' ? 'Create an account' : 'Sign in'}>
         <form onSubmit={onSubmit} className="flex flex-col gap-3">
+          {mode === 'signup' && (
+            <label className="flex flex-col gap-1 text-sm">
+              <span className="text-zinc-700 dark:text-zinc-300">Name</span>
+              <input
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                placeholder="Optional — defaults to your email handle"
+                className={FIELD}
+              />
+            </label>
+          )}
+
           <label className="flex flex-col gap-1 text-sm">
             <span className="text-zinc-700 dark:text-zinc-300">Email</span>
             <input
               type="email"
               required
+              autoComplete="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               placeholder="you@byu.edu"
-              className="rounded-lg border border-zinc-200 px-3 py-2 outline-none focus:border-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:focus:border-zinc-50"
+              className={FIELD}
             />
           </label>
 
           <label className="flex flex-col gap-1 text-sm">
-            <span className="text-zinc-700 dark:text-zinc-300">Name</span>
+            <span className="text-zinc-700 dark:text-zinc-300">Password</span>
             <input
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              placeholder="Optional — defaults to your email handle"
-              className="rounded-lg border border-zinc-200 px-3 py-2 outline-none focus:border-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:focus:border-zinc-50"
+              type="password"
+              required
+              minLength={8}
+              autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="At least 8 characters"
+              className={FIELD}
             />
           </label>
 
@@ -86,10 +136,49 @@ export default function LoginPage() {
           )}
 
           <Button type="submit" size="lg" disabled={pending}>
-            {pending ? 'Signing in…' : 'Continue'}
+            {pending
+              ? mode === 'signup'
+                ? 'Creating account…'
+                : 'Signing in…'
+              : mode === 'signup'
+                ? 'Create account'
+                : 'Sign in'}
           </Button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setMode(mode === 'signup' ? 'signin' : 'signup');
+              setError(null);
+            }}
+            className="text-sm text-zinc-600 underline-offset-4 hover:underline dark:text-zinc-400"
+          >
+            {mode === 'signup' ? 'Already have an account? Sign in' : 'New here? Create an account'}
+          </button>
         </form>
       </Card>
+
+      {demoUsers.length > 0 && (
+        <Card title="Demo accounts">
+          <p className="mb-3 text-sm text-zinc-600 dark:text-zinc-400">
+            Seeded accounts for trying the app out. Local and preview only — these buttons are gone
+            in a production build.
+          </p>
+          <div className="flex flex-col gap-2">
+            {demoUsers.map((user) => (
+              <Button
+                key={user.email}
+                type="button"
+                variant="secondary"
+                onClick={() => onDemo(user.email)}
+                disabled={pending}
+              >
+                Continue as {user.name}
+              </Button>
+            ))}
+          </div>
+        </Card>
+      )}
     </main>
   );
 }

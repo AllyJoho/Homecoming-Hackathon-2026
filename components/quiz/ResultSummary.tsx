@@ -9,15 +9,25 @@ import Link from 'next/link';
 import type { PublicQuiz, QuizResult } from '@/types/quiz';
 import { LEVEL_TONE, nextLevelThreshold } from '@/lib/quiz/levels';
 import { Card, Tag } from '@/components/ui';
+import { FeedbackPanel } from '@/components/quiz/FeedbackPanel';
 
 export interface ResultSummaryProps {
   quiz: PublicQuiz;
   result: QuizResult;
+  /** QuizAttempt id, so the Coaching card can ask for feedback on it. */
+  attemptId: string;
+  /** Present when this attempt earned a certificate. */
   certificateSlug?: string | null;
 }
 
-export function ResultSummary({ quiz, result, certificateSlug }: ResultSummaryProps) {
+export function ResultSummary({
+  quiz,
+  result,
+  attemptId,
+  certificateSlug,
+}: ResultSummaryProps) {
   const next = nextLevelThreshold(result.score);
+  const missedCount = result.graded.filter((graded) => !graded.correct).length;
 
   return (
     <div className="flex flex-col gap-6">
@@ -54,6 +64,12 @@ export function ResultSummary({ quiz, result, certificateSlug }: ResultSummaryPr
           </p>
         )}
       </Card>
+
+      {/* Above the per-question list on purpose: the explanation of *why* a
+          question was missed is what moves the next attempt up a level, and
+          the level is now the whole outcome. Hidden on a perfect score, which
+          the feedback route would only answer with a no-op. */}
+      {missedCount > 0 && <FeedbackPanel attemptId={attemptId} missedCount={missedCount} />}
 
       <Card title="Question review">
         <ol className="flex flex-col gap-4">

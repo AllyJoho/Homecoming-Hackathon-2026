@@ -1,60 +1,52 @@
 // @/lib/auth/session.ts
-// ⚠️  HACKATHON PLACEHOLDER AUTH. The cookie holds a bare user id and is not
-// signed, so anyone can mint one by hand. It's here so the rest of the app can
-// be written against a real session API; swap the three cookie functions for
-// a provider (NextAuth / Clerk / BYU CAS) and nothing else changes.
+// Resolves the Better Auth session into the shape the app consumes. The
+// exported contract is unchanged from the placeholder version this replaced
+// (getSessionUser / requireSessionUser / unauthorized), so route handlers and
+// server components did not have to move.
+//
+// The cookie is now signed by Better Auth and carries an opaque session token,
+// not a bare user id — forging one means forging the signature.
 
-import { cookies } from 'next/headers';
+import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { redirect } from 'next/navigation';
-import { getUserById } from '@/prisma/queries';
+import { auth } from '@/lib/auth/server';
 
-const COOKIE_NAME = 'hh_session';
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // one week
-
-/** The signed-in user's id, or null. Safe to call from any server context. */
-export async function getSessionUserId(): Promise<string | null> {
-  const store = await cookies();
-  return store.get(COOKIE_NAME)?.value ?? null;
+export interface SessionUser {
+  id: string;
+  name: string;
+  email: string;
+  isDemo: boolean;
 }
 
-/** The signed-in user row, or null if the cookie is absent or stale. */
-export async function getSessionUser() {
-  const userId = await getSessionUserId();
-  if (!userId) return null;
-
-  // A cookie can outlive its user (e.g. after `npm run db:reset`), so this is
-  // a real lookup rather than trusting the cookie.
-  return getUserById(userId);
+function toSessionUser(user: Record<string, unknown>): SessionUser {
+  return {
+    id: user.id as string,
+    name: (user.name as string) ?? '',
+    email: user.email as string,
+    isDemo: user.isDemo === true,
+  };
 }
 
 /**
- * For pages and routes that require a session. Redirects to /login when there
- * isn't one, so callers can treat the return value as always present.
+ * The signed-in user, or null. Safe to call from any server context.
+ *
+ * Better Auth writes into the domain `User` table, so `id` here is already the
+ * id every foreign key in the schema references — no mapping step.
  */
-export async function requireSessionUser() {
+export async function getSessionUser(): Promise<SessionUser | null> {
+  const result = await auth.api.getSession({ headers: await headers() });
+  return result?.user ? toSessionUser(result.user as Record<string, unknown>) : null;
+}
+
+/**
+ * For pages that require a session. Redirects to /login when there isn't one,
+ * so callers can treat the return value as always present.
+ */
+export async function requireSessionUser(): Promise<SessionUser> {
   const user = await getSessionUser();
   if (!user) redirect('/login');
   return user;
-}
-
-// Cookie *writes* are only legal inside a Route Handler or a Server Action —
-// calling these from a server component throws.
-
-export async function createSession(userId: string): Promise<void> {
-  const store = await cookies();
-  store.set(COOKIE_NAME, userId, {
-    httpOnly: true,
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
-    path: '/',
-    maxAge: COOKIE_MAX_AGE,
-  });
-}
-
-export async function destroySession(): Promise<void> {
-  const store = await cookies();
-  store.delete(COOKIE_NAME);
 }
 
 /**
