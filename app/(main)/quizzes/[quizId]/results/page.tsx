@@ -3,8 +3,8 @@
 //
 // The attempt id arrives as ?attempt=… and the result is re-graded from the
 // stored answer sheet rather than passed through the URL. That's why
-// QuizAttempt keeps `answers` as JSON: this page, and the [stretch] AI
-// feedback route, both rebuild the grading from it.
+// QuizAttempt keeps `answers` as JSON: this page, and the AI feedback route
+// behind the Coaching card, both rebuild the grading from it.
 
 import { notFound } from 'next/navigation';
 import type { AnswerSheet } from '@/types/quiz';
@@ -41,6 +41,7 @@ export default async function ResultsPage({
     <ResultSummary
       quiz={toPublicQuiz(quiz)}
       result={result}
+      attemptId={attemptId}
       certificateSlug={attempt.certification?.shareSlug ?? null}
     />
   );

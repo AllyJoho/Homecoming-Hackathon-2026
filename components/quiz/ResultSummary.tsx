@@ -8,15 +8,25 @@
 import Link from 'next/link';
 import type { PublicQuiz, QuizResult } from '@/types/quiz';
 import { Card, Tag } from '@/components/ui';
+import { FeedbackPanel } from '@/components/quiz/FeedbackPanel';
 
 export interface ResultSummaryProps {
   quiz: PublicQuiz;
   result: QuizResult;
+  /** QuizAttempt id, so the Coaching card can ask for feedback on it. */
+  attemptId: string;
   /** Present when this attempt earned a certificate. */
   certificateSlug?: string | null;
 }
 
-export function ResultSummary({ quiz, result, certificateSlug }: ResultSummaryProps) {
+export function ResultSummary({
+  quiz,
+  result,
+  attemptId,
+  certificateSlug,
+}: ResultSummaryProps) {
+  const missedCount = result.graded.filter((graded) => !graded.correct).length;
+
   return (
     <div className="flex flex-col gap-6">
       <Card
@@ -54,6 +64,11 @@ export function ResultSummary({ quiz, result, certificateSlug }: ResultSummaryPr
           </p>
         )}
       </Card>
+
+      {/* Above the per-question list on purpose: when a student fails, the
+          explanation of *why* is the thing they came for. Hidden on a perfect
+          score, which the feedback route would only answer with a no-op. */}
+      {missedCount > 0 && <FeedbackPanel attemptId={attemptId} missedCount={missedCount} />}
 
       <Card title="Question review">
         <ol className="flex flex-col gap-4">

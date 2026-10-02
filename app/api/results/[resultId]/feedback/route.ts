@@ -1,5 +1,6 @@
 // @/app/api/results/[resultId]/feedback/route.ts
-// [stretch] Per-question AI coaching on a finished attempt.
+// Per-question AI coaching on a finished attempt. Called by the Coaching card
+// on the results screen (components/quiz/FeedbackPanel).
 //
 // Reads the stored answer sheet back, re-grades it, and asks Claude to explain
 // only what the student got wrong. Non-streaming: the output is a few
@@ -10,7 +11,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { NextResponse } from 'next/server';
 
 import type { AnswerSheet } from '@/types/quiz';
-import { MODEL, aiEnabled, anthropic } from '@/lib/ai/client';
+import { FAST_MODEL, aiEnabled, anthropic } from '@/lib/ai/client';
 import { FEEDBACK_SYSTEM_PROMPT } from '@/lib/ai/prompts';
 import { getSessionUser, unauthorized } from '@/lib/auth/session';
 import { getAttempt, loadQuiz } from '@/prisma/queries';
@@ -69,7 +70,10 @@ export async function POST(
 
   try {
     const response = await anthropic.messages.create({
-      model: MODEL,
+      // Haiku: this runs once per graded attempt rather than once per
+      // session, and explaining a known-wrong answer against a known answer
+      // key is mechanical work, not a judgment call.
+      model: FAST_MODEL,
       max_tokens: 16000,
       system: FEEDBACK_SYSTEM_PROMPT,
       messages: [
