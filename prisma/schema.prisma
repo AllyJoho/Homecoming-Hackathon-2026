@@ -40,11 +40,13 @@ model Skill {
   category    String?
   description String?
 
+  quizzes        Quiz[]
   questions      Question[]
   users          UserSkill[]
   attempts       Attempt[]
   certifications Certification[]
   careerSkills   CareerSkill[]
+  jobSkills      JobSkill[]
 }
 
 // Join row: this user has this skill, and here's where it came from. Passing a
@@ -73,22 +75,63 @@ enum SkillSource {
 // Quizzes
 // ──────────────────────────────────────────────
 
-// The authored question bank, with a review gate. NOTE: the running quiz flow
-// does not read this yet — quizzes are authored as JSON in data/quizzes/ and
-// loaded by lib/quiz/loadQuiz.ts. This table is where a DB-backed bank lands
-// when we move authoring into the app. See the README's open-question note.
-model Question {
-  id           String  @id @default(cuid())
-  skillId      String
-  skill        Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
-  prompt       String
-  options      Json // ["A", "B", "C", "D"]
-  correctIndex Int
-  difficulty   String // "BEGINNER" | "INTERMEDIATE" | "ADVANCED"
-  explanation  String?
-  reviewed     Boolean @default(false) // only reviewed ones count for certification
+// Quizzes and their questions are CONTENT, authored as JSON in data/quizzes/
+// and loaded into these tables by prisma/seed.ts. The seed replaces them
+// wholesale on every run, which is why Attempt.quizId and Certification.quizId
+// are plain strings rather than foreign keys — re-seeding content must never
+// cascade into a user's earned history.
 
+model Quiz {
+  id               String @id // file stem in data/quizzes/, e.g. "sql"
+  title            String
+  description      String
+  passingScore     Int // percent needed to pass, 0-100
+  timeLimitSeconds Int? // optional countdown; not enforced server-side
+  skillId          String
+  skill            Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  questions Question[]
+
+  @@index([skillId])
+}
+
+model Question {
+  id      String @id // authored id from the JSON, e.g. "sql-1" — this is the
+  //                    key the client's answer sheet is keyed by, so it has to
+  //                    survive the round trip unchanged.
+  quizId  String
+  quiz    Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  skillId String
+  skill   Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  order       Int // authored position within the quiz
+  type        QuestionType
+  prompt      String
+  points      Int          @default(1)
+  explanation String?
+  difficulty  String? // "BEGINNER" | "INTERMEDIATE" | "ADVANCED"
+  reviewed    Boolean      @default(false) // only reviewed ones count for certification
+
+  // The answer key. Which columns are populated depends on `type`:
+  //   MULTIPLE_CHOICE → options + correctOptionId
+  //   MULTI_SELECT    → options + correctOptionIds
+  //   TRUE_FALSE      → correctAnswer
+  //   SHORT_ANSWER    → acceptedAnswers
+  options          Json? // [{ id, text }] — the choices shown to the user
+  correctOptionId  String?
+  correctOptionIds String[]
+  correctAnswer    Boolean?
+  acceptedAnswers  String[]
+
+  @@index([quizId, order])
   @@index([skillId, difficulty])
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  MULTI_SELECT
+  TRUE_FALSE
+  SHORT_ANSWER
 }
 
 // ──────────────────────────────────────────────
@@ -168,4 +211,38 @@ model CareerSkill {
   weight   Int // 1-5 importance
 
   @@id([careerId, skillId])
+}
+
+// ──────────────────────────────────────────────
+// Jobs
+// ──────────────────────────────────────────────
+
+// Also content: authored in data/jobs/listings.json and replaced wholesale by
+// the seed. JobMatch.jobId coming back from the model is joined against these
+// rows in code, not by a foreign key.
+model Job {
+  id          String  @id // "job-001"
+  title       String
+  company     String
+  location    String
+  remote      Boolean @default(false)
+  level       String // "internship" | "entry" | "mid" | "senior"
+  salaryRange String?
+  description String
+  url         String?
+
+  skills JobSkill[]
+}
+
+model JobSkill {
+  jobId    String
+  job      Job     @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  skillId  String
+  skill    Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  // Splits the two authored lists: required vs nice-to-have. Required overlap
+  // is weighted double when shortlisting.
+  required Boolean
+
+  @@id([jobId, skillId])
+  @@index([skillId])
 }

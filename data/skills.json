@@ -1,132 +1,54 @@
 [
-  {
-    "slug": "javascript",
-    "name": "JavaScript",
-    "category": "language"
-  },
-  {
-    "slug": "typescript",
-    "name": "TypeScript",
-    "category": "language"
-  },
-  {
-    "slug": "python",
-    "name": "Python",
-    "category": "language"
-  },
-  {
-    "slug": "java",
-    "name": "Java",
-    "category": "language"
-  },
-  {
-    "slug": "cpp",
-    "name": "C++",
-    "category": "language"
-  },
-  {
-    "slug": "csharp",
-    "name": "C#",
-    "category": "language"
-  },
-  {
-    "slug": "sql",
-    "name": "SQL",
-    "category": "language"
-  },
-  {
-    "slug": "html-css",
-    "name": "HTML & CSS",
-    "category": "language"
-  },
-  {
-    "slug": "react",
-    "name": "React",
-    "category": "framework"
-  },
-  {
-    "slug": "nextjs",
-    "name": "Next.js",
-    "category": "framework"
-  },
-  {
-    "slug": "node",
-    "name": "Node.js",
-    "category": "framework"
-  },
-  {
-    "slug": "django",
-    "name": "Django",
-    "category": "framework"
-  },
-  {
-    "slug": "tailwind",
-    "name": "Tailwind CSS",
-    "category": "framework"
-  },
-  {
-    "slug": "git",
-    "name": "Git",
-    "category": "tool"
-  },
-  {
-    "slug": "docker",
-    "name": "Docker",
-    "category": "tool"
-  },
-  {
-    "slug": "aws",
-    "name": "AWS",
-    "category": "tool"
-  },
-  {
-    "slug": "figma",
-    "name": "Figma",
-    "category": "tool"
-  },
-  {
-    "slug": "excel",
-    "name": "Excel",
-    "category": "tool"
-  },
-  {
-    "slug": "data-analysis",
-    "name": "Data Analysis",
-    "category": "domain"
-  },
-  {
-    "slug": "data-viz",
-    "name": "Data Visualization",
-    "category": "domain"
-  },
-  {
-    "slug": "machine-learning",
-    "name": "Machine Learning",
-    "category": "domain"
-  },
-  {
-    "slug": "ui-ux",
-    "name": "UI/UX Design",
-    "category": "domain"
-  },
-  {
-    "slug": "project-management",
-    "name": "Project Management",
-    "category": "domain"
-  },
-  {
-    "slug": "technical-writing",
-    "name": "Technical Writing",
-    "category": "domain"
-  },
-  {
-    "slug": "communication",
-    "name": "Communication",
-    "category": "soft"
-  },
-  {
-    "slug": "public-speaking",
-    "name": "Public Speaking",
-    "category": "soft"
-  }
+  {"slug":"html-css-fundamentals","name":"HTML & CSS Fundamentals","category":"Web Development","description":"Writing semantic HTML and styling pages with CSS, including layout with flexbox and grid."},
+  {"slug":"javascript-fundamentals","name":"JavaScript Fundamentals","category":"Web Development","description":"Core JavaScript language features, DOM manipulation, async code, and working with browser APIs."},
+  {"slug":"frontend-frameworks","name":"Frontend Frameworks","category":"Web Development","description":"Building component-based user interfaces with a framework such as React or Vue, including state and props."},
+  {"slug":"backend-apis","name":"Backend & REST APIs","category":"Web Development","description":"Designing and building server-side endpoints, handling requests, authentication, and returning structured data."},
+  {"slug":"git-version-control","name":"Git & Version Control","category":"Web Development","description":"Using Git for commits, branching, merging, and collaborating through pull requests."},
+  {"slug":"web-accessibility","name":"Web Accessibility","category":"Web Development","description":"Building pages that work with screen readers and keyboard navigation, following WCAG guidelines and ARIA basics."},
+  {"slug":"testing-and-debugging","name":"Testing & Debugging","category":"Web Development","description":"Writing unit and integration tests, reading stack traces, and isolating the cause of defects."},
+  {"slug":"cloud-deployment-cicd","name":"Cloud Deployment & CI/CD","category":"Web Development","description":"Deploying applications to hosting platforms and automating builds and releases with CI/CD pipelines."},
+
+  {"slug":"sql-fundamentals","name":"SQL Fundamentals","category":"Data & Analytics","description":"Querying relational databases with SELECT, JOIN, GROUP BY, and subqueries."},
+  {"slug":"data-cleaning","name":"Data Cleaning & Preparation","category":"Data & Analytics","description":"Finding and fixing missing values, duplicates, and inconsistent formats before analysis."},
+  {"slug":"spreadsheet-analysis","name":"Spreadsheet Analysis","category":"Data & Analytics","description":"Using formulas, pivot tables, and charts in Excel or Google Sheets to summarize data."},
+  {"slug":"data-visualization","name":"Data Visualization","category":"Data & Analytics","description":"Choosing chart types and building dashboards that show data accurately and clearly."},
+  {"slug":"statistics-fundamentals","name":"Statistics Fundamentals","category":"Data & Analytics","description":"Descriptive statistics, probability, hypothesis testing, and interpreting confidence intervals."},
+  {"slug":"python-for-data","name":"Python for Data Analysis","category":"Data & Analytics","description":"Using Python with libraries like pandas and NumPy to load, transform, and analyze datasets."},
+  {"slug":"machine-learning-basics","name":"Machine Learning Basics","category":"Data & Analytics","description":"Training and evaluating supervised and unsupervised models, and recognizing overfitting and data leakage."},
+  {"slug":"etl-data-warehousing","name":"ETL & Data Warehousing","category":"Data & Analytics","description":"Moving data between systems and organizing it into warehouse schemas such as star and snowflake designs."},
+
+  {"slug":"database-design","name":"Database Design & Modeling","category":"Information Systems","description":"Creating entity-relationship diagrams and normalized schemas for relational databases."},
+  {"slug":"systems-analysis","name":"Systems Analysis","category":"Information Systems","description":"Studying existing business processes and information systems to identify problems and propose improvements."},
+  {"slug":"requirements-gathering","name":"Requirements Gathering","category":"Information Systems","description":"Eliciting, documenting, and validating what stakeholders need from a system."},
+  {"slug":"business-process-modeling","name":"Business Process Modeling","category":"Information Systems","description":"Mapping workflows with notations like BPMN and flowcharts to find inefficiencies."},
+  {"slug":"it-infrastructure-basics","name":"IT Infrastructure Basics","category":"Information Systems","description":"Fundamentals of networks, servers, operating systems, and storage."},
+  {"slug":"enterprise-systems","name":"Enterprise Systems (ERP/CRM)","category":"Information Systems","description":"How ERP and CRM platforms are configured, integrated, and used to run business operations."},
+  {"slug":"cloud-computing-fundamentals","name":"Cloud Computing Fundamentals","category":"Information Systems","description":"Core cloud concepts including IaaS, PaaS, and SaaS, virtual machines, storage, networking, and cost models."},
+  {"slug":"it-service-management","name":"IT Service Management","category":"Information Systems","description":"Handling incidents, requests, and changes through ticketing and ITIL-style service processes."},
+  {"slug":"technical-support-troubleshooting","name":"Technical Support & Troubleshooting","category":"Information Systems","description":"Diagnosing hardware, software, and connectivity problems and walking users through fixes."},
+
+  {"slug":"network-security-basics","name":"Network Security Basics","category":"Cybersecurity","description":"Firewalls, VPNs, network segmentation, and common network attack types."},
+  {"slug":"secure-coding-practices","name":"Secure Coding Practices","category":"Cybersecurity","description":"Preventing common vulnerabilities such as injection, XSS, and broken authentication in application code."},
+  {"slug":"risk-assessment","name":"Security Risk Assessment","category":"Cybersecurity","description":"Identifying assets, threats, and vulnerabilities and rating risk to prioritize controls."},
+  {"slug":"incident-response","name":"Incident Response","category":"Cybersecurity","description":"Detecting, containing, and recovering from security incidents and documenting what happened."},
+  {"slug":"identity-access-management","name":"Identity & Access Management","category":"Cybersecurity","description":"Managing authentication, authorization, least privilege, and account lifecycles."},
+  {"slug":"cryptography-basics","name":"Cryptography Basics","category":"Cybersecurity","description":"Symmetric and asymmetric encryption, hashing, digital signatures, TLS, and key management."},
+  {"slug":"security-monitoring-log-analysis","name":"Security Monitoring & Log Analysis","category":"Cybersecurity","description":"Collecting and reviewing logs and alerts from systems and SIEM tools to spot suspicious activity."},
+  {"slug":"vulnerability-assessment","name":"Vulnerability Assessment","category":"Cybersecurity","description":"Scanning systems for known weaknesses, reading CVE and CVSS data, and prioritizing remediation."},
+
+  {"slug":"project-planning-scheduling","name":"Project Planning & Scheduling","category":"Project Management","description":"Defining scope, breaking work into tasks, estimating effort, and building timelines."},
+  {"slug":"agile-scrum","name":"Agile & Scrum","category":"Project Management","description":"Running iterative delivery with sprints, backlogs, standups, and retrospectives."},
+  {"slug":"budgeting-resource-management","name":"Budgeting & Resource Management","category":"Project Management","description":"Tracking project costs and assigning people and tools to work."},
+  {"slug":"stakeholder-management","name":"Stakeholder Management","category":"Project Management","description":"Identifying stakeholders, setting expectations, and handling conflicting priorities."},
+  {"slug":"change-management","name":"Change Management","category":"Project Management","description":"Preparing people and teams for new systems or processes through communication, training, and adoption tracking."},
+  {"slug":"product-management-basics","name":"Product Management Basics","category":"Project Management","description":"Prioritizing a product backlog, writing user stories, and tying features to user needs and business goals."},
+
+  {"slug":"technical-writing","name":"Technical Writing","category":"Communication","description":"Writing clear documentation, procedures, and reports for technical and nontechnical readers."},
+  {"slug":"presentation-skills","name":"Presentation Skills","category":"Communication","description":"Structuring and delivering talks and demos tailored to the audience."},
+  {"slug":"business-writing","name":"Business Writing","category":"Communication","description":"Writing clear emails, memos, proposals, and status updates that get to the point."},
+
+  {"slug":"ux-design-fundamentals","name":"UX Design Fundamentals","category":"Design","description":"Usability principles, information architecture, user flows, and evaluating interfaces against heuristics."},
+  {"slug":"ui-visual-design","name":"UI & Visual Design","category":"Design","description":"Applying typography, color, spacing, and layout to build consistent, accessible interfaces."},
+  {"slug":"user-research-methods","name":"User Research Methods","category":"Design","description":"Planning and running interviews, surveys, and usability tests, and turning findings into recommendations."},
+  {"slug":"prototyping-wireframing","name":"Prototyping & Wireframing","category":"Design","description":"Sketching wireframes and building clickable prototypes in tools like Figma to test ideas early."}
 ]

@@ -7,7 +7,7 @@
 
 import { requireSessionUser } from '@/lib/auth/session';
 import { buildProfile } from '@/lib/profile/buildProfile';
-import { listQuizzes } from '@/lib/quiz/loadQuiz';
+import { listQuizzes } from '@/prisma/queries';
 import { RecommendationsPanel } from './RecommendationsPanel';
 
 export default async function RecommendationsPage() {
@@ -17,7 +17,9 @@ export default async function RecommendationsPage() {
 
   // skill slug → quiz id, so "not proven yet" chips can link to the quiz that
   // would fix them. Built here because the quiz list is server-side data.
-  const quizBySkill = Object.fromEntries(listQuizzes().map((quiz) => [quiz.skillSlug, quiz.id]));
+  const quizBySkill = Object.fromEntries(
+    (await listQuizzes()).map((quiz) => [quiz.skillSlug, quiz.id]),
+  );
 
   return (
     <div className="flex flex-col gap-6">

@@ -3,8 +3,9 @@
 // server components call these instead of touching `prisma` directly — so the
 // award-a-certificate transaction can't be half-copied into two routes.
 
-import type { AnswerSheet, Quiz, QuizResult } from '@/types/quiz';
+import type { AnswerSheet, Question, Quiz, QuizOption, QuizResult } from '@/types/quiz';
 import type { Certification, Profile, ProfileSkill } from '@/types/profile';
+import type { Job } from '@/types/job';
 import { Prisma } from '@/lib/generated/prisma/client';
 import { prisma } from '@/prisma/client';
 import { normalizeSkill, skillBySlug } from '@/lib/profile/skills';
@@ -251,4 +252,157 @@ export async function getProfile(userId: string): Promise<Profile | null> {
     })),
     certifications: user.certifications.map(toCertification),
   };
+}
+
+// ── Quizzes ──────────────────────────────────────────────────────────────────
+// Quizzes live in Postgres, seeded from data/quizzes/*.json. These two
+// functions rebuild the discriminated union in @/types/quiz from the flat
+// rows, so everything downstream (the runner, grading.ts, toPublicQuiz) is
+// unchanged by the content having moved into the database.
+
+const QUIZ_INCLUDE = {
+  skill: { select: { slug: true } },
+  questions: { orderBy: { order: 'asc' } },
+} as const;
+
+type QuizRow = {
+  id: string;
+  title: string;
+  description: string;
+  passingScore: number;
+  timeLimitSeconds: number | null;
+  skill: { slug: string };
+  questions: QuestionRow[];
+};
+
+type QuestionRow = {
+  id: string;
+  type: 'MULTIPLE_CHOICE' | 'MULTI_SELECT' | 'TRUE_FALSE' | 'SHORT_ANSWER';
+  prompt: string;
+  points: number;
+  explanation: string | null;
+  options: unknown;
+  correctOptionId: string | null;
+  correctOptionIds: string[];
+  correctAnswer: boolean | null;
+  acceptedAnswers: string[];
+};
+
+function toQuestion(row: QuestionRow): Question {
+  const base = {
+    id: row.id,
+    prompt: row.prompt,
+    points: row.points,
+    explanation: row.explanation ?? undefined,
+  };
+  const options = (row.options ?? []) as QuizOption[];
+
+  switch (row.type) {
+    case 'MULTIPLE_CHOICE':
+      return {
+        ...base,
+        type: 'multiple_choice',
+        options,
+        // The seed always writes this for a multiple-choice row; '' would make
+        // every answer wrong rather than throw, so it fails loudly instead.
+        correctOptionId: required(row.correctOptionId, row.id, 'correctOptionId'),
+      };
+    case 'MULTI_SELECT':
+      return { ...base, type: 'multi_select', options, correctOptionIds: row.correctOptionIds };
+    case 'TRUE_FALSE':
+      return {
+        ...base,
+        type: 'true_false',
+        correctAnswer: required(row.correctAnswer, row.id, 'correctAnswer'),
+      };
+    case 'SHORT_ANSWER':
+      return { ...base, type: 'short_answer', acceptedAnswers: row.acceptedAnswers };
+  }
+}
+
+function required<T>(value: T | null, questionId: string, column: string): T {
+  if (value === null) {
+    throw new Error(`Question "${questionId}" is missing ${column} — re-run the seed.`);
+  }
+  return value;
+}
+
+function toQuiz(row: QuizRow): Quiz {
+  return {
+    id: row.id,
+    title: row.title,
+    skillSlug: row.skill.slug,
+    description: row.description,
+    passingScore: row.passingScore,
+    timeLimitSeconds: row.timeLimitSeconds ?? undefined,
+    questions: row.questions.map(toQuestion),
+  };
+}
+
+/** Every quiz, for the selection screen. */
+export async function listQuizzes(): Promise<Quiz[]> {
+  const rows = await prisma.quiz.findMany({ include: QUIZ_INCLUDE, orderBy: { id: 'asc' } });
+  return rows.map(toQuiz);
+}
+
+/** One quiz by id (the JSON file stem), or null for the 404 path. */
+export async function loadQuiz(quizId: string): Promise<Quiz | null> {
+  const row = await prisma.quiz.findUnique({ where: { id: quizId }, include: QUIZ_INCLUDE });
+  return row ? toQuiz(row) : null;
+}
+
+// ── Jobs ─────────────────────────────────────────────────────────────────────
+// Also seeded from JSON (data/jobs/listings.json). The required /
+// nice-to-have split is stored as a flag on the join row and split back out
+// here, so @/types/job is unchanged.
+
+const JOB_INCLUDE = {
+  skills: { include: { skill: { select: { slug: true } } } },
+} as const;
+
+type JobRow = {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  remote: boolean;
+  level: string;
+  salaryRange: string | null;
+  description: string;
+  url: string | null;
+  skills: { required: boolean; skill: { slug: string } }[];
+};
+
+function toJob(row: JobRow): Job {
+  return {
+    id: row.id,
+    title: row.title,
+    company: row.company,
+    location: row.location,
+    remote: row.remote,
+    level: row.level as Job['level'],
+    salaryRange: row.salaryRange ?? undefined,
+    requiredSkills: row.skills.filter((s) => s.required).map((s) => s.skill.slug),
+    niceToHaveSkills: row.skills.filter((s) => !s.required).map((s) => s.skill.slug),
+    description: row.description,
+    url: row.url ?? undefined,
+  };
+}
+
+export async function listJobs(): Promise<Job[]> {
+  const rows = await prisma.job.findMany({ include: JOB_INCLUDE, orderBy: { id: 'asc' } });
+  return rows.map(toJob);
+}
+
+export async function getJob(id: string): Promise<Job | null> {
+  const row = await prisma.job.findUnique({ where: { id }, include: JOB_INCLUDE });
+  return row ? toJob(row) : null;
+}
+
+/** Join model output (which returns ids) back to full listings, order preserved. */
+export async function jobsById(ids: string[]): Promise<Job[]> {
+  if (ids.length === 0) return [];
+  const rows = await prisma.job.findMany({ where: { id: { in: ids } }, include: JOB_INCLUDE });
+  const byId = new Map(rows.map((row) => [row.id, toJob(row)]));
+  return ids.map((id) => byId.get(id)).filter((job): job is Job => Boolean(job));
 }

@@ -6,9 +6,11 @@
 export interface Skill {
   /** Canonical slug, e.g. "javascript". */
   slug: string;
-  /** Display form, e.g. "JavaScript". */
+  /** Display form, e.g. "JavaScript Fundamentals". */
   name: string;
   category?: string;
+  /** One-line explanation, shown in the UI and given to the recommender. */
+  description?: string;
 }
 
 /** Where a skill on a profile came from. Mirrors the Prisma `SkillSource` enum. */

@@ -3,14 +3,13 @@
 // choice rather than a surprise.
 
 import { requireSessionUser } from '@/lib/auth/session';
-import { listCertifications } from '@/prisma/queries';
-import { listQuizzes } from '@/lib/quiz/loadQuiz';
+import { listCertifications, listQuizzes } from '@/prisma/queries';
 import { QuizCard } from '@/components/quiz/QuizCard';
 
 export default async function QuizzesPage() {
   const user = await requireSessionUser();
   const [quizzes, certifications] = await Promise.all([
-    Promise.resolve(listQuizzes()),
+    listQuizzes(),
     listCertifications(user.id),
   ]);
 

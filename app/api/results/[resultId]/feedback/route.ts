@@ -13,8 +13,7 @@ import type { AnswerSheet } from '@/types/quiz';
 import { MODEL, aiEnabled, anthropic } from '@/lib/ai/client';
 import { FEEDBACK_SYSTEM_PROMPT } from '@/lib/ai/prompts';
 import { getSessionUser, unauthorized } from '@/lib/auth/session';
-import { getAttempt } from '@/prisma/queries';
-import { loadQuiz } from '@/lib/quiz/loadQuiz';
+import { getAttempt, loadQuiz } from '@/prisma/queries';
 import { scoreQuiz } from '@/lib/quiz/scoring';
 
 export async function POST(
@@ -44,7 +43,7 @@ export async function POST(
     );
   }
 
-  const quiz = loadQuiz(attempt.quizId);
+  const quiz = await loadQuiz(attempt.quizId);
   if (!quiz) {
     return NextResponse.json({ error: 'The quiz for this attempt is gone.' }, { status: 410 });
   }

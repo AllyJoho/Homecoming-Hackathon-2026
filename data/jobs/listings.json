@@ -7,8 +7,15 @@
     "remote": false,
     "level": "internship",
     "salaryRange": "$22–28/hr",
-    "requiredSkills": ["javascript", "html-css", "git"],
-    "niceToHaveSkills": ["react", "tailwind"],
+    "requiredSkills": [
+      "javascript-fundamentals",
+      "html-css-fundamentals",
+      "git-version-control"
+    ],
+    "niceToHaveSkills": [
+      "frontend-frameworks",
+      "ui-visual-design"
+    ],
     "description": "Ship UI for our customer dashboard alongside two senior engineers. You'll own small features end to end, from Figma handoff to production.",
     "url": "https://example.com/jobs/job-001"
   },
@@ -20,8 +27,16 @@
     "remote": true,
     "level": "entry",
     "salaryRange": "$72,000–85,000",
-    "requiredSkills": ["typescript", "react", "sql", "git"],
-    "niceToHaveSkills": ["nextjs", "docker", "aws"],
+    "requiredSkills": [
+      "javascript-fundamentals",
+      "frontend-frameworks",
+      "sql-fundamentals",
+      "git-version-control"
+    ],
+    "niceToHaveSkills": [
+      "cloud-deployment-cicd",
+      "cloud-computing-fundamentals"
+    ],
     "description": "Build and maintain internal tools on a Next.js and Postgres stack. Small team, fast review cycles, and a real say in architecture.",
     "url": "https://example.com/jobs/job-002"
   },
@@ -33,8 +48,15 @@
     "remote": false,
     "level": "entry",
     "salaryRange": "$65,000–78,000",
-    "requiredSkills": ["sql", "excel", "data-analysis"],
-    "niceToHaveSkills": ["python", "communication"],
+    "requiredSkills": [
+      "sql-fundamentals",
+      "spreadsheet-analysis",
+      "data-cleaning"
+    ],
+    "niceToHaveSkills": [
+      "python-for-data",
+      "presentation-skills"
+    ],
     "description": "Turn clinical operations data into weekly reporting that department heads actually read. Heavy SQL, some dashboard building.",
     "url": "https://example.com/jobs/job-003"
   },
@@ -46,8 +68,16 @@
     "remote": true,
     "level": "mid",
     "salaryRange": "$110,000–135,000",
-    "requiredSkills": ["python", "sql", "docker"],
-    "niceToHaveSkills": ["django", "aws", "git"],
+    "requiredSkills": [
+      "python-for-data",
+      "sql-fundamentals",
+      "cloud-deployment-cicd"
+    ],
+    "niceToHaveSkills": [
+      "backend-apis",
+      "cloud-computing-fundamentals",
+      "git-version-control"
+    ],
     "description": "Own the routing service behind our freight marketplace. Expect real scale problems and a strong test culture.",
     "url": "https://example.com/jobs/job-004"
   },
@@ -59,8 +89,15 @@
     "remote": false,
     "level": "internship",
     "salaryRange": "$25–32/hr",
-    "requiredSkills": ["python", "machine-learning"],
-    "niceToHaveSkills": ["data-analysis", "sql", "git"],
+    "requiredSkills": [
+      "python-for-data",
+      "machine-learning-basics"
+    ],
+    "niceToHaveSkills": [
+      "data-cleaning",
+      "sql-fundamentals",
+      "git-version-control"
+    ],
     "description": "Prototype retrieval models for our document search product. You'll read papers on Monday and have something running by Friday.",
     "url": "https://example.com/jobs/job-005"
   },
@@ -72,8 +109,14 @@
     "remote": true,
     "level": "entry",
     "salaryRange": "$60,000–75,000",
-    "requiredSkills": ["figma", "ui-ux"],
-    "niceToHaveSkills": ["html-css", "communication"],
+    "requiredSkills": [
+      "prototyping-wireframing",
+      "ux-design-fundamentals"
+    ],
+    "niceToHaveSkills": [
+      "html-css-fundamentals",
+      "presentation-skills"
+    ],
     "description": "Design flows for client web apps, from wireframe through polished prototype. You'll present your own work to clients.",
     "url": "https://example.com/jobs/job-006"
   },
@@ -85,8 +128,15 @@
     "remote": false,
     "level": "entry",
     "salaryRange": "$95,000–115,000",
-    "requiredSkills": ["java", "sql", "git"],
-    "niceToHaveSkills": ["docker", "aws", "typescript"],
+    "requiredSkills": [
+      "sql-fundamentals",
+      "git-version-control"
+    ],
+    "niceToHaveSkills": [
+      "cloud-deployment-cicd",
+      "cloud-computing-fundamentals",
+      "javascript-fundamentals"
+    ],
     "description": "Join a platform team building the services the rest of engineering depends on. Strong mentorship for new grads.",
     "url": "https://example.com/jobs/job-007"
   },
@@ -98,8 +148,15 @@
     "remote": true,
     "level": "mid",
     "salaryRange": "$120,000–145,000",
-    "requiredSkills": ["docker", "aws", "python"],
-    "niceToHaveSkills": ["git", "sql"],
+    "requiredSkills": [
+      "cloud-deployment-cicd",
+      "cloud-computing-fundamentals",
+      "python-for-data"
+    ],
+    "niceToHaveSkills": [
+      "git-version-control",
+      "sql-fundamentals"
+    ],
     "description": "Own our deploy pipeline and Kubernetes footprint. You'll cut deploy times and be on a light rotation.",
     "url": "https://example.com/jobs/job-008"
   },
@@ -111,8 +168,14 @@
     "remote": true,
     "level": "mid",
     "salaryRange": "$100,000–125,000",
-    "requiredSkills": ["react", "javascript", "html-css"],
-    "niceToHaveSkills": ["typescript", "tailwind", "nextjs"],
+    "requiredSkills": [
+      "frontend-frameworks",
+      "javascript-fundamentals",
+      "html-css-fundamentals"
+    ],
+    "niceToHaveSkills": [
+      "ui-visual-design"
+    ],
     "description": "Rebuild our storefront checkout. Performance work with measurable targets — conversion is the metric.",
     "url": "https://example.com/jobs/job-009"
   },
@@ -124,8 +187,14 @@
     "remote": true,
     "level": "entry",
     "salaryRange": "$62,000–74,000",
-    "requiredSkills": ["technical-writing", "communication"],
-    "niceToHaveSkills": ["javascript", "git"],
+    "requiredSkills": [
+      "technical-writing",
+      "presentation-skills"
+    ],
+    "niceToHaveSkills": [
+      "javascript-fundamentals",
+      "git-version-control"
+    ],
     "description": "Write and maintain our developer docs. You'll read code, run the samples, and file bugs when the API is confusing.",
     "url": "https://example.com/jobs/job-010"
   },
@@ -137,8 +206,14 @@
     "remote": false,
     "level": "internship",
     "salaryRange": "$20–24/hr",
-    "requiredSkills": ["excel", "sql"],
-    "niceToHaveSkills": ["data-analysis", "communication"],
+    "requiredSkills": [
+      "spreadsheet-analysis",
+      "sql-fundamentals"
+    ],
+    "niceToHaveSkills": [
+      "data-cleaning",
+      "presentation-skills"
+    ],
     "description": "Support the analytics team with ad-hoc reporting requests. A good first job for someone who likes finding the question behind the question.",
     "url": "https://example.com/jobs/job-011"
   },
@@ -150,8 +225,16 @@
     "remote": true,
     "level": "mid",
     "salaryRange": "$115,000–140,000",
-    "requiredSkills": ["typescript", "nextjs", "sql", "react"],
-    "niceToHaveSkills": ["tailwind", "docker", "aws"],
+    "requiredSkills": [
+      "javascript-fundamentals",
+      "frontend-frameworks",
+      "sql-fundamentals"
+    ],
+    "niceToHaveSkills": [
+      "ui-visual-design",
+      "cloud-deployment-cicd",
+      "cloud-computing-fundamentals"
+    ],
     "description": "Lead features across our App Router codebase and Postgres backend. You'll set patterns the rest of the team follows.",
     "url": "https://example.com/jobs/job-012"
   },
@@ -163,8 +246,13 @@
     "remote": false,
     "level": "mid",
     "salaryRange": "$118,000–140,000",
-    "requiredSkills": ["cpp", "git"],
-    "niceToHaveSkills": ["python", "docker"],
+    "requiredSkills": [
+      "git-version-control"
+    ],
+    "niceToHaveSkills": [
+      "python-for-data",
+      "cloud-deployment-cicd"
+    ],
     "description": "Write the control software for agricultural robots. Tight loops, real hardware, and field testing you can watch work.",
     "url": "https://example.com/jobs/job-013"
   },
@@ -176,8 +264,14 @@
     "remote": false,
     "level": "mid",
     "salaryRange": "$105,000–125,000",
-    "requiredSkills": ["csharp", "sql"],
-    "niceToHaveSkills": ["javascript", "git", "aws"],
+    "requiredSkills": [
+      "sql-fundamentals"
+    ],
+    "niceToHaveSkills": [
+      "javascript-fundamentals",
+      "git-version-control",
+      "cloud-computing-fundamentals"
+    ],
     "description": "Maintain and extend the loan origination platform. Regulated domain, careful releases, excellent work-life balance.",
     "url": "https://example.com/jobs/job-014"
   },
@@ -189,8 +283,15 @@
     "remote": true,
     "level": "senior",
     "salaryRange": "$150,000–180,000",
-    "requiredSkills": ["project-management", "communication", "data-analysis"],
-    "niceToHaveSkills": ["sql", "technical-writing"],
+    "requiredSkills": [
+      "project-planning-scheduling",
+      "presentation-skills",
+      "data-cleaning"
+    ],
+    "niceToHaveSkills": [
+      "sql-fundamentals",
+      "technical-writing"
+    ],
     "description": "Own the roadmap for internal developer platform. You'll write specs engineers want to read and say no a lot.",
     "url": "https://example.com/jobs/job-015"
   },
@@ -202,8 +303,16 @@
     "remote": true,
     "level": "entry",
     "salaryRange": "$80,000–95,000",
-    "requiredSkills": ["python", "django", "sql"],
-    "niceToHaveSkills": ["html-css", "docker", "git"],
+    "requiredSkills": [
+      "python-for-data",
+      "backend-apis",
+      "sql-fundamentals"
+    ],
+    "niceToHaveSkills": [
+      "html-css-fundamentals",
+      "cloud-deployment-cicd",
+      "git-version-control"
+    ],
     "description": "Build the shipper-facing portal. Mostly CRUD done well, with real users giving feedback the same week you ship.",
     "url": "https://example.com/jobs/job-016"
   },
@@ -215,8 +324,16 @@
     "remote": true,
     "level": "mid",
     "salaryRange": "$108,000–130,000",
-    "requiredSkills": ["node", "typescript", "sql"],
-    "niceToHaveSkills": ["docker", "aws", "git"],
+    "requiredSkills": [
+      "backend-apis",
+      "javascript-fundamentals",
+      "sql-fundamentals"
+    ],
+    "niceToHaveSkills": [
+      "cloud-deployment-cicd",
+      "cloud-computing-fundamentals",
+      "git-version-control"
+    ],
     "description": "Own our public API: versioning, rate limits, SDKs. You'll care about error messages more than most people do.",
     "url": "https://example.com/jobs/job-017"
   },
@@ -228,8 +345,14 @@
     "remote": false,
     "level": "internship",
     "salaryRange": "$19–23/hr",
-    "requiredSkills": ["javascript", "git"],
-    "niceToHaveSkills": ["typescript", "sql", "communication"],
+    "requiredSkills": [
+      "javascript-fundamentals",
+      "git-version-control"
+    ],
+    "niceToHaveSkills": [
+      "sql-fundamentals",
+      "presentation-skills"
+    ],
     "description": "Grow our end-to-end test suite and make the flaky tests stop being flaky. You'll learn the whole product fast.",
     "url": "https://example.com/jobs/job-018"
   },
@@ -241,8 +364,16 @@
     "remote": true,
     "level": "mid",
     "salaryRange": "$110,000–132,000",
-    "requiredSkills": ["html-css", "react", "ui-ux", "figma"],
-    "niceToHaveSkills": ["tailwind", "typescript"],
+    "requiredSkills": [
+      "html-css-fundamentals",
+      "frontend-frameworks",
+      "ux-design-fundamentals",
+      "prototyping-wireframing"
+    ],
+    "niceToHaveSkills": [
+      "ui-visual-design",
+      "javascript-fundamentals"
+    ],
     "description": "Sit between design and engineering: build the component library and keep the design system honest.",
     "url": "https://example.com/jobs/job-019"
   },
@@ -254,8 +385,17 @@
     "remote": true,
     "level": "senior",
     "salaryRange": "$155,000–190,000",
-    "requiredSkills": ["python", "machine-learning", "sql", "data-analysis"],
-    "niceToHaveSkills": ["aws", "docker", "communication"],
+    "requiredSkills": [
+      "python-for-data",
+      "machine-learning-basics",
+      "sql-fundamentals",
+      "data-cleaning"
+    ],
+    "niceToHaveSkills": [
+      "cloud-computing-fundamentals",
+      "cloud-deployment-cicd",
+      "presentation-skills"
+    ],
     "description": "Lead model evaluation for our search product. You'll design the offline metrics the whole team argues about.",
     "url": "https://example.com/jobs/job-020"
   }

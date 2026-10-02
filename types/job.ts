@@ -1,7 +1,7 @@
 // @/types/job.ts
-// Job listings are seeded from data/jobs/listings.json. The shape is kept
-// close to what a real job board API returns, so swapping the loader in
-// @/lib/jobs/listings for a live fetch doesn't ripple outward.
+// Job listings are authored in data/jobs/listings.json and seeded into
+// Postgres. The shape is kept close to what a real job board API returns, so
+// swapping the loaders in @/prisma/queries for a live fetch stays local.
 
 export interface Job {
   id: string;

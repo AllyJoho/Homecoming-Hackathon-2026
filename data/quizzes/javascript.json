@@ -1,7 +1,7 @@
 {
   "id": "javascript",
   "title": "JavaScript Fundamentals",
-  "skillSlug": "javascript",
+  "skillSlug": "javascript-fundamentals",
   "description": "Types, scope, async, and the array methods you reach for daily.",
   "passingScore": 70,
   "timeLimitSeconds": 600,
@@ -12,10 +12,22 @@
       "prompt": "What does `typeof null` evaluate to?",
       "points": 1,
       "options": [
-        { "id": "a", "text": "\"null\"" },
-        { "id": "b", "text": "\"object\"" },
-        { "id": "c", "text": "\"undefined\"" },
-        { "id": "d", "text": "\"boolean\"" }
+        {
+          "id": "a",
+          "text": "\"null\""
+        },
+        {
+          "id": "b",
+          "text": "\"object\""
+        },
+        {
+          "id": "c",
+          "text": "\"undefined\""
+        },
+        {
+          "id": "d",
+          "text": "\"boolean\""
+        }
       ],
       "correctOptionId": "b",
       "explanation": "A longstanding bug kept for backwards compatibility: null's type tag is the object tag."
@@ -26,10 +38,22 @@
       "prompt": "Which array method returns a new array rather than mutating the original?",
       "points": 1,
       "options": [
-        { "id": "a", "text": "push()" },
-        { "id": "b", "text": "sort()" },
-        { "id": "c", "text": "map()" },
-        { "id": "d", "text": "splice()" }
+        {
+          "id": "a",
+          "text": "push()"
+        },
+        {
+          "id": "b",
+          "text": "sort()"
+        },
+        {
+          "id": "c",
+          "text": "map()"
+        },
+        {
+          "id": "d",
+          "text": "splice()"
+        }
       ],
       "correctOptionId": "c",
       "explanation": "map() builds a new array. push, sort, and splice all mutate in place."
@@ -48,12 +72,28 @@
       "prompt": "Which of these values are falsy in JavaScript? Select all that apply.",
       "points": 2,
       "options": [
-        { "id": "a", "text": "0" },
-        { "id": "b", "text": "\"\" (empty string)" },
-        { "id": "c", "text": "[] (empty array)" },
-        { "id": "d", "text": "NaN" }
+        {
+          "id": "a",
+          "text": "0"
+        },
+        {
+          "id": "b",
+          "text": "\"\" (empty string)"
+        },
+        {
+          "id": "c",
+          "text": "[] (empty array)"
+        },
+        {
+          "id": "d",
+          "text": "NaN"
+        }
       ],
-      "correctOptionIds": ["a", "b", "d"],
+      "correctOptionIds": [
+        "a",
+        "b",
+        "d"
+      ],
       "explanation": "An empty array is an object, and all objects are truthy. 0, \"\", and NaN are falsy."
     },
     {
@@ -62,10 +102,22 @@
       "prompt": "What does an `async` function always return?",
       "points": 1,
       "options": [
-        { "id": "a", "text": "The resolved value" },
-        { "id": "b", "text": "A Promise" },
-        { "id": "c", "text": "undefined" },
-        { "id": "d", "text": "A generator" }
+        {
+          "id": "a",
+          "text": "The resolved value"
+        },
+        {
+          "id": "b",
+          "text": "A Promise"
+        },
+        {
+          "id": "c",
+          "text": "undefined"
+        },
+        {
+          "id": "d",
+          "text": "A generator"
+        }
       ],
       "correctOptionId": "b",
       "explanation": "An async function wraps its return value in a Promise, even if you return a plain value."
@@ -75,7 +127,9 @@
       "type": "short_answer",
       "prompt": "Which keyword declares a block-scoped variable that can be reassigned?",
       "points": 1,
-      "acceptedAnswers": ["let"],
+      "acceptedAnswers": [
+        "let"
+      ],
       "explanation": "`let` is block-scoped and reassignable; `var` is function-scoped; `const` can't be reassigned."
     }
   ]

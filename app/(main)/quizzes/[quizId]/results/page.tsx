@@ -10,7 +10,8 @@ import { notFound } from 'next/navigation';
 import type { AnswerSheet } from '@/types/quiz';
 import { requireSessionUser } from '@/lib/auth/session';
 import { getAttempt } from '@/prisma/queries';
-import { loadQuiz, toPublicQuiz } from '@/lib/quiz/loadQuiz';
+import { loadQuiz } from '@/prisma/queries';
+import { toPublicQuiz } from '@/lib/quiz/publicQuiz';
 import { scoreQuiz } from '@/lib/quiz/scoring';
 import { ResultSummary } from '@/components/quiz/ResultSummary';
 
@@ -26,8 +27,7 @@ export default async function ResultsPage({
 
   if (!attemptId) notFound();
 
-  const quiz = loadQuiz(quizId);
-  const attempt = await getAttempt(attemptId);
+  const [quiz, attempt] = await Promise.all([loadQuiz(quizId), getAttempt(attemptId)]);
 
   // 404 on someone else's attempt as well as on a missing one — don't confirm
   // that an id exists.
