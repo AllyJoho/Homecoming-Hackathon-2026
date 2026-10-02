@@ -2,104 +2,404 @@
   "id": "it-service-management",
   "title": "IT Service Management",
   "skillSlug": "it-service-management",
-  "description": "Test your understanding of it service management. Handling incidents, requests, and changes through ticketing and ITIL-style service processes.",
-  "timeLimitSeconds": 600,
+  "description": "Apply ITIL 4 practices: incidents, problems, requests, change enablement, SLAs, and service metrics.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "it-service-management-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Incident?",
+      "difficulty": "BEGINNER",
+      "prompt": "A user submits a ticket asking for Microsoft Visio, a pre-approved item in the service catalog, to be installed on their laptop. Nothing is broken. How should the service desk record it under ITIL 4?",
       "options": [
         {
           "id": "a",
-          "text": "is an unplanned interruption or reduction in the quality of an IT service"
+          "text": "Service request"
         },
         {
           "id": "b",
-          "text": "is a planned feature request"
+          "text": "Incident"
         },
         {
           "id": "c",
-          "text": "is a database schema"
+          "text": "Problem"
         },
         {
           "id": "d",
-          "text": "is a completed training course"
+          "text": "Normal change"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Incident is an unplanned interruption or reduction in the quality of an IT service.",
-      "difficulty": "BEGINNER"
+      "explanation": "A request for something standard and pre-approved from the catalog is a service request, handled by the service request management practice. It is not an incident, because no service has been interrupted or degraded."
     },
     {
       "id": "it-service-management-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Service request?",
+      "difficulty": "BEGINNER",
+      "prompt": "On three Mondays in a row the VPN has dropped all remote users, and each time the service desk restored service by restarting the VPN concentrator. Besides handling each incident, what should happen under ITIL 4?",
       "options": [
         {
           "id": "a",
-          "text": "is a user request for a standard, pre-defined service or access item"
+          "text": "Raise the priority of the next VPN incident to P1 so it gets more attention"
         },
         {
           "id": "b",
-          "text": "is always a security breach"
+          "text": "Merge the three incidents into a single ticket and close it with a note"
         },
         {
           "id": "c",
-          "text": "is a code merge"
+          "text": "Log a problem record to investigate the underlying cause of the recurring drops"
         },
         {
           "id": "d",
-          "text": "is a network cable"
+          "text": "Submit an emergency change to replace the concentrator right away"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Service request is a user request for a standard, pre-defined service or access item.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "Incident management restores service, while problem management finds and removes the cause of recurring incidents. A repeating pattern is the classic problem trigger. Replacing hardware before anyone knows the cause skips the analysis."
     },
     {
       "id": "it-service-management-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Change management?",
+      "difficulty": "BEGINNER",
+      "prompt": "The network team needs to assign a switch port to an existing VLAN. They follow a documented, low-risk procedure that has been done hundreds of times without issue and was authorized in advance as a change model. Which ITIL 4 change type is this?",
       "options": [
         {
           "id": "a",
-          "text": "controls planned modifications to services while assessing risk and impact"
+          "text": "Normal change"
         },
         {
           "id": "b",
-          "text": "blocks every change forever"
+          "text": "Standard change"
         },
         {
           "id": "c",
-          "text": "only handles employee hiring"
+          "text": "Emergency change"
         },
         {
           "id": "d",
-          "text": "replaces incident diagnosis"
+          "text": "Major change"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Change management controls planned modifications to services while assessing risk and impact.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "b",
+      "explanation": "A standard change is low-risk, well understood, and pre-authorized, so it can be carried out without assessing each instance separately. A normal change needs its own assessment and authorization by the change authority, and ITIL 4 defines no \"major change\" type."
     },
     {
       "id": "it-service-management-4",
-      "type": "true_false",
-      "prompt": "True or false: Incident is an unplanned interruption or reduction in the quality of an IT service.",
-      "correctAnswer": true,
-      "explanation": "Incident is an unplanned interruption or reduction in the quality of an IT service.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "Using the priority matrix below: payroll software is down for the whole Finance department (one department), and paychecks must be submitted to the bank by 3 p.m. today. What priority should the incident get?",
+      "code": {
+        "language": "plaintext",
+        "source": "Impact:  High = whole organization | Medium = one department | Low = one user\nUrgency: High = work stopped, deadline today | Medium = degraded | Low = can wait\n\n               Urgency High   Urgency Medium   Urgency Low\nImpact High        P1              P2              P3\nImpact Medium      P2              P3              P4\nImpact Low         P3              P4              P5"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "P1"
+        },
+        {
+          "id": "b",
+          "text": "P3"
+        },
+        {
+          "id": "c",
+          "text": "P4"
+        },
+        {
+          "id": "d",
+          "text": "P2"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "One department means Medium impact, and stopped work with a same-day deadline means High urgency. Medium impact with High urgency is P2. P1 requires High impact (the whole organization), which this incident does not have."
     },
     {
       "id": "it-service-management-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: controls planned modifications to services while assessing risk and impact?",
-      "acceptedAnswers": [
-        "Change management"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: ITIL 4 requires every normal change to be approved by a Change Advisory Board (CAB) before it can be implemented.",
+      "correctAnswer": false,
+      "explanation": "ITIL 4 change enablement assigns each type of change to an appropriate change authority, which may be a single person, a peer reviewer, or an automated pipeline, and it encourages decentralized approval. A CAB is one possible authority, not a requirement."
+    },
+    {
+      "id": "it-service-management-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Problem investigation found that a memory leak in version 4.2 of a print driver crashes the spooler. The vendor's fix is due next month. Until then, the service desk restarts the spooler whenever printing stops. In ITIL 4 terms, what are the problem's status and the restart?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A known error; the restart is a workaround"
+        },
+        {
+          "id": "b",
+          "text": "An incident; the restart is its resolution"
+        },
+        {
+          "id": "c",
+          "text": "A problem under investigation; the restart is its permanent fix"
+        },
+        {
+          "id": "d",
+          "text": "A known error; the restart is a standard change"
+        }
       ],
-      "explanation": "The term is Change management.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "a",
+      "explanation": "ITIL 4 defines a known error as a problem that has been analyzed but not yet resolved, and a workaround as a way to reduce the impact of incidents or problems that don't yet have a full resolution. The restart doesn't remove the leak, so it isn't a fix."
+    },
+    {
+      "id": "it-service-management-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Using the SLA terms and ticket history below, which targets were met?",
+      "code": {
+        "language": "plaintext",
+        "source": "SLA (P2): first response within 1 business hour; resolve within 8 business hours\nBusiness hours: Mon-Fri 08:00-17:00. Clock pauses while status = Pending Customer.\n\nThu 15:00  Ticket created (P2)\nThu 15:40  Agent first response\nFri 09:00  Status -> Pending Customer (waiting for log files)\nFri 11:00  Customer replies; status -> In Progress\nFri 15:30  Resolved"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Response met; resolution breached, at 9.5 business hours"
+        },
+        {
+          "id": "b",
+          "text": "Response met; resolution met, at 7.5 business hours"
+        },
+        {
+          "id": "c",
+          "text": "Response met; resolution breached, at 24.5 elapsed hours"
+        },
+        {
+          "id": "d",
+          "text": "Response breached; resolution met, at 7.5 business hours"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Business time is Thu 15:00-17:00 (2 h) plus Fri 08:00-15:30 (7.5 h), or 9.5 h, minus the 2 h paused for Pending Customer, which gives 7.5 h, within the 8 h target. The first response at 40 minutes beat the 1-hour target. Forgetting the pause gives 9.5 h, and using wall-clock time gives 24.5 h."
+    },
+    {
+      "id": "it-service-management-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "An actively exploited, critical vulnerability affects the internet-facing VPN appliance, and the vendor patch must go on tonight. There is no pre-authorized procedure for this appliance, and the next scheduled change review is in six days. How should this be handled under ITIL 4 change enablement?",
+      "options": [
+        {
+          "id": "a",
+          "text": "As a standard change, since applying vendor patches is routine work for the network team"
+        },
+        {
+          "id": "b",
+          "text": "As a normal change at the next scheduled review, with compensating monitoring until then"
+        },
+        {
+          "id": "c",
+          "text": "Without any change record, because emergencies are exempt from change enablement"
+        },
+        {
+          "id": "d",
+          "text": "As an emergency change, authorized by the designated emergency change authority"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Emergency changes are implemented as soon as possible, under a separate authority, with assessment and documentation streamlined (some documentation may be completed afterward). They still go through change enablement. With no pre-authorized model for this appliance, the standard change type doesn't apply."
+    },
+    {
+      "id": "it-service-management-9",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Select ALL the activities that belong to the ITIL 4 problem management practice.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Analyzing incident trends to spot recurring issues"
+        },
+        {
+          "id": "b",
+          "text": "Investigating the root cause of a recurring outage"
+        },
+        {
+          "id": "c",
+          "text": "Recording known errors and their workarounds"
+        },
+        {
+          "id": "d",
+          "text": "Restoring a user's email access as quickly as possible"
+        },
+        {
+          "id": "e",
+          "text": "Authorizing a firewall rule change for deployment"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b",
+        "c"
+      ],
+      "explanation": "Problem management covers problem identification (including trend analysis), problem control (analysis and workarounds), and error control (managing known errors). Restoring service quickly is incident management, and authorizing changes belongs to change enablement."
+    },
+    {
+      "id": "it-service-management-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A new IT director plans to scrap the current ticketing tool, knowledge base, and every existing workflow, and design the service desk from scratch. Several current workflows meet their targets and are well liked by users. Which ITIL 4 guiding principle does this plan ignore?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Optimize and automate"
+        },
+        {
+          "id": "b",
+          "text": "Focus on value"
+        },
+        {
+          "id": "c",
+          "text": "Start where you are"
+        },
+        {
+          "id": "d",
+          "text": "Keep it simple and practical"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "\"Start where you are\" says to assess and build on what already works instead of discarding it. Throwing out well-performing workflows wastes value already created. The other principles matter too, but this one speaks directly to tearing everything down."
+    },
+    {
+      "id": "it-service-management-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Before approving a patch to database server DB-SRV-07, the change authority needs to know which business services depend on it. Where should that information come from?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The CI relationships in the CMDB/CMS maintained by service configuration management"
+        },
+        {
+          "id": "b",
+          "text": "The server's incident history, which shows which users have reported problems with it"
+        },
+        {
+          "id": "c",
+          "text": "The service catalogue, which lists the services offered to customers and their prices"
+        },
+        {
+          "id": "d",
+          "text": "The IT asset register, which records the server's purchase date, owner, and warranty"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Service configuration management keeps configuration items and their relationships, which is what lets you trace a server to the services that rely on it for impact assessment. The service catalogue lists services but not their underlying infrastructure dependencies."
+    },
+    {
+      "id": "it-service-management-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A team's change failure rate is 25%. Leadership proposes adding a second approval board on top of the existing CAB for every change. Which approach is best supported by the DORA research (Accelerate) and consistent with ITIL 4 change enablement?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Add the second board, since more reviewers catch more defects before a change ships"
+        },
+        {
+          "id": "b",
+          "text": "Batch changes into a monthly release so each one gets a longer, more careful review"
+        },
+        {
+          "id": "c",
+          "text": "Ship smaller changes with automated tests and peer review, and make proven ones standard"
+        },
+        {
+          "id": "d",
+          "text": "Require a full rollback rehearsal in production for every change before it is approved"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "DORA found that approval by an external body was negatively correlated with delivery performance and had no correlation with lower change failure rates. Small batches, automated testing, and peer review improve stability. Bigger batches and extra approval layers raise the risk of each change."
+    },
+    {
+      "id": "it-service-management-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "The payment API is down (a major incident). A tested failover to the secondary site is available. The problem manager asks the team to leave the failed primary untouched until the root cause is found. What should the incident manager do?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Keep the service down until the root cause is confirmed, so the standby doesn't fail the same way"
+        },
+        {
+          "id": "b",
+          "text": "Fail over, then rebuild the failed primary from its golden image right away so it is ready as standby"
+        },
+        {
+          "id": "c",
+          "text": "Reboot the primary repeatedly to reproduce the fault before deciding whether to fail over at all"
+        },
+        {
+          "id": "d",
+          "text": "Fail over now, and preserve the failed primary's logs and memory dump for problem management"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Incident management's goal is to restore service as quickly as possible, and root-cause analysis belongs to problem management, which can work in parallel on preserved evidence. Rebuilding the primary straight away destroys the data that analysis needs."
+    },
+    {
+      "id": "it-service-management-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Starting in Q2, service desk agents received a bonus tied to tickets closed and mean time to resolve. Based on the metrics below, what is the correct interpretation?",
+      "code": {
+        "language": "plaintext",
+        "source": "Metric                          Q1      Q2\nTickets closed per agent/day    18      27\nMean time to resolve (hours)    9.4     4.1\nReopened within 7 days          6%      23%\nCustomer satisfaction (1-5)     4.3     3.4"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Service clearly improved; the reopen and CSAT changes are normal quarterly noise"
+        },
+        {
+          "id": "b",
+          "text": "Agents are probably closing tickets early; pair throughput targets with reopen rate and CSAT"
+        },
+        {
+          "id": "c",
+          "text": "The desk is understaffed, as the CSAT drop shows; hire more agents for Q3"
+        },
+        {
+          "id": "d",
+          "text": "Raise the closure target again to push mean time to resolve below 4 hours"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "A reopen rate that nearly quadrupled and falling satisfaction while closures rise point to premature closure, the metric being gamed (Goodhart's law). Output targets need balancing with outcome measures. Pushing the same targets harder would make the distortion worse."
+    },
+    {
+      "id": "it-service-management-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "The quarterly change report is shown below. What is the most appropriate response?",
+      "code": {
+        "language": "plaintext",
+        "source": "Q3 change summary\nTotal: 412   Standard: 205   Normal: 86   Emergency: 121\n\nEmergency changes by reason:\n  Routine monthly OS patches, raised after the deadline   97\n  Fixes for production outages                           18\n  Actively exploited zero-day vulnerabilities             6"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Add more members to the emergency change authority so it can keep up with the volume"
+        },
+        {
+          "id": "b",
+          "text": "Ban emergency changes except for outages and send zero-day fixes to the weekly review"
+        },
+        {
+          "id": "c",
+          "text": "Put routine patching on a planned schedule as normal or standard changes, keeping emergencies for urgent cases"
+        },
+        {
+          "id": "d",
+          "text": "Take no action, since every emergency change was still authorized and is therefore under control"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Most emergency changes are predictable monthly patches raised late, which is a planning failure that bypasses proper assessment. Scheduling them through the normal path (or a pre-authorized standard model) fixes the cause. Forcing actively exploited zero-days to wait for a weekly review creates real risk."
     }
   ]
 }

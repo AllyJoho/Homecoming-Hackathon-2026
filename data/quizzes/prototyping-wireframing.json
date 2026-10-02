@@ -2,104 +2,396 @@
   "id": "prototyping-wireframing",
   "title": "Prototyping & Wireframing",
   "skillSlug": "prototyping-wireframing",
-  "description": "Test your understanding of prototyping & wireframing. Sketching wireframes and building clickable prototypes in tools like Figma to test ideas early.",
-  "timeLimitSeconds": 600,
+  "description": "Choose the right fidelity, build wireframes and prototypes, and test them to validate design decisions.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "prototyping-wireframing-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Wireframe?",
+      "difficulty": "BEGINNER",
+      "prompt": "In the first week of a project, a team has six competing ideas for a new trip-planning flow and wants reactions from five users by Friday. Which prototyping approach fits?",
       "options": [
         {
           "id": "a",
-          "text": "is a simplified representation of layout, content, and interaction structure"
+          "text": "A fully styled, interactive Figma prototype of each idea"
         },
         {
           "id": "b",
-          "text": "is a production-ready visual design"
+          "text": "A coded front-end prototype of the single most promising idea"
         },
         {
           "id": "c",
-          "text": "is a database backup"
+          "text": "Quick paper sketches or low-fidelity wireframes of each idea"
         },
         {
           "id": "d",
-          "text": "is a server certificate"
+          "text": "A pixel-perfect mockup of one idea that follows the brand style guide"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Wireframe is a simplified representation of layout, content, and interaction structure.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "c",
+      "explanation": "Early on, low fidelity lets you explore many ideas cheaply and quickly, and nobody is attached to any of them yet. Building a coded prototype of one idea commits you to a direction before you have evidence to choose it."
     },
     {
       "id": "prototyping-wireframing-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Low-fidelity prototype?",
+      "difficulty": "BEGINNER",
+      "prompt": "A team has greyscale, low-fidelity wireframes of a new banking app. Which question can a usability test of these wireframes answer well?",
       "options": [
         {
           "id": "a",
-          "text": "is a quick, inexpensive model used to explore structure and interaction early"
+          "text": "Whether users can find where to set up a recurring transfer"
         },
         {
           "id": "b",
-          "text": "must include final branding"
+          "text": "Whether users find the new brand colour palette trustworthy"
         },
         {
           "id": "c",
-          "text": "cannot be changed after review"
+          "text": "Whether the button hover animations feel responsive"
         },
         {
           "id": "d",
-          "text": "is a deployed application"
+          "text": "Whether the final typeface is readable at small sizes"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Low-fidelity prototype is a quick, inexpensive model used to explore structure and interaction early.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "Low-fidelity wireframes are good for testing structure, navigation and content priority, such as whether users can find a feature. Questions about colour, typography and motion need those elements to actually be designed, so greyscale wireframes can't answer them."
     },
     {
       "id": "prototyping-wireframing-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Clickable prototype?",
+      "difficulty": "BEGINNER",
+      "prompt": "Wireframes for an e-commerce product card used three-word 'Lorem ipsum' titles. After launch, real product names (often 60+ characters) wrap to four lines and push the price out of view. Which practice would have caught this during wireframing?",
       "options": [
         {
           "id": "a",
-          "text": "lets someone move through linked screens to test an interaction flow"
+          "text": "Filling every text area with more lorem ipsum so the cards looked full"
         },
         {
           "id": "b",
-          "text": "only displays one static image"
+          "text": "Raising the wireframes to high visual fidelity with brand colours"
         },
         {
           "id": "c",
-          "text": "is a network security control"
+          "text": "Reviewing the wireframes with more internal stakeholders before handoff"
         },
         {
           "id": "d",
-          "text": "is a spreadsheet pivot"
+          "text": "Using realistic content, including long and edge-case values, in the wireframes"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Clickable prototype lets someone move through linked screens to test an interaction flow.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "d",
+      "explanation": "Realistic and worst-case content (long names, missing images, translations) shows layout problems that placeholder text hides. Adding visual polish doesn't help, because the issue comes from the content, not the styling."
     },
     {
       "id": "prototyping-wireframing-4",
       "type": "true_false",
-      "prompt": "True or false: Wireframe is a simplified representation of layout, content, and interaction structure.",
-      "correctAnswer": true,
-      "explanation": "Wireframe is a simplified representation of layout, content, and interaction structure.",
-      "difficulty": "BEGINNER"
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: Paper prototypes can't produce valid usability findings with real users; they are only useful for internal brainstorming.",
+      "correctAnswer": false,
+      "explanation": "Paper prototypes tested with real users, with a facilitator acting as the 'computer', reliably uncover navigation, terminology and workflow problems (NN/g; Snyder's Paper Prototyping). They can't evaluate visual design or fine interaction details, but their structural findings are valid."
     },
     {
       "id": "prototyping-wireframing-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: lets someone move through linked screens to test an interaction flow?",
-      "acceptedAnswers": [
-        "Clickable prototype"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A team wants to test whether users can complete the whole 'return an item' flow, from order history through to printing a shipping label. No other features need testing. Which prototype scope fits?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A horizontal prototype that covers all top-level navigation but no depth"
+        },
+        {
+          "id": "b",
+          "text": "A vertical prototype that builds this one flow end to end in depth"
+        },
+        {
+          "id": "c",
+          "text": "A style tile showing the planned colours, typography and imagery"
+        },
+        {
+          "id": "d",
+          "text": "A sitemap that shows every page in the planned product"
+        }
       ],
-      "explanation": "The term is Clickable prototype.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "b",
+      "explanation": "A vertical prototype builds a narrow slice of functionality in depth, which suits testing one complete task. A horizontal prototype shows breadth (many features, shallow), so participants couldn't complete the return flow."
+    },
+    {
+      "id": "prototyping-wireframing-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A team wants to learn whether users trust an 'AI trip assistant' that answers free-text requests, but building the model would take months. Which approach lets them test realistic conversations now?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A static mockup that shows one example conversation with the assistant"
+        },
+        {
+          "id": "b",
+          "text": "A Wizard-of-Oz prototype in which a hidden team member writes the assistant's replies live"
+        },
+        {
+          "id": "c",
+          "text": "A survey asking users whether they would trust an AI travel assistant"
+        },
+        {
+          "id": "d",
+          "text": "A clickable prototype that offers three pre-scripted replies to choose from"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "In a Wizard-of-Oz test, a human simulates the system behind the scenes, so users can type anything and get believable responses before the technology exists. Pre-scripted replies can't respond to free text, so the conversations wouldn't be realistic."
+    },
+    {
+      "id": "prototyping-wireframing-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A team tests a polished, brand-styled prototype of a new navigation structure. Participants mostly comment on colours and imagery and say things like 'It looks finished; I wouldn't change much.' What is the most likely issue?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The recruiting was poor, because real target users would have criticised the design more"
+        },
+        {
+          "id": "b",
+          "text": "The sample was too small, and more participants would surface the navigation issues"
+        },
+        {
+          "id": "c",
+          "text": "High-fidelity prototypes are unsuitable for any kind of moderated usability test"
+        },
+        {
+          "id": "d",
+          "text": "The polish signals the design is final, steering feedback away from structure toward visuals"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Polished prototypes make people reluctant to suggest big changes and pull their feedback toward surface details. Lower visual fidelity keeps attention on structure. More participants would just produce more of the same visual comments."
+    },
+    {
+      "id": "prototyping-wireframing-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A team needs to test whether a new drag-to-reorder interaction for playlists feels natural, including snap timing and feedback during the drag. Visual styling hasn't been decided. What fidelity should the prototype have?",
+      "options": [
+        {
+          "id": "a",
+          "text": "High interaction fidelity for the drag behaviour, with low visual fidelity"
+        },
+        {
+          "id": "b",
+          "text": "Low fidelity in every dimension, such as paper cut-outs moved by hand"
+        },
+        {
+          "id": "c",
+          "text": "High visual fidelity, using static before-and-after screens of the list"
+        },
+        {
+          "id": "d",
+          "text": "High content fidelity with real playlist data but no interactivity"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Fidelity has several dimensions (visual, content, interaction), and you should match each one to the question you're testing. Here the question is about how the interaction feels, so the interaction needs to be realistic, while visuals can stay rough. Paper cut-outs can't simulate snap timing or drag feedback."
+    },
+    {
+      "id": "prototyping-wireframing-9",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Below is the annotation a designer handed to developers for a search results wireframe. Select all states or behaviours the annotation fails to specify.",
+      "code": {
+        "language": "plaintext",
+        "source": "Wireframe annotation - Search results (mobile)\n1. Results list: up to 20 items per page; each shows thumbnail, title, price\n2. Pagination: 'Load more' button below the last result\n3. Sort menu: Relevance (default), Price low-high, Price high-low\n4. Tapping a result opens that product's detail page"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "What appears when a search returns no results"
+        },
+        {
+          "id": "b",
+          "text": "What appears while results are being fetched"
+        },
+        {
+          "id": "c",
+          "text": "Which sort order is applied by default"
+        },
+        {
+          "id": "d",
+          "text": "What appears when the search request fails"
+        },
+        {
+          "id": "e",
+          "text": "What happens when the user taps a result"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b",
+        "d"
+      ],
+      "explanation": "The annotation covers only the 'happy path'. Empty, loading and error states are missing, and those are commonly forgotten states developers would otherwise have to invent. The default sort (Relevance) and tap behaviour are both specified."
+    },
+    {
+      "id": "prototyping-wireframing-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A team has two weeks and a low-fidelity prototype of an onboarding flow. Stakeholders want obvious problems fixed quickly rather than waiting for a final report. Which testing approach fits?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Test all 10 participants on the same version, then fix every issue together at the end"
+        },
+        {
+          "id": "b",
+          "text": "Skip testing for now and run a heuristic review once the design reaches high fidelity"
+        },
+        {
+          "id": "c",
+          "text": "RITE: fix clear problems in the prototype after each session and test the revised version with the next participants"
+        },
+        {
+          "id": "d",
+          "text": "Send 200 users an unmoderated survey that asks for feedback on prototype screenshots"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Rapid Iterative Testing and Evaluation (RITE) changes the prototype between sessions as soon as a problem is clear, so fixes get validated within the same study. Testing everyone on one version is the classic summative approach and delays fixes until the end."
+    },
+    {
+      "id": "prototyping-wireframing-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A government service must work with screen readers. The team wants to test a new form flow with blind participants using their own assistive technology. Which prototype should they build?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A clickable Figma prototype with hotspots linking each screen"
+        },
+        {
+          "id": "b",
+          "text": "A paper prototype that the facilitator reads aloud to participants"
+        },
+        {
+          "id": "c",
+          "text": "A high-fidelity static mockup exported as a PDF document"
+        },
+        {
+          "id": "d",
+          "text": "A coded HTML prototype that uses real form controls, labels and headings"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Screen readers rely on real semantics (roles, names, focus order) that click-through design-tool prototypes and PDFs don't expose. A coded prototype lets participants use their own assistive technology as they normally would. Having the facilitator read aloud tests the facilitator, not the interface with the participants' own AT."
+    },
+    {
+      "id": "prototyping-wireframing-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A weekend hackathon prototype (no tests, hard-coded data, no authentication) impressed executives, who now want to 'just ship it' next sprint. What is the sound recommendation?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Keep the validated design decisions but rebuild the code to production standards"
+        },
+        {
+          "id": "b",
+          "text": "Ship it as is, then add tests and authentication incrementally after launch"
+        },
+        {
+          "id": "c",
+          "text": "Ship it to all users behind a feature flag so feedback can be collected right away"
+        },
+        {
+          "id": "d",
+          "text": "Discard both the code and the design and restart discovery from scratch"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "A prototype's value is what it taught you. Code written to demo an idea, with no authentication or tests, isn't safe to put in front of real users, so you keep the design learning and rebuild. Hiding it behind a feature flag doesn't change that, because real users would still be exposed to unauthenticated code."
+    },
+    {
+      "id": "prototyping-wireframing-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Prototype tests of a flight-search flow showed high satisfaction, but satisfaction dropped sharply after launch. The live product takes 4-8 seconds to return results; the prototype moved to results instantly. What should the team have done?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Tested with more participants to reduce sampling error"
+        },
+        {
+          "id": "b",
+          "text": "Used higher visual fidelity so the prototype matched the final UI"
+        },
+        {
+          "id": "c",
+          "text": "Simulated realistic loading delays and the loading state in the prototype"
+        },
+        {
+          "id": "d",
+          "text": "Recruited only expert travellers, who are used to search delays"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "A prototype that leaves out real latency tests a different experience from the one you'll ship. Adding realistic delays shows how users react to waiting and whether the loading feedback works. More participants would only confirm the same misleading result."
+    },
+    {
+      "id": "prototyping-wireframing-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A team plans the comparative prototype test below. What is the main flaw, and how should it be fixed?",
+      "code": {
+        "language": "plaintext",
+        "source": "Test plan: compare two checkout prototypes\nDesign:   within-subjects, 12 participants\nOrder:    every participant does Task 1 on Design A, then Task 1 on Design B\nMetrics:  time on task, stated preference"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Sample size: within-subjects comparisons require at least 40 participants"
+        },
+        {
+          "id": "b",
+          "text": "Order effects: practice on A will favour B; counterbalance so half the participants see B first"
+        },
+        {
+          "id": "c",
+          "text": "Metrics: stated preference is unreliable and should be dropped from the plan"
+        },
+        {
+          "id": "d",
+          "text": "Task design: each design should get a different task to keep participants engaged"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "When everyone sees A first, learning and fatigue are mixed in with the design difference, and B gets an unfair advantage. Counterbalancing the order fixes this. Using different tasks per design would introduce another confound instead of removing one."
+    },
+    {
+      "id": "prototyping-wireframing-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A team adds a 'Try Budget Coach' button that leads to a 'Coming soon - join the waitlist' page. Of the users who see the button, 9% click it. What does this result validly support?",
+      "options": [
+        {
+          "id": "a",
+          "text": "An estimate of initial interest from users who notice the entry point, not ongoing use"
+        },
+        {
+          "id": "b",
+          "text": "A forecast that about 9% of users will use Budget Coach every week"
+        },
+        {
+          "id": "c",
+          "text": "Evidence that Budget Coach's design is usable, since users found the button"
+        },
+        {
+          "id": "d",
+          "text": "A conclusion that the other 91% of users do not need budgeting help"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "A fake-door test measures how many people click a feature's promise, a proxy for demand. It says nothing about usability, retention or why others didn't click, so treating 9% as a weekly-usage forecast overstates what was measured."
     }
   ]
 }

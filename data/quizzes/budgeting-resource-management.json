@@ -2,104 +2,217 @@
   "id": "budgeting-resource-management",
   "title": "Budgeting & Resource Management",
   "skillSlug": "budgeting-resource-management",
-  "description": "Test your understanding of budgeting & resource management. Tracking project costs and assigning people and tools to work.",
-  "timeLimitSeconds": 600,
+  "description": "Estimate and control project costs with EVM, reserves, and cost types, and allocate people sensibly.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "budgeting-resource-management-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Cost baseline?",
+      "difficulty": "BEGINNER",
+      "prompt": "At the month-3 status review: planned value (PV) = $60,000, earned value (EV) = $50,000, actual cost (AC) = $45,000. What is the project's status?",
       "options": [
-        {
-          "id": "a",
-          "text": "is the approved time-phased budget used to compare actual performance"
-        },
-        {
-          "id": "b",
-          "text": "is an unapproved wish list"
-        },
-        {
-          "id": "c",
-          "text": "is a password policy"
-        },
-        {
-          "id": "d",
-          "text": "is a UI prototype"
-        }
+        { "id": "a", "text": "Behind schedule and under budget" },
+        { "id": "b", "text": "Ahead of schedule and over budget" },
+        { "id": "c", "text": "Behind schedule and over budget" },
+        { "id": "d", "text": "Ahead of schedule and under budget" }
       ],
       "correctOptionId": "a",
-      "explanation": "Cost baseline is the approved time-phased budget used to compare actual performance.",
-      "difficulty": "BEGINNER"
+      "explanation": "SV = EV - PV = -$10,000 (SPI 0.83, behind schedule) and CV = EV - AC = +$5,000 (CPI 1.11, under budget). A common mistake is comparing AC with PV, which mixes spending with the plan and says nothing about the value of the work done."
     },
     {
       "id": "budgeting-resource-management-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Resource leveling?",
+      "difficulty": "BEGINNER",
+      "prompt": "A company stops buying on-premises servers, which it depreciated over five years, and moves the workloads to pay-as-you-go cloud instances billed monthly. How does this typically change the accounting treatment of that infrastructure spend?",
       "options": [
-        {
-          "id": "a",
-          "text": "adjusts work timing to resolve over-allocation of people or equipment"
-        },
-        {
-          "id": "b",
-          "text": "adds unlimited staff for free"
-        },
-        {
-          "id": "c",
-          "text": "deletes project scope automatically"
-        },
-        {
-          "id": "d",
-          "text": "is a database normalization rule"
-        }
+        { "id": "a", "text": "It shifts spend from operating expense to capital expense" },
+        { "id": "b", "text": "No change, because IT infrastructure is always a capital expense" },
+        { "id": "c", "text": "It shifts spend from capital expense to operating expense" },
+        { "id": "d", "text": "The monthly bills are capitalised and depreciated over five years" }
       ],
-      "correctOptionId": "a",
-      "explanation": "Resource leveling adjusts work timing to resolve over-allocation of people or equipment.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "Purchased servers are capital assets depreciated over their useful life (capex); pay-as-you-go usage fees are expensed in the period incurred (opex). That shift is one reason finance teams treat cloud migrations as a budgeting change, not just a technical one."
     },
     {
       "id": "budgeting-resource-management-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Cost variance?",
+      "difficulty": "BEGINNER",
+      "prompt": "The risk register lists \"Vendor raises license prices at renewal,\" and $40,000 was set aside for it. The vendor then announces an increase that will cost the project $30,000. Where should the money come from?",
       "options": [
-        {
-          "id": "a",
-          "text": "compares planned or earned cost with actual cost to show a difference"
-        },
-        {
-          "id": "b",
-          "text": "is always zero at project start"
-        },
-        {
-          "id": "c",
-          "text": "measures only quality defects"
-        },
-        {
-          "id": "d",
-          "text": "is a stakeholder persona"
-        }
+        { "id": "a", "text": "Management reserve, after the sponsor approves the release" },
+        { "id": "b", "text": "Contingency reserve, which is already part of the cost baseline" },
+        { "id": "c", "text": "A change request to raise the budget at completion (BAC)" },
+        { "id": "d", "text": "Cutting scope elsewhere so the cost baseline is not touched" }
       ],
-      "correctOptionId": "a",
-      "explanation": "Cost variance compares planned or earned cost with actual cost to show a difference.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "b",
+      "explanation": "Contingency reserve covers identified risks (known-unknowns) and is included in the cost baseline, so the PM can apply it under the project's procedures. Management reserve is for unidentified risks (unknown-unknowns) and sits outside the cost baseline."
     },
     {
       "id": "budgeting-resource-management-4",
       "type": "true_false",
-      "prompt": "True or false: Cost baseline is the approved time-phased budget used to compare actual performance.",
-      "correctAnswer": true,
-      "explanation": "Cost baseline is the approved time-phased budget used to compare actual performance.",
-      "difficulty": "BEGINNER"
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: When deciding whether to continue a troubled project, the $2 million already spent on it is a valid reason to keep funding it.",
+      "correctAnswer": false,
+      "explanation": "Money already spent is a sunk cost: it cannot be recovered whichever way you decide. Continue-or-stop decisions should compare the remaining cost (ETC) with the remaining expected benefits. Letting past spend drive the decision is the sunk-cost fallacy."
     },
     {
       "id": "budgeting-resource-management-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: compares planned or earned cost with actual cost to show a difference?",
-      "acceptedAnswers": [
-        "Cost variance"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "To budget a laptop refresh, an analyst uses last quarter's average fully configured cost of $1,350 per workstation and multiplies by the 85 workstations in scope: $114,750. Which estimating technique is this?",
+      "options": [
+        { "id": "a", "text": "Analogous estimating" },
+        { "id": "b", "text": "Bottom-up estimating" },
+        { "id": "c", "text": "Three-point estimating" },
+        { "id": "d", "text": "Parametric estimating" }
       ],
-      "explanation": "The term is Cost variance.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "d",
+      "explanation": "Parametric estimating multiplies a statistical unit rate by a quantity ($/unit x units). Analogous estimating would scale the whole cost of a similar past project without a unit rate, and bottom-up estimating would sum separate estimates for each item."
+    },
+    {
+      "id": "budgeting-resource-management-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A project has BAC = $500,000, EV = $200,000, and AC = $250,000. The cost overruns come from systemic underestimation that is expected to continue. What is the estimate to complete (ETC)?",
+      "options": [
+        { "id": "a", "text": "$300,000" },
+        { "id": "b", "text": "$375,000" },
+        { "id": "c", "text": "$625,000" },
+        { "id": "d", "text": "$400,000" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "CPI = 200,000 / 250,000 = 0.8; with typical variances EAC = BAC / CPI = $625,000, so ETC = EAC - AC = $375,000. $300,000 (BAC - EV) assumes future work goes to plan, which contradicts the stated assumption, and $625,000 is the EAC, not the ETC."
+    },
+    {
+      "id": "budgeting-resource-management-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A project shows BAC = $800,000, PV = $400,000, EV = $350,000, AC = $420,000. The overrun came from a one-time vendor penalty that will not recur, and the remaining work is expected to be done at the budgeted rate. What is the variance at completion (VAC)?",
+      "options": [
+        { "id": "a", "text": "-$160,000" },
+        { "id": "b", "text": "+$70,000" },
+        { "id": "c", "text": "-$70,000" },
+        { "id": "d", "text": "-$50,000" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "For atypical variance, EAC = AC + (BAC - EV) = 420,000 + 450,000 = $870,000, so VAC = BAC - EAC = -$70,000. Using BAC / CPI (CPI = 0.833, EAC = $960,000) gives -$160,000, which wrongly assumes the overrun will continue; -$50,000 is the schedule variance."
+    },
+    {
+      "id": "budgeting-resource-management-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Here is next week's resource allocation (hours). Lena works a 0.8 FTE schedule. Which statement is correct?",
+      "code": {
+        "language": "plaintext",
+        "source": "Person  Project A  Project B  Ops/BAU  Weekly capacity\nPriya   24         20         8        40\nMarco   16         16         4        40\nLena    30         0          10       32\nTom     20         12         8        40"
+      },
+      "options": [
+        { "id": "a", "text": "Only Priya is over-allocated, by 12 hours" },
+        { "id": "b", "text": "Priya, Lena, and Tom are all over-allocated" },
+        { "id": "c", "text": "Lena is the most over-allocated, by 10 hours" },
+        { "id": "d", "text": "Priya (by 12 hours) and Lena (by 8 hours) are over-allocated" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Priya has 52 h against 40 (+12) and Lena has 40 h against her 32 h capacity (+8); Tom is at exactly 100% and Marco is at 36 h. Missing Lena's reduced capacity is the usual mistake, and Tom being fully loaded does not make him over-allocated."
+    },
+    {
+      "id": "budgeting-resource-management-9",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A consulting firm is building the budget for a client CRM implementation. Which of these are direct costs of the project? Select all that apply.",
+      "options": [
+        { "id": "a", "text": "Contractor hours billed to the CRM implementation" },
+        { "id": "b", "text": "Software licenses bought solely for this client's CRM" },
+        { "id": "c", "text": "A share of the firm's headquarters office rent" },
+        { "id": "d", "text": "Salaries of the firm's corporate HR department" },
+        { "id": "e", "text": "Travel to the client site for this project's user acceptance testing" }
+      ],
+      "correctOptionIds": ["a", "b", "e"],
+      "explanation": "Direct costs can be traced specifically to the project: its contractor hours, licenses, and project travel. Office rent and corporate HR salaries are shared overhead (indirect costs) that may be allocated to the project through an overhead rate, but they are not caused by it."
+    },
+    {
+      "id": "budgeting-resource-management-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A team of 6 FTEs has a fully loaded cost of $12,000 per FTE per month, plus $8,000 per month in tooling. $400,000 of budget remains and the forecast shows 6 months of work left. How many months can be funded, and what is the shortfall?",
+      "options": [
+        { "id": "a", "text": "5 months; shortfall of $80,000" },
+        { "id": "b", "text": "6 months; no shortfall" },
+        { "id": "c", "text": "4 months; shortfall of $160,000" },
+        { "id": "d", "text": "5.5 months; shortfall of $40,000" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Monthly burn = 6 x $12,000 + $8,000 = $80,000; $400,000 / $80,000 = 5 months, and 6 months of work needs $480,000, a $80,000 shortfall. Leaving out tooling gives a $72,000 burn and about 5.6 months, which hides most of the gap."
+    },
+    {
+      "id": "budgeting-resource-management-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A project has BAC = $1,000,000, EV = $400,000, and AC = $500,000. The sponsor insists the original budget will still be met. Which calculation and conclusion are correct?",
+      "options": [
+        { "id": "a", "text": "TCPI = 0.80; the remaining work can be done at the current efficiency" },
+        { "id": "b", "text": "TCPI = 1.25; the team must be 25% more efficient than it has been so far" },
+        { "id": "c", "text": "TCPI = 1.20, far above the current CPI of 0.80, so meeting BAC is unrealistic" },
+        { "id": "d", "text": "TCPI = 0.83; there is slack in the remaining budget to absorb the overrun" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "TCPI (to BAC) = (BAC - EV) / (BAC - AC) = 600,000 / 500,000 = 1.20; the team would need $1.20 of work per $1 spent for the rest of the project, while it has achieved $0.80. 0.80 is the CPI, not the TCPI, and 0.83 is the TCPI ratio inverted."
+    },
+    {
+      "id": "budgeting-resource-management-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Status: BAC = $1,200,000, PV = $600,000, EV = $480,000, AC = $600,000. Leadership has made the original end date mandatory, so schedule pressure (overtime, expediting) is expected to drive the remaining cost along with current cost performance. Which EAC fits this assumption?",
+      "options": [
+        { "id": "a", "text": "$1,500,000" },
+        { "id": "b", "text": "$1,725,000" },
+        { "id": "c", "text": "$1,320,000" },
+        { "id": "d", "text": "$1,875,000" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "CPI = SPI = 0.8. When both cost and schedule performance affect the remaining work, EAC = AC + (BAC - EV) / (CPI x SPI) = 600,000 + 720,000 / 0.64 = $1,725,000. $1,500,000 (BAC / CPI) ignores the schedule factor, and $1,875,000 wrongly applies CPI x SPI to the whole BAC, including work already done."
+    },
+    {
+      "id": "budgeting-resource-management-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "On a large program, EV is calculated from the percent complete that task owners report. Several 6-week work packages have been reported as \"90% complete\" for four weeks, and the CPI looks healthy at 1.02. What change makes the EVM data reliable?",
+      "options": [
+        { "id": "a", "text": "None, since subjective estimates tend to average out over many packages" },
+        { "id": "b", "text": "Report only actual cost, since spending data is objective and trustworthy" },
+        { "id": "c", "text": "Collect owners' percent-complete estimates weekly instead of monthly" },
+        { "id": "d", "text": "Measure EV with 0/100 or 50/50 rules or objective milestones" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Self-reported percent complete runs optimistic (the \"90% syndrome\"), which inflates EV and makes CPI and SPI look better than reality. Fixed-formula rules (0/100, 50/50) for short packages, or weighted milestones with objective completion criteria, tie EV to verifiable progress; asking more often does not remove the bias."
+    },
+    {
+      "id": "budgeting-resource-management-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "The company's only senior DBA is allocated 33% to each of three projects, and all three are now late waiting on database work. Each project's remaining database work is a fixed number of hours. Which allocation change will most likely get the most value delivered soonest?",
+      "options": [
+        { "id": "a", "text": "Sequence the DBA's work by portfolio priority, finishing one project before the next" },
+        { "id": "b", "text": "Keep the 33% split but require detailed daily timesheets for each project" },
+        { "id": "c", "text": "Give each project 40% of the DBA's time so they all move faster" },
+        { "id": "d", "text": "Rotate the DBA between projects every day so each gets equal attention" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Even before counting context-switching overhead, a three-way split makes all three projects finish near the same late date, while working in priority order finishes the top project after about a third of that time and the last one no later than before; switching overhead only widens the gap. A 40% x 3 allocation is 120% over-allocation, and daily rotation adds more switching."
+    },
+    {
+      "id": "budgeting-resource-management-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Halfway through, a new regulation that no one foresaw requires $120,000 of extra in-scope work. Contingency is reserved for specific risks on the register. How should this be funded?",
+      "options": [
+        { "id": "a", "text": "From contingency reserve, which the PM can authorize without anyone else" },
+        { "id": "b", "text": "From management reserve once approved, adding it to the cost baseline" },
+        { "id": "c", "text": "From management reserve drawn by the PM, leaving the cost baseline unchanged" },
+        { "id": "d", "text": "Absorbed as a negative cost variance against the current cost baseline" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "An unforeseen event (unknown-unknown) is what management reserve is for; it sits outside the cost baseline, requires management approval, and once used is added to the cost baseline through an approved change (PMBOK). Leaving the baseline unchanged would make EVM report a false cost overrun."
     }
   ]
 }

@@ -2,104 +2,403 @@
   "id": "cloud-deployment-cicd",
   "title": "Cloud Deployment & CI/CD",
   "skillSlug": "cloud-deployment-cicd",
-  "description": "Test your understanding of cloud deployment & ci/cd. Deploying applications to hosting platforms and automating builds and releases with CI/CD pipelines.",
-  "timeLimitSeconds": 600,
+  "description": "Build pipelines, release strategies, secrets, containers, and infrastructure-as-code for cloud deploys.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "cloud-deployment-cicd-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Continuous integration?",
+      "difficulty": "BEGINNER",
+      "prompt": "A pipeline runs `docker build` from commit abc123 and tests that image in staging. After approval, a separate production job runs `docker build` again from abc123 and deploys the result. What is the main problem?",
       "options": [
         {
           "id": "a",
-          "text": "automatically builds and tests changes as they are integrated"
+          "text": "Building twice doubles registry storage costs, which is the main operational risk"
         },
         {
           "id": "b",
-          "text": "manually copies files to every laptop"
+          "text": "Docker cannot build the same commit twice without changing the image tag first"
         },
         {
           "id": "c",
-          "text": "stores only production passwords"
+          "text": "The production image can differ from the tested one (e.g., a newer base image), so untested bits ship"
         },
         {
           "id": "d",
-          "text": "replaces source control"
+          "text": "Staging and production should build from different commits to isolate failures"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Continuous integration automatically builds and tests changes as they are integrated.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "c",
+      "explanation": "Rebuilding re-resolves base images and dependencies, so the bits deployed to production may never have been tested. Build once and promote the same artifact (for example, the same image digest) through every environment. Storage cost is minor next to that risk."
     },
     {
       "id": "cloud-deployment-cicd-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Blue-green deployment?",
+      "difficulty": "BEGINNER",
+      "prompt": "A GitHub Actions deploy job needs a production database password. Where should the password come from?",
       "options": [
         {
           "id": "a",
-          "text": "keeps two production environments so traffic can switch between versions"
+          "text": "An encrypted repository or environment secret, referenced as `${{ secrets.DB_PASSWORD }}`"
         },
         {
           "id": "b",
-          "text": "runs two databases with no backups"
+          "text": "A `.env` file committed to the repository, since the repository is private"
         },
         {
           "id": "c",
-          "text": "changes CSS from blue to green"
+          "text": "A value hard-coded in the workflow YAML under the job's `env:` block"
         },
         {
           "id": "d",
-          "text": "requires every user to reinstall an app"
+          "text": "An `ENV DB_PASSWORD=...` line in the Dockerfile so it is always available"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Blue-green deployment keeps two production environments so traffic can switch between versions.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "The CI platform's secret store encrypts the value, masks it in logs, and keeps it out of version control and image layers. A private repository still exposes committed secrets to everyone with read access, and to its full history, forever."
     },
     {
       "id": "cloud-deployment-cicd-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Environment variable?",
+      "difficulty": "BEGINNER",
+      "prompt": "A push to main produced the test-job log below. The workflow's deploy job declares `needs: test`. Why was the deploy job skipped?",
+      "code": {
+        "language": "plaintext",
+        "source": "Run npm test\n> shop@1.4.0 test\n> jest\n\nFAIL src/cart.test.js\n  * Cart > applies 10% discount\n    Expected: 90\n    Received: 100\n\nTests:       1 failed, 41 passed, 42 total\nError: Process completed with exit code 1."
+      },
       "options": [
         {
           "id": "a",
-          "text": "provides configuration to an application without hard-coding it in source"
+          "text": "41 of 42 tests passed, so the job succeeded, but deploy also requires full coverage"
         },
         {
           "id": "b",
-          "text": "is a unit test assertion"
+          "text": "The runner crashed during Jest, so no test results were recorded for the run"
         },
         {
           "id": "c",
-          "text": "is a Git merge strategy"
+          "text": "GitHub Actions skips deploy jobs whenever a log contains FAIL, regardless of exit code"
         },
         {
           "id": "d",
-          "text": "is a database primary key"
+          "text": "Jest exited non-zero, so the test job failed, and deploy runs only when its needed jobs succeed"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Environment variable provides configuration to an application without hard-coding it in source.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "d",
+      "explanation": "A step fails when its process exits non-zero (here exit code 1 from Jest's failed test), which fails the job, and dependent jobs are skipped by default. The log shows results were recorded, so the runner didn't crash."
     },
     {
       "id": "cloud-deployment-cicd-4",
-      "type": "true_false",
-      "prompt": "True or false: Continuous integration automatically builds and tests changes as they are integrated.",
-      "correctAnswer": true,
-      "explanation": "Continuous integration automatically builds and tests changes as they are integrated.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "Version 2.3 was just deployed, and the error rate jumped from 0.2% to 9%. The version 2.2 image is still in the registry, and the release included no database changes. What is the quickest low-risk way to restore service?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Debug in production and push a hotfix for 2.3"
+        },
+        {
+          "id": "b",
+          "text": "Redeploy the known-good 2.2 image, then investigate 2.3"
+        },
+        {
+          "id": "c",
+          "text": "SSH into each server and patch the code by hand"
+        },
+        {
+          "id": "d",
+          "text": "Scale 2.3 out to more instances to absorb the errors"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Rolling back to a known-good, already-built artifact restores service fastest and keeps root-cause analysis off the critical path. Hand-patching servers creates untracked drift, and adding instances doesn't fix a code defect."
     },
     {
       "id": "cloud-deployment-cicd-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: provides configuration to an application without hard-coding it in source?",
-      "acceptedAnswers": [
-        "Environment variable"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: in continuous deployment, every change that passes the automated pipeline is released to production without a manual approval step.",
+      "correctAnswer": true,
+      "explanation": "That's what separates continuous deployment from continuous delivery: in continuous delivery every passing change is releasable, but a person still decides when to push it to production."
+    },
+    {
+      "id": "cloud-deployment-cicd-6",
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "This GitHub Actions workflow should run tests on every pull request and on pushes to main, and deploy only for pushes to main after tests pass. Which line is wrong?",
+      "code": {
+        "language": "yaml",
+        "source": "on:\n  push:\n    branches: [main]\n  pull_request:\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - run: npm ci && npm test\n  deploy:\n    needs: test\n    if: github.event_name == 'pull_request'\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - run: ./deploy.sh"
+      },
+      "bugLines": [
+        13
       ],
-      "explanation": "The term is Environment variable.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "Line 13 deploys only on pull_request events, which is the opposite of the intent and would ship unmerged code; it should be `github.event_name == 'push'` (pushes only trigger for main here). `needs: test` on line 12 correctly makes deploy wait for passing tests."
+    },
+    {
+      "id": "cloud-deployment-cicd-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Image builds take 6 minutes because `npm ci` reruns on every commit, even when dependencies haven't changed. Given this Dockerfile, which change fixes that?",
+      "code": {
+        "language": "plaintext",
+        "source": "FROM node:20-alpine\nWORKDIR /app\nCOPY . .\nRUN npm ci\nRUN npm run build\nCMD [\"node\", \"dist/server.js\"]"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Copy package.json and package-lock.json, run `npm ci`, then copy the rest of the source"
+        },
+        {
+          "id": "b",
+          "text": "Replace `npm ci` with `npm install` so it reuses the existing node_modules folder"
+        },
+        {
+          "id": "c",
+          "text": "Build with `docker build --no-cache` so every layer is rebuilt cleanly each time"
+        },
+        {
+          "id": "d",
+          "text": "Switch the base image to full `node:20` so common dependencies come preinstalled"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Docker reuses a cached layer only if that instruction and everything before it are unchanged; `COPY . .` changes on every commit, invalidating the `npm ci` layer below it. Copying only the manifests first means the install layer is rebuilt only when dependencies change, while `--no-cache` makes builds slower."
+    },
+    {
+      "id": "cloud-deployment-cicd-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A team's blue-green setup switches 100% of traffic to a new version at once. For the checkout service, they want to send about 5% of real users to the new version, compare its error rate and latency with the current version, and widen the rollout only if metrics stay healthy. Which strategy do they need?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Rolling update that replaces one instance at a time"
+        },
+        {
+          "id": "b",
+          "text": "Recreate deployment with a maintenance window"
+        },
+        {
+          "id": "c",
+          "text": "Canary release with metric-based promotion"
+        },
+        {
+          "id": "d",
+          "text": "Blue-green with a longer soak in the idle environment"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "A canary routes a controlled slice of real traffic to the new version and promotes it based on comparison with the baseline. A rolling update shifts traffic by instance count without a metric gate, and a longer soak in the idle blue-green environment still receives no real user traffic."
+    },
+    {
+      "id": "cloud-deployment-cicd-9",
+      "type": "order_lines",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Put these stages of a deployment pipeline, which promotes a single build artifact to production, in order.",
+      "lines": [
+        {
+          "id": "r5",
+          "text": "Commit stage: compile, run unit tests, and publish a versioned artifact"
+        },
+        {
+          "id": "c8",
+          "text": "Deploy that artifact to a staging environment"
+        },
+        {
+          "id": "h2",
+          "text": "Run automated acceptance tests against staging"
+        },
+        {
+          "id": "w6",
+          "text": "Approve the release for production"
+        },
+        {
+          "id": "b3",
+          "text": "Deploy the same artifact to production and run smoke tests"
+        }
+      ],
+      "explanation": "A deployment pipeline (Humble & Farley, Continuous Delivery) gives fast feedback first, then builds confidence in production-like environments using the same artifact. Approval comes after acceptance tests pass, so the person approving has evidence, and smoke tests confirm the production deploy itself."
+    },
+    {
+      "id": "cloud-deployment-cicd-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A GitHub Actions workflow deploys to AWS using an IAM user's long-lived access key, stored as a repository secret. Security wants no long-lived cloud credentials in CI at all. Which approach meets that?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Rotate the IAM user's access key every 90 days with a scheduled workflow"
+        },
+        {
+          "id": "b",
+          "text": "Store the access key in an encrypted file in the repository and decrypt it at runtime"
+        },
+        {
+          "id": "c",
+          "text": "Move the access key to an organization-level secret so fewer people can view it"
+        },
+        {
+          "id": "d",
+          "text": "Trust GitHub's OIDC provider in AWS IAM and have the job assume a scoped role for short-lived credentials"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "With OIDC federation the workflow exchanges a signed identity token for temporary credentials from AWS STS, and the role's trust policy can restrict which repository and branch may assume it. Rotation, encryption, or moving the secret still leaves a long-lived key in CI."
+    },
+    {
+      "id": "cloud-deployment-cicd-11",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Following twelve-factor app principles, the same container image runs in staging and production. Which of these should be supplied at deploy or run time rather than baked into the image? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Database connection string"
+        },
+        {
+          "id": "b",
+          "text": "The application's compiled code"
+        },
+        {
+          "id": "c",
+          "text": "Third-party API keys"
+        },
+        {
+          "id": "d",
+          "text": "Locked dependency versions installed from the lockfile"
+        },
+        {
+          "id": "e",
+          "text": "Payment gateway URL (sandbox vs. live)"
+        },
+        {
+          "id": "f",
+          "text": "OS packages the application needs to run"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c",
+        "e"
+      ],
+      "explanation": "Twelve-factor 'Config' is anything that varies between deploys (credentials, resource handles, per-environment endpoints), which belongs in the environment. Code, dependencies, and OS packages are the same in every environment, so they belong in the immutable image."
+    },
+    {
+      "id": "cloud-deployment-cicd-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "You must rename column `users.fullname` to `display_name`. The service uses rolling updates, so old and new versions serve traffic side by side for several minutes. Which plan avoids errors during rollout?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Run `ALTER TABLE ... RENAME COLUMN` as a pre-deploy migration, then ship code that uses `display_name`"
+        },
+        {
+          "id": "b",
+          "text": "Add `display_name`, ship code that writes both and reads either, backfill, switch reads, then drop `fullname` later"
+        },
+        {
+          "id": "c",
+          "text": "Ship code that uses `display_name` first, then run the rename once every pod is on the new version"
+        },
+        {
+          "id": "d",
+          "text": "Rename the column in the release and have the old pods retry failed queries until they're replaced"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Expand/contract (parallel change) keeps the schema compatible with both versions at every moment of the rollout. Renaming first breaks the old pods still querying `fullname`, and shipping code first breaks the new pods until the rename runs."
+    },
+    {
+      "id": "cloud-deployment-cicd-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "During a 10-minute database outage, every pod of this API restarted repeatedly, and recovery was slow after the database came back. Which change addresses the root cause?",
+      "code": {
+        "language": "yaml",
+        "source": "livenessProbe:\n  httpGet:\n    path: /health      # returns 500 if the database is unreachable\n    port: 8080\n  periodSeconds: 10\n  failureThreshold: 3\nreadinessProbe:\n  httpGet:\n    path: /ready\n    port: 8080"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Make the liveness probe check only that the process itself is responsive, with no dependency checks"
+        },
+        {
+          "id": "b",
+          "text": "Raise the liveness `failureThreshold` to 30 so the probe tolerates longer outages"
+        },
+        {
+          "id": "c",
+          "text": "Remove the readiness probe so traffic keeps flowing to pods during outages"
+        },
+        {
+          "id": "d",
+          "text": "Add a startupProbe that also checks the database before the pod can start"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "A failing liveness probe makes the kubelet restart the container, but restarting can't fix an external database, so a dependency check there turns one outage into a restart storm. Kubernetes guidance is to keep liveness checks about the process itself; a higher threshold only delays the restarts in a longer outage."
+    },
+    {
+      "id": "cloud-deployment-cicd-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A widely used third-party action was compromised: attackers moved its existing version tags to a malicious commit that dumped CI secrets into logs. How should this workflow reference third-party actions so a moved tag can't change what runs?",
+      "code": {
+        "language": "yaml",
+        "source": "steps:\n  - uses: actions/checkout@v4\n  - uses: some-org/changed-files@v45\n  - run: ./deploy.sh\n    env:\n      DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Pin each to an exact semver tag such as `@v45.0.7` instead of a major tag"
+        },
+        {
+          "id": "b",
+          "text": "Reference `@main` so fixes from the maintainer arrive as soon as possible"
+        },
+        {
+          "id": "c",
+          "text": "Pin each to a full-length commit SHA and update the pins through reviewed PRs"
+        },
+        {
+          "id": "d",
+          "text": "Set `permissions: read-all` on the job so actions cannot read the secrets"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Git tags, even exact semver ones, are mutable; GitHub's security hardening guide says a full commit SHA is the only immutable reference, and in the March 2025 tj-actions/changed-files compromise (CVE-2025-30066) attackers repointed existing tags exactly this way. `permissions` limits only the GITHUB_TOKEN, not secrets passed in through `env`."
+    },
+    {
+      "id": "cloud-deployment-cicd-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "During an incident last week, an engineer added a PostgreSQL ingress rule to this security group in the AWS console, and the reporting service now depends on it. Your unrelated PR's `terraform plan` shows the output below. What should happen before `terraform apply`?",
+      "code": {
+        "language": "plaintext",
+        "source": "  # aws_security_group.db will be updated in-place\n  ~ resource \"aws_security_group\" \"db\" {\n        id      = \"sg-0a12b34c56d78e90f\"\n      ~ ingress = [\n          - {\n              - cidr_blocks = [\"10.20.0.0/16\"]\n              - from_port   = 5432\n              - protocol    = \"tcp\"\n              - to_port     = 5432\n            },\n            # (1 unchanged element hidden)\n        ]\n    }\n\nPlan: 0 to add, 1 to change, 0 to destroy."
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Apply as-is, because Terraform merges console-made changes with the configuration"
+        },
+        {
+          "id": "b",
+          "text": "Add the rule to the Terraform configuration in a reviewed change so the plan no longer removes it"
+        },
+        {
+          "id": "c",
+          "text": "Run `terraform refresh` so the state records the rule and the plan keeps it"
+        },
+        {
+          "id": "d",
+          "text": "Delete the state file so Terraform re-imports the infrastructure as it is now"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Terraform converges real infrastructure to the configuration, so the manual rule (drift) will be removed and the reporting service will break unless the rule is codified. Refreshing only updates state; the configuration still lacks the rule, so the plan would still delete it."
     }
   ]
 }

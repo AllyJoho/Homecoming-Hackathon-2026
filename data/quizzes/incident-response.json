@@ -2,104 +2,399 @@
   "id": "incident-response",
   "title": "Incident Response",
   "skillSlug": "incident-response",
-  "description": "Test your understanding of incident response. Detecting, containing, and recovering from security incidents and documenting what happened.",
-  "timeLimitSeconds": 600,
+  "description": "Triage, contain, eradicate, and recover from security incidents using NIST SP 800-61 practices.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "incident-response-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Containment?",
+      "difficulty": "BEGINNER",
+      "prompt": "A SOC analyst reviews four overnight alerts. Which one should be declared a security incident and escalated, rather than recorded as a routine event?",
       "options": [
         {
           "id": "a",
-          "text": "limits an incident so the threat or damage cannot spread further"
+          "text": "The perimeter firewall blocked an inbound port scan from an internet address"
         },
         {
           "id": "b",
-          "text": "deletes all evidence immediately"
+          "text": "A user mistyped their password twice and then signed in successfully"
         },
         {
           "id": "c",
-          "text": "writes a marketing plan"
+          "text": "Antivirus quarantined a malicious email attachment before anyone opened it"
         },
         {
           "id": "d",
-          "text": "restores every system before investigation"
+          "text": "A new domain admin account that nobody requested was created at 2 a.m."
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Containment limits an incident so the threat or damage cannot spread further.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "d",
+      "explanation": "An unauthorized privileged account is an actual violation of security policy, which is what makes an event an incident (NIST SP 800-61r2). The blocked scan and the quarantined attachment are events that controls already stopped; they are logged, not escalated."
     },
     {
       "id": "incident-response-2",
-      "type": "multiple_choice",
-      "prompt": "What best describes Evidence preservation?",
-      "options": [
-        {
-          "id": "a",
-          "text": "protects relevant artifacts so they can be analyzed and trusted later"
-        },
-        {
-          "id": "b",
-          "text": "changes timestamps intentionally"
-        },
-        {
-          "id": "c",
-          "text": "reboots every system without notes"
-        },
-        {
-          "id": "d",
-          "text": "publishes logs publicly"
-        }
-      ],
-      "correctOptionId": "a",
-      "explanation": "Evidence preservation protects relevant artifacts so they can be analyzed and trusted later.",
-      "difficulty": "INTERMEDIATE"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: When malware is actively running on a workstation, pulling the power cord right away is the preferred first step because it stops the malware and preserves all of the evidence.",
+      "correctAnswer": false,
+      "explanation": "Cutting power destroys volatile evidence such as memory, running processes, and network connections, and some malware is fileless. The usual first step is network isolation (for example, EDR host containment) with the machine left powered on, so memory can still be acquired."
     },
     {
       "id": "incident-response-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Eradication?",
+      "difficulty": "BEGINNER",
+      "prompt": "Using the NIST SP 800-61r2 incident response lifecycle: an analyst reviews an IDS alert, pulls the related firewall and proxy logs, and confirms the traffic came from a host already known to be infected. Which phase is the analyst working in?",
       "options": [
         {
           "id": "a",
-          "text": "removes the threat and its persistence from affected systems"
+          "text": "Preparation"
         },
         {
           "id": "b",
-          "text": "is the same as detection"
+          "text": "Detection and Analysis"
         },
         {
           "id": "c",
-          "text": "only informs customers"
+          "text": "Containment, Eradication, and Recovery"
         },
         {
           "id": "d",
-          "text": "means ignoring the root cause"
+          "text": "Post-Incident Activity"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Eradication removes the threat and its persistence from affected systems.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "b",
+      "explanation": "Validating an alert by correlating it with other logs is analysis work, part of r2's Detection and Analysis phase. Nothing has been isolated or removed yet, so containment has not started."
     },
     {
       "id": "incident-response-4",
-      "type": "true_false",
-      "prompt": "True or false: Containment limits an incident so the threat or damage cannot spread further.",
-      "correctAnswer": true,
-      "explanation": "Containment limits an incident so the threat or damage cannot spread further.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "An analyst makes a forensic image of a laptop drive for an investigation that may end up in court. What lets the team prove later that the image was never altered?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Hash the source drive and the image with SHA-256 at acquisition and record both hashes in the chain-of-custody record"
+        },
+        {
+          "id": "b",
+          "text": "Save the image to a fully encrypted drive, because encryption shows that the contents could not have changed"
+        },
+        {
+          "id": "c",
+          "text": "Compress the image into a ZIP archive, because the archive's built-in CRC check proves the file is authentic"
+        },
+        {
+          "id": "d",
+          "text": "Mark the image file read-only in its file properties as soon as it has finished copying to storage"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Matching cryptographic hashes taken at acquisition and again at each later check show the image is bit-for-bit unchanged. Encryption protects confidentiality, not integrity, and a read-only flag can be cleared by anyone."
     },
     {
       "id": "incident-response-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: removes the threat and its persistence from affected systems?",
-      "acceptedAnswers": [
-        "Eradication"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "Two incidents come in at the same time and only one handler is free. Using the NIST SP 800-61r2 prioritization factors (functional impact, information impact, recoverability), which should be handled first?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A defaced marketing page whose static content can be restored from source control in ten minutes"
+        },
+        {
+          "id": "b",
+          "text": "A test-lab VM where EDR has already quarantined a commodity trojan"
+        },
+        {
+          "id": "c",
+          "text": "An ongoing outbound transfer of employee Social Security numbers from an HR file server"
+        },
+        {
+          "id": "d",
+          "text": "A phishing email reported by three users, none of whom clicked the link"
+        }
       ],
-      "explanation": "The term is Eradication.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "Active exfiltration of sensitive PII has the highest information impact, and data that has left cannot be recovered, so it comes first. The defacement is visible but has low information impact and is quickly recoverable."
+    },
+    {
+      "id": "incident-response-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Your incident response plan is built on the four lifecycle phases of NIST SP 800-61r2. You are realigning it to SP 800-61r3 (2025), which is organized around the CSF 2.0 Functions. Where do r2's Post-Incident Activity (lessons learned) tasks primarily map?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The Recover Function, because lessons learned happen after systems are restored"
+        },
+        {
+          "id": "b",
+          "text": "The Govern Function, because lessons learned update organizational policy"
+        },
+        {
+          "id": "c",
+          "text": "The Identify Function's Improvement category (ID.IM)"
+        },
+        {
+          "id": "d",
+          "text": "The Respond Function's Incident Analysis category (RS.AN)"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "SP 800-61r3 places lessons learned in Identify > Improvement (ID.IM), which CSF 2.0 defines as improvements identified from incidents, exercises, and operations, feeding back into every Function. Recover covers restoring assets and operations, not the lessons-learned process."
+    },
+    {
+      "id": "incident-response-7",
+      "type": "order_lines",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Using the order of volatility in RFC 3227, arrange these evidence sources on a live compromised Linux server from collect FIRST to collect LAST.",
+      "lines": [
+        {
+          "id": "q4",
+          "text": "CPU registers and cache"
+        },
+        {
+          "id": "m9",
+          "text": "RAM contents: running processes, network connections, ARP cache"
+        },
+        {
+          "id": "z2",
+          "text": "Temporary file systems such as a tmpfs-mounted /tmp"
+        },
+        {
+          "id": "c7",
+          "text": "Data on the server's local disk"
+        },
+        {
+          "id": "h5",
+          "text": "Archival media such as offsite backup tapes"
+        }
+      ],
+      "explanation": "RFC 3227 says to collect the most volatile data first: registers and cache, then memory, then temporary file systems, then disk, with archival media last. If you image the disk before capturing RAM, you lose process and connection state that a reboot or later activity would overwrite."
+    },
+    {
+      "id": "incident-response-8",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Two hours ago a user entered their Microsoft 365 password on a phishing page. Sign-in logs show a successful login from an unfamiliar country, and the user approved an MFA push they didn't initiate. Select the THREE actions the responder should take now.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Revoke the user's active sessions and refresh tokens"
+        },
+        {
+          "id": "b",
+          "text": "Reset the password and remove any MFA methods the attacker registered"
+        },
+        {
+          "id": "c",
+          "text": "Check the mailbox for new inbox or forwarding rules the attacker created"
+        },
+        {
+          "id": "d",
+          "text": "Reimage the user's laptop before taking any other step"
+        },
+        {
+          "id": "e",
+          "text": "Turn off MFA for the user until the investigation is complete"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b",
+        "c"
+      ],
+      "explanation": "The compromise is in the cloud identity, so containment means killing existing sessions, resetting credentials, and removing attacker persistence such as rogue MFA methods and mail-forwarding rules. Nothing points to endpoint malware, so reimaging first wastes time while the attacker keeps their tokens."
+    },
+    {
+      "id": "incident-response-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The investigation began with the EDR alert at the bottom of this timeline. What is the correct scoping conclusion?",
+      "code": {
+        "language": "plaintext",
+        "source": "2026-03-04 09:12  WS-114  User opens invoice.docm from email attachment\n2026-03-04 09:13  WS-114  winword.exe spawns powershell.exe -enc JABjAD0A...\n2026-03-04 09:14  WS-114  HTTPS beacon to 198.51.100.23 every 60s begins\n2026-03-05 22:40  WS-114  RDP logon to FS-02 using account svc_backup\n2026-03-06 01:05  FS-02   7z.exe creates finance_q1.7z from D:\\Finance\n2026-03-06 01:30  FS-02   EDR alert: 4.2 GB upload to 198.51.100.23"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "WS-114 is the initial point of compromise; scope starts at 03-04 09:12 and includes the svc_backup account"
+        },
+        {
+          "id": "b",
+          "text": "FS-02 is the initial point of compromise; scope starts at 03-06 01:05 when the archive was created"
+        },
+        {
+          "id": "c",
+          "text": "The svc_backup account was compromised first and was then used to infect WS-114 through RDP"
+        },
+        {
+          "id": "d",
+          "text": "Only 198.51.100.23 needs blocking; hosts come into scope once malware is found on their disks"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "The earliest malicious activity is the macro document on WS-114, which then beaconed to the same IP later used for exfiltration and pivoted to FS-02 with svc_backup. So both hosts and that credential are in scope from 03-04. Starting the scope at the alert would miss patient zero and the stolen account."
+    },
+    {
+      "id": "incident-response-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "During an active breach investigation, a reporter calls the on-shift SOC analyst directly and asks whether customer data was stolen. What should the analyst do?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Share the confirmed facts so far, since transparency builds public trust"
+        },
+        {
+          "id": "b",
+          "text": "Deny that any incident is happening so the attacker is not tipped off"
+        },
+        {
+          "id": "c",
+          "text": "Say \"no comment\" and hang up, without recording the call anywhere"
+        },
+        {
+          "id": "d",
+          "text": "Refer the reporter to the designated communications contact and tell the incident lead"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "NIST SP 800-61r2 recommends a designated media point of contact and that incident information be released only through approved channels. Responders should not speculate or confirm details on their own. Denying a real incident creates legal and reputational risk."
+    },
+    {
+      "id": "incident-response-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "After blocking a malware hash and its C2 IP, the team sees the same intruder return two days later with a recompiled binary and new infrastructure. Once again it uses rundll32 to load a DLL from the user's AppData folder and dumps LSASS memory. Which detection investment will hold up longest?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Subscribe to a faster threat feed so new file hashes are blocked sooner"
+        },
+        {
+          "id": "b",
+          "text": "Behavioral detections for the techniques, such as rundll32 loading DLLs from user-writable paths"
+        },
+        {
+          "id": "c",
+          "text": "Block each new C2 IP address and domain as soon as threat intel reports it"
+        },
+        {
+          "id": "d",
+          "text": "Geo-block the country where the current C2 servers are hosted"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "On the Pyramid of Pain, hashes and IPs are trivial for an attacker to change, while TTPs are expensive to change. Detecting the behaviors (MITRE ATT&CK T1218.011 and T1003.001) catches the next variant too. Faster hash and IP feeds only shorten the race; they don't end it."
+    },
+    {
+      "id": "incident-response-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "The investigation confirms the attacker extracted NTDS.dit from a domain controller, so they hold the KRBTGT hash. What must the eradication plan do with the KRBTGT account?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Reset its password once, because Kerberos rejects every ticket signed with the old key immediately"
+        },
+        {
+          "id": "b",
+          "text": "Reset its password twice, letting AD replicate (and ideally ticket lifetimes expire) between the resets"
+        },
+        {
+          "id": "c",
+          "text": "Disable the KRBTGT account so the domain controllers stop accepting forged tickets"
+        },
+        {
+          "id": "d",
+          "text": "Nothing extra, because resetting all user passwords also invalidates forged golden tickets"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Domain controllers accept tickets encrypted with the current or the previous KRBTGT key, so a single reset leaves forged golden tickets valid. Resetting twice, with replication between the resets, removes the old key. KRBTGT is already disabled by default, so disabling it does nothing."
+    },
+    {
+      "id": "incident-response-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Over the past week, responders found three web shells and a rogue scheduled task in an ongoing intrusion. Each time they removed one, new persistence showed up within hours. What should the team do now?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Keep removing each artifact as soon as it is found so attacker dwell time stays as short as possible"
+        },
+        {
+          "id": "b",
+          "text": "Reimage only the hosts where web shells were found, then close the incident once they are rebuilt"
+        },
+        {
+          "id": "c",
+          "text": "Publish the IOCs publicly right away so the attacker abandons the infrastructure they are using"
+        },
+        {
+          "id": "d",
+          "text": "Finish scoping under monitoring, then remove all persistence, reset credentials, and block C2 at once"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Piecemeal cleanup tells the attacker they've been found and lets them re-entrench through the access you haven't found yet. Mature practice is to scope fully, then run a single coordinated eradication event. Reimaging only the known hosts leaves the rest of the attacker's access in place."
+    },
+    {
+      "id": "incident-response-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A long-lived access key for the IAM user ci-deploy leaked from a public repo. CloudTrail shows the activity below. Which containment action stops the attacker's ongoing access?",
+      "code": {
+        "language": "plaintext",
+        "source": "eventTime             eventName          identity                              sourceIP\n2026-05-11T02:14:07Z  GetCallerIdentity  IAMUser ci-deploy (AKIA...7QXF)       203.0.113.50\n2026-05-11T02:15:31Z  AssumeRole         IAMUser ci-deploy (AKIA...7QXF)       203.0.113.50\n2026-05-11T02:16:02Z  ListBuckets        AssumedRole ProdAdmin (ASIA...K2MD)   203.0.113.50\n2026-05-11T02:18:44Z  GetObject (x412)   AssumedRole ProdAdmin (ASIA...K2MD)   203.0.113.50"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Deactivate the AKIA key and revoke active sessions on the ProdAdmin role to deny the issued ASIA credentials"
+        },
+        {
+          "id": "b",
+          "text": "Delete the AKIA key, since temporary credentials derived from it stop working as soon as it is deleted"
+        },
+        {
+          "id": "c",
+          "text": "Rotate the root account password and enable MFA on root, then monitor CloudTrail for further use"
+        },
+        {
+          "id": "d",
+          "text": "Add a bucket policy that denies requests from 203.0.113.50, then rotate the key in the next change window"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Temporary STS credentials from AssumeRole (ASIA...) stay valid until they expire, even after the long-lived key is deleted. The role's \"revoke active sessions\" control denies tokens issued before that moment. An IP block is trivially bypassed, and the root account was never used."
+    },
+    {
+      "id": "incident-response-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Backups failed during a ransomware incident, and leadership is discussing paying the ransom. Which statement matches the U.S. Treasury OFAC advisory on ransomware payments (updated September 2021)?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Paying is permitted as long as the company had no reason to know the group was on a sanctions list"
+        },
+        {
+          "id": "b",
+          "text": "Routing the payment through an IR firm or cyber insurer moves all sanctions liability to that intermediary"
+        },
+        {
+          "id": "c",
+          "text": "Liability is strict, but prompt reporting to and cooperation with law enforcement count as mitigating factors"
+        },
+        {
+          "id": "d",
+          "text": "Payments made in cryptocurrency fall outside OFAC's jurisdiction because no U.S. dollars change hands"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "OFAC can impose civil penalties on a strict-liability basis, so not knowing the recipient was sanctioned is no defense. Facilitators such as insurers and IR firms are also exposed. The advisory names timely reporting and cooperation with law enforcement as significant mitigating factors."
     }
   ]
 }

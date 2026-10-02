@@ -2,104 +2,400 @@
   "id": "ux-design-fundamentals",
   "title": "UX Design Fundamentals",
   "skillSlug": "ux-design-fundamentals",
-  "description": "Test your understanding of ux design fundamentals. Usability principles, information architecture, user flows, and evaluating interfaces against heuristics.",
-  "timeLimitSeconds": 600,
+  "description": "Apply usability heuristics, Fitts's and Hick's laws, IA and UX metrics to real interfaces.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "ux-design-fundamentals-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Usability heuristic?",
+      "difficulty": "BEGINNER",
+      "prompt": "A user uploads a 200 MB video to a course portal. After clicking Upload, nothing on the page changes for about 90 seconds until a success message appears. Many users click Upload again or leave the page. Which change most directly fixes this?",
       "options": [
         {
           "id": "a",
-          "text": "is a general principle used to evaluate how well an interface supports users"
+          "text": "Add a confirmation dialog asking 'Are you sure you want to upload this file?'"
         },
         {
           "id": "b",
-          "text": "is a database index"
+          "text": "Move the Upload button to a more prominent position at the top of the form"
         },
         {
           "id": "c",
-          "text": "is a deployment target"
+          "text": "Show a progress bar with percent complete and estimated time remaining during the upload"
         },
         {
           "id": "d",
-          "text": "is a network packet"
+          "text": "Add static help text above the form saying that large uploads can take a while"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Usability heuristic is a general principle used to evaluate how well an interface supports users.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "c",
+      "explanation": "Nielsen's first heuristic, visibility of system status, calls for timely feedback; NN/g recommends a percent-done indicator for waits longer than about 10 seconds. Static help text is easy to miss and still gives no feedback on whether this upload is progressing."
     },
     {
       "id": "ux-design-fundamentals-2",
       "type": "multiple_choice",
-      "prompt": "What best describes User flow?",
+      "difficulty": "BEGINNER",
+      "prompt": "On a desktop checkout page, 'Place order' is a small 70x24 px text link at the far right of the page footer, a long way from the last form field users complete. Applying Fitts's law, which change most reduces the time to click it?",
       "options": [
         {
           "id": "a",
-          "text": "maps the steps and decisions a user takes to complete a goal"
+          "text": "Make it a larger button placed directly below the final form field"
         },
         {
           "id": "b",
-          "text": "is a source-control history"
+          "text": "Change its colour to bright red so it stands out from the footer"
         },
         {
           "id": "c",
-          "text": "is a chart of server costs"
+          "text": "Add a hover tooltip explaining what happens after the order is placed"
         },
         {
           "id": "d",
-          "text": "is a password policy"
+          "text": "Remove optional form fields so users face fewer decisions"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "User flow maps the steps and decisions a user takes to complete a goal.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "Fitts's law says pointing time grows with distance to the target and shrinks as the target gets larger, so a bigger target closer to where the pointer already is helps most. A brighter colour helps people find the link, but it doesn't change how long it takes to move the pointer there."
     },
     {
       "id": "ux-design-fundamentals-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Information architecture?",
+      "difficulty": "BEGINNER",
+      "prompt": "A streaming service's sign-up page shows 12 subscription plans side by side, all with equal visual weight. New users take a long time to decide and many abandon. Which change applies Hick's law most directly?",
       "options": [
         {
           "id": "a",
-          "text": "organizes content, navigation, and labels so users can find what they need"
+          "text": "Make each plan's Select button larger so it is easier to click"
         },
         {
           "id": "b",
-          "text": "is only a visual color choice"
+          "text": "Sort the 12 plans alphabetically by plan name"
         },
         {
           "id": "c",
-          "text": "is a cloud pricing model"
+          "text": "Add a countdown timer that pressures users to choose quickly"
         },
         {
           "id": "d",
-          "text": "is a unit test"
+          "text": "Show 3 plans up front with one marked as recommended, and put the rest behind 'Compare all plans'"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Information architecture organizes content, navigation, and labels so users can find what they need.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "d",
+      "explanation": "Hick's law says decision time increases with the number and complexity of choices, so fewer up-front options plus a recommended default cuts decision time. A bigger button is a Fitts's law fix that speeds up the click but not the decision."
     },
     {
       "id": "ux-design-fundamentals-4",
-      "type": "true_false",
-      "prompt": "True or false: Usability heuristic is a general principle used to evaluate how well an interface supports users.",
-      "correctAnswer": true,
-      "explanation": "Usability heuristic is a general principle used to evaluate how well an interface supports users.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "In an internal inventory tool, staff must type a 6-digit product code into a 'Reorder' field. The codes appear only on a different screen, so staff copy them onto sticky notes. Which Nielsen heuristic is most directly violated, and what is the fix?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Error prevention: add a confirmation dialog before the reorder is submitted"
+        },
+        {
+          "id": "b",
+          "text": "Recognition rather than recall: let staff search and pick the product by name or image"
+        },
+        {
+          "id": "c",
+          "text": "Aesthetic and minimalist design: remove other fields from the reorder screen"
+        },
+        {
+          "id": "d",
+          "text": "Help and documentation: publish a printable list of all product codes"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "The interface makes users remember information from another screen, which violates recognition rather than recall; showing searchable, recognizable options removes the memory burden. A printable code list just moves the memory aid from sticky notes onto paper and leaves the design problem in place."
     },
     {
       "id": "ux-design-fundamentals-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: organizes content, navigation, and labels so users can find what they need?",
-      "acceptedAnswers": [
-        "Information architecture"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "A product manager says: 'Research shows users give up if they can't reach content within three clicks, so our site hierarchy must be no more than three levels deep.' True or false: this claim is supported by usability research.",
+      "correctAnswer": false,
+      "explanation": "NN/g and other studies found no drop-off cliff at three clicks. Users keep clicking as long as each step has strong information scent and they feel they're making progress. Flattening a hierarchy to meet the 'rule' often creates crowded, vague menus that hurt findability."
+    },
+    {
+      "id": "ux-design-fundamentals-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A university has drafted a new text-only navigation hierarchy for its website. Before visual design starts, the team wants to know whether students can find 'Request a transcript' and 'Change my meal plan' in the new structure. Which method fits?",
+      "options": [
+        {
+          "id": "a",
+          "text": "An open card sort with 15 students to generate new groupings"
+        },
+        {
+          "id": "b",
+          "text": "A tree test of the proposed hierarchy using findability tasks"
+        },
+        {
+          "id": "c",
+          "text": "A five-second test of the current homepage design"
+        },
+        {
+          "id": "d",
+          "text": "A heuristic evaluation of the current site by three designers"
+        }
       ],
-      "explanation": "The term is Information architecture.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "b",
+      "explanation": "Tree testing checks whether users can find items in a proposed hierarchy without any visual design getting in the way, which is exactly what this team needs. An open card sort is generative: it helps you create groupings, but it doesn't test a structure you already have."
+    },
+    {
+      "id": "ux-design-fundamentals-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A bank's transfer form asks users to type a 16-digit account number into one field with no spacing, then shows it back as an unbroken string on the review screen. Users often miss typos at review. Which change reduces extraneous cognitive load without removing needed information?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Hide the account number on the review screen to reduce clutter"
+        },
+        {
+          "id": "b",
+          "text": "Add an animated tutorial explaining how to read account numbers"
+        },
+        {
+          "id": "c",
+          "text": "Require users to type the account number twice with paste disabled"
+        },
+        {
+          "id": "d",
+          "text": "Accept and display the number in 4-digit groups, e.g. 1234 5678 9012 3456"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Chunking a long string into groups lowers working-memory demand, so comparing and spotting errors gets easier and the task itself doesn't change. Double entry with paste disabled adds effort and still doesn't help users check what they typed."
+    },
+    {
+      "id": "ux-design-fundamentals-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "To save time, a PM asks one senior designer to run a heuristic evaluation of a new app alone. According to Jakob Nielsen's guidance on heuristic evaluation, what is the problem, and what is the recommended approach?",
+      "options": [
+        {
+          "id": "a",
+          "text": "One evaluator finds only about a third of issues; use 3-5 evaluators working independently, then merge findings"
+        },
+        {
+          "id": "b",
+          "text": "Seniority matters more than headcount, so one expert evaluator will find nearly all of the issues"
+        },
+        {
+          "id": "c",
+          "text": "Heuristic evaluations need at least 15 evaluators before their findings are statistically valid"
+        },
+        {
+          "id": "d",
+          "text": "The designer should evaluate alongside end users so each issue is confirmed as it is found"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Nielsen found that a single evaluator catches roughly 35% of usability problems and that 3-5 independent evaluators catch most of them. Evaluators should work separately so they don't bias each other. Seniority helps, but even experts miss problems that other evaluators spot."
+    },
+    {
+      "id": "ux-design-fundamentals-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "After submitting a sign-up form, a user whose password is too short sees the message below at the top of the page, and all fields are cleared. Which redesign follows NN/g's error-message guidelines?",
+      "code": {
+        "language": "plaintext",
+        "source": "Error E-4021: Invalid input. Validation failed."
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "At the top of the page: 'Error E-4021: Password invalid. Please try again.', keeping the other values"
+        },
+        {
+          "id": "b",
+          "text": "A 3-second toast: 'Oops! Something went wrong. Please re-enter your details.'"
+        },
+        {
+          "id": "c",
+          "text": "Next to the password field: 'Use at least 12 characters (you entered 9)', keeping the other values"
+        },
+        {
+          "id": "d",
+          "text": "A modal dialog: 'Invalid password. Contact support if this problem continues.'"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "NN/g guidelines call for messages placed near the problem, written in plain language, that say precisely what went wrong and how to fix it, while keeping the user's input. The top-of-page version still uses a code and still doesn't tell the user what a valid password looks like."
+    },
+    {
+      "id": "ux-design-fundamentals-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Session recordings show many users leaving at the account form. Which change does this funnel data most directly support?",
+      "code": {
+        "language": "plaintext",
+        "source": "Checkout funnel, last 30 days\nStep  Screen                       Users\n1     Cart viewed                 10,000\n2     Create account (required)    5,900\n3     Shipping details             5,500\n4     Payment                      5,200\n5     Order placed                 4,900"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Shorten the payment form, since payment is the last barrier before purchase"
+        },
+        {
+          "id": "b",
+          "text": "Add a progress indicator showing all five checkout steps"
+        },
+        {
+          "id": "c",
+          "text": "Move shipping details ahead of the required account step"
+        },
+        {
+          "id": "d",
+          "text": "Offer guest checkout and invite account creation after the order is placed"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "The biggest drop is at the forced account step (10,000 to 5,900, about 41%), and Baymard Institute research ranks forced account creation among the top reasons for checkout abandonment. Moving shipping earlier still makes account creation mandatory, so it only moves the drop-off to a later step."
+    },
+    {
+      "id": "ux-design-fundamentals-11",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Which of these violate Nielsen's 'Consistency and standards' heuristic? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The Save button is blue at the bottom-right on settings pages but grey at the top-left on profile pages"
+        },
+        {
+          "id": "b",
+          "text": "The site logo in the top-left corner links to the home page"
+        },
+        {
+          "id": "c",
+          "text": "One screen labels an action 'Remove' while another labels the same action 'Delete'"
+        },
+        {
+          "id": "d",
+          "text": "A confirmation dialog appears before permanently deleting a shared project"
+        },
+        {
+          "id": "e",
+          "text": "Links in body text are black, not underlined, and look identical to the surrounding text"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c",
+        "e"
+      ],
+      "explanation": "Inconsistent placement and labels for the same action break internal consistency, and links that look like plain text break a web-wide convention (external consistency). A logo that links home follows convention, and a confirmation before an irreversible delete is error prevention, not a violation."
+    },
+    {
+      "id": "ux-design-fundamentals-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A desktop app puts its most-used command in the top-left screen corner, justified by Fitts's law. The team ports the same layout to a touch-only tablet app. Which statement about the corner placement is correct?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The corner loses its advantage: a finger isn't stopped by the screen edge like a cursor, so the target is only its visible size"
+        },
+        {
+          "id": "b",
+          "text": "The corner stays optimal because the target's effective size is the same for touch as for a mouse"
+        },
+        {
+          "id": "c",
+          "text": "Fitts's law does not apply to touch input, so placement no longer affects acquisition time"
+        },
+        {
+          "id": "d",
+          "text": "The command should move to the exact screen centre, because centred targets always minimise movement time"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "On desktop, the screen edge stops the cursor, so an edge or corner target is effectively endless in that direction. A finger has no such stop, so the target is only as big as it looks, and corners can also be hard to reach and clash with OS edge gestures. Fitts's law still applies to touch, since distance and size still govern tapping time."
+    },
+    {
+      "id": "ux-design-fundamentals-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "An Export dialog hides File format, Compression and Color profile behind an 'Advanced' toggle. Given the usage data below, which change is supported?",
+      "code": {
+        "language": "plaintext",
+        "source": "Export dialog usage (48,000 exports, 90 days)\nExported with defaults, Advanced never opened   52%\nOpened Advanced, changed File format             41%\nOpened Advanced, changed Compression              4%\nOpened Advanced, changed Color profile            3%"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Show every advanced setting by default, because nearly half of users open Advanced"
+        },
+        {
+          "id": "b",
+          "text": "Remove the Advanced section, since its settings are rarely used"
+        },
+        {
+          "id": "c",
+          "text": "Move File format into the main dialog and keep Compression and Color profile under Advanced"
+        },
+        {
+          "id": "d",
+          "text": "Keep the dialog as is, because most exports never open Advanced"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Progressive disclosure works only when frequently needed options stay visible and rarely used ones go into the secondary layer (NN/g). File format is needed in 41% of exports, so it shouldn't be hidden. Showing everything gives up the simplicity benefit for the 7% case."
+    },
+    {
+      "id": "ux-design-fundamentals-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "After a usability study, a product's mean System Usability Scale (SUS) score is 62. A stakeholder says: 'So 62% of users found it usable. That's a pass.' What is the correct interpretation?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The stakeholder is right; SUS reports the percentage of participants who rated the product usable"
+        },
+        {
+          "id": "b",
+          "text": "SUS is not a percentage; 62 is below the commonly cited average of about 68, so usability is below average"
+        },
+        {
+          "id": "c",
+          "text": "SUS scores can only be interpreted against an earlier version of the same product"
+        },
+        {
+          "id": "d",
+          "text": "62 is above average, because SUS runs from 0 to 100 and the midpoint is 50"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "SUS produces a 0-100 score that is not a percentage. Benchmarks across hundreds of studies (Sauro and Lewis) put the average at about 68, so 62 is below average. Treating 50 as average ignores how real SUS scores are distributed."
+    },
+    {
+      "id": "ux-design-fundamentals-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "An email app asks 'Are you sure you want to delete this message?' on every delete. Logs show users click Yes in under 400 ms on average, and support still gets frequent 'I deleted the wrong email' tickets. Which change is most likely to reduce accidental loss?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Delete immediately and show an Undo option, keeping deleted mail recoverable for a period"
+        },
+        {
+          "id": "b",
+          "text": "Make the dialog wording more alarming and colour the Yes button red"
+        },
+        {
+          "id": "c",
+          "text": "Require typing DELETE to confirm each message deletion"
+        },
+        {
+          "id": "d",
+          "text": "Add a second confirmation dialog for messages older than 30 days"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Sub-400 ms clicks show users have learned to dismiss the dialog without reading it. For frequent actions that can be reversed, undo (user control and freedom) protects users without adding friction to every delete. Making users type DELETE adds heavy friction to a routine action, and users get used to it too."
     }
   ]
 }

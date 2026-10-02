@@ -2,104 +2,440 @@
   "id": "technical-support-troubleshooting",
   "title": "Technical Support & Troubleshooting",
   "skillSlug": "technical-support-troubleshooting",
-  "description": "Test your understanding of technical support & troubleshooting. Diagnosing hardware, software, and connectivity problems and walking users through fixes.",
-  "timeLimitSeconds": 600,
+  "description": "Diagnose PC, network, and account problems from symptoms and command output using CompTIA's method.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "technical-support-troubleshooting-1",
-      "type": "multiple_choice",
-      "prompt": "What best describes Reproduction step?",
-      "options": [
+      "type": "order_lines",
+      "difficulty": "BEGINNER",
+      "prompt": "Put the steps of the CompTIA A+ troubleshooting methodology in order.",
+      "lines": [
         {
-          "id": "a",
-          "text": "recreates a problem under known conditions so its cause can be isolated"
+          "id": "r5",
+          "text": "Identify the problem"
         },
         {
-          "id": "b",
-          "text": "is a final billing receipt"
+          "id": "j2",
+          "text": "Establish a theory of probable cause"
         },
         {
-          "id": "c",
-          "text": "is an encryption key"
+          "id": "x9",
+          "text": "Test the theory to determine the cause"
         },
         {
-          "id": "d",
-          "text": "is a design color"
+          "id": "d4",
+          "text": "Establish a plan of action to resolve the problem and implement the solution"
+        },
+        {
+          "id": "n7",
+          "text": "Verify full system functionality and, if applicable, implement preventive measures"
+        },
+        {
+          "id": "g1",
+          "text": "Document findings, actions, and outcomes"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Reproduction step recreates a problem under known conditions so its cause can be isolated.",
-      "difficulty": "BEGINNER"
+      "explanation": "CompTIA's six steps run from identifying the problem through theory, testing, planning and implementing, and verifying, ending with documentation. A common mistake is implementing a fix before testing the theory, which leads to changes that don't address the real cause."
     },
     {
       "id": "technical-support-troubleshooting-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Least-invasive fix?",
+      "difficulty": "BEGINNER",
+      "prompt": "A user says they have \"no internet.\" Their ipconfig output is shown below. What is the most likely cause?",
+      "code": {
+        "language": "plaintext",
+        "source": "Ethernet adapter Ethernet:\n\n   Connection-specific DNS Suffix  . :\n   Link-local IPv6 Address . . . . . : fe80::4c1a:9b2e:7d3f:1a2b%12\n   Autoconfiguration IPv4 Address. . : 169.254.37.112\n   Subnet Mask . . . . . . . . . . . : 255.255.0.0\n   Default Gateway . . . . . . . . . :"
+      },
       "options": [
         {
           "id": "a",
-          "text": "starts with a low-risk change before attempting disruptive remediation"
+          "text": "The DNS server is down, so the PC can't resolve names to IP addresses"
         },
         {
           "id": "b",
-          "text": "always replaces all hardware"
+          "text": "The PC couldn't reach a DHCP server, so Windows assigned itself an APIPA address"
         },
         {
           "id": "c",
-          "text": "deletes logs first"
+          "text": "A static IP was entered with the wrong subnet mask and no default gateway"
         },
         {
           "id": "d",
-          "text": "skips confirmation with the user"
+          "text": "Another device on the network is using the same IP address as this PC"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Least-invasive fix starts with a low-risk change before attempting disruptive remediation.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "b",
+      "explanation": "169.254.x.x with a 255.255.0.0 mask and no gateway is an Automatic Private IP Addressing (APIPA) address, which Windows assigns itself when DHCP gets no answer. Check the cable, switch port or VLAN, and the DHCP service. A DNS outage would leave a valid DHCP address in place."
     },
     {
       "id": "technical-support-troubleshooting-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Root cause?",
+      "difficulty": "BEGINNER",
+      "prompt": "A user moved to a new desk and docked their laptop. The laptop screen works, but the external monitor shows \"No signal.\" The same monitor model worked at their old desk yesterday. What should you check first?",
       "options": [
         {
           "id": "a",
-          "text": "is the underlying condition that allows a problem to occur"
+          "text": "Reinstall the laptop's graphics driver from the manufacturer's site"
         },
         {
           "id": "b",
-          "text": "is only the visible symptom"
+          "text": "Swap the monitor for a new one from inventory"
         },
         {
           "id": "c",
-          "text": "is a user password"
+          "text": "Check that the video cable is seated and the monitor's input matches the port in use"
         },
         {
           "id": "d",
-          "text": "is a support ticket number"
+          "text": "Reimage the laptop, since docking problems usually mean OS corruption"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Root cause is the underlying condition that allows a problem to occur.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "c",
+      "explanation": "CompTIA's methodology says to question the obvious and check the simple, recent changes first. A move often leaves a loose cable or the monitor set to the wrong input (HDMI vs. DisplayPort). Reinstalling drivers or swapping hardware costs far more time and ignores the change that just happened."
     },
     {
       "id": "technical-support-troubleshooting-4",
-      "type": "true_false",
-      "prompt": "True or false: Reproduction step recreates a problem under known conditions so its cause can be isolated.",
-      "correctAnswer": true,
-      "explanation": "Reproduction step recreates a problem under known conditions so its cause can be isolated.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A workstation can't open \\\\fileserver01. You run the commands below. What is the most likely cause?",
+      "code": {
+        "language": "plaintext",
+        "source": "C:\\> ping 10.0.5.20\n\nPinging 10.0.5.20 with 32 bytes of data:\nReply from 10.0.5.20: bytes=32 time=2ms TTL=127\nReply from 10.0.5.20: bytes=32 time=1ms TTL=127\n\nC:\\> ping fileserver01.corp.example.com\nPing request could not find host fileserver01.corp.example.com. Please check the name and try again."
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The default gateway is misconfigured, so traffic can't leave the local subnet"
+        },
+        {
+          "id": "b",
+          "text": "The file server's firewall is blocking ICMP from this workstation"
+        },
+        {
+          "id": "c",
+          "text": "The NIC driver is corrupt and is dropping outbound packets"
+        },
+        {
+          "id": "d",
+          "text": "Name resolution is failing; check the DNS server settings and the DNS record"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Pinging the server's IP gets replies, so routing, the NIC, and the server's firewall all work. Only resolving the name fails, which points to DNS (the client's DNS server setting or a missing or wrong record). A bad gateway or a blocked ICMP would have made the IP ping fail too."
     },
     {
       "id": "technical-support-troubleshooting-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: is the underlying condition that allows a problem to occur?",
-      "acceptedAnswers": [
-        "Root cause"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "After a technician adds a second RAM module, a desktop powers on and its fans spin, but there is no video and it beeps in a repeating pattern. What is the most likely fix?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Reseat the new module and confirm it matches the board's supported type and speed"
+        },
+        {
+          "id": "b",
+          "text": "Replace the power supply, since it can't handle the extra load from the new RAM"
+        },
+        {
+          "id": "c",
+          "text": "Reinstall the operating system, since the new RAM corrupted the boot files"
+        },
+        {
+          "id": "d",
+          "text": "Update the graphics driver, since the beeps are a video driver error code"
+        }
       ],
-      "explanation": "The term is Root cause.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "a",
+      "explanation": "Repeating beeps with no video right after a memory change point to a POST memory failure: a module that isn't fully seated or is incompatible. The OS and drivers haven't loaded at this stage of POST, so they can't be the cause."
+    },
+    {
+      "id": "technical-support-troubleshooting-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "One laptop can't reach intranet.corp.example.com, while coworkers on the same network can. You collect the output below. What is the cause?",
+      "code": {
+        "language": "plaintext",
+        "source": "C:\\> ipconfig /all\n   ...\n   DHCP Enabled. . . . . . . . . . . : Yes\n   IPv4 Address. . . . . . . . . . . : 10.20.4.88(Preferred)\n   DNS Servers . . . . . . . . . . . : 8.8.8.8\n                                       1.1.1.1\n\nC:\\> nslookup intranet.corp.example.com\nServer:  dns.google\nAddress:  8.8.8.8\n\n*** dns.google can't find intranet.corp.example.com: Non-existent domain"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The intranet web server is down, so its DNS record was removed"
+        },
+        {
+          "id": "b",
+          "text": "The laptop has no route to the corporate network, so the lookup times out"
+        },
+        {
+          "id": "c",
+          "text": "The laptop is set to public DNS servers, which can't resolve internal names"
+        },
+        {
+          "id": "d",
+          "text": "The laptop's hosts file is redirecting intranet to the wrong IP address"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "The adapter is using 8.8.8.8 and 1.1.1.1, and Google's resolver correctly answers \"Non-existent domain\" because the zone exists only on internal DNS. Set the adapter back to the DHCP-provided DNS servers. If the hosts file were the cause, nslookup (which queries DNS directly) would still have succeeded."
+    },
+    {
+      "id": "technical-support-troubleshooting-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A user changed her password Monday morning. Since then her account locks out roughly every 30 minutes; it never happened before. The domain controller's lockout event is shown below (MAIL-GW01 handles mobile mail sync). What is the most likely cause?",
+      "code": {
+        "language": "plaintext",
+        "source": "Event ID: 4740  A user account was locked out.\nAccount That Was Locked Out:\n   Account Name:          m.rivera\nAdditional Information:\n   Caller Computer Name:  MAIL-GW01"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "A device still has her old password, such as her phone's mail app syncing via MAIL-GW01"
+        },
+        {
+          "id": "b",
+          "text": "MAIL-GW01's computer account is corrupt, and the server must be rejoined to the domain"
+        },
+        {
+          "id": "c",
+          "text": "Her new password breaks complexity rules, so the domain controller keeps rejecting it"
+        },
+        {
+          "id": "d",
+          "text": "AD replication is incomplete, so MAIL-GW01 is locking accounts on its own schedule"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Lockouts that start right after a password change and come from a sync service are the classic sign of a device retrying cached old credentials. Updating or removing the account on her phone (and any saved credentials) stops them. A password that broke the complexity rules would have been rejected when she tried to set it."
+    },
+    {
+      "id": "technical-support-troubleshooting-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Every user of a shared Windows print server sees jobs stuck at \"Error - Printing\" on three different printers. Each printer prints a test page from its own front panel without trouble. What should you do next?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Replace the toner and fuser on each printer, since all three show an error status"
+        },
+        {
+          "id": "b",
+          "text": "Clear the stuck jobs and restart the Print Spooler service on the print server"
+        },
+        {
+          "id": "c",
+          "text": "Reinstall the printer drivers on every client workstation that uses these printers"
+        },
+        {
+          "id": "d",
+          "text": "Factory-reset each printer and re-enter its network settings from scratch"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "The printers work on their own, and the fault spans several printers that share one server, so the common component, the server's spooler, is the likely cause. Clients and printer hardware are the wrong layer to fix when every queue on that server is stuck."
+    },
+    {
+      "id": "technical-support-troubleshooting-9",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A caller says she is the CFO, is traveling, and urgently needs her password reset. She gives her employee ID and her manager's name. Select the TWO actions that follow good support practice.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Verify identity with the documented method, such as a callback to the number on file"
+        },
+        {
+          "id": "b",
+          "text": "Reset the password, since she knows her employee ID and her manager's name"
+        },
+        {
+          "id": "c",
+          "text": "If she can't be verified, decline the reset and escalate per policy, however urgent it seems"
+        },
+        {
+          "id": "d",
+          "text": "Email a temporary password to the personal address she gives you on the call"
+        },
+        {
+          "id": "e",
+          "text": "Temporarily turn off MFA on her account so she can sign in from the hotel"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c"
+      ],
+      "explanation": "Urgency and authority are classic social-engineering pressures, and employee IDs and org charts are easy for an attacker to find. Follow the identity-verification procedure and escalate if it fails. Sending credentials to an unverified address or removing MFA hands the account to whoever is calling."
+    },
+    {
+      "id": "technical-support-troubleshooting-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A laptop's clock resets to January 2019 every time it fully loses power. Afterward, domain sign-in on the office network fails with \"There is a time and/or date difference between the client and server,\" while sign-in with cached credentials works off-network. What fixes this?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Remove the laptop from the domain and rejoin it to repair the computer account trust"
+        },
+        {
+          "id": "b",
+          "text": "Reset the user's password in Active Directory and have them sign in with the new one"
+        },
+        {
+          "id": "c",
+          "text": "Flush the DNS cache and re-register the laptop's DNS record with the domain controller"
+        },
+        {
+          "id": "d",
+          "text": "Replace the CMOS/RTC battery and resync the clock, since Kerberos allows about 5 minutes of skew"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Kerberos rejects authentication when the client and domain controller clocks differ by more than the default 5 minutes, and a clock that resets on power loss points to a dead CMOS/RTC battery. Rejoining the domain fixes broken trust relationships, not time skew, and the error message names time specifically."
+    },
+    {
+      "id": "technical-support-troubleshooting-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "You rolled back a faulty network driver, and the user's laptop now gets a valid IP address. Per the CompTIA methodology, what should happen before you document and close the ticket?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Have the user confirm normal work (VPN, email, file shares) and block the bad driver from redeploying"
+        },
+        {
+          "id": "b",
+          "text": "Close the ticket right away, because a valid IP address proves the network problem is fully resolved"
+        },
+        {
+          "id": "c",
+          "text": "Escalate the ticket to tier 2 so a senior technician can review the rollback before closure"
+        },
+        {
+          "id": "d",
+          "text": "Reimage the laptop anyway to be certain no other driver problems remain on the system"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Step 5 is to verify full system functionality and, if applicable, implement preventive measures, such as stopping the update tool from pushing the faulty driver again. An IP address alone doesn't prove the user can work, and reimaging is unnecessary disruption."
+    },
+    {
+      "id": "technical-support-troubleshooting-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A user reports that an application hosted at 203.0.113.80 is slow. A junior technician sends this traceroute and says hops 3 and 4 are \"down.\" What is the correct reading?",
+      "code": {
+        "language": "plaintext",
+        "source": "C:\\> tracert -d 203.0.113.80\n\nTracing route to 203.0.113.80 over a maximum of 30 hops\n\n  1    <1 ms    <1 ms    <1 ms  10.0.0.1\n  2     9 ms     8 ms     9 ms  198.51.100.1\n  3     *        *        *     Request timed out.\n  4     *        *        *     Request timed out.\n  5    24 ms    23 ms    25 ms  203.0.113.80\n\nTrace complete."
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Hops 3 and 4 are dropping all traffic, so open a ticket with the ISP to get those routers fixed"
+        },
+        {
+          "id": "b",
+          "text": "Hops 3 and 4 probably just don't answer traceroute probes; the destination replies in ~24 ms"
+        },
+        {
+          "id": "c",
+          "text": "The trace is incomplete, so rerun it with a larger packet size to force replies from hops 3 and 4"
+        },
+        {
+          "id": "d",
+          "text": "Hops 3 and 4 are firewalls blocking the application's port, which explains why it is slow"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "If those routers were dropping traffic, hop 5 could never reply. Routers often rate-limit or don't send ICMP Time Exceeded, so asterisks at intermediate hops are normal when the destination answers. The 24 ms path is healthy, so look at the server or application next."
+    },
+    {
+      "id": "technical-support-troubleshooting-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Users intermittently lose connection to an app server at 10.0.20.15, whose NIC MAC address is 3c-52-82-1a-9e-04. A technician checks a client's ARP cache twice, 15 minutes apart. What is the most likely cause, and what is the next step?",
+      "code": {
+        "language": "plaintext",
+        "source": "09:02  C:\\> arp -a 10.0.20.15\n  Internet Address      Physical Address      Type\n  10.0.20.15            3c-52-82-1a-9e-04     dynamic\n\n09:17  C:\\> arp -a 10.0.20.15\n  Internet Address      Physical Address      Type\n  10.0.20.15            00-1b-a9-6c-22-f1     dynamic"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The server's NIC is failing intermittently; replace the NIC and monitor the server"
+        },
+        {
+          "id": "b",
+          "text": "The client's ARP cache timeout is too short; increase it with a registry change"
+        },
+        {
+          "id": "c",
+          "text": "Another device is answering ARP for 10.0.20.15; trace 00-1b-a9-6c-22-f1 in the switch MAC table"
+        },
+        {
+          "id": "d",
+          "text": "DNS has two A records for the server; delete the stale record and flush client caches"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "The same IP resolving to two different MACs means a second device is claiming the address, usually a static IP inside the DHCP scope (or ARP spoofing). Finding the switch port that learned the second MAC locates the device. DNS maps names to IPs and plays no part in the IP-to-MAC mapping."
+    },
+    {
+      "id": "technical-support-troubleshooting-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Over the site-to-site VPN, users can ping a file server and open small web pages, but large file copies and some HTTPS pages hang. The tests below are run from a client. What is the most likely cause and fix?",
+      "code": {
+        "language": "plaintext",
+        "source": "C:\\> ping -f -l 1472 10.50.0.10\nPinging 10.50.0.10 with 1472 bytes of data:\nPacket needs to be fragmented but DF set.\nPacket needs to be fragmented but DF set.\n\nC:\\> ping -f -l 1372 10.50.0.10\nPinging 10.50.0.10 with 1372 bytes of data:\nReply from 10.50.0.10: bytes=1372 time=31ms TTL=126"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The VPN is bandwidth-throttled; ask the ISP to raise the circuit's speed"
+        },
+        {
+          "id": "b",
+          "text": "Large packets are dropped by a congested link; enable QoS for file traffic"
+        },
+        {
+          "id": "c",
+          "text": "The client MTU is too small; raise it to 9000 to enable jumbo frames"
+        },
+        {
+          "id": "d",
+          "text": "VPN overhead lowers the path MTU; clamp TCP MSS or lower the tunnel MTU"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "A 1472-byte DF ping (1500 bytes on the wire) can't pass, but a 1372-byte one can, so encapsulation has cut the usable MTU below 1500. Small exchanges work while full-size segments stall, because ICMP \"fragmentation needed\" messages are filtered somewhere on the return path, so Path MTU Discovery fails for those flows. MSS clamping on the VPN gateway is the standard fix, and jumbo frames make it worse."
+    },
+    {
+      "id": "technical-support-troubleshooting-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A user's laptop freezes when opening files. SMART shows the reallocated sector count climbing and 40 pending sectors. The user asks you to run chkdsk /r overnight to \"fix the bad sectors.\" What should you do first?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Run chkdsk /r first so the bad sectors are repaired before the backup copies anything"
+        },
+        {
+          "id": "b",
+          "text": "Back up or image the user's data now, using a tool that tolerates read errors, then replace the drive"
+        },
+        {
+          "id": "c",
+          "text": "Defragment the drive so the data moves away from the failing area of the disk"
+        },
+        {
+          "id": "d",
+          "text": "Reinstall Windows over the existing installation to replace any corrupted system files"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Rising reallocated and pending sectors mean the drive is failing, and chkdsk /r reads every sector, which stresses the disk and can make it fail before the data is recovered. Following CompTIA's \"perform backups before making changes,\" secure the data first, then replace the hardware."
     }
   ]
 }

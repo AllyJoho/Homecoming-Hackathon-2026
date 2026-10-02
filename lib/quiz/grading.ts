@@ -12,7 +12,7 @@ function loose(s: string): string {
   return s.trim().toLowerCase().replace(/\s+/g, ' ');
 }
 
-function sameSet(a: string[], b: string[]): boolean {
+function sameSet<T>(a: T[], b: T[]): boolean {
   if (a.length !== b.length) return false;
   const bSet = new Set(b);
   return a.every((id) => bSet.has(id));
@@ -58,6 +58,22 @@ function isCorrect(question: Question, answer: Answer | undefined): boolean {
         answer.type === 'short_answer' &&
         question.acceptedAnswers.some((accepted) => loose(accepted) === loose(answer.text))
       );
+
+    case 'find_the_bug':
+      // Exact set of lines, same all-or-nothing rule as multi_select. Click
+      // order doesn't matter, so it's a set compare, not an array compare.
+      return answer.type === 'find_the_bug' && sameSet(answer.lines, question.bugLines);
+
+    case 'order_lines': {
+      // The authored order of `lines` is the answer key. Compared by text, not
+      // id: two identical lines (say, two closing `}`) are interchangeable, and
+      // swapping them shouldn't cost the student the question.
+      if (answer.type !== 'order_lines' || answer.lineIds.length !== question.lines.length) {
+        return false;
+      }
+      const textById = new Map(question.lines.map((line) => [line.id, line.text]));
+      return question.lines.every((line, i) => textById.get(answer.lineIds[i]) === line.text);
+    }
 
     default: {
       // Exhaustiveness guard: a new question type fails to compile here.

@@ -2,104 +2,408 @@
   "id": "data-cleaning",
   "title": "Data Cleaning & Preparation",
   "skillSlug": "data-cleaning",
-  "description": "Test your understanding of data cleaning & preparation. Finding and fixing missing values, duplicates, and inconsistent formats before analysis.",
-  "timeLimitSeconds": 600,
+  "description": "Diagnose and fix duplicates, missing data, invalid values, units, and dates before analysis.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "data-cleaning-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Missing-value analysis?",
+      "difficulty": "BEGINNER",
+      "prompt": "You run customers.drop_duplicates(subset=\"email\") on the table below (quotes show exact cell contents). How many rows remain, and what should happen first?",
+      "code": {
+        "language": "plaintext",
+        "source": "row  email                   name\n1    \"Ana.Lopez@mail.com\"    Ana Lopez\n2    \"ana.lopez@mail.com \"   Ana Lopez\n3    \"ana.lopez@mail.com\"    Ana Lopez\n4    \"ben.k@mail.com\"        Ben Kim\n5    \"ben.k@mail.com\"        Ben Kim"
+      },
       "options": [
         {
           "id": "a",
-          "text": "determines why values are absent and how that should be handled"
+          "text": "2 rows; drop_duplicates already ignores case and surrounding spaces"
         },
         {
           "id": "b",
-          "text": "always replaces blanks with zero"
+          "text": "4 rows; strip whitespace and lowercase the emails before deduplicating"
         },
         {
           "id": "c",
-          "text": "deletes every incomplete row"
+          "text": "4 rows; deduplicate on name instead, since names are already consistent"
         },
         {
           "id": "d",
-          "text": "sorts data alphabetically"
+          "text": "3 rows; keep=False is needed so every copy of a duplicate is removed"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Missing-value analysis determines why values are absent and how that should be handled.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "b",
+      "explanation": "drop_duplicates compares values exactly, so only rows 4 and 5 collapse (4 rows remain); normalizing case and whitespace first reveals that rows 1-3 are one customer. Names are not unique identifiers, so deduplicating on name risks merging different people."
     },
     {
       "id": "data-cleaning-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Duplicate record?",
+      "difficulty": "BEGINNER",
+      "prompt": "A report says the average resting heart rate in a study is -142.8 bpm. The data dictionary says -999 means \"not recorded\". What is the correct fix and resulting mean?",
+      "code": {
+        "language": "plaintext",
+        "source": "patient  resting_hr\nP01      72\nP02      68\nP03      -999\nP04      75\nP05      70"
+      },
       "options": [
         {
           "id": "a",
-          "text": "is a repeated representation of the same real-world entity or event"
+          "text": "Recode -999 as missing (NaN) and recompute: 71.25 bpm"
         },
         {
           "id": "b",
-          "text": "a valid foreign key"
+          "text": "Recode -999 as 0 and recompute: 57.0 bpm"
         },
         {
           "id": "c",
-          "text": "a chart axis label"
+          "text": "Take absolute values so -999 becomes 999: 256.8 bpm"
         },
         {
           "id": "d",
-          "text": "a model hyperparameter"
+          "text": "Report the median instead, which is 70 bpm, and keep the rows as they are"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Duplicate record is a repeated representation of the same real-world entity or event.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "A sentinel code is a missing value, not a measurement, so it must be recoded to missing before any statistic is computed; the mean of 72, 68, 75 and 70 is 71.25. Switching to the median only hides the problem: the -999 still counts as an observation and will corrupt any other analysis."
     },
     {
       "id": "data-cleaning-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Normalization?",
+      "difficulty": "BEGINNER",
+      "prompt": "After loading a CSV, sorting the price column ascending gives the order below. What is happening, and what is the fix?",
+      "code": {
+        "language": "plaintext",
+        "source": "price\n$1,050\n$1,200\n$250\n$95"
+      },
       "options": [
         {
           "id": "a",
-          "text": "standardizes values into a consistent representation for analysis"
+          "text": "Sorting is descending by default; pass ascending=True"
         },
         {
           "id": "b",
-          "text": "encrypts a database"
+          "text": "Missing prices are sorted first; drop them before sorting"
         },
         {
           "id": "c",
-          "text": "increases screen brightness"
+          "text": "The prices are text compared character by character; strip \"$\" and \",\" and convert to numeric"
         },
         {
           "id": "d",
-          "text": "trains a neural network"
+          "text": "The prices are floats with rounding error; round to 2 decimals before sorting"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Normalization standardizes values into a consistent representation for analysis.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "c",
+      "explanation": "Values like \"$1,050\" are strings, and string comparison is lexicographic (\"$1\" < \"$2\" < \"$9\"), which produces this order. Removing the currency symbol and thousands separator and converting with pd.to_numeric gives numbers that sort correctly; there are no missing values or floats involved."
     },
     {
       "id": "data-cleaning-4",
-      "type": "true_false",
-      "prompt": "True or false: Missing-value analysis determines why values are absent and how that should be handled.",
-      "correctAnswer": true,
-      "explanation": "Missing-value analysis determines why values are absent and how that should be handled.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "In a customer survey of adults, one respondent's age is recorded as 250. How should this value be handled?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Keep it, since removing extreme values biases the analysis"
+        },
+        {
+          "id": "b",
+          "text": "Cap it at the 99th percentile of age so it has less influence"
+        },
+        {
+          "id": "c",
+          "text": "Log-transform the age column so the extreme value is pulled in"
+        },
+        {
+          "id": "d",
+          "text": "Flag it as invalid (fails a range rule), set it to missing, and check the source"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "An age of 250 is impossible, so it is a data error rather than a genuine outlier; it should fail a validity rule, be set to missing with an audit note, and be traced back to the source if possible. Capping or transforming would keep a fabricated number in the data as if it were real."
     },
     {
       "id": "data-cleaning-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: standardizes values into a consistent representation for analysis?",
-      "acceptedAnswers": [
-        "Normalization"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: replacing missing values with the column mean leaves the column's mean unchanged and also preserves its standard deviation.",
+      "correctAnswer": false,
+      "explanation": "The mean is unchanged, but every imputed value sits exactly at the mean, adding zero deviation while increasing n, so the standard deviation shrinks. That artificial precision makes confidence intervals too narrow and weakens correlations."
+    },
+    {
+      "id": "data-cleaning-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "In a salary survey, the people with the highest incomes are the most likely to skip the income question, even after accounting for age, job title, and region. How is this missingness classified?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Missing completely at random (MCAR)"
+        },
+        {
+          "id": "b",
+          "text": "Missing at random (MAR)"
+        },
+        {
+          "id": "c",
+          "text": "Missing not at random (MNAR)"
+        },
+        {
+          "id": "d",
+          "text": "Structurally missing (the question does not apply)"
+        }
       ],
-      "explanation": "The term is Normalization.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "When the probability of a value being missing depends on the unobserved value itself (high incomes go unreported), even after conditioning on observed variables, the data are MNAR (Rubin's taxonomy). MAR would require the missingness to be explained by observed variables such as age or job title."
+    },
+    {
+      "id": "data-cleaning-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A combined orders file mixes rows from a US system (MM/DD/YYYY) and a UK system (DD/MM/YYYY) in one order_date text column, with a source column identifying each row's system. What is the correct way to parse the dates?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Call pd.to_datetime on the whole column with dayfirst=True"
+        },
+        {
+          "id": "b",
+          "text": "Call pd.to_datetime with format=\"mixed\" and let pandas infer each row"
+        },
+        {
+          "id": "c",
+          "text": "Drop rows where both day and month are 12 or less, since they are ambiguous"
+        },
+        {
+          "id": "d",
+          "text": "Parse each source's rows with its explicit format, then store as ISO 8601 dates"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "A string like 03/04/2024 is March 4 in one system and 3 April in the other, so no single rule or per-row inference can be correct; the source column tells you the format, so parse each subset explicitly. Dropping ambiguous rows throws away about 40% of valid dates and biases the data toward later days of the month."
+    },
+    {
+      "id": "data-cleaning-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Which layout makes the table below tidy in Wickham's sense (each variable a column, each observation a row)?",
+      "code": {
+        "language": "plaintext",
+        "source": "country  cases_2022  cases_2023  pop_2022  pop_2023\nPeru     38900       41210       33.7      34.0\nChile    20150       19870       19.6      19.6\nBolivia  9800        10430       12.2      12.4"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Columns country, variable, value, with entries such as (Peru, cases_2023, 41210)"
+        },
+        {
+          "id": "b",
+          "text": "Columns country, year, cases, population, with one row per country-year"
+        },
+        {
+          "id": "c",
+          "text": "Keep the current columns and add a total_cases column summing both years"
+        },
+        {
+          "id": "d",
+          "text": "Columns year, Peru, Chile, Bolivia, with one row per measure-year"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Year is a variable hidden in the column names, while cases and population are two distinct variables, so the tidy form has one row per country-year and one column for each of year, cases, and population. A fully melted country/variable/value table still stores two variables (measure and year) in one column."
+    },
+    {
+      "id": "data-cleaning-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Patient weights from two clinics are being combined for adult patients. The summary is below. What is the most likely issue and fix?",
+      "code": {
+        "language": "plaintext",
+        "source": "source    n     median  min    max\nclinic_A  4120  71.8    41.0   162.0\nclinic_B  3875  158.4   90.0   357.0"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Clinic B records pounds; convert its values to kilograms using the source field"
+        },
+        {
+          "id": "b",
+          "text": "Clinic B serves heavier patients; analyse the two clinics separately"
+        },
+        {
+          "id": "c",
+          "text": "Values above 150 are outliers; remove them before combining"
+        },
+        {
+          "id": "d",
+          "text": "The clinics use different scales; z-score weights within each clinic"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Clinic B's median, minimum, and maximum are all about 2.2 times clinic A's (158.4 / 71.8 = 2.21), the kg-to-lb factor, which points to a unit difference rather than a different population. Z-scoring within clinics would hide the unit error and destroy the real weight scale needed for analysis."
+    },
+    {
+      "id": "data-cleaning-10",
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "This script should normalize SKUs, keep the latest record per SKU (the file is in chronological order), set negative quantities to 0, treat a missing quantity as 0 (per the business rule), and save the result. The saved file still contains negative quantities. Which line is wrong?",
+      "code": {
+        "language": "python",
+        "source": "import pandas as pd\n\ndf = pd.read_csv(\"inventory.csv\")\ndf[\"sku\"] = df[\"sku\"].str.strip().str.upper()\ndf = df.drop_duplicates(subset=\"sku\", keep=\"last\")\ndf.loc[df[\"qty\"] < 0, \"qty\"] == 0\ndf[\"qty\"] = df[\"qty\"].fillna(0).astype(int)\ndf.to_csv(\"inventory_clean.csv\", index=False)"
+      },
+      "bugLines": [
+        6
+      ],
+      "explanation": "Line 6 uses == (a comparison whose result is discarded) instead of = (assignment), so negative quantities are never changed. The other lines match the stated rules: keep=\"last\" keeps the latest record in a chronologically ordered file, and fillna(0) implements the business rule for missing quantities."
+    },
+    {
+      "id": "data-cleaning-11",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Inspect this extract from an orders table. Select all data quality problems that are present.",
+      "code": {
+        "language": "plaintext",
+        "source": "order_id  order_date  ship_date   country  amount\n1001      2024-03-02  2024-03-05  US       120.00\n1002      2024-03-02  2024-02-27  USA      85.50\n1003      2024-03-03  2024-03-06  US       42.00\n1001      2024-03-02  2024-03-05  US       120.00"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "A record that appears twice"
+        },
+        {
+          "id": "b",
+          "text": "A ship date earlier than its order date"
+        },
+        {
+          "id": "c",
+          "text": "Inconsistent codes for the same country"
+        },
+        {
+          "id": "d",
+          "text": "A missing value in a required field"
+        },
+        {
+          "id": "e",
+          "text": "Dates written in more than one format within a column"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b",
+        "c"
+      ],
+      "explanation": "Order 1001 appears twice with identical values, order 1002 ships on 2024-02-27 before it was ordered on 2024-03-02, and the same country appears as both US and USA. Every cell is filled and all dates use the same YYYY-MM-DD format, so the last two are not present."
+    },
+    {
+      "id": "data-cleaning-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "In a regression of loan default on income and other variables, 30% of income values are missing; missingness depends on age and education, which are fully observed. The analyst mean-imputed income, and a reviewer says the standard errors are too small. Which approach addresses this correctly?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Multiple imputation (e.g. MICE) using age, education and the outcome, pooled with Rubin's rules"
+        },
+        {
+          "id": "b",
+          "text": "Keep mean imputation but add a missing-income indicator variable to the model"
+        },
+        {
+          "id": "c",
+          "text": "Replace each missing income with its predicted value from a regression on age and education"
+        },
+        {
+          "id": "d",
+          "text": "Impute the median income instead of the mean, since income is right-skewed"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Every single-imputation method treats guessed values as if they were observed, so the uncertainty from the missing data is ignored and standard errors are understated; multiple imputation draws several plausible values and Rubin's rules add that between-imputation variance back. Regression imputation is the tempting choice, but it still produces one deterministic value per case and overstates precision (and the indicator method is known to bias coefficients)."
+    },
+    {
+      "id": "data-cleaning-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A hospital is deduplicating patient records with a fuzzy matcher that outputs a match score from 0 to 1. A false merge would combine two different patients' medical histories. Which policy is most appropriate?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Choose the single threshold that maximizes F1 on a labelled sample and auto-merge every pair above it"
+        },
+        {
+          "id": "b",
+          "text": "Lower the threshold until nearly all known duplicates are caught, then auto-merge"
+        },
+        {
+          "id": "c",
+          "text": "Merge only on exact first name, last name, and date of birth, with no fuzzy matching"
+        },
+        {
+          "id": "d",
+          "text": "Auto-merge only above a high threshold, send a middle band to human review, and never merge below it"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "When false merges are far costlier than missed duplicates, the Fellegi-Sunter style two-threshold policy keeps automatic merges very precise and routes uncertain pairs to clerical review. An F1-optimal single threshold treats both error types as equally costly, and exact matching both misses typo variants and still falsely merges different people who share a name and birth date."
+    },
+    {
+      "id": "data-cleaning-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "App events are logged with naive local timestamps (US Central). Event IDs are assigned sequentially, yet the timestamps go backwards in the extract below from 3 November 2024. What explains it and what is the right fix?",
+      "code": {
+        "language": "plaintext",
+        "source": "event_id  ts_local\n88121     2024-11-03 01:15:00\n88122     2024-11-03 01:40:00\n88123     2024-11-03 01:05:00\n88124     2024-11-03 01:20:00"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Server clocks drifted; re-sort the events by timestamp to restore order"
+        },
+        {
+          "id": "b",
+          "text": "The rows are duplicates written twice; deduplicate on ts_local"
+        },
+        {
+          "id": "c",
+          "text": "DST ended, so 01:00-01:59 happened twice; record UTC and localize old rows by event order"
+        },
+        {
+          "id": "d",
+          "text": "A data entry error occurred; drop events whose timestamp is earlier than the previous one"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "US daylight saving time ended at 02:00 on 3 November 2024, so local times between 01:00 and 01:59 happened twice and are ambiguous without an offset. Recording UTC at the source prevents it, and existing rows can be localized using their known order (e.g. tz_localize with ambiguous=\"infer\"); re-sorting by timestamp would scramble the true sequence."
+    },
+    {
+      "id": "data-cleaning-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "An automated outlier check flags nothing in this batch, even though 9999 is clearly a keying error. Why, and what should the check use instead?",
+      "code": {
+        "language": "python",
+        "source": "v = pd.Series([52, 48, 50, 51, 49, 53, 47, 50, 52, 9999])\nz = (v - v.mean()) / v.std()\nprint((z.abs() > 3).sum())   # prints 0"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The values are integers; cast them to float before computing z-scores"
+        },
+        {
+          "id": "b",
+          "text": "With n = 10, the outlier inflates the mean and SD so no z can exceed about 2.85; use a median/MAD rule"
+        },
+        {
+          "id": "c",
+          "text": "pandas std() uses ddof=1; switch to ddof=0 so the outlier's z-score rises above 3"
+        },
+        {
+          "id": "d",
+          "text": "9999 is within 3 standard deviations, so it is a plausible value and should be kept"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "The outlier drags the mean up and inflates the SD (masking), and with sample SD the largest possible |z| for n points is (n-1)/sqrt(n), about 2.85 for n = 10; a robust rule such as modified z = 0.6745(x - median)/MAD > 3.5 flags 9999 immediately. Switching to ddof=0 only raises the ceiling to sqrt(n-1) = 3, which a z-score can never exceed."
     }
   ]
 }

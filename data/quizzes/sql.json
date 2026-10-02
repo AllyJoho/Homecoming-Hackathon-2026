@@ -2,307 +2,431 @@
   "id": "sql",
   "title": "SQL Essentials",
   "skillSlug": "sql-fundamentals",
-  "description": "Joins, aggregation, and the clause order that trips everyone up.",
-  "timeLimitSeconds": 900,
+  "description": "Standard SQL and PostgreSQL: joins, NULLs, aggregation, window functions, indexes, and concurrency.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "sql-1",
       "type": "multiple_choice",
-      "prompt": "Which join returns every row from the left table, even with no match on the right?",
+      "difficulty": "BEGINNER",
+      "prompt": "This query should list employees who have no manager. One row has manager_id NULL, yet the query returns zero rows. Why?",
+      "code": {
+        "language": "sql",
+        "source": "SELECT name FROM employees WHERE manager_id = NULL;"
+      },
       "options": [
         {
           "id": "a",
-          "text": "INNER JOIN"
+          "text": "NULL must be quoted as a string literal: WHERE manager_id = 'NULL'"
         },
         {
           "id": "b",
-          "text": "LEFT JOIN"
+          "text": "manager_id needs a NOT NULL constraint before it can be compared"
         },
         {
           "id": "c",
-          "text": "CROSS JOIN"
+          "text": "Comparing with = NULL yields UNKNOWN for every row; use WHERE manager_id IS NULL"
         },
         {
           "id": "d",
-          "text": "RIGHT JOIN"
+          "text": "Use WHERE manager_id == NULL, since a single = means assignment"
         }
       ],
-      "correctOptionId": "b",
-      "explanation": "LEFT JOIN keeps all left rows, filling unmatched right columns with NULL."
+      "correctOptionId": "c",
+      "explanation": "In SQL, any comparison with NULL is UNKNOWN (neither true nor false), and WHERE keeps only TRUE rows. IS NULL is the predicate for testing missing values; the string 'NULL' is just text."
     },
     {
       "id": "sql-2",
       "type": "multiple_choice",
-      "prompt": "You want to filter on an aggregate like COUNT(*). Which clause do you use?",
+      "difficulty": "BEGINNER",
+      "prompt": "customers has 3 rows (Ana, Ben, Cy). orders has 2 rows for Ana and 1 for Ben. What does this query return?",
+      "code": {
+        "language": "sql",
+        "source": "SELECT c.name, o.id\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id;"
+      },
       "options": [
         {
           "id": "a",
-          "text": "WHERE"
+          "text": "4 rows; Cy appears once with o.id NULL"
         },
         {
           "id": "b",
-          "text": "HAVING"
+          "text": "3 rows; Ana's two orders are collapsed into one row"
         },
         {
           "id": "c",
-          "text": "ORDER BY"
+          "text": "3 rows; Cy is excluded because he has no orders"
         },
         {
           "id": "d",
-          "text": "LIMIT"
+          "text": "9 rows; every customer is paired with every order"
         }
       ],
-      "correctOptionId": "b",
-      "explanation": "WHERE filters rows before grouping; HAVING filters groups after aggregation."
+      "correctOptionId": "a",
+      "explanation": "A LEFT JOIN keeps every left row and repeats it once per match: Ana x2, Ben x1, and Cy once with NULLs for the order columns. Excluding Cy is INNER JOIN behavior; 9 rows would be a CROSS JOIN."
     },
     {
       "id": "sql-3",
-      "type": "true_false",
-      "prompt": "`SELECT COUNT(*)` and `SELECT COUNT(column)` always return the same number.",
-      "correctAnswer": false,
-      "explanation": "COUNT(column) skips NULLs in that column; COUNT(*) counts every row."
-    },
-    {
-      "id": "sql-4",
-      "type": "multi_select",
-      "prompt": "Which statements modify data rather than schema? Select all that apply.",
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "Given this orders table, what does the query return?",
+      "code": {
+        "language": "plaintext",
+        "source": " id | tip\n----+------\n  1 |   10\n  2 | NULL\n  3 |   20\n  4 | NULL\n\nSELECT COUNT(*), COUNT(tip), AVG(tip) FROM orders;"
+      },
       "options": [
         {
           "id": "a",
-          "text": "INSERT"
+          "text": "4, 4, 7.5"
         },
         {
           "id": "b",
-          "text": "ALTER TABLE"
+          "text": "4, 2, 15"
         },
         {
           "id": "c",
-          "text": "UPDATE"
+          "text": "2, 2, 15"
         },
         {
           "id": "d",
-          "text": "DELETE"
+          "text": "4, 2, 7.5"
         }
       ],
-      "correctOptionIds": [
-        "a",
-        "c",
-        "d"
+      "correctOptionId": "b",
+      "explanation": "COUNT(*) counts rows (4); COUNT(tip) and AVG(tip) ignore NULLs, so AVG is (10 + 20) / 2 = 15. If missing tips should count as zero, use AVG(COALESCE(tip, 0)) = 7.5."
+    },
+    {
+      "id": "sql-4",
+      "type": "find_the_bug",
+      "difficulty": "BEGINNER",
+      "prompt": "This query should list customers who have placed more than 5 orders, but PostgreSQL rejects it. Which line is wrong?",
+      "code": {
+        "language": "sql",
+        "source": "SELECT customer_id, COUNT(*) AS order_count\nFROM orders\nWHERE COUNT(*) > 5\nGROUP BY customer_id;"
+      },
+      "bugLines": [
+        3
       ],
-      "explanation": "INSERT, UPDATE, and DELETE are DML. ALTER TABLE is DDL — it changes the schema."
+      "explanation": "WHERE filters individual rows before grouping, so aggregates are not allowed there. Filter groups with HAVING COUNT(*) > 5 placed after GROUP BY."
     },
     {
       "id": "sql-5",
-      "type": "short_answer",
-      "prompt": "Which keyword removes duplicate rows from a SELECT's results?",
-      "acceptedAnswers": [
-        "DISTINCT",
-        "distinct"
-      ],
-      "explanation": "SELECT DISTINCT dedupes on the full selected row."
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: a SELECT without ORDER BY on a table with a primary key returns rows sorted by the primary key.",
+      "correctAnswer": false,
+      "explanation": "The SQL standard and PostgreSQL guarantee no row order without ORDER BY; the order can change with updates, parallel or synchronized scans, and plan changes. If order matters, specify ORDER BY."
     },
     {
       "id": "sql-6",
       "type": "multiple_choice",
-      "prompt": "Which clause runs LAST in a SELECT query?",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "This report should list every customer with their 2024 order count, showing 0 for customers with no 2024 orders. Those customers are missing. Which change fixes it?",
+      "code": {
+        "language": "sql",
+        "source": "SELECT c.id, c.name, COUNT(o.id) AS orders_2024\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nWHERE o.order_date >= '2024-01-01'\nGROUP BY c.id, c.name;"
+      },
       "options": [
         {
           "id": "a",
-          "text": "WHERE"
+          "text": "Change COUNT(o.id) to COUNT(*) so that customers without orders are counted as 0"
         },
         {
           "id": "b",
-          "text": "GROUP BY"
+          "text": "Change the LEFT JOIN to a FULL OUTER JOIN so unmatched rows from both sides are kept"
         },
         {
           "id": "c",
-          "text": "ORDER BY"
+          "text": "Add OR o.order_date IS NULL to the WHERE clause so unmatched customers pass the filter"
         },
         {
           "id": "d",
-          "text": "FROM"
+          "text": "Move the date test into the join: ON o.customer_id = c.id AND o.order_date >= '2024-01-01'"
         }
       ],
-      "correctOptionId": "c",
-      "explanation": "Logical order is FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT."
+      "correctOptionId": "d",
+      "explanation": "The WHERE runs after the join and discards the NULL-extended rows, effectively turning it into an inner join. Putting the condition in ON keeps every customer. Adding OR ... IS NULL rescues customers with no orders at all, but still drops those whose orders are all before 2024."
     },
     {
       "id": "sql-7",
       "type": "multiple_choice",
-      "prompt": "What does a PRIMARY KEY guarantee about a column?",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "This query should find products that have never been sold. It returns zero rows, although several such products exist. order_items.product_id is nullable. What is the most likely cause?",
+      "code": {
+        "language": "sql",
+        "source": "SELECT p.name\nFROM products p\nWHERE p.id NOT IN (SELECT oi.product_id FROM order_items oi);"
+      },
       "options": [
         {
           "id": "a",
-          "text": "Values are unique and not NULL"
+          "text": "Some order_items rows have product_id NULL, so NOT IN evaluates to UNKNOWN for every product"
         },
         {
           "id": "b",
-          "text": "Values are unique but may be NULL"
+          "text": "NOT IN cannot reference a different table unless the two tables are also joined in FROM"
         },
         {
           "id": "c",
-          "text": "Values are indexed but may repeat"
+          "text": "The subquery runs once per product row and times out, so PostgreSQL returns an empty set"
         },
         {
           "id": "d",
-          "text": "Values auto-increment"
+          "text": "NOT IN requires the subquery to use SELECT DISTINCT, otherwise duplicates cancel the match"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "A primary key is UNIQUE plus NOT NULL. Auto-increment is a separate, optional default."
+      "explanation": "x NOT IN (..., NULL) can never be TRUE: it is FALSE when x matches and UNKNOWN otherwise. Use NOT EXISTS (SELECT 1 FROM order_items oi WHERE oi.product_id = p.id), which handles NULLs as intended."
     },
     {
       "id": "sql-8",
-      "type": "true_false",
-      "prompt": "`WHERE column = NULL` finds rows where that column is NULL.",
-      "correctAnswer": false,
-      "explanation": "NULL isn't equal to anything, including itself. You need `IS NULL`."
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A leaderboard query adds rank_col using a window function with OVER (ORDER BY score DESC). Which function produced this output?",
+      "code": {
+        "language": "plaintext",
+        "source": " player | score | rank_col\n--------+-------+---------\n Ana    |    95 |        1\n Ben    |    90 |        2\n Cy     |    90 |        2\n Dee    |    85 |        3"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "RANK()"
+        },
+        {
+          "id": "b",
+          "text": "ROW_NUMBER()"
+        },
+        {
+          "id": "c",
+          "text": "DENSE_RANK()"
+        },
+        {
+          "id": "d",
+          "text": "PERCENT_RANK()"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "DENSE_RANK gives ties the same rank and leaves no gaps, so Dee is 3. RANK would also tie Ben and Cy at 2 but then skip to 4; ROW_NUMBER never ties; PERCENT_RANK returns fractions between 0 and 1."
     },
     {
       "id": "sql-9",
-      "type": "multiple_choice",
-      "prompt": "What does a FOREIGN KEY do?",
-      "options": [
+      "type": "order_lines",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Order the clauses of this query by when the database logically evaluates them.",
+      "code": {
+        "language": "sql",
+        "source": "SELECT region, SUM(total) AS revenue\nFROM orders JOIN customers ON customers.id = orders.customer_id\nWHERE status = 'paid'\nGROUP BY region\nHAVING SUM(total) > 1000\nORDER BY revenue DESC;"
+      },
+      "lines": [
         {
-          "id": "a",
-          "text": "Speeds up joins by caching them"
+          "id": "r7",
+          "text": "FROM orders JOIN customers ..."
         },
         {
-          "id": "b",
-          "text": "Requires the value to exist in another table's key column"
+          "id": "b2",
+          "text": "WHERE status = 'paid'"
         },
         {
-          "id": "c",
-          "text": "Makes the column unique across both tables"
+          "id": "w5",
+          "text": "GROUP BY region"
         },
         {
-          "id": "d",
-          "text": "Automatically creates the join for you"
+          "id": "h1",
+          "text": "HAVING SUM(total) > 1000"
+        },
+        {
+          "id": "z8",
+          "text": "SELECT region, SUM(total) AS revenue"
+        },
+        {
+          "id": "e3",
+          "text": "ORDER BY revenue DESC"
         }
       ],
-      "correctOptionId": "b",
-      "explanation": "It enforces referential integrity — you can't reference a row that doesn't exist."
+      "explanation": "Rows are produced (FROM/JOIN), filtered (WHERE), grouped (GROUP BY), groups filtered (HAVING), output columns computed (SELECT), then sorted (ORDER BY). That is why ORDER BY can use the alias revenue but WHERE and HAVING cannot."
     },
     {
       "id": "sql-10",
-      "type": "multi_select",
-      "prompt": "Which of these are aggregate functions? Select all that apply.",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "users has 2 million rows and an index on email, yet this lookup does a sequential scan. Which change lets PostgreSQL use an index for this query?",
+      "code": {
+        "language": "plaintext",
+        "source": "CREATE INDEX idx_users_email ON users (email);\n\nEXPLAIN SELECT * FROM users WHERE LOWER(email) = 'ana@example.com';\n\n Seq Scan on users  (cost=0.00..48311.00 rows=10000 width=72)\n   Filter: (lower(email) = 'ana@example.com'::text)"
+      },
       "options": [
         {
           "id": "a",
-          "text": "SUM()"
+          "text": "Run VACUUM FULL users; so the existing index is rebuilt"
         },
         {
           "id": "b",
-          "text": "UPPER()"
+          "text": "CREATE INDEX ON users (LOWER(email));"
         },
         {
           "id": "c",
-          "text": "AVG()"
+          "text": "Add LIMIT 1 so the planner switches to an index scan"
         },
         {
           "id": "d",
-          "text": "MAX()"
+          "text": "CREATE INDEX ON users USING hash (email);"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "A B-tree on email stores raw email values, so it cannot answer a predicate on LOWER(email). An expression index on LOWER(email) matches the query exactly (PostgreSQL docs, Indexes on Expressions). A hash index on email has the same mismatch."
+    },
+    {
+      "id": "sql-11",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Which queries return each customer who has placed at least one order, exactly once per customer? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "SELECT c.id, c.name FROM customers c WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id);"
+        },
+        {
+          "id": "b",
+          "text": "SELECT c.id, c.name FROM customers c JOIN orders o ON o.customer_id = c.id;"
+        },
+        {
+          "id": "c",
+          "text": "SELECT c.id, c.name FROM customers c WHERE c.id IN (SELECT customer_id FROM orders);"
+        },
+        {
+          "id": "d",
+          "text": "SELECT c.id, c.name FROM customers c LEFT JOIN orders o ON o.customer_id = c.id WHERE o.id IS NULL;"
+        },
+        {
+          "id": "e",
+          "text": "SELECT DISTINCT c.id, c.name FROM customers c JOIN orders o ON o.customer_id = c.id;"
         }
       ],
       "correctOptionIds": [
         "a",
         "c",
-        "d"
+        "e"
       ],
-      "explanation": "UPPER() is a scalar function — one row in, one row out. The others collapse many rows into one."
-    },
-    {
-      "id": "sql-11",
-      "type": "multiple_choice",
-      "prompt": "You run `UPDATE users SET active = false` with no WHERE clause. What happens?",
-      "options": [
-        {
-          "id": "a",
-          "text": "Nothing — the database rejects it"
-        },
-        {
-          "id": "b",
-          "text": "Only the first row is updated"
-        },
-        {
-          "id": "c",
-          "text": "Every row in the table is updated"
-        },
-        {
-          "id": "d",
-          "text": "It errors asking for a WHERE clause"
-        }
-      ],
-      "correctOptionId": "c",
-      "explanation": "No WHERE means every row. This is why you run the SELECT first."
+      "explanation": "EXISTS and IN are semi-joins that return each customer at most once, and DISTINCT removes the duplicates a plain JOIN produces. The plain JOIN repeats customers once per order, and the LEFT JOIN ... IS NULL form finds customers with no orders."
     },
     {
       "id": "sql-12",
-      "type": "short_answer",
-      "prompt": "Which keyword limits how many rows a query returns, in Postgres?",
-      "acceptedAnswers": [
-        "LIMIT",
-        "limit"
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Two withdrawals of 80 run concurrently on an account with balance 100, using this code at PostgreSQL's default READ COMMITTED level. Both succeed and the balance ends at 20. Which change prevents this?",
+      "code": {
+        "language": "sql",
+        "source": "BEGIN;\nSELECT balance FROM accounts WHERE id = 7;   -- app reads 100\n-- application computes 100 - 80 = 20\nUPDATE accounts SET balance = 20 WHERE id = 7;\nCOMMIT;"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Add a CHECK (balance >= 0) constraint on accounts so that the database rejects an overdraft"
+        },
+        {
+          "id": "b",
+          "text": "Set the isolation level to READ UNCOMMITTED so each transaction sees the other one's update"
+        },
+        {
+          "id": "c",
+          "text": "Add an index on accounts.id so the SELECT finishes faster and the race window disappears"
+        },
+        {
+          "id": "d",
+          "text": "Use one statement, UPDATE accounts SET balance = balance - 80 WHERE id = 7 AND balance >= 80, and check the row count"
+        }
       ],
-      "explanation": "Postgres and MySQL use LIMIT; SQL Server uses TOP."
+      "correctOptionId": "d",
+      "explanation": "Both transactions read 100 and write an absolute value, a classic lost update. An atomic conditional UPDATE (or SELECT ... FOR UPDATE before computing) serializes them: the second sees 20 and updates 0 rows. A CHECK constraint does not help because 20 is a valid balance, and PostgreSQL treats READ UNCOMMITTED as READ COMMITTED."
     },
     {
       "id": "sql-13",
       "type": "multiple_choice",
-      "prompt": "Which operator matches a pattern, as in finding names that start with \"Jo\"?",
+      "difficulty": "ADVANCED",
+      "prompt": "This feed endpoint gets slow on deep pages, and users see duplicate posts when new posts arrive while they page. Which approach fixes both problems?",
+      "code": {
+        "language": "sql",
+        "source": "SELECT id, created_at, title\nFROM posts\nORDER BY created_at DESC\nLIMIT 20 OFFSET 200000;"
+      },
       "options": [
         {
           "id": "a",
-          "text": "MATCHES"
+          "text": "Keyset pagination: WHERE (created_at, id) < ($1, $2) ORDER BY created_at DESC, id DESC LIMIT 20, with a matching index"
         },
         {
           "id": "b",
-          "text": "LIKE"
+          "text": "Add an index on created_at so that OFFSET can jump straight to row 200,000 without reading the rows before it"
         },
         {
           "id": "c",
-          "text": "CONTAINS"
+          "text": "Run each page request in a REPEATABLE READ transaction so every page sees a consistent snapshot of posts"
         },
         {
           "id": "d",
-          "text": "REGEX"
+          "text": "Cache SELECT COUNT(*) FROM posts and compute the OFFSET from the cached total instead of from page numbers"
         }
       ],
-      "correctOptionId": "b",
-      "explanation": "`WHERE name LIKE 'Jo%'` — % matches any sequence of characters, _ matches exactly one."
+      "correctOptionId": "a",
+      "explanation": "OFFSET still produces and discards every skipped row, and shifts when rows are inserted. Seeking past the last (created_at, id) seen uses an index on (created_at, id) to start right there and is stable under inserts; id breaks ties. Each request gets a new snapshot anyway, so REPEATABLE READ per request does not help."
     },
     {
       "id": "sql-14",
       "type": "multiple_choice",
-      "prompt": "What is an index for?",
+      "difficulty": "ADVANCED",
+      "prompt": "orders has 50 million rows spread across thousands of customers. Which single index best supports this frequent query?",
+      "code": {
+        "language": "sql",
+        "source": "SELECT id, total, created_at\nFROM orders\nWHERE customer_id = $1\n  AND created_at >= now() - interval '90 days'\nORDER BY created_at DESC\nLIMIT 10;"
+      },
       "options": [
         {
           "id": "a",
-          "text": "Making reads faster, at the cost of slower writes and more storage"
+          "text": "CREATE INDEX ON orders (created_at, customer_id);"
         },
         {
           "id": "b",
-          "text": "Making both reads and writes faster"
+          "text": "CREATE INDEX ON orders (customer_id, created_at);"
         },
         {
           "id": "c",
-          "text": "Enforcing that a column is never NULL"
+          "text": "Two indexes: one on (customer_id) and one on (created_at)"
         },
         {
           "id": "d",
-          "text": "Compressing the table on disk"
+          "text": "CREATE INDEX ON orders USING hash (customer_id);"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "An index is a tradeoff: lookups get much faster, every INSERT/UPDATE has to maintain it."
+      "correctOptionId": "b",
+      "explanation": "With the equality column first and the range/sort column second, PostgreSQL jumps to the customer, reads created_at in order (scanning backward for DESC), and stops after 10 rows with no sort. Leading with created_at scans all recent orders of every customer; two separate indexes require a bitmap combine plus a sort."
     },
     {
       "id": "sql-15",
-      "type": "true_false",
-      "prompt": "A transaction that is rolled back leaves no trace of its changes in the table.",
-      "correctAnswer": true,
-      "explanation": "ROLLBACK undoes everything since BEGIN — that's the atomicity guarantee."
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "On PostgreSQL 16, production has several rows with tenant_id = 42 and external_id NULL, which the team believed this constraint prevents. What explains it, and what enforces their intent?",
+      "code": {
+        "language": "sql",
+        "source": "CREATE TABLE integrations (\n  id          bigserial PRIMARY KEY,\n  tenant_id   bigint NOT NULL,\n  external_id text,\n  UNIQUE (tenant_id, external_id)\n);"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "A composite unique constraint only checks its first column; list external_id first in the constraint instead"
+        },
+        {
+          "id": "b",
+          "text": "The constraint was disabled during a bulk load; run ANALYZE integrations so it is re-validated and enforced"
+        },
+        {
+          "id": "c",
+          "text": "Unique constraints treat NULLs as distinct by default; use UNIQUE NULLS NOT DISTINCT or make external_id NOT NULL"
+        },
+        {
+          "id": "d",
+          "text": "The bigserial primary key already makes each row unique, which overrides the composite unique constraint"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Per the SQL standard and PostgreSQL docs, NULL is not equal to NULL, so rows differing only by a NULL do not conflict. PostgreSQL 15+ supports UNIQUE NULLS NOT DISTINCT (after removing existing duplicates); a NOT NULL column also works if every row has a value."
     }
   ]
 }

@@ -2,104 +2,407 @@
   "id": "risk-assessment",
   "title": "Security Risk Assessment",
   "skillSlug": "risk-assessment",
-  "description": "Test your understanding of security risk assessment. Identifying assets, threats, and vulnerabilities and rating risk to prioritize controls.",
-  "timeLimitSeconds": 600,
+  "description": "Identify, score, and treat security risks with NIST SP 800-30, CSF 2.0, and quantitative ALE methods.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "risk-assessment-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Vulnerability?",
+      "difficulty": "BEGINNER",
+      "prompt": "A clinic keeps patient records on a laptop with no disk encryption. Car break-ins are common near the clinic, and a stolen unencrypted laptop would trigger HIPAA breach notification. In this scenario, what is the vulnerability?",
       "options": [
         {
           "id": "a",
-          "text": "is a weakness that could be exploited or cause harm"
+          "text": "Criminals who break into parked cars"
         },
         {
           "id": "b",
-          "text": "is the value of an asset"
+          "text": "The cost of HIPAA breach notification"
         },
         {
           "id": "c",
-          "text": "is a completed control"
+          "text": "The laptop's lack of disk encryption"
         },
         {
           "id": "d",
-          "text": "is always an active attack"
+          "text": "The patient records stored on the laptop"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Vulnerability is a weakness that could be exploited or cause harm.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "c",
+      "explanation": "A vulnerability is the weakness a threat can exploit, here the missing encryption. The thieves are the threat source, the records are the asset, and notification costs are part of the impact."
     },
     {
       "id": "risk-assessment-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Risk rating?",
+      "difficulty": "BEGINNER",
+      "prompt": "The team scores risk as Likelihood x Impact on 1-5 scales. Using the register excerpt below, which risk ranks highest?",
+      "code": {
+        "language": "plaintext",
+        "source": "ID  Risk                                  Likelihood  Impact\nR1  Phishing leads to email account takeover    4         3\nR2  Flood damages the data center               1         5\nR3  Unpatched VPN appliance exploited           3         5\nR4  Encrypted laptop is stolen                  4         2"
+      },
       "options": [
         {
           "id": "a",
-          "text": "combines factors such as likelihood and impact to prioritize treatment"
+          "text": "R3: Unpatched VPN appliance exploited"
         },
         {
           "id": "b",
-          "text": "is based only on asset color"
+          "text": "R1: Phishing leads to email account takeover"
         },
         {
           "id": "c",
-          "text": "guarantees an incident will happen"
+          "text": "R2: Flood damages the data center"
         },
         {
           "id": "d",
-          "text": "is the same as a password"
+          "text": "R4: Encrypted laptop is stolen"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Risk rating combines factors such as likelihood and impact to prioritize treatment.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "R3 scores 3 x 5 = 15, ahead of R1 (4 x 3 = 12), R4 (4 x 2 = 8), and R2 (1 x 5 = 5). R2 has the maximum impact, but its very low likelihood puts it last under this scoring method."
     },
     {
       "id": "risk-assessment-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Risk treatment?",
+      "difficulty": "BEGINNER",
+      "prompt": "An assessment rates a legacy FTP upload portal as high risk. Leadership retires the portal entirely and stops offering FTP uploads; customers already have another secure channel. Which risk treatment is this?",
       "options": [
         {
           "id": "a",
-          "text": "chooses how to modify, accept, transfer, or avoid a risk"
+          "text": "Transfer (sharing), because customers now carry the upload risk"
         },
         {
           "id": "b",
-          "text": "ignores identified weaknesses"
+          "text": "Mitigation, because a security control has been applied to the portal"
         },
         {
           "id": "c",
-          "text": "only lists employees"
+          "text": "Acceptance, because leadership made a documented decision about the risk"
         },
         {
           "id": "d",
-          "text": "is a type of firewall packet"
+          "text": "Avoidance, because the activity that created the risk has been eliminated"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Risk treatment chooses how to modify, accept, transfer, or avoid a risk.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "d",
+      "explanation": "Stopping the activity that gives rise to the risk is avoidance. Mitigation would keep the portal and add controls, and transfer would shift financial consequences to another party, for example through insurance or a contract."
     },
     {
       "id": "risk-assessment-4",
-      "type": "true_false",
-      "prompt": "True or false: Vulnerability is a weakness that could be exploited or cause harm.",
-      "correctAnswer": true,
-      "explanation": "Vulnerability is a weakness that could be exploited or cause harm.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A customer database is valued at $200,000. A breach is expected to cause loss equal to 25% of that value, and such a breach is expected about once every two years. What is the annualized loss expectancy (ALE)?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$50,000"
+        },
+        {
+          "id": "b",
+          "text": "$25,000"
+        },
+        {
+          "id": "c",
+          "text": "$100,000"
+        },
+        {
+          "id": "d",
+          "text": "$12,500"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "SLE = asset value x exposure factor = $200,000 x 0.25 = $50,000; ALE = SLE x ARO = $50,000 x 0.5 = $25,000. $50,000 is only the single loss expectancy, and $100,000 skips the exposure factor."
     },
     {
       "id": "risk-assessment-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: chooses how to modify, accept, transfer, or avoid a risk?",
-      "acceptedAnswers": [
-        "Risk treatment"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: once an organization has implemented every control recommended in its risk assessment, its residual risk for those threats is zero.",
+      "correctAnswer": false,
+      "explanation": "Controls reduce likelihood or impact but rarely eliminate risk, so residual risk remains and must be compared with risk appetite and accepted by an accountable owner. Controls can also fail or be bypassed, which is why risk is monitored over time."
+    },
+    {
+      "id": "risk-assessment-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A proposed email-security control has an annual cost of $70,000. Current ALE for business email compromise is $120,000; with the control, estimated ALE falls to $30,000. What is the control's annual net value, and is it justified on cost grounds?",
+      "options": [
+        {
+          "id": "a",
+          "text": "-$40,000; not justified"
+        },
+        {
+          "id": "b",
+          "text": "+$50,000; justified"
+        },
+        {
+          "id": "c",
+          "text": "+$20,000; justified"
+        },
+        {
+          "id": "d",
+          "text": "+$90,000; justified"
+        }
       ],
-      "explanation": "The term is Risk treatment.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "Net value = (ALE before - ALE after) - annual control cost = ($120,000 - $30,000) - $70,000 = +$20,000, so the control pays for itself. +$90,000 ignores the control's cost, and +$50,000 subtracts the cost from the original ALE instead of from the reduction."
+    },
+    {
+      "id": "risk-assessment-7",
+      "type": "order_lines",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Put the steps of the risk assessment process in NIST SP 800-30 Rev. 1 in order.",
+      "lines": [
+        {
+          "id": "t4",
+          "text": "Prepare: establish purpose, scope, assumptions, and the risk model to use"
+        },
+        {
+          "id": "b8",
+          "text": "Identify threat sources, threat events, and vulnerabilities or predisposing conditions"
+        },
+        {
+          "id": "k1",
+          "text": "Determine likelihood and impact, and combine them into a risk determination"
+        },
+        {
+          "id": "w6",
+          "text": "Communicate the results to decision makers and stakeholders"
+        },
+        {
+          "id": "p3",
+          "text": "Maintain the assessment by monitoring risk factors and updating it as conditions change"
+        }
+      ],
+      "explanation": "SP 800-30 Rev. 1 defines four steps: prepare, conduct (identify threats and vulnerabilities, then determine likelihood, impact, and risk), communicate, and maintain. Determining risk depends on first identifying what could happen and which weaknesses it would exploit."
+    },
+    {
+      "id": "risk-assessment-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Review this risk register excerpt (scores are Likelihood x Impact). Which entry is recorded incorrectly?",
+      "code": {
+        "language": "plaintext",
+        "source": "ID    Risk                              Inherent  Treatment / control                Status           Residual  Owner\nR-07  Ransomware encrypts file servers  4x5=20    Immutable backups; EDR on servers  Implemented      2x4=8     CIO\nR-11  SQL injection in vendor portal    4x4=16    Deploy WAF; fix queries            Planned Q2 2027  1x4=4     App owner\nR-14  Laptop theft exposes PII          3x3=9     Full-disk encryption               Implemented      3x1=3     CISO"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "R-11, because its residual score credits controls that are only planned; it should stay at 16 until they are implemented"
+        },
+        {
+          "id": "b",
+          "text": "R-07, because backups reduce only impact, so the residual likelihood must remain 4"
+        },
+        {
+          "id": "c",
+          "text": "R-14, because a risk with an inherent score of 9 must be accepted rather than mitigated"
+        },
+        {
+          "id": "d",
+          "text": "R-07, because a ransomware risk should be owned by the technician who runs the backups"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Residual risk reflects controls that are actually operating; R-11's WAF and query fixes are scheduled for 2027, so today's risk is still the inherent 16 and the planned reduction is a target. R-07 includes EDR, which does lower likelihood, and risk ownership belongs with an accountable executive, not the operator."
+    },
+    {
+      "id": "risk-assessment-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A company is migrating its Cybersecurity Framework profile from CSF 1.1 to CSF 2.0. Where do outcomes such as setting supplier security requirements in contracts and assessing suppliers before onboarding now belong?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Identify: Supply Chain Risk Management (ID.SC)"
+        },
+        {
+          "id": "b",
+          "text": "Identify: Asset Management (ID.AM)"
+        },
+        {
+          "id": "c",
+          "text": "Protect: Identity Management, Authentication, and Access Control (PR.AA)"
+        },
+        {
+          "id": "d",
+          "text": "Govern: Cybersecurity Supply Chain Risk Management (GV.SC)"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "CSF 2.0 added the Govern function and moved supply chain risk management into it as GV.SC, withdrawing the CSF 1.1 category ID.SC. Choosing ID.SC is the common mistake of using the 1.1 structure."
+    },
+    {
+      "id": "risk-assessment-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A vendor that will process your customers' payment data sends a SOC 2 Type I report dated last month. Your third-party risk policy requires evidence that the vendor's security controls operated effectively over time. What should you request?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Nothing more, because a Type I report issued last month is current"
+        },
+        {
+          "id": "b",
+          "text": "A SOC 2 Type II report covering a period of several months, typically 6 to 12"
+        },
+        {
+          "id": "c",
+          "text": "A SOC 1 Type II report, because it tests controls over a period of time"
+        },
+        {
+          "id": "d",
+          "text": "The vendor's ISO 27001 certificate in place of any SOC report"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "A Type I report assesses control design at a single point in time, while Type II tests operating effectiveness over a period (AICPA SOC 2). SOC 1 covers controls relevant to customers' financial reporting rather than the Trust Services Criteria for security."
+    },
+    {
+      "id": "risk-assessment-11",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "You are rating the risk \"attacker breaches the customer portal\". Which of these factors change the LIKELIHOOD rating, as opposed to the impact rating? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "A public exploit exists for the portal's framework and it is on CISA's KEV list"
+        },
+        {
+          "id": "b",
+          "text": "The portal is reachable from the internet rather than only from the internal network"
+        },
+        {
+          "id": "c",
+          "text": "The portal's database holds 2 million customer records"
+        },
+        {
+          "id": "d",
+          "text": "Regulators can fine the company up to 4% of annual revenue for a breach"
+        },
+        {
+          "id": "e",
+          "text": "Every portal login requires phishing-resistant MFA"
+        },
+        {
+          "id": "f",
+          "text": "The business can tolerate the portal being down for two days"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b",
+        "e"
+      ],
+      "explanation": "Exploit availability, exposure, and preventive controls such as MFA affect how likely a successful breach is (NIST SP 800-30 likelihood factors). Record volume, regulatory fines, and outage tolerance describe the consequences once the event happens, so they drive impact."
+    },
+    {
+      "id": "risk-assessment-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A steering committee ranks risks only by Likelihood x Impact on 1-5 scales and treats anything scoring below 6 as acceptable. Two risks are shown below. What is the methodological flaw this exposes?",
+      "code": {
+        "language": "plaintext",
+        "source": "ID    Risk                                         L  I  Score\nR-31  Domain controller compromise leads to         1  5  5\n      company-wide ransomware and extended outage\nR-32  Users report phishing-simulation emails       5  1  5\n      to the help desk, consuming analyst time"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Multiplying ordinal ratings treats them as true quantities, so a rare catastrophic risk ties with a frequent trivial one"
+        },
+        {
+          "id": "b",
+          "text": "The scores should be added instead of multiplied, which would separate these two risks correctly"
+        },
+        {
+          "id": "c",
+          "text": "Likelihood should always be weighted twice as heavily as impact in a security risk matrix"
+        },
+        {
+          "id": "d",
+          "text": "A 3x3 matrix should be used instead, because 5-point scales create too many ties"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Ordinal scores only express rank, so their product can equate a once-in-decades company-ending event with a weekly nuisance; high-impact risks need to be judged against tolerance directly or quantified with ranges (Cox, \"What's Wrong with Risk Matrices?\", 2008; Hubbard). Adding (6 vs 6) produces the same tie, and coarser scales make the distortion worse."
+    },
+    {
+      "id": "risk-assessment-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A risk register lists 12 business applications, each with a separate entry \"IdP outage makes app unavailable\" rated Medium (L2 x I3). All 12 rely on the same single-region identity provider for sign-in. What is the problem with this assessment?",
+      "options": [
+        {
+          "id": "a",
+          "text": "None, because each entry is individually within risk appetite and can be accepted separately"
+        },
+        {
+          "id": "b",
+          "text": "The 12 scores should be summed to 72 and the IdP rated as a single Critical risk"
+        },
+        {
+          "id": "c",
+          "text": "Likelihood should be lowered because the IdP vendor's SLA guarantees 99.9% uptime"
+        },
+        {
+          "id": "d",
+          "text": "The shared IdP is a single point of failure; assess it as one risk whose impact is all 12 apps failing together"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Rating each dependent app separately hides concentration risk: one IdP outage takes down all 12 at once, so the combined impact is far larger than any single row suggests. Summing ordinal scores is not meaningful, and an SLA describes compensation terms, not the likelihood of an outage."
+    },
+    {
+      "id": "risk-assessment-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Eighteen months ago the CIO accepted risk R-22, an unpatchable flaw in a legacy app, with a 24-month expiry. The rationale was \"no public exploit; reachable only from the internal network.\" Today an exploit is published, the CVE is added to CISA KEV, and the app has since been exposed to partners over VPN. What should happen?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Nothing until month 24, because the acceptance is still within its approved expiry"
+        },
+        {
+          "id": "b",
+          "text": "Transfer the risk to the company's cyber insurance policy, which replaces the acceptance"
+        },
+        {
+          "id": "c",
+          "text": "Reassess R-22 now and seek a new decision, since the assumptions behind the acceptance no longer hold"
+        },
+        {
+          "id": "d",
+          "text": "Lower the impact rating, because partners on the VPN are trusted third parties"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Risk acceptance is valid only under the conditions it was based on; NIST SP 800-30's maintain step and CSF 2.0's ongoing risk assessment require re-evaluation when threats or exposure change. An expiry date is a backstop, not protection from new facts, and insurance does not reduce the likelihood of exploitation."
+    },
+    {
+      "id": "risk-assessment-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A phishing-led breach has an SLE of $300,000 and an ARO of 2.0. Control A blocks 80% of attempts. Control B inspects only what gets past A and stops 50% of that. An analyst added the effectiveness figures (130%, capped at 100%) and recorded residual ALE as $0. What is the correct residual ALE?",
+      "options": [
+        {
+          "id": "a",
+          "text": "$0"
+        },
+        {
+          "id": "b",
+          "text": "$60,000"
+        },
+        {
+          "id": "c",
+          "text": "$120,000"
+        },
+        {
+          "id": "d",
+          "text": "$300,000"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Layered controls multiply: residual ARO = 2.0 x (1 - 0.8) x (1 - 0.5) = 0.2, so residual ALE = 0.2 x $300,000 = $60,000. $120,000 credits only control A, and $0 comes from incorrectly adding effectiveness percentages."
     }
   ]
 }

@@ -2,104 +2,384 @@
   "id": "secure-coding-practices",
   "title": "Secure Coding Practices",
   "skillSlug": "secure-coding-practices",
-  "description": "Test your understanding of secure coding practices. Preventing common vulnerabilities such as injection, XSS, and broken authentication in application code.",
-  "timeLimitSeconds": 600,
+  "description": "Preventing injection, XSS, broken access control, and auth flaws in application code (OWASP Top 10).",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "secure-coding-practices-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Parameterized query?",
+      "difficulty": "BEGINNER",
+      "prompt": "This lookup function uses psycopg (PostgreSQL). Which change prevents SQL injection?",
+      "code": {
+        "language": "python",
+        "source": "def find_user(conn, username):\n    cur = conn.cursor()\n    cur.execute(f\"SELECT id, email FROM users WHERE username = '{username}'\")\n    return cur.fetchone()"
+      },
       "options": [
         {
           "id": "a",
-          "text": "keeps SQL code separate from user-provided values to prevent injection"
+          "text": "Reject any username containing the words SELECT, DROP, or UNION"
         },
         {
           "id": "b",
-          "text": "concatenates raw input into SQL"
+          "text": "`cur.execute(\"SELECT id, email FROM users WHERE username = %s\", (username,))`"
         },
         {
           "id": "c",
-          "text": "stores passwords in plain text"
+          "text": "Check that the username is shorter than 32 characters before querying"
         },
         {
           "id": "d",
-          "text": "disables all database constraints"
+          "text": "Run the query inside a transaction so injected statements can be rolled back"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Parameterized query keeps SQL code separate from user-provided values to prevent injection.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "b",
+      "explanation": "A parameterized query sends the value separately from the SQL text, so input can never change the query's structure (OWASP A03:2021 Injection). Keyword blocklists are easily bypassed, for example by `' OR '1'='1`, which contains none of those words."
     },
     {
       "id": "secure-coding-practices-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Output encoding?",
+      "difficulty": "BEGINNER",
+      "prompt": "This page greets the visitor using a name from the URL. Which change fixes the cross-site scripting vulnerability while still displaying the name?",
+      "code": {
+        "language": "javascript",
+        "source": "const params = new URLSearchParams(location.search);\nconst name = params.get('name');\ndocument.getElementById('greeting').innerHTML = 'Hello, ' + name + '!';"
+      },
       "options": [
         {
           "id": "a",
-          "text": "escapes data for its target context before rendering it to reduce XSS risk"
+          "text": "Assign the greeting to `textContent` instead of `innerHTML`"
         },
         {
           "id": "b",
-          "text": "executes user input as HTML"
+          "text": "Remove `<script>` tags from `name` with a regex before inserting it"
         },
         {
           "id": "c",
-          "text": "removes authentication"
+          "text": "Read the name from a POST body instead of the query string"
         },
         {
           "id": "d",
-          "text": "turns off browser updates"
+          "text": "Serve the page only over HTTPS with a valid certificate"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Output encoding escapes data for its target context before rendering it to reduce XSS risk.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "`textContent` treats the value as text, so markup is never parsed. Stripping `<script>` tags misses payloads like `<img src=x onerror=alert(1)>`, and HTTPS protects the data in transit but does nothing about injected markup."
     },
     {
       "id": "secure-coding-practices-3",
       "type": "multiple_choice",
-      "prompt": "What best describes CSRF protection?",
+      "difficulty": "BEGINNER",
+      "prompt": "A sign-up service must store user passwords so they can be verified at login. Which approach is appropriate?",
       "options": [
         {
           "id": "a",
-          "text": "helps ensure a state-changing request came from the intended application context"
+          "text": "Encrypt with AES-256 and keep the key in an environment variable"
         },
         {
           "id": "b",
-          "text": "makes passwords reversible"
+          "text": "Hash with SHA-256 using a unique per-user salt for each password"
         },
         {
           "id": "c",
-          "text": "replaces TLS everywhere"
+          "text": "Hash with Argon2id (or bcrypt) using a unique salt and a tuned work factor"
         },
         {
           "id": "d",
-          "text": "prevents every possible network scan"
+          "text": "Store them as plaintext in a column only the auth service can read"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "CSRF protection helps ensure a state-changing request came from the intended application context.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "c",
+      "explanation": "Passwords should be one-way hashed with a deliberately slow, salted algorithm such as Argon2id, scrypt, or bcrypt (OWASP Password Storage Cheat Sheet; ASVS V2.4). Salted SHA-256 is fast, so GPUs can test billions of guesses per second, and encryption is reversible by anyone who gets the key."
     },
     {
       "id": "secure-coding-practices-4",
       "type": "true_false",
-      "prompt": "True or false: Parameterized query keeps SQL code separate from user-provided values to prevent injection.",
-      "correctAnswer": true,
-      "explanation": "Parameterized query keeps SQL code separate from user-provided values to prevent injection.",
-      "difficulty": "BEGINNER"
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: because the sign-up form's JavaScript rejects usernames containing `<` or `'`, the server-side handler does not need to validate the username.",
+      "correctAnswer": false,
+      "explanation": "Attackers can bypass the browser entirely and send requests with curl or an intercepting proxy, so client-side checks are only a usability feature. Validation must be enforced on the server (ASVS V5)."
     },
     {
       "id": "secure-coding-practices-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: helps ensure a state-changing request came from the intended application context?",
-      "acceptedAnswers": [
-        "CSRF protection"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "When it fails, a production login endpoint returns the response below to users. What is the appropriate fix from a security standpoint?",
+      "code": {
+        "language": "plaintext",
+        "source": "HTTP/1.1 500 Internal Server Error\nContent-Type: text/plain\n\npsycopg2.errors.UndefinedColumn: column \"pasword_hash\" does not exist\n  File \"/srv/app/auth/login.py\", line 31, in login\n    cur.execute(\"SELECT id, pasword_hash FROM users WHERE email = %s\", ...)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Stop logging the error at all so the details are never recorded anywhere"
+        },
+        {
+          "id": "b",
+          "text": "Return HTTP 200 with the same body so scanners don't flag a 500 status"
+        },
+        {
+          "id": "c",
+          "text": "Base64-encode the stack trace before sending it so it is not human-readable"
+        },
+        {
+          "id": "d",
+          "text": "Return a generic error with a reference ID and log the full details server-side"
+        }
       ],
-      "explanation": "The term is CSRF protection.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "d",
+      "explanation": "Stack traces reveal file paths, queries, and schema details that help attackers (OWASP A05:2021 Security Misconfiguration). Users should get a generic message and a correlation ID, while engineers get full details in server logs. Base64 is an encoding, not protection."
+    },
+    {
+      "id": "secure-coding-practices-6",
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "This Express route should let a logged-in user fetch only their own invoices. `requireLogin` verifies the session and sets `req.user`. Which line contains the access-control flaw?",
+      "code": {
+        "language": "javascript",
+        "source": "app.get('/api/invoices/:id', requireLogin, async (req, res) => {\n  const invoice = await db.invoices.findById(req.params.id);\n  if (!invoice) {\n    return res.status(404).json({ error: 'Not found' });\n  }\n  if (invoice.ownerId !== req.query.userId) {\n    return res.status(404).json({ error: 'Not found' });\n  }\n  res.json(invoice);\n});"
+      },
+      "bugLines": [
+        6
+      ],
+      "explanation": "Line 6 compares the owner to a user ID supplied by the client in the query string, so an attacker just passes the victim's ID (an IDOR, OWASP A01:2021 Broken Access Control). It must compare against the server-side identity, `req.user.id`. Returning 404 rather than 403 on line 7 is deliberate, to avoid confirming that the invoice exists."
+    },
+    {
+      "id": "secure-coding-practices-7",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "After login on https://app.example.com, the server sets the session cookie shown below. Which attributes should be added to harden it? Select all that apply.",
+      "code": {
+        "language": "plaintext",
+        "source": "Set-Cookie: sid=9f3a2c7e41b8d60a; Path=/"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Domain=.example.com"
+        },
+        {
+          "id": "b",
+          "text": "HttpOnly"
+        },
+        {
+          "id": "c",
+          "text": "Max-Age=31536000"
+        },
+        {
+          "id": "d",
+          "text": "Secure"
+        },
+        {
+          "id": "e",
+          "text": "SameSite=Lax"
+        }
+      ],
+      "correctOptionIds": [
+        "b",
+        "d",
+        "e"
+      ],
+      "explanation": "HttpOnly blocks JavaScript from reading the cookie, Secure keeps it off plain HTTP, and SameSite=Lax stops it from being sent on most cross-site requests (CSRF). Adding a Domain widens it to every subdomain, and a one-year Max-Age extends the window for session theft (ASVS V3.4)."
+    },
+    {
+      "id": "secure-coding-practices-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "What is the most serious risk in this Flask route, and the right fix?",
+      "code": {
+        "language": "python",
+        "source": "import base64, pickle\nfrom flask import request\n\n@app.route(\"/dashboard\")\ndef dashboard():\n    prefs = pickle.loads(base64.b64decode(request.cookies[\"prefs\"]))\n    return render_dashboard(prefs)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "A crafted cookie can run arbitrary code when unpickled; use validated JSON or keep prefs server-side"
+        },
+        {
+          "id": "b",
+          "text": "Base64 isn't encryption, so users can read their own prefs; encrypt the cookie with AES"
+        },
+        {
+          "id": "c",
+          "text": "Pickled data can exceed the 4 KB cookie limit; compress it before Base64-encoding it"
+        },
+        {
+          "id": "d",
+          "text": "pickle is slow for every request; switch to the marshal module for faster loading"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Unpickling attacker-controlled data executes code chosen by the attacker (OWASP A08:2021 Software and Data Integrity Failures), and Python's docs warn never to unpickle untrusted data. Users reading their own preferences is harmless; the danger is the deserializer itself."
+    },
+    {
+      "id": "secure-coding-practices-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "What is wrong with this Express middleware, which uses the jsonwebtoken library?",
+      "code": {
+        "language": "javascript",
+        "source": "const jwt = require('jsonwebtoken');\n\nfunction requireAdmin(req, res, next) {\n  const token = req.headers.authorization?.split(' ')[1];\n  const payload = jwt.decode(token);\n  if (payload && payload.role === 'admin') return next();\n  return res.status(403).end();\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The token should come from a cookie, because Authorization headers can't carry JWTs"
+        },
+        {
+          "id": "b",
+          "text": "Returning 403 reveals that the route exists; the middleware should return 404 instead"
+        },
+        {
+          "id": "c",
+          "text": "`jwt.decode()` doesn't check the signature, so anyone can forge an admin token; use `jwt.verify()`"
+        },
+        {
+          "id": "d",
+          "text": "Optional chaining lets requests without an Authorization header skip the role check"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "jsonwebtoken's `decode()` only parses the payload; `verify()` checks the signature (and expiry) against your key, and should be given an explicit `algorithms` list. With no header, `token` is undefined, `decode` returns null, and the request still gets 403."
+    },
+    {
+      "id": "secure-coding-practices-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A link-preview feature fetches any URL a user submits and returns the page title. It runs on a cloud VM. A tester submits `http://169.254.169.254/latest/meta-data/iam/security-credentials/` and gets data back. Which mitigation is most effective?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Reject any URL whose text contains \"169.254.169.254\" or \"localhost\""
+        },
+        {
+          "id": "b",
+          "text": "Resolve the host, block private/loopback/link-local IPs on every redirect, and enforce IMDSv2"
+        },
+        {
+          "id": "c",
+          "text": "Accept only URLs that begin with https:// so plain-HTTP targets are refused"
+        },
+        {
+          "id": "d",
+          "text": "Strip the path so the server fetches only the root page of the given host"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "SSRF defenses (OWASP A10:2021) must check the IP address actually connected to, including after redirects, because string blocklists miss decimal IPs, DNS names that resolve internally, and redirects. IMDSv2's session-token requirement adds defense in depth for the metadata service. An https:// URL can still redirect to an internal address."
+    },
+    {
+      "id": "secure-coding-practices-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Users should be able to change only their `displayName` and `bio`. The User model also has `role` and `emailVerified` fields. What is the fix for this Sequelize route?",
+      "code": {
+        "language": "javascript",
+        "source": "app.patch('/api/me', requireLogin, async (req, res) => {\n  const user = await User.findByPk(req.user.id);\n  await user.update(req.body);\n  res.json({ ok: true });\n});"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Remove `role` and `emailVerified` from the JSON returned by the user API"
+        },
+        {
+          "id": "b",
+          "text": "Add CSRF protection to the route so only the real user can submit changes"
+        },
+        {
+          "id": "c",
+          "text": "Check that req.body is well-formed JSON before passing it to `update()`"
+        },
+        {
+          "id": "d",
+          "text": "Update only allowlisted fields, e.g., `user.update({ displayName, bio })` taken from req.body"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Passing the whole request body lets a user send `{\"role\": \"admin\"}` (mass assignment, OWASP API3:2023 Broken Object Property Level Authorization). Allowlisting writable fields closes it, while hiding fields from responses or adding CSRF protection doesn't stop a logged-in user from setting them."
+    },
+    {
+      "id": "secure-coding-practices-12",
+      "type": "find_the_bug",
+      "difficulty": "ADVANCED",
+      "prompt": "This helper must serve files only from inside /srv/app/uploads. Other directories with sensitive data exist alongside it under /srv/app/. Which line lets a crafted filename escape the intended directory?",
+      "code": {
+        "language": "python",
+        "source": "import os\nfrom flask import abort, send_file\n\nUPLOAD_ROOT = os.path.realpath(\"/srv/app/uploads\")\n\n\ndef download(filename):\n    path = os.path.realpath(os.path.join(UPLOAD_ROOT, filename))\n    if not path.startswith(UPLOAD_ROOT):\n        abort(403)\n    return send_file(path)"
+      },
+      "bugLines": [
+        9
+      ],
+      "explanation": "A string-prefix check accepts sibling directories: `../uploads_private/report.csv` resolves to /srv/app/uploads_private/report.csv, which starts with /srv/app/uploads. Compare whole path components instead, e.g., `os.path.commonpath([UPLOAD_ROOT, path]) == UPLOAD_ROOT`. The `realpath` call on line 8 correctly resolves `..` and symlinks first."
+    },
+    {
+      "id": "secure-coding-practices-13",
+      "type": "find_the_bug",
+      "difficulty": "ADVANCED",
+      "prompt": "This function verifies a webhook's HMAC-SHA256 signature, sent as a hex string, on a public endpoint. Which line introduces a vulnerability?",
+      "code": {
+        "language": "python",
+        "source": "import hashlib\nimport hmac\n\n\ndef verify_webhook(secret: bytes, body: bytes, signature_hex: str) -> bool:\n    expected = hmac.new(secret, body, hashlib.sha256).hexdigest()\n    return expected == signature_hex"
+      },
+      "bugLines": [
+        7
+      ],
+      "explanation": "`==` can return as soon as it finds a difference, so response timing can leak how much of a forged signature is correct. Python's docs say to use `hmac.compare_digest()`, which runs in constant time. Computing the HMAC with SHA-256 on line 6 is correct."
+    },
+    {
+      "id": "secure-coding-practices-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "What is the most serious flaw in this password-reset token generator?",
+      "code": {
+        "language": "python",
+        "source": "def create_reset_token(user):\n    raw = f\"{user.email}:{int(time.time())}\"\n    token = hashlib.sha256(raw.encode()).hexdigest()\n    db.save_reset(user.id, token, expires_in=timedelta(hours=24))\n    send_email(user.email, f\"https://app.example.com/reset?token={token}\")"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Anyone who knows the email and rough request time can compute the token; use `secrets.token_urlsafe(32)`"
+        },
+        {
+          "id": "b",
+          "text": "SHA-256 is unsuitable for tokens; switching to SHA-512 makes the generated token unguessable"
+        },
+        {
+          "id": "c",
+          "text": "The 24-hour lifetime is the core flaw; shortening it to 15 minutes makes this design safe"
+        },
+        {
+          "id": "d",
+          "text": "Tokens in URLs are inherently unsafe; the token should be sent as an email attachment instead"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "The input is predictable (a known email plus a Unix timestamp that can be brute-forced across a few thousand seconds), so hashing it adds no secrecy, whatever the hash. Tokens need a CSPRNG with at least 128 bits of entropy, along with single use and short expiry (OWASP Forgot Password Cheat Sheet)."
+    },
+    {
+      "id": "secure-coding-practices-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A product list lets users choose the sort with `?sort=name`, `price`, or `created_at`. The query is otherwise parameterized. How should the sort column be added to the SQL safely?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Insert it with an f-string after escaping any single quotes in the value"
+        },
+        {
+          "id": "b",
+          "text": "Bind it as a query parameter: `ORDER BY %s` with `(sort,)`"
+        },
+        {
+          "id": "c",
+          "text": "Map the value through an allowlist of known column names and reject anything else"
+        },
+        {
+          "id": "d",
+          "text": "Strip spaces and semicolons from the value, then concatenate it into the query"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Placeholders bind values, not identifiers, so `ORDER BY %s` sorts by a string literal rather than a column (or errors). Identifiers must come from a server-side allowlist (OWASP SQL Injection Prevention Cheat Sheet). Quote-escaping or character stripping still lets attackers inject expressions such as `CASE WHEN ... END`."
     }
   ]
 }

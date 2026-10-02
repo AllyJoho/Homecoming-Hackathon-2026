@@ -2,104 +2,411 @@
   "id": "spreadsheet-analysis",
   "title": "Spreadsheet Analysis",
   "skillSlug": "spreadsheet-analysis",
-  "description": "Test your understanding of spreadsheet analysis. Using formulas, pivot tables, and charts in Excel or Google Sheets to summarize data.",
-  "timeLimitSeconds": 600,
+  "description": "Excel and Google Sheets formulas, references, lookups, conditional sums, pivot tables, and data pitfalls.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "spreadsheet-analysis-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Pivot table?",
+      "difficulty": "BEGINNER",
+      "prompt": "Cell C2 contains =B2*F$1. You copy C2 and paste it into D5. What formula appears in D5?",
       "options": [
         {
           "id": "a",
-          "text": "summarizes and groups rows by fields without changing the source data"
+          "text": "=C5*G$1"
         },
         {
           "id": "b",
-          "text": "encrypts a workbook"
+          "text": "=C5*F$1"
         },
         {
           "id": "c",
-          "text": "is a single-cell comment"
+          "text": "=B5*G$1"
         },
         {
           "id": "d",
-          "text": "is a database server"
+          "text": "=C5*G$4"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Pivot table summarizes and groups rows by fields without changing the source data.",
-      "difficulty": "BEGINNER"
+      "explanation": "Pasting one column right and three rows down shifts every relative part: B2 becomes C5, and in F$1 the column is relative (F to G) while the $ locks row 1. =C5*F$1 wrongly treats the column of F$1 as locked."
     },
     {
       "id": "spreadsheet-analysis-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Absolute reference?",
+      "difficulty": "BEGINNER",
+      "prompt": "Using the sheet below, what does =SUMIFS(D2:D7, A2:A7, \"West\", C2:C7, \"Widget\") return?",
+      "code": {
+        "language": "plaintext",
+        "source": "   A       B     C        D\n1  Region  Rep   Product  Amount\n2  West    Kim   Widget   120\n3  East    Lee   Gadget   210\n4  West    Lee   Widget    80\n5  West    Kim   Gadget   150\n6  East    Kim   Widget    90\n7  West    Lee   Gadget    60"
+      },
       "options": [
         {
           "id": "a",
-          "text": "keeps a cell reference fixed when a formula is copied"
+          "text": "410"
         },
         {
           "id": "b",
-          "text": "always points to the last row"
+          "text": "200"
         },
         {
           "id": "c",
-          "text": "only works in charts"
+          "text": "290"
         },
         {
           "id": "d",
-          "text": "deletes formulas when copied"
+          "text": "500"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Absolute reference keeps a cell reference fixed when a formula is copied.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "b",
+      "explanation": "SUMIFS adds Amount only where every criterion is met (AND logic): rows 2 and 4, 120 + 80 = 200. 410 is all West sales and 290 is all Widget sales, i.e., each criterion applied alone."
     },
     {
       "id": "spreadsheet-analysis-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Lookup?",
+      "difficulty": "BEGINNER",
+      "prompt": "F2 should return the price of SKU P-104, but it returns another product's price. Why?",
+      "code": {
+        "language": "plaintext",
+        "source": "   A      B             C\n1  SKU    Product       Price\n2  P-102  Desk lamp     34.00\n3  P-118  Cable tray    19.50\n4  P-131  Footrest      42.00\n5  P-109  Headset hook  12.00\n6  P-104  Monitor arm   89.00\n\nF2: =VLOOKUP(\"P-104\", A2:C6, 3)"
+      },
       "options": [
         {
           "id": "a",
-          "text": "finds a matching key and returns a related value"
+          "text": "col_index_num should be 2, because the lookup column A is not counted"
         },
         {
           "id": "b",
-          "text": "formats every cell as currency"
+          "text": "The range must include the header row, so it should be A1:C5"
         },
         {
           "id": "c",
-          "text": "creates a presentation slide"
+          "text": "range_lookup was omitted, so VLOOKUP does an approximate match on unsorted keys; add FALSE"
         },
         {
           "id": "d",
-          "text": "removes all blank rows"
+          "text": "Text lookups need a wildcard, so the lookup value should be \"P-104*\""
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Lookup finds a matching key and returns a related value.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "c",
+      "explanation": "When range_lookup is omitted VLOOKUP defaults to TRUE (approximate match), which assumes column A is sorted ascending; on these unsorted keys its search can stop early on the wrong row (a typical binary search lands on the Desk lamp's 34.00) (Microsoft VLOOKUP docs). The column index counts from the first column of the range, so 3 is correct for Price."
     },
     {
       "id": "spreadsheet-analysis-4",
       "type": "true_false",
-      "prompt": "True or false: Pivot table summarizes and groups rows by fields without changing the source data.",
-      "correctAnswer": true,
-      "explanation": "Pivot table summarizes and groups rows by fields without changing the source data.",
-      "difficulty": "BEGINNER"
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: In Excel, after you change a value in a pivot table's source data, the pivot table updates automatically, the same way a formula recalculates.",
+      "correctAnswer": false,
+      "explanation": "Excel pivot tables read from a cache and only update when refreshed (PivotTable Analyze > Refresh, Refresh All, or refresh-on-open). Forgetting to refresh is a common cause of reports that disagree with the source data; Google Sheets pivot tables, by contrast, do update automatically."
     },
     {
       "id": "spreadsheet-analysis-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: finds a matching key and returns a related value?",
-      "acceptedAnswers": [
-        "Lookup"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "B2:B5 hold quiz scores: B2 = 80, B3 is empty (quiz not yet taken), B4 = 0 (quiz skipped), B5 = 100. What does =AVERAGE(B2:B5) return?",
+      "options": [
+        {
+          "id": "a",
+          "text": "45"
+        },
+        {
+          "id": "b",
+          "text": "90"
+        },
+        {
+          "id": "c",
+          "text": "#DIV/0!"
+        },
+        {
+          "id": "d",
+          "text": "60"
+        }
       ],
-      "explanation": "The term is Lookup.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "d",
+      "explanation": "AVERAGE ignores empty cells but includes zeros, so it computes (80 + 0 + 100) / 3 = 60. 45 would treat the blank as 0 (dividing by 4), and 90 would ignore the zero as well."
+    },
+    {
+      "id": "spreadsheet-analysis-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Commission tiers are in A2:B6. E2 holds a rep's sales of 49,999. What does the formula in F2 return?",
+      "code": {
+        "language": "plaintext",
+        "source": "   A          B\n1  Min sales  Rate\n2  0          2%\n3  10000      3%\n4  25000      4%\n5  50000      5%\n6  100000     6%\n\nF2: =XLOOKUP(E2, A2:A6, B2:B6, \"Not found\", -1)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "4%"
+        },
+        {
+          "id": "b",
+          "text": "5%"
+        },
+        {
+          "id": "c",
+          "text": "\"Not found\""
+        },
+        {
+          "id": "d",
+          "text": "3%"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "match_mode -1 means exact match, or else the next smaller item; 49,999 has no exact match, so XLOOKUP uses the 25,000 tier (4%). 5% would be match_mode 1 (next larger), and \"Not found\" would be the result of the default exact match (0)."
+    },
+    {
+      "id": "spreadsheet-analysis-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Orders!E2 has =VLOOKUP(A2, Products!A:D, 3, FALSE) and correctly returned Price. A colleague then inserted a new Supplier column between columns B and C on the Products sheet, and E2 now returns supplier names. What is the cause and a robust fix?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The range didn't expand to include the new column; change it to Products!A:E"
+        },
+        {
+          "id": "b",
+          "text": "Index 3 is hard-coded; use XLOOKUP or INDEX/MATCH pointing at the Price column itself"
+        },
+        {
+          "id": "c",
+          "text": "FALSE must be TRUE after inserting columns; switch to approximate match"
+        },
+        {
+          "id": "d",
+          "text": "Excel cached the old result; press Ctrl+Alt+F9 to force a full recalculation"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Excel adjusted the range to A:E, but the literal 3 still points at the third column, which is now Supplier. XLOOKUP (or INDEX/MATCH) references the return column directly, so it moves when columns are inserted. Widening the range doesn't change which column index 3 selects."
+    },
+    {
+      "id": "spreadsheet-analysis-8",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "B2:B9 hold true Excel dates (no time part) from both 2025 and 2026, and C2:C9 hold amounts. Which formulas correctly return the total amount for March 2026? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "=SUMIFS(C2:C9, B2:B9, \">=\"&DATE(2026,3,1), B2:B9, \"<\"&DATE(2026,4,1))"
+        },
+        {
+          "id": "b",
+          "text": "=SUMIFS(C2:C9, B2:B9, \">=DATE(2026,3,1)\", B2:B9, \"<DATE(2026,4,1)\")"
+        },
+        {
+          "id": "c",
+          "text": "=SUMPRODUCT((MONTH(B2:B9)=3)*(YEAR(B2:B9)=2026)*C2:C9)"
+        },
+        {
+          "id": "d",
+          "text": "=SUMIFS(C2:C9, MONTH(B2:B9), 3)"
+        },
+        {
+          "id": "e",
+          "text": "=SUMIFS(C2:C9, B2:B9, \">=\"&DATE(2026,3,1), B2:B9, \"<=\"&DATE(2026,3,30))"
+        },
+        {
+          "id": "f",
+          "text": "=SUMPRODUCT((MONTH(B2:B9)=3)*C2:C9)"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c"
+      ],
+      "explanation": "A half-open date range built by concatenating the operator with DATE() works in SUMIFS, and SUMPRODUCT can test MONTH and YEAR together. Putting DATE() inside the quotes makes it literal text, SUMIFS requires a real range rather than MONTH(...) as criteria_range, ending at March 30 drops March 31, and testing only MONTH also includes March 2025."
+    },
+    {
+      "id": "spreadsheet-analysis-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "After you drag Amount into the Values area of a new Excel pivot table, it shows \"Count of Amount\" instead of a sum. Several Amount cells in the source are left-aligned with a green triangle. What is going on?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Excel always defaults currency-formatted fields to Count; change it to Sum manually"
+        },
+        {
+          "id": "b",
+          "text": "The pivot cache is stale; refreshing it will switch the field to Sum automatically"
+        },
+        {
+          "id": "c",
+          "text": "Some Amount cells are numbers stored as text; convert them to numbers and refresh"
+        },
+        {
+          "id": "d",
+          "text": "Amount contains duplicate values, so Excel counts them instead of summing"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Excel defaults a Values field to Sum only when the column is entirely numeric; text (or blank) cells make it default to Count. Merely switching to Sum still leaves the text cells out of the total, so the data must be converted first."
+    },
+    {
+      "id": "spreadsheet-analysis-10",
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "C1 holds the sales quota and C2 the bonus rate. Each rep is in rows 5-20 (B = base pay, D = sales). These row-5 formulas are filled down to row 20, and every row must calculate correctly. Which formula is wrong?",
+      "code": {
+        "language": "plaintext",
+        "source": "E5  Bonus:       =IF(D5>=$C$1, D5*$C$2, 0)\nF5  Total pay:   =B5+E5\nG5  Status:      =IF(D5>=$C$1, \"Met\", \"Missed\")\nH5  % of quota:  =D5/$C$1\nI5  Sales rank:  =RANK.EQ(D5, D5:D20)"
+      },
+      "bugLines": [
+        5
+      ],
+      "explanation": "The rank range is relative, so when filled down it shrinks (I6 ranks against D6:D21, I20 against D20:D35), producing wrong ranks; it needs $D$5:$D$20. The other formulas correctly lock the quota and rate cells while letting the row references move."
+    },
+    {
+      "id": "spreadsheet-analysis-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "H2 is meant to return West's Q3 sales from the table below. What does it actually return?",
+      "code": {
+        "language": "plaintext",
+        "source": "   A       B    C    D    E\n1  Region  Q1   Q2   Q3   Q4\n2  North   110  125  130  140\n3  South    95  100  105   98\n4  East    150  160  170  180\n5  West     80   85   90   99\n\nH2: =INDEX(B2:E5, MATCH(\"Q3\", B1:E1, 0), MATCH(\"West\", A2:A5, 0))"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "90"
+        },
+        {
+          "id": "b",
+          "text": "99"
+        },
+        {
+          "id": "c",
+          "text": "#REF!"
+        },
+        {
+          "id": "d",
+          "text": "180"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "INDEX takes row_num then column_num, but the MATCHes are swapped: row 3 (from \"Q3\") and column 4 (from \"West\") point to East's Q4 value, 180. Swapping the two MATCH arguments returns the intended 90; no #REF! occurs because both indexes are within the 4x4 range."
+    },
+    {
+      "id": "spreadsheet-analysis-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A financial model recalculates for several seconds after every edit, even when the edited cell feeds nothing. Most lookups look like the formulas below, copied across thousands of cells. What is the most likely cause and fix?",
+      "code": {
+        "language": "plaintext",
+        "source": "=SUM(OFFSET($B$1, MATCH($H2, $A:$A, 0) - 1, 1, 1, 12))\n=INDIRECT(\"C\" & $K2) * $L$1"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "OFFSET and INDIRECT are volatile and recalculate on every edit; rewrite them with INDEX"
+        },
+        {
+          "id": "b",
+          "text": "Exact-match MATCH is slow on large ranges; switch every MATCH to approximate match"
+        },
+        {
+          "id": "c",
+          "text": "SUM over a 12-cell OFFSET range is slow; replace each SUM with SUMPRODUCT"
+        },
+        {
+          "id": "d",
+          "text": "The workbook is saved as .xlsx; saving it as .xlsb makes recalculation faster"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Microsoft's Excel performance guidance lists OFFSET and INDIRECT as volatile: they and all their dependents recalculate on every change, regardless of what changed. INDEX returns the same references non-volatilely (e.g., INDEX($C:$C, $K2)). Approximate MATCH is faster but returns wrong results on unsorted keys, and .xlsb speeds file loading, not recalculation."
+    },
+    {
+      "id": "spreadsheet-analysis-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A summary sheet's regional totals no longer match the data. Based on the checks below, what is the cause, and which fix keeps working as rows are appended each month?",
+      "code": {
+        "language": "plaintext",
+        "source": "Sales: header in row 1, data in A2:D613 (612 rows; appended monthly)\n\n=SUM(Sales!D:D)                         -> 1,310,450\nSummary!H2 (filled to H5, one per region):\n  =SUMIFS(Sales!$D$2:$D$500, Sales!$A$2:$A$500, G2)\n=SUM(Summary!H2:H5)                     -> 1,072,880\nSummary!I2 (filled to I5): =COUNTIFS(Sales!$A$2:$A$500, G2)\n=SUM(Summary!I2:I5)                     -> 499"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Region names have trailing spaces; wrap the criteria in TRIM() so they match"
+        },
+        {
+          "id": "b",
+          "text": "The ranges stop at row 500; convert the data to an Excel Table and use structured references"
+        },
+        {
+          "id": "c",
+          "text": "Some amounts are stored as text; convert column D with VALUE() before summing"
+        },
+        {
+          "id": "d",
+          "text": "The ranges stop at row 500; edit every formula so the ranges end at row 613"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "The COUNTIFS total of 499 equals every row in A2:A500, so all region names match and the missing money is in rows 501-613, outside the fixed ranges. Table references grow automatically as rows are added, whereas hard-coding row 613 breaks again next month."
+    },
+    {
+      "id": "spreadsheet-analysis-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A CSV from a UK system uses DD/MM/YYYY. After it is opened directly in Excel on a US-locale PC, an April 2026 SUMIFS report comes out far too low. What happened and what is the fix?",
+      "code": {
+        "language": "plaintext",
+        "source": "Raw CSV value    Shown in Excel after opening\n-------------    ----------------------------\n03/04/2026       3/4/2026    (right-aligned)\n15/04/2026       15/04/2026  (left-aligned)\n11/04/2026       11/4/2026   (right-aligned)\n22/04/2026       22/04/2026  (left-aligned)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The cells are text; select the column and apply a Date number format to convert them"
+        },
+        {
+          "id": "b",
+          "text": "The dates carry hidden time values; wrap the SUMIFS date criteria in INT()"
+        },
+        {
+          "id": "c",
+          "text": "Parsed as MM/DD: days 1-12 became wrong dates, the rest stayed text; re-import as DMY"
+        },
+        {
+          "id": "d",
+          "text": "SUMIFS can't compare dates; change the criteria to text such as \"04/*/2026\""
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "03/04/2026 became March 4 and 11/04/2026 became November 4, while 15/04 and 22/04 failed to parse and remain text, so both groups drop out of April. Re-importing with an explicit DMY column type (Text Import Wizard or Power Query locale) fixes all rows; changing the number format does not convert text and can't un-swap day and month."
+    },
+    {
+      "id": "spreadsheet-analysis-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Source rows include a Margin% column (Profit / Revenue per row). A pivot showing Average of Margin% reports 20% for West, but finance says West's margin is 28%. Which change gives the correct margin at every level of the pivot?",
+      "code": {
+        "language": "plaintext",
+        "source": "Region | Revenue | Profit | Margin%\n-------+---------+--------+--------\nWest   |   1,000 |    100 |   10%\nWest   |   9,000 |  2,700 |   30%"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Switch Margin% to Sum of Margin% so every order's margin is counted"
+        },
+        {
+          "id": "b",
+          "text": "Keep Average of Margin% and set Show Values As to % of Grand Total"
+        },
+        {
+          "id": "c",
+          "text": "Convert the source range to an Excel Table and refresh the pivot"
+        },
+        {
+          "id": "d",
+          "text": "Add a calculated field =Profit/Revenue, which is evaluated on each group's sums"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Averaging row-level ratios weights a $1,000 order the same as a $9,000 order; margin is total profit over total revenue, 2,800 / 10,000 = 28%. A pivot calculated field applies its formula to the sums for each group, so it is correct at region and grand-total levels; Sum of Margin% would show 40%."
     }
   ]
 }

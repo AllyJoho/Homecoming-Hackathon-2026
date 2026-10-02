@@ -2,104 +2,217 @@
   "id": "agile-scrum",
   "title": "Agile & Scrum",
   "skillSlug": "agile-scrum",
-  "description": "Test your understanding of agile & scrum. Running iterative delivery with sprints, backlogs, standups, and retrospectives.",
-  "timeLimitSeconds": 600,
+  "description": "Apply the Scrum Guide 2020 and Kanban flow practices to real sprint, backlog, and team scenarios.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "agile-scrum-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Sprint?",
+      "difficulty": "BEGINNER",
+      "prompt": "Mid-Sprint, a sales VP messages one of the Developers directly: \"Customer X needs bulk export. Put it ahead of everything else.\" Under the Scrum Guide 2020, who decides where bulk export goes relative to other work in the Product Backlog?",
       "options": [
-        {
-          "id": "a",
-          "text": "is a fixed timebox in which a team creates a usable increment"
-        },
-        {
-          "id": "b",
-          "text": "is an annual budget review"
-        },
-        {
-          "id": "c",
-          "text": "is an incident ticket"
-        },
-        {
-          "id": "d",
-          "text": "is a database migration only"
-        }
+        { "id": "a", "text": "The Scrum Master, who shields the team and controls what enters the Sprint" },
+        { "id": "b", "text": "The Product Owner, who is accountable for ordering the Product Backlog" },
+        { "id": "c", "text": "The Developers, by voting at the next Daily Scrum" },
+        { "id": "d", "text": "The sales VP, as the most senior stakeholder making the request" }
       ],
-      "correctOptionId": "a",
-      "explanation": "Sprint is a fixed timebox in which a team creates a usable increment.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "b",
+      "explanation": "The Product Owner is accountable for Product Backlog management, including ordering items; those wanting to change the backlog do so by convincing the Product Owner. The Scrum Master coaches and removes impediments but does not own backlog ordering."
     },
     {
       "id": "agile-scrum-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Product backlog?",
+      "difficulty": "BEGINNER",
+      "prompt": "A team building a data platform says its features are too big for short iterations and proposes switching to six-week Sprints. What does the Scrum Guide 2020 say about this?",
       "options": [
-        {
-          "id": "a",
-          "text": "is an ordered list of product work and opportunities"
-        },
-        {
-          "id": "b",
-          "text": "is a fixed legal contract"
-        },
-        {
-          "id": "c",
-          "text": "is a server log"
-        },
-        {
-          "id": "d",
-          "text": "is a presentation deck"
-        }
+        { "id": "a", "text": "It is fine as long as the Sprint length stays the same every Sprint" },
+        { "id": "b", "text": "It is fine if the Product Owner and stakeholders approve the longer cadence" },
+        { "id": "c", "text": "Sprints are one month or less, so the team should split the work into smaller items" },
+        { "id": "d", "text": "Sprint length is not defined; teams choose whatever matches their release cycle" }
       ],
-      "correctOptionId": "a",
-      "explanation": "Product backlog is an ordered list of product work and opportunities.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "The Scrum Guide fixes Sprints at one month or less; longer Sprints let the Sprint Goal go stale and raise risk. Consistency of length is good practice, but it does not make a six-week Sprint valid Scrum."
     },
     {
       "id": "agile-scrum-3",
-      "type": "multiple_choice",
-      "prompt": "What best describes Retrospective?",
-      "options": [
-        {
-          "id": "a",
-          "text": "is a regular meeting where a team inspects its process and chooses improvements"
-        },
-        {
-          "id": "b",
-          "text": "ranks customers by revenue"
-        },
-        {
-          "id": "c",
-          "text": "approves every budget change"
-        },
-        {
-          "id": "d",
-          "text": "replaces product discovery"
-        }
-      ],
-      "correctOptionId": "a",
-      "explanation": "Retrospective is a regular meeting where a team inspects its process and chooses improvements.",
-      "difficulty": "ADVANCED"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: Under the Scrum Guide 2020, a Product Backlog item that does not yet meet the Definition of Done may be shown at the Sprint Review as long as the team clearly labels it as partially complete.",
+      "correctAnswer": false,
+      "explanation": "The Scrum Guide 2020 states that an item not meeting the Definition of Done cannot be released or even presented at the Sprint Review; it returns to the Product Backlog. Showing 'almost done' work hides the real state of the Increment."
     },
     {
       "id": "agile-scrum-4",
-      "type": "true_false",
-      "prompt": "True or false: Sprint is a fixed timebox in which a team creates a usable increment.",
-      "correctAnswer": true,
-      "explanation": "Sprint is a fixed timebox in which a team creates a usable increment.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "Halfway through a Sprint, the Developers discover that one Sprint Backlog item is about three times larger than expected. Finishing it as planned would leave no time for two other items. What should happen?",
+      "options": [
+        { "id": "a", "text": "The Developers work with the Product Owner to renegotiate Sprint scope while protecting the Sprint Goal" },
+        { "id": "b", "text": "The Developers relax the Definition of Done for this item so everything still fits in the Sprint" },
+        { "id": "c", "text": "The Scrum Master extends the Sprint by a week so that all planned items can be completed" },
+        { "id": "d", "text": "The Developers keep the plan unchanged and report the miss at the Sprint Retrospective" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Per the Scrum Guide 2020, scope may be clarified and renegotiated with the Product Owner as more is learned, as long as the Sprint Goal is not endangered and quality does not decrease. Lowering the Definition of Done or extending the timebox both break Scrum rules."
     },
     {
       "id": "agile-scrum-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: is a regular meeting where a team inspects its process and chooses improvements?",
-      "acceptedAnswers": [
-        "Retrospective"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A Kanban board has a WIP limit of 3 on the \"Code Review\" column, and it currently holds 3 cards. A developer has just finished coding another card. What should the developer do next?",
+      "options": [
+        { "id": "a", "text": "Move the card into Code Review anyway, since the coding is genuinely finished" },
+        { "id": "b", "text": "Raise the Code Review WIP limit to 4 so the finished card has somewhere to go" },
+        { "id": "c", "text": "Pull a new card from the backlog and start coding it while waiting" },
+        { "id": "d", "text": "Leave the card in place and help review the cards already in Code Review" }
       ],
-      "explanation": "The term is Retrospective.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "d",
+      "explanation": "A full column is a signal to stop starting and start finishing: helping clear the constrained step restores flow. Starting new work or quietly raising the limit increases WIP, which lengthens cycle time and defeats the purpose of the limit."
+    },
+    {
+      "id": "agile-scrum-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A Scrum Team's Daily Scrum has become a 30-minute round where each Developer reports yesterday's tasks to the engineering manager, who attends and takes notes. What change best restores the purpose of the event as defined in the Scrum Guide 2020?",
+      "options": [
+        { "id": "a", "text": "Have the Scrum Master run the meeting and collect updates instead of the manager" },
+        { "id": "b", "text": "Make it a 15-minute Developer check of progress toward the Sprint Goal" },
+        { "id": "c", "text": "Replace it with a written status update so the manager gets the information faster" },
+        { "id": "d", "text": "Keep the format but enforce three standard questions and a strict 15-minute timebox" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "The Scrum Guide 2020 defines the Daily Scrum as a 15-minute event for the Developers to inspect progress toward the Sprint Goal and adapt the Sprint Backlog. The 2020 guide dropped the mandatory three questions, and a timebox alone does not fix a status-report meeting."
+    },
+    {
+      "id": "agile-scrum-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A Kanban team's system is stable. Over the last quarter it averaged 12 work items in progress and finished an average of 4 items per week. Using Little's Law, what is the team's average cycle time?",
+      "options": [
+        { "id": "a", "text": "0.33 weeks" },
+        { "id": "b", "text": "8 weeks" },
+        { "id": "c", "text": "3 weeks" },
+        { "id": "d", "text": "48 weeks" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Little's Law: average cycle time = average WIP / average throughput = 12 / 4 = 3 weeks. Inverting the ratio gives 0.33, and multiplying gives 48; neither has the units of time per item."
+    },
+    {
+      "id": "agile-scrum-8",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A team running one-month Sprints wants to set its event timeboxes to match the Scrum Guide 2020 maximums. Which of these are correct maximum timeboxes for a one-month Sprint? Select all that apply.",
+      "options": [
+        { "id": "a", "text": "Sprint Planning: 8 hours" },
+        { "id": "b", "text": "Sprint Review: 2 hours" },
+        { "id": "c", "text": "Sprint Retrospective: 3 hours" },
+        { "id": "d", "text": "Daily Scrum: 15 minutes" },
+        { "id": "e", "text": "Product Backlog refinement: a separate event capped at 10% of capacity" }
+      ],
+      "correctOptionIds": ["a", "c", "d"],
+      "explanation": "For a one-month Sprint the Scrum Guide 2020 caps Sprint Planning at 8 hours, the Sprint Review at 4 hours, the Retrospective at 3 hours, and the Daily Scrum at 15 minutes. Refinement is an ongoing activity, not an event, and the 2020 guide no longer mentions a 10% guideline."
+    },
+    {
+      "id": "agile-scrum-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "In week one of a two-week Sprint, a competitor's launch makes the Sprint Goal (\"Pilot customers can import legacy invoices\") worthless; the pilot customers have cancelled. The CTO tells the Scrum Master to cancel the Sprint. Per the Scrum Guide 2020, who has the authority to cancel it?",
+      "options": [
+        { "id": "a", "text": "Only the Product Owner, because the Sprint Goal has become obsolete" },
+        { "id": "b", "text": "The Scrum Master, because they are accountable for the team's effectiveness" },
+        { "id": "c", "text": "The CTO, because the decision has business-level impact" },
+        { "id": "d", "text": "No one; a Sprint must always run to the end of its timebox" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "The Scrum Guide 2020 says a Sprint may be cancelled if its Sprint Goal becomes obsolete, and only the Product Owner has the authority to cancel it. The CTO can influence the Product Owner but cannot cancel the Sprint directly, and cancellation is allowed, if rare."
+    },
+    {
+      "id": "agile-scrum-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A 14-person Scrum Team building one mobile app is splitting into two Scrum Teams to stay small. Which setup is consistent with the Scrum Guide 2020?",
+      "options": [
+        { "id": "a", "text": "Each team gets its own Product Owner and Product Backlog, with a shared Product Goal" },
+        { "id": "b", "text": "Each team keeps its own Definition of Done, with one shared Product Backlog" },
+        { "id": "c", "text": "One Product Owner, with each team's lead developer ordering their own team's part of the backlog" },
+        { "id": "d", "text": "Both teams share one Product Goal, one Product Backlog, one Product Owner, and the same Definition of Done" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "The Scrum Guide 2020 says teams split from one product should share the same Product Goal, Product Backlog, and Product Owner, and multiple teams working on a product must mutually define and comply with the same Definition of Done. Separate Product Owners or separate Definitions of Done break the shared Increment."
+    },
+    {
+      "id": "agile-scrum-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A team exports this cumulative flow data (card counts per column) from its Kanban board. What is the most accurate reading?",
+      "code": {
+        "language": "plaintext",
+        "source": "Day  To Do  In Progress  Review  Done (cumulative)\n 1     30        6          3          10\n 3     28        9          5          11\n 5     27       12          8          11\n 7     26       15         10          12"
+      },
+      "options": [
+        { "id": "a", "text": "Flow is healthy: the To Do column shrinks steadily, so the team is making good progress" },
+        { "id": "b", "text": "WIP is growing while throughput has nearly stalled, so cycle times are getting longer" },
+        { "id": "c", "text": "The backlog is the bottleneck, so the Product Owner should remove items from To Do" },
+        { "id": "d", "text": "Throughput is rising, since the Done count increases on every sample day" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "In Progress plus Review grew from 9 to 25 cards while Done rose by only 2 in a week; the widening bands mean work is started faster than it is finished, and by Little's Law cycle time rises. A shrinking To Do column only shows that work is being started, not finished."
+    },
+    {
+      "id": "agile-scrum-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Leadership publishes a dashboard ranking five Scrum Teams by velocity (story points per Sprint) and sets each team a target of 20% higher velocity next quarter. What is the most likely result?",
+      "options": [
+        { "id": "a", "text": "Estimates become more accurate because teams pay closer attention to their points" },
+        { "id": "b", "text": "Velocities converge across teams, which makes the cross-team comparison more meaningful" },
+        { "id": "c", "text": "Point estimates inflate, so velocity rises without a matching rise in delivered value" },
+        { "id": "d", "text": "Output rises roughly 20%, because visible targets motivate the teams" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Story points are a team-relative estimate, so a points target is easy to hit by re-estimating rather than by delivering more (Goodhart's law); velocity is not even part of the Scrum Guide. Comparing teams on points is meaningless because each team's scale is different."
+    },
+    {
+      "id": "agile-scrum-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "On day 4 of a two-week Sprint, the Developers finish a security fix that meets the Definition of Done. A senior stakeholder says it cannot go to production until it is approved at the Sprint Review. According to the Scrum Guide 2020, what is correct?",
+      "options": [
+        { "id": "a", "text": "The stakeholder is right; the Sprint Review is the formal acceptance gate for every Increment" },
+        { "id": "b", "text": "It can be released only if the Scrum Master grants an exception to the Sprint cadence" },
+        { "id": "c", "text": "It can be released only after the Sprint ends, so it does not disturb the Sprint Goal" },
+        { "id": "d", "text": "A Done Increment may be delivered before the Sprint ends; the Review is not a release gate" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "The Scrum Guide 2020 says Increments may be delivered to stakeholders before the end of the Sprint and that the Sprint Review should never be treated as a gate to releasing value. Holding a finished security fix for a ceremony only delays value and leaves the risk open longer."
+    },
+    {
+      "id": "agile-scrum-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A Kanban team's service level expectation (SLE) is \"85% of items finish within 8 days.\" At replenishment, the board shows one item aged 7 days still in Development, and several items aged 1-2 days. What should the team do first?",
+      "options": [
+        { "id": "a", "text": "Swarm on the 7-day item, since its work item age shows it is about to breach the SLE" },
+        { "id": "b", "text": "Leave it alone, because the 15% tolerance in the SLE already covers a few late items" },
+        { "id": "c", "text": "Pull new work to raise throughput, which will bring the average cycle time back down" },
+        { "id": "d", "text": "Raise the SLE to 10 days so the item does not show up as a breach in reports" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Work item age is the leading flow measure (Kanban Guide): comparing it to the SLE flags at-risk items while you can still act. Treating the 15% as a free budget, or starting more work, lets old items age further and makes cycle time less predictable."
+    },
+    {
+      "id": "agile-scrum-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A Scrum Team proposes a recurring \"hardening Sprint\" every fourth Sprint for integration testing, performance tuning, and bug fixing before release. As Scrum Master, what does this most strongly indicate?",
+      "options": [
+        { "id": "a", "text": "A healthy practice, because it reserves explicit capacity for quality work" },
+        { "id": "b", "text": "The Definition of Done is too weak, since the earlier Increments were not truly releasable" },
+        { "id": "c", "text": "A capacity problem, so the team should add a dedicated QA team to absorb the testing" },
+        { "id": "d", "text": "A Sprint Zero should have been held to set up the architecture before development began" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Every Sprint must produce a usable Increment that meets the Definition of Done; deferring integration and performance work means the Increments were not really Done, so the fix is a stronger Definition of Done. Hand-offs to a separate QA team and Sprint Zero are not part of the Scrum Guide and keep the hidden work in place."
     }
   ]
 }

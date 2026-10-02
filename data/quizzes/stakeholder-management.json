@@ -2,104 +2,225 @@
   "id": "stakeholder-management",
   "title": "Stakeholder Management",
   "skillSlug": "stakeholder-management",
-  "description": "Test your understanding of stakeholder management. Identifying stakeholders, setting expectations, and handling conflicting priorities.",
-  "timeLimitSeconds": 600,
+  "description": "Identify and map stakeholders, assign clear RACI roles, plan communication, and resolve conflicting demands.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "stakeholder-management-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Power-interest grid?",
+      "difficulty": "BEGINNER",
+      "prompt": "The CFO must approve funding for an internal HR-system upgrade and could stop it, but she has told you she has no interest in the project's details. On a power/interest grid, how should you engage her?",
       "options": [
-        {
-          "id": "a",
-          "text": "groups stakeholders by influence and interest to guide engagement"
-        },
-        {
-          "id": "b",
-          "text": "is a sprint burndown"
-        },
-        {
-          "id": "c",
-          "text": "is a database schema"
-        },
-        {
-          "id": "d",
-          "text": "is a color contrast test"
-        }
+        { "id": "a", "text": "Manage closely: involve her in all key decisions and working sessions" },
+        { "id": "b", "text": "Keep satisfied: meet her needs with concise updates and consult her on funding issues" },
+        { "id": "c", "text": "Keep informed: send her detailed progress reports to raise her interest" },
+        { "id": "d", "text": "Monitor: minimal effort, since she is not interested in the project" }
       ],
-      "correctOptionId": "a",
-      "explanation": "Power-interest grid groups stakeholders by influence and interest to guide engagement.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "b",
+      "explanation": "High power with low interest calls for \"keep satisfied\": enough engagement that her needs are met, without burying her in detail. Treating her as \"monitor\" ignores that she can stop the project, and \"manage closely\" spends effort she has said she does not want."
     },
     {
       "id": "stakeholder-management-2",
       "type": "multiple_choice",
-      "prompt": "What best describes RACI?",
+      "difficulty": "BEGINNER",
+      "prompt": "A project is replacing the company's customer billing system. The stakeholder register lists the sponsor, Finance, IT, and Sales. Which group is most clearly missing?",
       "options": [
-        {
-          "id": "a",
-          "text": "clarifies who is responsible, accountable, consulted, and informed for work"
-        },
-        {
-          "id": "b",
-          "text": "is a risk scoring formula"
-        },
-        {
-          "id": "c",
-          "text": "is a cloud storage tier"
-        },
-        {
-          "id": "d",
-          "text": "is a usability heuristic"
-        }
+        { "id": "a", "text": "The office facilities team, who maintain the building" },
+        { "id": "b", "text": "The recruiting team, who hire new employees" },
+        { "id": "c", "text": "Marketing's social media team, who run the brand accounts" },
+        { "id": "d", "text": "Customer support agents, who answer customers' billing questions" }
       ],
-      "correctOptionId": "a",
-      "explanation": "RACI clarifies who is responsible, accountable, consulted, and informed for work.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "d",
+      "explanation": "Stakeholders include anyone affected by the project's outcome, not only those funding or building it; support agents' daily work changes when billing changes, and they will see problems first. The other groups have no meaningful link to a billing system replacement."
     },
     {
       "id": "stakeholder-management-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Expectation management?",
+      "difficulty": "BEGINNER",
+      "prompt": "For the task \"Send vendor contract,\" Legal must review the wording and give feedback before it goes out. Sales only needs to be told once it has been sent. In a RACI matrix, how should Legal and Sales be marked?",
       "options": [
-        {
-          "id": "a",
-          "text": "sets a shared understanding of outcomes, constraints, timing, and tradeoffs"
-        },
-        {
-          "id": "b",
-          "text": "promises every request immediately"
-        },
-        {
-          "id": "c",
-          "text": "avoids communicating bad news"
-        },
-        {
-          "id": "d",
-          "text": "only reports final results"
-        }
+        { "id": "a", "text": "Legal: Responsible; Sales: Consulted" },
+        { "id": "b", "text": "Legal: Accountable; Sales: Informed" },
+        { "id": "c", "text": "Legal: Consulted; Sales: Informed" },
+        { "id": "d", "text": "Legal: Informed; Sales: Consulted" }
       ],
-      "correctOptionId": "a",
-      "explanation": "Expectation management sets a shared understanding of outcomes, constraints, timing, and tradeoffs.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "c",
+      "explanation": "Consulted means two-way input sought before or during the work (Legal's review); Informed means one-way notification of progress or results (Sales). Legal is not doing the task (Responsible) or answerable for it (Accountable)."
     },
     {
       "id": "stakeholder-management-4",
       "type": "true_false",
-      "prompt": "True or false: Power-interest grid groups stakeholders by influence and interest to guide engagement.",
-      "correctAnswer": true,
-      "explanation": "Power-interest grid groups stakeholders by influence and interest to guide engagement.",
-      "difficulty": "BEGINNER"
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: Once the stakeholder register and engagement plan are approved at project kickoff, they should stay fixed for the rest of the project so the team has a stable reference.",
+      "correctAnswer": false,
+      "explanation": "Stakeholders, their power, and their attitudes change during a project (reorganisations, new regulators, shifting priorities), so identification and engagement planning are repeated throughout (PMBOK 7 Stakeholder Performance Domain). A frozen register goes stale quickly."
     },
     {
       "id": "stakeholder-management-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: sets a shared understanding of outcomes, constraints, timing, and tradeoffs?",
-      "acceptedAnswers": [
-        "Expectation management"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "On Tuesday, the PM learns that a vendor delay will push the product launch back four weeks. The weekly status report goes out on Friday. How should the PM tell the sponsor?",
+      "options": [
+        { "id": "a", "text": "Call or meet the sponsor now with the cause, impact, and options, then confirm in writing" },
+        { "id": "b", "text": "Put it in Friday's status report, since that is the agreed communication channel" },
+        { "id": "c", "text": "Wait until the recovery plan is fully worked out so the sponsor is not alarmed early" },
+        { "id": "d", "text": "Email the full stakeholder list at once so that everyone hears it at the same time" }
       ],
-      "explanation": "The term is Expectation management.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "a",
+      "explanation": "Significant bad news should reach the sponsor promptly and directly, in a channel that allows questions, with options attached; a written follow-up keeps the record. Letting the sponsor find it in a routine report, or after a delay, erodes trust and wastes decision time."
+    },
+    {
+      "id": "stakeholder-management-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A project team grows from 6 people to 10 people. By how much does the number of potential communication channels increase?",
+      "options": [
+        { "id": "a", "text": "4" },
+        { "id": "b", "text": "45" },
+        { "id": "c", "text": "30" },
+        { "id": "d", "text": "60" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Channels = n(n - 1) / 2: 6 people give 15 and 10 people give 45, an increase of 30. 45 is the new total rather than the increase, and 60 comes from forgetting to divide by 2 (90 - 30)."
+    },
+    {
+      "id": "stakeholder-management-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Review this RACI matrix. Which row breaks a core RACI rule?",
+      "code": {
+        "language": "plaintext",
+        "source": "Task                 PM   Tech Lead  Sponsor  QA Lead  Ops\nApprove budget       R    C          A        I        I\nDesign architecture  C    A/R        I        C        C\nWrite test plan      I    C          A        A        I\nProduction deploy    I    R          I        C        A"
+      },
+      "options": [
+        { "id": "a", "text": "Approve budget, because the PM is Responsible while the Sponsor is Accountable" },
+        { "id": "b", "text": "Write test plan, because it has two Accountable roles and no one Responsible" },
+        { "id": "c", "text": "Design architecture, because one person cannot be both Accountable and Responsible" },
+        { "id": "d", "text": "Production deploy, because Ops cannot be Accountable when the Tech Lead is Responsible" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Each task needs exactly one Accountable person and at least one Responsible; \"Write test plan\" has two A's and no R, so ownership is unclear. One person holding both A and R is common and valid, as is A and R sitting with different roles."
+    },
+    {
+      "id": "stakeholder-management-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Here is the project's stakeholder engagement assessment (levels in order: Unaware, Resistant, Neutral, Supportive, Leading). Where should the PM focus the most engagement effort?",
+      "code": {
+        "language": "plaintext",
+        "source": "Stakeholder      Influence  Current      Desired\nCFO              High       Resistant    Supportive\nFacilities mgr   Low        Unaware      Supportive\nIT Director      High       Supportive   Leading\nLegal counsel    Medium     Neutral      Neutral"
+      },
+      "options": [
+        { "id": "a", "text": "IT Director, because a high-influence champion is needed to lead the change" },
+        { "id": "b", "text": "Legal counsel, because a neutral stakeholder can turn either way" },
+        { "id": "c", "text": "Facilities manager, because the three-level gap is the largest on the matrix" },
+        { "id": "d", "text": "CFO, because high influence combined with active resistance is the biggest threat" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Gap size has to be weighed against influence: the CFO is high-influence and actively resistant, so moving her to Supportive matters most. The Facilities manager has the largest gap, but low influence and mere unawareness are fixed cheaply by informing; Legal is already at its desired level, and the IT Director is already supportive."
+    },
+    {
+      "id": "stakeholder-management-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The VP of Sales wants next quarter's capacity spent on a feature for a large prospect; the VP of Operations wants it spent on stability fixes after two outages. Both are high-power stakeholders, there is capacity for only one, and the sponsor owns prioritisation. What should the PM do?",
+      "options": [
+        { "id": "a", "text": "Lay out both options against the project's agreed objectives and bring the decision to the sponsor" },
+        { "id": "b", "text": "Choose the option the PM judges best, then explain the decision to both VPs afterward" },
+        { "id": "c", "text": "Split the capacity 50/50 so that each VP gets part of what they asked for" },
+        { "id": "d", "text": "Go with whichever VP raised the request first, as the fairest tie-breaker" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "When stakeholders with authority conflict, the PM's job is to make the trade-offs explicit (impact, risk, cost, objectives) and get a decision from the person who owns it. Splitting capacity usually delivers neither goal, and deciding alone goes beyond the PM's decision rights."
+    },
+    {
+      "id": "stakeholder-management-10",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The CFO has high power and high interest in your cost-reduction project and is currently resistant. Which engagement tactics are appropriate? Select all that apply.",
+      "options": [
+        { "id": "a", "text": "Meet one-on-one to understand the specific concerns behind the resistance" },
+        { "id": "b", "text": "Involve the CFO in defining the financial success criteria for the project" },
+        { "id": "c", "text": "Reduce contact to a monthly newsletter to avoid further friction" },
+        { "id": "d", "text": "Escalate to the CEO to override the CFO before discussing the concerns" },
+        { "id": "e", "text": "Share draft cost figures before steering meetings so concerns surface early" }
+      ],
+      "correctOptionIds": ["a", "b", "e"],
+      "explanation": "High-power, high-interest stakeholders are managed closely: understand their concerns, involve them in the decisions they care about, and avoid surprises in public forums. Pulling back contact or going over their head before engaging usually hardens resistance."
+    },
+    {
+      "id": "stakeholder-management-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The PM receives this email three weeks before a fixed-scope launch. Which reply manages the sponsor's expectations best?",
+      "code": {
+        "language": "plaintext",
+        "source": "From: Dana Ruiz (Sponsor)\nSubject: SSO for launch?\n\nHi - can we just add single sign-on to the June 14 launch?\nShould be small. Our biggest customer keeps asking for it.\nThanks!"
+      },
+      "options": [
+        { "id": "a", "text": "\"Sure, we'll fit it in - the team can absorb a small change like this.\"" },
+        { "id": "b", "text": "\"Sorry, scope is locked for June 14; please raise it for a future project.\"" },
+        { "id": "c", "text": "\"I'll size it by Thursday and bring options: move the date, swap scope, or ship it next.\"" },
+        { "id": "d", "text": "\"We'll add it, and the team will work weekends to protect the June 14 date.\"" }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Acknowledging the request, assessing its real impact, and returning with trade-off options keeps the sponsor in control of the decision while protecting the plan. Saying yes without sizing sets an expectation you may miss, and a flat no ignores a legitimate business need."
+    },
+    {
+      "id": "stakeholder-management-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "The Head of Compliance, who can block go-live, has skipped four requirement reviews and not replied to review requests, which said \"no response by Friday = approval.\" Build starts next week. What should the PM do?",
+      "options": [
+        { "id": "a", "text": "Proceed, since the stated deadline means silence counts as formal approval" },
+        { "id": "b", "text": "Meet the Head of Compliance and get explicit sign-off on the key requirements before build" },
+        { "id": "c", "text": "Escalate to the CEO to require the Head of Compliance to attend future reviews" },
+        { "id": "d", "text": "Remove Compliance from the review list to stop delays and keep them informed instead" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Silence from a stakeholder with veto power is not agreement; it is a classic setup for a late rejection at acceptance, when changes cost the most. Getting direct engagement and explicit sign-off now costs little, while escalating first damages the relationship before you understand the reason for the silence."
+    },
+    {
+      "id": "stakeholder-management-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Marketing insists on launching September 15 so they can demo at a major trade show. Compliance insists there is no launch until a data-handling audit finishes in November, to avoid regulatory penalties. Both have equal authority. Which approach is most likely to resolve the conflict?",
+      "options": [
+        { "id": "a", "text": "Escalate and let the sponsor pick one of the two dates" },
+        { "id": "b", "text": "Compromise on a mid-October launch date between the two" },
+        { "id": "c", "text": "Side with Compliance, since regulatory concerns always win" },
+        { "id": "d", "text": "Demo on test data in September; launch after the audit" }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Interest-based negotiation (Fisher and Ury, Getting to Yes) looks behind positions (the dates) to interests: Marketing needs a trade-show presence, Compliance needs no exposure of real customer data before the audit. A demo environment meets both; a split-the-difference date fails both, and escalating first skips a solution that may already exist."
+    },
+    {
+      "id": "stakeholder-management-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "On a cross-functional program, the RACI lists nine roles as Consulted on most design decisions. Decisions now take three to four weeks as drafts circulate for comments. Which change fixes the root cause?",
+      "options": [
+        { "id": "a", "text": "Limit Consulted to people whose input can change the decision; make the rest Informed" },
+        { "id": "b", "text": "Add a second Accountable role on each decision so approvals can run in parallel" },
+        { "id": "c", "text": "Keep all nine Consulted roles but cap each review cycle at ten working days" },
+        { "id": "d", "text": "Replace the RACI with a weekly all-hands where decisions need full consensus" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Over-consulting is a common RACI failure: every C is a two-way loop that adds delay. Keeping C for people with real expertise or veto and moving the rest to I (one-way updates) speeds decisions without losing needed input. A second A blurs ownership, and consensus by all-hands slows things further."
+    },
+    {
+      "id": "stakeholder-management-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "You inherit a project whose status reports have been green for eight weeks. The milestone tracker shows 3 of 5 milestones missed, and critical-path tasks are two weeks late. The steering committee meets in three days. What should you do?",
+      "options": [
+        { "id": "a", "text": "Keep it green until you have a full recovery plan, to avoid alarming the committee" },
+        { "id": "b", "text": "Report red now with the evidence and recovery options, and set objective RAG criteria" },
+        { "id": "c", "text": "Report amber as a middle ground, to soften the change from eight weeks of green" },
+        { "id": "d", "text": "Re-baseline the schedule before the meeting so the milestones are no longer late" }
+      ],
+      "correctOptionId": "b",
+      "explanation": "This is a \"watermelon\" project (green outside, red inside); stakeholders can only decide well with accurate status, and every week of delay narrows their options. Softening to amber or re-baselining to hide performance variance repeats the trust failure that caused the problem."
     }
   ]
 }

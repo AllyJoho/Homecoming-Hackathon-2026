@@ -2,104 +2,418 @@
   "id": "machine-learning-basics",
   "title": "Machine Learning Basics",
   "skillSlug": "machine-learning-basics",
-  "description": "Test your understanding of machine learning basics. Training and evaluating supervised and unsupervised models, and recognizing overfitting and data leakage.",
-  "timeLimitSeconds": 600,
+  "description": "Train, validate, and evaluate models while spotting overfitting, leakage, and misleading metrics.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "machine-learning-basics-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Supervised learning?",
+      "difficulty": "BEGINNER",
+      "prompt": "An unpruned decision tree scores 99% accuracy on its training data but 71% on a held-out test set. What is the most likely diagnosis and a sensible next step?",
       "options": [
         {
           "id": "a",
-          "text": "learns a mapping from examples that include target labels"
+          "text": "Underfitting; add more features so the tree can capture more patterns"
         },
         {
           "id": "b",
-          "text": "learns only from unlabeled data"
+          "text": "Overfitting; limit tree depth or leaf size and check on validation data"
         },
         {
           "id": "c",
-          "text": "never evaluates predictions"
+          "text": "A faulty test set; merge it into the training data and retrain"
         },
         {
           "id": "d",
-          "text": "is the same as data backup"
+          "text": "Class imbalance; switch the evaluation metric from accuracy to recall"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Supervised learning learns a mapping from examples that include target labels.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "b",
+      "explanation": "A large gap between near-perfect training performance and much lower test performance is the signature of overfitting (high variance), and limiting tree complexity is the standard remedy. Adding features or capacity would widen the gap, and merging the test set into training removes your only unbiased check."
     },
     {
       "id": "machine-learning-basics-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Overfitting?",
+      "difficulty": "BEGINNER",
+      "prompt": "A marketing team has two years of purchase histories for 80,000 customers but no labels, and wants to discover natural customer segments. Which approach fits?",
       "options": [
         {
           "id": "a",
-          "text": "occurs when a model memorizes training patterns and generalizes poorly"
+          "text": "Logistic regression predicting which segment each customer is in"
         },
         {
           "id": "b",
-          "text": "means the model has no parameters"
+          "text": "Linear regression on total spend per customer"
         },
         {
           "id": "c",
-          "text": "is always caused by missing labels"
+          "text": "k-means clustering on scaled purchase-behaviour features"
         },
         {
           "id": "d",
-          "text": "means test accuracy must be perfect"
+          "text": "A random forest classifier trained on the purchase histories"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Overfitting occurs when a model memorizes training patterns and generalizes poorly.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "With no target labels, the task is unsupervised, and clustering such as k-means groups customers by similarity in their features. Logistic regression and random forests are supervised and need a known segment label to learn from, which does not exist here."
     },
     {
       "id": "machine-learning-basics-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Train-test split?",
+      "difficulty": "BEGINNER",
+      "prompt": "A k-nearest-neighbours model uses two raw features: annual income (20,000 to 250,000) and age (18 to 80). Age seems to have no effect on predictions. What is the likely cause and fix?",
       "options": [
         {
           "id": "a",
-          "text": "keeps evaluation examples separate from the data used to fit a model"
+          "text": "k is too small; increase k so more neighbours are averaged"
         },
         {
           "id": "b",
-          "text": "duplicates every training row"
+          "text": "Age is categorical; one-hot encode it before training"
         },
         {
           "id": "c",
-          "text": "removes the target column from all data"
+          "text": "Age is unimportant; drop it and keep income"
         },
         {
           "id": "d",
-          "text": "guarantees a causal result"
+          "text": "Income dominates the Euclidean distance; standardize both features first"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Train-test split keeps evaluation examples separate from the data used to fit a model.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "d",
+      "explanation": "Distance-based models compare raw magnitudes, so a 10,000 difference in income swamps a 40-year difference in age; scaling (e.g. StandardScaler inside a Pipeline) puts features on comparable ranges. Concluding that age is unimportant mistakes a scaling artefact for a real finding."
     },
     {
       "id": "machine-learning-basics-4",
-      "type": "true_false",
-      "prompt": "True or false: Supervised learning learns a mapping from examples that include target labels.",
-      "correctAnswer": true,
-      "explanation": "Supervised learning learns a mapping from examples that include target labels.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A fraud model labels all 10,000 transactions in a test set as \"not fraud\". 100 of them are actually fraudulent. What are its accuracy and its recall for the fraud class?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Accuracy 99%, recall 0%"
+        },
+        {
+          "id": "b",
+          "text": "Accuracy 1%, recall 100%"
+        },
+        {
+          "id": "c",
+          "text": "Accuracy 99%, recall 99%"
+        },
+        {
+          "id": "d",
+          "text": "Accuracy 50%, recall 0%"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "It is right on the 9,900 legitimate transactions, so accuracy is 9,900 / 10,000 = 99%, yet it catches none of the 100 frauds, so recall (TP / (TP + FN)) is 0 / 100 = 0%. This is why accuracy is misleading under class imbalance."
     },
     {
       "id": "machine-learning-basics-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: keeps evaluation examples separate from the data used to fit a model?",
-      "acceptedAnswers": [
-        "Train-test split"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A model predicts house sale prices, and the business wants the typical error expressed in dollars. Which evaluation metric fits?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Classification accuracy"
+        },
+        {
+          "id": "b",
+          "text": "Mean absolute error (MAE)"
+        },
+        {
+          "id": "c",
+          "text": "F1 score"
+        },
+        {
+          "id": "d",
+          "text": "ROC AUC"
+        }
       ],
-      "explanation": "The term is Train-test split.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "b",
+      "explanation": "Predicting a continuous price is a regression task, and MAE reports the average absolute error in the target's own units (dollars). Accuracy, F1, and ROC AUC are classification metrics and only apply if prices were binned into classes."
+    },
+    {
+      "id": "machine-learning-basics-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A churn classifier produced the confusion matrix below on 1,000 test customers. What is its recall for the churn class?",
+      "code": {
+        "language": "plaintext",
+        "source": "                    predicted churn   predicted stay\nactual churn              40                60\nactual stay               10               890"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "0.80"
+        },
+        {
+          "id": "b",
+          "text": "0.93"
+        },
+        {
+          "id": "c",
+          "text": "0.40"
+        },
+        {
+          "id": "d",
+          "text": "0.53"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Recall = TP / (TP + FN) = 40 / (40 + 60) = 0.40: the model catches only 40% of customers who actually churned. 0.80 is precision (40 / 50), 0.93 is accuracy (930 / 1,000), and 0.53 is the F1 score."
+    },
+    {
+      "id": "machine-learning-basics-7",
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "This code should estimate how well an SVM generalizes to unseen data, with no information from the test set influencing any part of training. Which line breaks that requirement?",
+      "code": {
+        "language": "python",
+        "source": "from sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.svm import SVC\n\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y, test_size=0.2, stratify=y, random_state=42)\nscaler = StandardScaler().fit(X)\nX_train_s = scaler.transform(X_train)\nX_test_s = scaler.transform(X_test)\nmodel = SVC(C=1.0).fit(X_train_s, y_train)\nprint(model.score(X_test_s, y_test))"
+      },
+      "bugLines": [
+        7
+      ],
+      "explanation": "Fitting the scaler on all of X lets the test rows' means and variances shape the training features, which is data leakage; it should be StandardScaler().fit(X_train), ideally inside a Pipeline. Transforming the test set with the training-fitted scaler on line 9 is correct."
+    },
+    {
+      "id": "machine-learning-basics-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A linear model for a task where experts achieve about 5% error produces the learning curve below. Which change is most likely to reduce validation error?",
+      "code": {
+        "language": "plaintext",
+        "source": "train_size  train_error  val_error\n   1,000       0.31        0.34\n   5,000       0.32        0.33\n  20,000       0.32        0.33"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Collect several times more training data of the same kind"
+        },
+        {
+          "id": "b",
+          "text": "Increase the regularization strength to stabilize the fit"
+        },
+        {
+          "id": "c",
+          "text": "Remove some existing features to simplify the model"
+        },
+        {
+          "id": "d",
+          "text": "Add more informative features or use a more flexible model"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Training and validation error are both high and nearly equal, and the curve has plateaued, which indicates high bias (underfitting). More data helps high-variance models but cannot fix a model too simple for the problem; more regularization or fewer features would make it simpler still."
+    },
+    {
+      "id": "machine-learning-basics-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A team forecasts daily store sales from lag features and evaluates with the code below, getting an excellent score that does not hold up after launch. What should they change?",
+      "code": {
+        "language": "python",
+        "source": "from sklearn.model_selection import KFold, cross_val_score\n\ncv = KFold(n_splits=5, shuffle=True, random_state=0)\nscores = cross_val_score(model, X, y, cv=cv, scoring=\"neg_mean_absolute_error\")"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Use TimeSeriesSplit so each fold trains only on dates before its validation dates"
+        },
+        {
+          "id": "b",
+          "text": "Use StratifiedKFold so each fold has a similar distribution of sales"
+        },
+        {
+          "id": "c",
+          "text": "Increase n_splits to 10 so more data is used for training in each fold"
+        },
+        {
+          "id": "d",
+          "text": "Use LeaveOneOut so every single day is validated separately"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Shuffled K-fold lets the model train on days after the ones it is validated on, which leaks future information and inflates the score; TimeSeriesSplit keeps every validation fold strictly after its training data, mirroring real forecasting. More folds or leave-one-out still mix past and future."
+    },
+    {
+      "id": "machine-learning-basics-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A scikit-learn LogisticRegression(C=100) model scores much better on training data than in cross-validation. Which change most directly reduces the overfitting?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Increase C to 1000 to strengthen regularization"
+        },
+        {
+          "id": "b",
+          "text": "Decrease C to around 0.1 to strengthen regularization"
+        },
+        {
+          "id": "c",
+          "text": "Increase max_iter so the solver fully converges"
+        },
+        {
+          "id": "d",
+          "text": "Set fit_intercept=False to remove a parameter"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "In scikit-learn, C is the inverse of regularization strength, so smaller C means a stronger penalty and a simpler model (tune it with cross-validation). Raising C weakens regularization, and max_iter only affects solver convergence, not model complexity."
+    },
+    {
+      "id": "machine-learning-basics-11",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "You are building a classifier where only 0.5% of examples are positive. Select all practices that are appropriate.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Use a stratified train/test split so both sets keep the 0.5% positive rate"
+        },
+        {
+          "id": "b",
+          "text": "Compare models with precision-recall curves or average precision instead of accuracy"
+        },
+        {
+          "id": "c",
+          "text": "Use class_weight=\"balanced\" or tune the decision threshold for the business cost"
+        },
+        {
+          "id": "d",
+          "text": "Oversample the minority class (e.g. SMOTE) before splitting into train and test sets"
+        },
+        {
+          "id": "e",
+          "text": "Pick the final model by its accuracy on the test set"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b",
+        "c"
+      ],
+      "explanation": "Stratification, PR-based metrics, and class weighting or threshold tuning all address rare positives correctly. Oversampling before the split puts synthetic copies derived from test examples into training (leakage), and accuracy is dominated by the majority class, so a model predicting all negatives already scores 99.5%."
+    },
+    {
+      "id": "machine-learning-basics-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "On the 1st of each month, a model predicts which subscribers will cancel during that month. It reached 0.98 AUC in validation but 0.62 in production. Refunds are usually issued as part of the cancellation process. What is the most likely cause?",
+      "code": {
+        "language": "plaintext",
+        "source": "feature                      importance\nrefund_issued_last_30d       0.61\ndays_since_last_login        0.14\nsupport_tickets_90d          0.09\nplan_price                   0.05\n(12 others)                  0.11"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Overfitting to noise in days_since_last_login; increase regularization"
+        },
+        {
+          "id": "b",
+          "text": "Concept drift in subscriber behaviour; retrain weekly on recent data"
+        },
+        {
+          "id": "c",
+          "text": "Target leakage: refund_issued_last_30d reflects cancellations and is not known on the 1st"
+        },
+        {
+          "id": "d",
+          "text": "Class imbalance inflating validation AUC; rebalance with SMOTE"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "A feature that is a consequence of the outcome dominates the importances and makes validation look nearly perfect, but at prediction time it does not yet contain that information; features must be built point-in-time as of the 1st. Regularization or retraining would keep the leaky feature in the model."
+    },
+    {
+      "id": "machine-learning-basics-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "For a fraud model, a missed fraud (false negative) costs $500 and a false alarm (false positive) costs $20; correct predictions cost nothing. Using the validation results below, which threshold minimizes total cost?",
+      "code": {
+        "language": "plaintext",
+        "source": "threshold   TP    FP    FN\n   0.2     180   900    20\n   0.4     160   300    40\n   0.6     120   100    80\n   0.8      60    20   140"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "0.2"
+        },
+        {
+          "id": "b",
+          "text": "0.4"
+        },
+        {
+          "id": "c",
+          "text": "0.6"
+        },
+        {
+          "id": "d",
+          "text": "0.8"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Total cost = 20 x FP + 500 x FN: $28,000 at 0.2, $26,000 at 0.4, $42,000 at 0.6, and $70,400 at 0.8, so 0.4 is cheapest. Choosing 0.2 because it has the highest recall ignores the cost of 600 extra false alarms, and the default 0.5 is not tied to these costs at all."
+    },
+    {
+      "id": "machine-learning-basics-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A team tunes a pipeline with the code below and reports 0.912 as the AUC to expect in production. What is wrong with this estimate?",
+      "code": {
+        "language": "python",
+        "source": "search = GridSearchCV(pipe, param_grid, cv=5, scoring=\"roc_auc\")  # 240 combos\nsearch.fit(X, y)\nprint(search.best_score_)   # 0.912"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "It is optimistic: picking the best of 240 configurations on the same folds inflates it; report a held-out test set or nested CV"
+        },
+        {
+          "id": "b",
+          "text": "Nothing: cross-validation averages over 5 folds, so best_score_ is an unbiased estimate of new-data AUC"
+        },
+        {
+          "id": "c",
+          "text": "It is pessimistic: each fold trains on only 80% of the data, so the refit model will be much better"
+        },
+        {
+          "id": "d",
+          "text": "It is unreliable only because 5 folds is too few; with cv=10 the selection effect disappears"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "best_score_ is the maximum over many candidates evaluated on the same data, so it includes a selection bias; an estimate of generalization needs data that played no part in tuning, such as an untouched test set or nested cross-validation. More folds reduce variance but do not remove the bias from choosing the best of 240."
+    },
+    {
+      "id": "machine-learning-basics-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A model classifies 12,000 chest X-rays taken from 3,000 patients (about 4 images each). StratifiedKFold cross-validation gives 0.95 AUC, but on images of next month's new patients the AUC is 0.78. What evaluation change is needed?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Increase the number of folds from 5 to 10"
+        },
+        {
+          "id": "b",
+          "text": "Add stronger regularization and repeat the same cross-validation"
+        },
+        {
+          "id": "c",
+          "text": "Use StratifiedShuffleSplit with a larger validation fraction"
+        },
+        {
+          "id": "d",
+          "text": "Use GroupKFold with patient ID as the group"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Images from the same patient land in both training and validation folds, so the model gets credit for recognizing patient-specific features it will never see in new patients; GroupKFold keeps each patient entirely in one fold, matching deployment. Changing fold counts, split fractions, or regularization does not stop the same patients appearing on both sides."
     }
   ]
 }

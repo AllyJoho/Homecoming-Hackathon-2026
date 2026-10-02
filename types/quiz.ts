@@ -6,7 +6,8 @@
 // `Question` is a discriminated union on `type`. That one decision drives three
 // other files: QuestionRenderer picks a component by it, grading.ts picks a
 // grader by it, and the registry in components/quiz/questions/index.ts is the
-// map between them. Adding a question type means touching exactly those three.
+// map between them. The full add-a-type checklist (it also reaches the
+// database and the answer-key stripper) is in the README under Quiz Formats.
 
 import type { ProficiencyLevel } from '@/lib/quiz/levels';
 
@@ -14,16 +15,30 @@ export type QuestionType =
   | 'multiple_choice'
   | 'multi_select'
   | 'true_false'
-  | 'short_answer';
+  | 'short_answer'
+  | 'find_the_bug'
+  | 'order_lines';
 
 export interface QuizOption {
   id: string;
   text: string;
 }
 
+/**
+ * A snippet shown under the prompt. Any question type can carry one, which is
+ * what turns a plain multiple-choice question into "predict the output".
+ * Public on purpose — it's part of the question, not the answer key.
+ */
+export interface QuestionCode {
+  /** A Prism language id: "javascript", "sql", "python", "typescript", … */
+  language: string;
+  source: string;
+}
+
 interface QuestionBase {
   id: string;
   prompt: string;
+  code?: QuestionCode;
   /** Defaults to 1 when the JSON omits it. */
   points?: number;
   /** Shown on the results screen after grading. */
@@ -54,11 +69,30 @@ export interface ShortAnswerQuestion extends QuestionBase {
   acceptedAnswers: string[];
 }
 
+export interface FindTheBugQuestion extends QuestionBase {
+  type: 'find_the_bug';
+  /** Required here, unlike the other types — the snippet IS the question. */
+  code: QuestionCode;
+  /** 1-based line numbers. Exact set match, no partial credit. */
+  bugLines: number[];
+}
+
+export interface OrderLinesQuestion extends QuestionBase {
+  type: 'order_lines';
+  /**
+   * Authored in the CORRECT order — the array order is the answer key.
+   * toPublicQuiz shuffles it before it reaches the browser.
+   */
+  lines: QuizOption[];
+}
+
 export type Question =
   | MultipleChoiceQuestion
   | MultiSelectQuestion
   | TrueFalseQuestion
-  | ShortAnswerQuestion;
+  | ShortAnswerQuestion
+  | FindTheBugQuestion
+  | OrderLinesQuestion;
 
 export interface Quiz {
   /** Matches the JSON file stem, and is what the DB stores as `quizId`. */
@@ -80,7 +114,9 @@ export type Answer =
   | { type: 'multiple_choice'; optionId: string | null }
   | { type: 'multi_select'; optionIds: string[] }
   | { type: 'true_false'; value: boolean | null }
-  | { type: 'short_answer'; text: string };
+  | { type: 'short_answer'; text: string }
+  | { type: 'find_the_bug'; lines: number[] }
+  | { type: 'order_lines'; lineIds: string[] };
 
 /** The answer variant that goes with a given question variant. */
 export type AnswerFor<Q extends Question> = Extract<Answer, { type: Q['type'] }>;
@@ -118,7 +154,12 @@ export interface QuizResult {
 type StripAnswers<Q> = Q extends unknown
   ? Omit<
       Q,
-      'correctOptionId' | 'correctOptionIds' | 'correctAnswer' | 'acceptedAnswers' | 'explanation'
+      | 'correctOptionId'
+      | 'correctOptionIds'
+      | 'correctAnswer'
+      | 'acceptedAnswers'
+      | 'bugLines'
+      | 'explanation'
     >
   : never;
 

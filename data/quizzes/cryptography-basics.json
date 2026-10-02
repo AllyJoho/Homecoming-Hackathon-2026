@@ -2,104 +2,376 @@
   "id": "cryptography-basics",
   "title": "Cryptography Basics",
   "skillSlug": "cryptography-basics",
-  "description": "Test your understanding of cryptography basics. Symmetric and asymmetric encryption, hashing, digital signatures, TLS, and key management.",
-  "timeLimitSeconds": 600,
+  "description": "Apply encryption, hashing, signatures, TLS, and key management to realistic security scenarios.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "cryptography-basics-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Hash?",
+      "difficulty": "BEGINNER",
+      "prompt": "Alice must send Bob a 2 GB file. They have never shared a secret, but Bob has published an RSA-3072 public key that Alice has verified. Which approach is the standard, practical way to keep the file confidential?",
       "options": [
         {
           "id": "a",
-          "text": "is a one-way digest commonly used to detect changes or store password verifiers"
+          "text": "Split the file into blocks and encrypt every block directly with Bob's RSA public key"
         },
         {
           "id": "b",
-          "text": "is reversible encryption with a public key"
+          "text": "Encrypt the file with Alice's RSA private key so only Bob can read it"
         },
         {
           "id": "c",
-          "text": "is a network cable"
+          "text": "Encrypt the file with a random AES-256 key, then encrypt that AES key with Bob's public key"
         },
         {
           "id": "d",
-          "text": "is a user role"
+          "text": "Send the file with its SHA-256 hash so Bob can detect any eavesdropping"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Hash is a one-way digest commonly used to detect changes or store password verifiers.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "c",
+      "explanation": "Hybrid encryption uses fast symmetric crypto for bulk data and the recipient's public key only to protect the small session key (the pattern used by TLS, PGP and CMS). Encrypting gigabytes block-by-block with RSA is impractically slow, and encrypting with Alice's private key is a signature that anyone with her public key can reverse."
     },
     {
       "id": "cryptography-basics-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Symmetric encryption?",
+      "difficulty": "BEGINNER",
+      "prompt": "A vendor's download mirror lists each installer next to its SHA-256 checksum on the same page. An attacker has gained write access to that mirror. What actually lets users detect a tampered installer?",
       "options": [
         {
           "id": "a",
-          "text": "uses a shared secret key to encrypt and decrypt data"
+          "text": "A detached signature checked with the vendor's public key obtained from a separate trusted source"
         },
         {
           "id": "b",
-          "text": "uses no key"
+          "text": "Comparing the installer's SHA-256 against the checksum shown on the mirror"
         },
         {
           "id": "c",
-          "text": "always uses two unrelated keys"
+          "text": "Switching the mirror's checksums from SHA-256 to SHA-512 for stronger collision resistance"
         },
         {
           "id": "d",
-          "text": "only signs documents"
+          "text": "Serving the mirror over HTTPS so the files cannot be modified in transit"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Symmetric encryption uses a shared secret key to encrypt and decrypt data.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "An attacker who can replace the installer can also replace a checksum stored beside it, so an unkeyed hash only detects accidental corruption. A signature verified with a public key the attacker does not control proves origin and integrity; HTTPS protects only the transfer, not files already altered on the server."
     },
     {
       "id": "cryptography-basics-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Digital signature?",
+      "difficulty": "BEGINNER",
+      "prompt": "During a code review you find this config value and the code that reads it. The developer says the database password is \"encrypted\". What is the problem?",
+      "code": {
+        "language": "plaintext",
+        "source": "# .env\nDB_PASSWORD=c3VwZXJTZWNyZXQyMDI2IQ==\n\n# db.py\npassword = base64.b64decode(os.environ[\"DB_PASSWORD\"]).decode()"
+      },
       "options": [
         {
           "id": "a",
-          "text": "provides evidence of integrity and the signer through asymmetric cryptography"
+          "text": "The value is a salted hash, so the application cannot recover the password to log in"
         },
         {
           "id": "b",
-          "text": "hides data from every reader"
+          "text": "The value is AES-encrypted, but the key is probably stored in the same repository"
         },
         {
           "id": "c",
-          "text": "is a database index"
+          "text": "The value is ciphertext from a weak algorithm and should be re-encrypted with AES-256"
         },
         {
           "id": "d",
-          "text": "is the same as compression"
+          "text": "The value is Base64 encoding, which anyone can reverse without any key"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Digital signature provides evidence of integrity and the signer through asymmetric cryptography.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "d",
+      "explanation": "The app recovers the password with a plain base64.b64decode call, so the stored value is Base64 encoding (it decodes to superSecret2026!) and anyone can reverse it; encoding provides no confidentiality. No key or decryption step is involved, so it is not AES or any other cipher, and a hash could not be turned back into a usable password."
     },
     {
       "id": "cryptography-basics-4",
       "type": "true_false",
-      "prompt": "True or false: Hash is a one-way digest commonly used to detect changes or store password verifiers.",
-      "correctAnswer": true,
-      "explanation": "Hash is a one-way digest commonly used to detect changes or store password verifiers.",
-      "difficulty": "BEGINNER"
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: storing each user's password as SHA-256(salt + password), with a unique random salt per user, meets current guidance for password storage.",
+      "correctAnswer": false,
+      "explanation": "Salting stops rainbow tables, but SHA-256 is designed to be fast, so GPUs can test billions of guesses per second. NIST SP 800-63B requires a salted password hashing scheme with a deliberate cost factor, and the OWASP Password Storage Cheat Sheet recommends Argon2id, scrypt, bcrypt, or PBKDF2 with a high iteration count."
     },
     {
       "id": "cryptography-basics-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: provides evidence of integrity and the signer through asymmetric cryptography?",
-      "acceptedAnswers": [
-        "Digital signature"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A student encrypts a bitmap of a logo with AES-128 and finds that the outline of the logo is still visible in the encrypted image. Which mode was most likely used, and why does this happen?",
+      "options": [
+        {
+          "id": "a",
+          "text": "CBC mode, because the IV was reused across the image's rows"
+        },
+        {
+          "id": "b",
+          "text": "ECB mode, because identical plaintext blocks produce identical ciphertext blocks"
+        },
+        {
+          "id": "c",
+          "text": "GCM mode, because the authentication tag leaks the image structure"
+        },
+        {
+          "id": "d",
+          "text": "CTR mode, because the keystream repeats every 128 bits"
+        }
       ],
-      "explanation": "The term is Digital signature.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "b",
+      "explanation": "ECB encrypts every 16-byte block independently with the same key, so large regions of identical pixels map to identical ciphertext and the pattern survives. CBC with a reused IV leaks only whether messages share a common prefix, not the full image structure."
+    },
+    {
+      "id": "cryptography-basics-6",
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "This Python helper is meant to provide authenticated encryption with AES-GCM for records written to a database by many workers. Which line contains the security flaw?",
+      "code": {
+        "language": "python",
+        "source": "import os, time\nfrom cryptography.hazmat.primitives.ciphers.aead import AESGCM\n\ndef encrypt(key: bytes, plaintext: bytes, aad: bytes) -> bytes:\n    nonce = int(time.time()).to_bytes(12, \"big\")\n    ct = AESGCM(key).encrypt(nonce, plaintext, aad)\n    return nonce + ct\n\ndef decrypt(key: bytes, blob: bytes, aad: bytes) -> bytes:\n    nonce, ct = blob[:12], blob[12:]\n    return AESGCM(key).decrypt(nonce, ct, aad)"
+      },
+      "bugLines": [
+        5
+      ],
+      "explanation": "A seconds-resolution timestamp repeats whenever two records are encrypted under the same key in the same second, and GCM nonce reuse leaks the XOR of plaintexts and lets an attacker forge tags. Use a fresh random 96-bit nonce, os.urandom(12), per message (or a guaranteed-unique counter); the decrypt side correctly reads the nonce stored with the ciphertext."
+    },
+    {
+      "id": "cryptography-basics-7",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A server presents the certificate below. Assuming the chain is trusted and the certificate is within its validity period, which hostnames will a standards-compliant browser accept it for? Select all that apply.",
+      "code": {
+        "language": "plaintext",
+        "source": "Subject:  CN=*.example.com\nIssuer:   CN=Example Issuing CA G2, O=Example Trust Services\nValidity: Not Before 2026-09-01  Not After 2026-11-30\nSubject Alternative Name:\n    DNS:*.example.com\n    DNS:example.com\nPublic Key: EC P-256\nSignature Algorithm: ecdsa-with-SHA256"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "example.com"
+        },
+        {
+          "id": "b",
+          "text": "www.example.com"
+        },
+        {
+          "id": "c",
+          "text": "api.eu.example.com"
+        },
+        {
+          "id": "d",
+          "text": "shop.example.com"
+        },
+        {
+          "id": "e",
+          "text": "www.example.org"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b",
+        "d"
+      ],
+      "explanation": "Browsers match only the Subject Alternative Name entries (RFC 9525, which obsoleted RFC 6125, forbids using the CN as an identifier, and browsers ignore it). A wildcard matches exactly one leftmost label, so *.example.com covers www and shop but not api.eu.example.com, and the apex example.com is covered only because it is listed separately."
+    },
+    {
+      "id": "cryptography-basics-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A data platform uses envelope encryption: 40 TB of objects are each encrypted with their own data encryption key (DEK), and every DEK is stored wrapped by a key-encryption key (KEK) in a KMS. Policy now requires retiring the current KEK version. What work does that require?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Decrypt and re-encrypt all 40 TB of objects under new DEKs before the old KEK is retired"
+        },
+        {
+          "id": "b",
+          "text": "Nothing, because the DEKs are already encrypted and rotation is handled by the KMS automatically"
+        },
+        {
+          "id": "c",
+          "text": "Unwrap each DEK with the old KEK and re-wrap it with the new KEK; the object data is unchanged"
+        },
+        {
+          "id": "d",
+          "text": "Generate a new DEK for each object and discard the old DEKs without touching the object data"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "In envelope encryption the KEK only protects the small DEKs, so retiring a KEK means re-wrapping those keys rather than re-encrypting bulk data. Retiring the old version means it can no longer unwrap anything, so doing nothing would strand the data; discarding DEKs would make the objects unreadable."
+    },
+    {
+      "id": "cryptography-basics-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A bank sends payment instructions to a clearing partner. In a dispute, the partner must be able to prove to an independent arbitrator that a specific instruction came from the bank. Which mechanism supports this?",
+      "options": [
+        {
+          "id": "a",
+          "text": "An ECDSA or RSA-PSS signature made with the bank's private key"
+        },
+        {
+          "id": "b",
+          "text": "An HMAC-SHA256 tag computed with a key shared by the bank and partner"
+        },
+        {
+          "id": "c",
+          "text": "AES-GCM encryption under a key shared by the bank and partner"
+        },
+        {
+          "id": "d",
+          "text": "A mutually authenticated TLS 1.3 connection between bank and partner"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Only the bank holds its private signing key, so a third party can verify the signature and attribute the message to the bank (non-repudiation). With HMAC or a shared AES-GCM key, the partner could have produced the same tag itself, and TLS authenticates the channel but leaves no transferable proof once the session ends."
+    },
+    {
+      "id": "cryptography-basics-10",
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "This nginx server block should allow only TLS 1.2 and 1.3 with forward-secret AEAD cipher suites, in line with NIST SP 800-52r2. Which line violates that requirement?",
+      "code": {
+        "language": "plaintext",
+        "source": "server {\n    listen 443 ssl;\n    server_name portal.example.com;\n    ssl_certificate     /etc/ssl/portal/fullchain.pem;\n    ssl_certificate_key /etc/ssl/portal/privkey.pem;\n    ssl_protocols TLSv1.2 TLSv1.3;\n    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-DES-CBC3-SHA;\n    ssl_session_tickets off;\n    add_header Strict-Transport-Security \"max-age=31536000\" always;\n}"
+      },
+      "bugLines": [
+        7
+      ],
+      "explanation": "ECDHE-RSA-DES-CBC3-SHA is 3DES in CBC mode: not AEAD, vulnerable to Sweet32, and disallowed by NIST SP 800-131A Rev. 2. The protocol line correctly limits the server to TLS 1.2 and 1.3, whose TLS 1.3 suites are configured separately and are all AEAD."
+    },
+    {
+      "id": "cryptography-basics-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A web app generates password-reset tokens with this code. A penetration tester reports that tokens are predictable. Which change fixes the root cause?",
+      "code": {
+        "language": "python",
+        "source": "import random, string\n\ndef reset_token():\n    alphabet = string.ascii_letters + string.digits\n    return \"\".join(random.choice(alphabet) for _ in range(32))"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Lengthen the token to 64 characters so it has more combinations"
+        },
+        {
+          "id": "b",
+          "text": "Hash each token with SHA-256 before emailing it to the user"
+        },
+        {
+          "id": "c",
+          "text": "Seed random with the current time in milliseconds before each token"
+        },
+        {
+          "id": "d",
+          "text": "Generate the token with secrets.token_urlsafe(32), which uses the OS CSPRNG"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Python's random module is a Mersenne Twister whose internal state can be recovered from observed outputs, so any length of output is predictable; the docs say to use the secrets module for security tokens. Time-based seeding makes tokens even easier to guess, and hashing a predictable value leaves it predictable."
+    },
+    {
+      "id": "cryptography-basics-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A legacy app stores session data in an AES-256-CBC encrypted cookie with no MAC. When a tampered cookie is sent, the server returns HTTP 500 \"bad padding\" for some modifications and HTTP 403 \"invalid session\" for others. What is the most serious consequence, and the correct fix?",
+      "options": [
+        {
+          "id": "a",
+          "text": "An attacker can brute-force the AES key from the errors; rotate the key monthly"
+        },
+        {
+          "id": "b",
+          "text": "A padding oracle lets an attacker decrypt and forge cookies; switch to an AEAD such as AES-GCM"
+        },
+        {
+          "id": "c",
+          "text": "The errors only reveal stack traces; return a generic error page for both cases"
+        },
+        {
+          "id": "d",
+          "text": "CBC leaks the cookie length; pad all cookies to a fixed size before encrypting"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Distinguishable padding errors form a padding oracle that lets an attacker decrypt the cookie byte by byte and craft valid ciphertexts without the key. Authenticated encryption (AES-GCM, or encrypt-then-MAC verified before decryption) rejects any modified ciphertext; merely unifying error messages still leaves timing side channels and no integrity protection."
+    },
+    {
+      "id": "cryptography-basics-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Following NIST's 2024 post-quantum standards (FIPS 203/204/205), an organization that encrypts patient records which must stay confidential for 25 years is planning its migration. Which step addresses the most time-sensitive quantum risk?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Deploy hybrid key establishment such as X25519 plus ML-KEM in TLS, because recorded traffic could be decrypted later"
+        },
+        {
+          "id": "b",
+          "text": "Replace ECDSA certificates with ML-DSA first, because forged signatures could be applied to past transactions"
+        },
+        {
+          "id": "c",
+          "text": "Upgrade AES-256 to a larger block cipher, because Grover's algorithm breaks 256-bit keys"
+        },
+        {
+          "id": "d",
+          "text": "Replace SHA-256 with SHA3-256 everywhere, because quantum computers can invert SHA-2"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "\"Harvest now, decrypt later\" means traffic protected today by ECDH or RSA key exchange can be stored and broken once a quantum computer exists, so long-lived secrets make key establishment the urgent fix. Signatures only need to resist forgery at the time they are verified, and AES-256 and SHA-256 keep adequate security margins against Grover's algorithm."
+    },
+    {
+      "id": "cryptography-basics-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A breach review finds 2 million user passwords stored as unsalted MD5. The team wants to remove MD5 exposure immediately, without forcing every user to reset. Per the OWASP Password Storage Cheat Sheet, what should they do?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Keep the MD5 hashes but add a per-user salt column and rehash each user at next login"
+        },
+        {
+          "id": "b",
+          "text": "Encrypt the MD5 hashes with AES-256 and store the key in an HSM"
+        },
+        {
+          "id": "c",
+          "text": "Run MD5 through SHA-256 for all rows now, then switch to bcrypt at each user's next login"
+        },
+        {
+          "id": "d",
+          "text": "Wrap each hash now as Argon2id(MD5(password)) with a salt, then store Argon2id(password) at each user's next login"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Layering an expensive salted hash over the existing MD5 values protects every account right away, and replacing the layered hash with a direct Argon2id hash on next successful login completes the migration. Rehashing only at login leaves dormant accounts as crackable MD5 indefinitely, and SHA-256 over MD5 is still fast and unsalted."
+    },
+    {
+      "id": "cryptography-basics-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "An attacker exfiltrates the private key for a web server's TLS certificate. The server has only ever negotiated TLS 1.3 and ECDHE suites in TLS 1.2. Which statement is accurate?",
+      "options": [
+        {
+          "id": "a",
+          "text": "The attacker can decrypt traffic previously recorded from the server, so all past sessions must be treated as exposed"
+        },
+        {
+          "id": "b",
+          "text": "Reissuing the certificate with a new expiry date using the same CSR is enough to remediate"
+        },
+        {
+          "id": "c",
+          "text": "The attacker can impersonate the server until the certificate is revoked or expires, but cannot decrypt recorded past sessions"
+        },
+        {
+          "id": "d",
+          "text": "Because TLS 1.3 encrypts the certificate message, the stolen key is useless to the attacker"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "With ephemeral (EC)DHE, the certificate key only signs the handshake, so past session keys cannot be recovered from it (forward secrecy), but it can still be used to impersonate the server. Remediation is a new key pair, a new certificate, and revocation; reusing the old CSR reuses the compromised key."
     }
   ]
 }

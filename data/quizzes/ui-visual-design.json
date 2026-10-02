@@ -2,104 +2,396 @@
   "id": "ui-visual-design",
   "title": "UI & Visual Design",
   "skillSlug": "ui-visual-design",
-  "description": "Test your understanding of ui & visual design. Applying typography, color, spacing, and layout to build consistent, accessible interfaces.",
-  "timeLimitSeconds": 600,
+  "description": "Apply hierarchy, typography, spacing systems, colour and WCAG contrast to interface designs.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "ui-visual-design-1",
       "type": "multiple_choice",
-      "prompt": "What best describes Contrast?",
+      "difficulty": "BEGINNER",
+      "prompt": "A cart page shows three buttons side by side: 'Continue to payment', 'Save cart for later' and 'Apply coupon'. All three are the same size and the same solid blue, and users hesitate before proceeding. Which change establishes a clear visual hierarchy?",
       "options": [
         {
           "id": "a",
-          "text": "creates enough visual difference between elements to support hierarchy and readability"
+          "text": "Make all three buttons larger so their labels are easier to read"
         },
         {
           "id": "b",
-          "text": "makes every element identical"
+          "text": "Give each button a different bright colour so all three are distinct"
         },
         {
           "id": "c",
-          "text": "is only a server setting"
+          "text": "Keep 'Continue to payment' as the solid filled button and restyle the other two as outlined or text buttons"
         },
         {
           "id": "d",
-          "text": "removes text labels"
+          "text": "Add an icon to each button while keeping the identical blue styling"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Contrast creates enough visual difference between elements to support hierarchy and readability.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "c",
+      "explanation": "Hierarchy comes from contrast in visual weight: one dominant primary action and visually quieter secondary actions. Giving all three buttons different bright colours keeps them equally loud, so nothing tells the user which action matters most."
     },
     {
       "id": "ui-visual-design-2",
       "type": "multiple_choice",
-      "prompt": "What best describes Typography hierarchy?",
+      "difficulty": "BEGINNER",
+      "prompt": "In a sign-up form, each label sits 16px above its input and also 16px below the previous input. Testers sometimes type into the wrong field. Which spacing change applies the Gestalt principle of proximity?",
       "options": [
         {
           "id": "a",
-          "text": "uses size, weight, and spacing to show relationships between text levels"
+          "text": "Cut label-to-input space to about 6px and widen gaps between fields to about 28px"
         },
         {
           "id": "b",
-          "text": "uses one size for everything"
+          "text": "Increase every gap equally to 32px so the whole form feels less cramped"
         },
         {
           "id": "c",
-          "text": "is a database relationship"
+          "text": "Place each label to the right of its input instead of above it"
         },
         {
           "id": "d",
-          "text": "is a deployment strategy"
+          "text": "Keep the current spacing but add a 1px divider line under every label"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Typography hierarchy uses size, weight, and spacing to show relationships between text levels.",
-      "difficulty": "INTERMEDIATE"
+      "explanation": "Proximity means elements that are closer together read as a group, so the space inside a label-input pair should be clearly smaller than the space between pairs. Raising every gap to 32px keeps the spacing uniform, so labels are still equally close to the field above and the field below."
     },
     {
       "id": "ui-visual-design-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Spacing system?",
+      "difficulty": "BEGINNER",
+      "prompt": "A blog template renders 18px body text in a column that spans a 1440px-wide desktop viewport, giving roughly 150 characters per line. Readers say they lose their place moving to the next line. Which CSS change addresses this?",
       "options": [
         {
           "id": "a",
-          "text": "uses consistent distance rules to create rhythm and grouping"
+          "text": "font-size: 24px; on body paragraphs"
         },
         {
           "id": "b",
-          "text": "adds random gaps to every screen"
+          "text": "text-align: justify; on body paragraphs"
         },
         {
           "id": "c",
-          "text": "replaces content structure"
+          "text": "letter-spacing: 0.1em; on body paragraphs"
         },
         {
           "id": "d",
-          "text": "is an encryption standard"
+          "text": "max-width: 65ch; on the article text column"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "Spacing system uses consistent distance rules to create rhythm and grouping.",
-      "difficulty": "ADVANCED"
+      "correctOptionId": "d",
+      "explanation": "Comfortable reading needs lines of roughly 45-75 characters (Bringhurst; Baymard suggests 50-75), and limiting the column to about 65ch does this directly. Bigger text cuts the count somewhat, but lines would still run past 100 characters."
     },
     {
       "id": "ui-visual-design-4",
-      "type": "true_false",
-      "prompt": "True or false: Contrast creates enough visual difference between elements to support hierarchy and readability.",
-      "correctAnswer": true,
-      "explanation": "Contrast creates enough visual difference between elements to support hierarchy and readability.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "A form shows invalid fields only by changing the input border from grey to red. Which change makes sure users who can't tell red from grey still know which field has an error?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Use a brighter, more saturated red for the error border"
+        },
+        {
+          "id": "b",
+          "text": "Add an error icon and a text message next to the field describing the problem"
+        },
+        {
+          "id": "c",
+          "text": "Change the error colour from red to orange, which is easier to see"
+        },
+        {
+          "id": "d",
+          "text": "Tint the field background light pink as well as making the border red"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Colour should never be the only way to show meaning (WCAG 2.2 SC 1.4.1 Use of Color), so the error needs a non-colour cue such as an icon plus text. A pink background is still a colour-only cue, so it doesn't help someone who can't perceive the colour difference."
     },
     {
       "id": "ui-visual-design-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: uses consistent distance rules to create rhythm and grouping?",
-      "acceptedAnswers": [
-        "Spacing system"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: Under WCAG 2.2 Level AA, a 16px bold button label counts as 'large text', so it only needs a 3:1 contrast ratio against its background.",
+      "correctAnswer": false,
+      "explanation": "WCAG defines large text as at least 18pt (24px) regular or 14pt (about 18.66px) bold. A 16px bold label is normal-size text, so it needs 4.5:1 under SC 1.4.3."
+    },
+    {
+      "id": "ui-visual-design-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A design review lists the colour pairs below with their measured contrast ratios. Which element fails WCAG 2.2 Level AA contrast requirements?",
+      "code": {
+        "language": "plaintext",
+        "source": "Element                    Size / weight  Fg       Bg       Ratio\nBody text                  16px regular   #6B7280  #FFFFFF  4.83:1\nPrimary button label       16px bold      #FFFFFF  #16A34A  3.30:1\nPage heading               24px regular   #808080  #FFFFFF  3.95:1\nInput border (sole edge)   1px solid      #949494  #FFFFFF  3.03:1"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The body text"
+        },
+        {
+          "id": "b",
+          "text": "The primary button label"
+        },
+        {
+          "id": "c",
+          "text": "The page heading"
+        },
+        {
+          "id": "d",
+          "text": "The text input border"
+        }
       ],
-      "explanation": "The term is Spacing system.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "b",
+      "explanation": "A 16px bold label is not large text, so it needs 4.5:1 (SC 1.4.3), and 3.30:1 falls short. The 24px heading counts as large text and only needs 3:1, and the input border is a UI component that needs 3:1 under SC 1.4.11, so both pass."
+    },
+    {
+      "id": "ui-visual-design-7",
+      "type": "find_the_bug",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A design system uses a 4px-based spacing scale exposed as CSS custom properties, and every margin, padding and gap value in component CSS must use one of these tokens. Which line breaks that rule?",
+      "code": {
+        "language": "css",
+        "source": ":root {\n  --space-2: 8px;\n  --space-4: 16px;\n  --space-6: 24px;\n}\n.card {\n  padding: var(--space-6);\n  border-radius: 8px;\n}\n.card__title {\n  margin-bottom: var(--space-2);\n}\n.card__actions {\n  margin-top: 13px;\n  gap: var(--space-4);\n}"
+      },
+      "bugLines": [
+        14
+      ],
+      "explanation": "Line 14 hard-codes 13px, which isn't a token and isn't even on the 4px scale, so spacing will drift from the system. border-radius on line 8 isn't a margin, padding or gap value, so the spacing rule doesn't apply to it."
+    },
+    {
+      "id": "ui-visual-design-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A type scale uses a 16px base and a ratio of 1.25 (Major Third). H4 is one step above the base, H3 is two steps above, and H2 is three steps above. What size is H2?",
+      "options": [
+        {
+          "id": "a",
+          "text": "28px"
+        },
+        {
+          "id": "b",
+          "text": "25px"
+        },
+        {
+          "id": "c",
+          "text": "39.06px"
+        },
+        {
+          "id": "d",
+          "text": "31.25px"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Each step multiplies by the ratio: 16 x 1.25^3 = 31.25px. 28px is what you get by adding 4px per step (a linear scale), and 25px is only two steps up, which is H3."
+    },
+    {
+      "id": "ui-visual-design-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A team builds a dark theme by inverting its light theme: page background #000000, cards #000000, and the same drop shadows as in light mode. Users say the cards blend into the page. Which approach follows established dark-theme guidance such as Material Design?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Use a dark grey base such as #121212 and make higher-elevation surfaces progressively lighter"
+        },
+        {
+          "id": "b",
+          "text": "Increase drop-shadow opacity to 100% black so the cards separate from the page"
+        },
+        {
+          "id": "c",
+          "text": "Add a pure white 2px border around every card to define its edges"
+        },
+        {
+          "id": "d",
+          "text": "Fill the cards with a saturated brand colour so they stand out from the page"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Shadows barely show against near-black, so Material Design's dark theme uses a dark grey base and shows elevation by making surfaces lighter (or more tinted) as they rise. Darker shadows can't separate a black card from a black page."
+    },
+    {
+      "id": "ui-visual-design-10",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A UI audit finds these text colours in production CSS. What is the most maintainable fix?",
+      "code": {
+        "language": "plaintext",
+        "source": "Text colours found (number of uses)\n#333333 (212)  #343434 (9)   #3A3A3A (14)\n#444444 (88)   #555555 (61)  #575757 (7)\n#666666 (130)  #6B6B6B (3)   #777777 (22)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Keep every value but document each one, with usage notes, in the style guide"
+        },
+        {
+          "id": "b",
+          "text": "Replace all nine values with #333333 so that all text uses one colour"
+        },
+        {
+          "id": "c",
+          "text": "Define a few semantic tokens (e.g. text-primary, text-secondary), map each to a checked value, and replace raw hex codes"
+        },
+        {
+          "id": "d",
+          "text": "Convert each hex code to its rgb() equivalent so the values are easier to compare"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Semantic tokens consolidate near-duplicates into a small, intentional palette that can be changed in one place, and each value can be checked for contrast (for example #777777 on white is only 4.48:1). Collapsing everything to one colour removes the useful primary/secondary text hierarchy."
+    },
+    {
+      "id": "ui-visual-design-11",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Under WCAG 2.2 SC 1.4.11 Non-text Contrast (Level AA), which of these must have at least a 3:1 contrast ratio against adjacent colours? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "The border of a text input when that border is the only visual indication of the field"
+        },
+        {
+          "id": "b",
+          "text": "The magnifying-glass icon inside an icon-only search button"
+        },
+        {
+          "id": "c",
+          "text": "The outline of a disabled Submit button"
+        },
+        {
+          "id": "d",
+          "text": "A purely decorative background illustration on a landing page"
+        },
+        {
+          "id": "e",
+          "text": "The data lines in a line chart that users need in order to read the trend"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b",
+        "e"
+      ],
+      "explanation": "SC 1.4.11 covers the visual information needed to identify UI components and their states (input boundaries, meaningful icons) and graphics needed to understand content (chart lines). Inactive (disabled) components and purely decorative graphics are explicitly exempt."
+    },
+    {
+      "id": "ui-visual-design-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "In a circular play button, the triangle icon is centred mathematically by its bounding box, yet reviewers say it looks shifted to the left. What is the correct fix?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Leave it, since mathematical centring is correct and viewers will adjust"
+        },
+        {
+          "id": "b",
+          "text": "Enlarge the triangle until its corners touch the edge of the circle"
+        },
+        {
+          "id": "c",
+          "text": "Add equal padding on all four sides of the triangle's bounding box"
+        },
+        {
+          "id": "d",
+          "text": "Nudge the triangle slightly right so its visual mass, not its bounding box, sits in the centre"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Most of a triangle's visual weight sits near its flat left side, so a box-centred triangle looks off-centre, and designers correct this with optical alignment. Equal padding is just another way of centring the bounding box, which is what causes the problem."
+    },
+    {
+      "id": "ui-visual-design-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "The brand team wants blue #3B82F6 used everywhere on a white background. Given the measurements and usages below, which plan meets WCAG 2.2 AA while keeping the most brand blue?",
+      "code": {
+        "language": "plaintext",
+        "source": "#3B82F6 on #FFFFFF = 3.68:1\n#2563EB on #FFFFFF = 5.17:1\n\nPlanned uses of blue:\n- inline links (underlined) in 16px regular body text\n- 32px regular marketing headings\n- 2px focus rings around controls\n- icons in icon-only buttons"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Use #2563EB for the 16px links; keep #3B82F6 for the headings, focus rings and icons, which need 3:1"
+        },
+        {
+          "id": "b",
+          "text": "Keep #3B82F6 for the links but make them bold, since bold text only needs 3:1"
+        },
+        {
+          "id": "c",
+          "text": "Keep #3B82F6 for the links, since underlined links are exempt from text contrast"
+        },
+        {
+          "id": "d",
+          "text": "Use #2563EB for all four uses, since anything below 4.5:1 fails AA"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "16px regular text needs 4.5:1 (SC 1.4.3), so the links need the darker shade. The 32px headings are large text and the focus rings and icons are non-text, so 3:1 is enough (SC 1.4.3/1.4.11) and 3.68:1 passes. Bolding 16px text doesn't make it large text, and an underline satisfies SC 1.4.1 Use of Color but doesn't exempt link text from SC 1.4.3 contrast."
+    },
+    {
+      "id": "ui-visual-design-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A marketing site sizes its headings with the rule below so they scale with the viewport. An accessibility review flags it. What is the problem, and what is the fix?",
+      "code": {
+        "language": "css",
+        "source": "h1 {\n  font-size: 5vw;\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "vw units are not supported in mobile browsers; switch to a fixed px value such as 48px"
+        },
+        {
+          "id": "b",
+          "text": "The heading becomes too large on phones; add a media query that sets it to 16px"
+        },
+        {
+          "id": "c",
+          "text": "vw-only sizes don't grow with browser zoom or the user's default font size; mix in rem, e.g. clamp(2rem, 1.5rem + 2vw, 4rem)"
+        },
+        {
+          "id": "d",
+          "text": "WCAG 1.4.4 requires every font size to be set in em; rem and vw both fail"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Zooming shrinks the CSS viewport, so text sized only in vw stays the same physical size and can fail SC 1.4.4 Resize Text. A rem component makes headings respond to zoom and user font settings. WCAG doesn't mandate any unit; it requires text that can resize to 200%."
+    },
+    {
+      "id": "ui-visual-design-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A team generated status colours by fixing HSL lightness at 50%, expecting equal contrast on white. The results are below. Why did this happen, and what is the better approach?",
+      "code": {
+        "language": "plaintext",
+        "source": "warning  hsl(60 100% 50%)  = #FFFF00  -> 1.07:1 on white\nsuccess  hsl(120 100% 50%) = #00FF00  -> 1.37:1 on white\ninfo     hsl(240 100% 50%) = #0000FF  -> 8.59:1 on white"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The ratios were miscalculated, because equal HSL lightness always gives equal WCAG contrast"
+        },
+        {
+          "id": "b",
+          "text": "HSL lightness isn't perceptually uniform, so build scales in a perceptual space like OKLCH and check each contrast"
+        },
+        {
+          "id": "c",
+          "text": "100% saturation inflates contrast; setting every colour to 50% saturation will equalise it"
+        },
+        {
+          "id": "d",
+          "text": "WCAG contrast is based on the red channel only, so the scales should be defined in RGB"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "WCAG relative luminance weights green and red far more heavily than blue, and HSL lightness ignores this, so same-L yellow and blue differ hugely in luminance. Perceptual spaces like OKLCH track perceived lightness much better, though contrast should still be checked. Lowering saturation alone doesn't fix the hue-dependent luminance gap."
     }
   ]
 }

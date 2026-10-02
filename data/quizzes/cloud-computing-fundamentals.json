@@ -2,104 +2,416 @@
   "id": "cloud-computing-fundamentals",
   "title": "Cloud Computing Fundamentals",
   "skillSlug": "cloud-computing-fundamentals",
-  "description": "Test your understanding of cloud computing fundamentals. Core cloud concepts including IaaS, PaaS, and SaaS, virtual machines, storage, networking, and cost models.",
-  "timeLimitSeconds": 600,
+  "description": "Service models, shared responsibility, compute, storage, networking, scaling, resilience, and cloud costs.",
+  "timeLimitSeconds": 1200,
   "questions": [
     {
       "id": "cloud-computing-fundamentals-1",
       "type": "multiple_choice",
-      "prompt": "What best describes IaaS?",
+      "difficulty": "BEGINNER",
+      "prompt": "Your team moves a self-managed PostgreSQL server from an EC2 VM to Amazon RDS for PostgreSQL. Under the AWS shared responsibility model, which task does your team still own?",
       "options": [
         {
           "id": "a",
-          "text": "provides virtualized compute, storage, and networking that the customer manages"
+          "text": "Patching the operating system of the database host"
         },
         {
           "id": "b",
-          "text": "provides only a finished business application"
+          "text": "Replacing failed storage hardware under the database"
         },
         {
           "id": "c",
-          "text": "is a spreadsheet macro"
+          "text": "Creating database users and granting them least-privilege permissions"
         },
         {
           "id": "d",
-          "text": "is a physical office lease"
+          "text": "Physically securing the data center that hosts it"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "IaaS provides virtualized compute, storage, and networking that the customer manages.",
-      "difficulty": "BEGINNER"
+      "correctOptionId": "c",
+      "explanation": "With a managed service, AWS operates the host OS, hardware, and facilities, but customers always own their data and who can access it, including database accounts and grants. OS patching moves from you to AWS when you leave EC2 for RDS."
     },
     {
       "id": "cloud-computing-fundamentals-2",
       "type": "multiple_choice",
-      "prompt": "What best describes PaaS?",
+      "difficulty": "BEGINNER",
+      "prompt": "A three-person team has a Python web app. They want to deploy their code and have the platform handle OS patching, runtime updates, and load balancing, while they keep full control of the application code. Which service model fits?",
       "options": [
         {
           "id": "a",
-          "text": "provides a managed application platform so teams focus more on code than infrastructure"
+          "text": "IaaS, e.g., Amazon EC2 virtual machines"
         },
         {
           "id": "b",
-          "text": "requires managing every disk manually"
+          "text": "PaaS, e.g., Azure App Service or Google App Engine"
         },
         {
           "id": "c",
-          "text": "is a cryptographic hash"
+          "text": "SaaS, e.g., Salesforce or Microsoft 365"
         },
         {
           "id": "d",
-          "text": "is a project charter"
+          "text": "On-premises virtualization, e.g., VMware vSphere"
         }
       ],
-      "correctOptionId": "a",
-      "explanation": "PaaS provides a managed application platform so teams focus more on code than infrastructure.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "b",
+      "explanation": "PaaS runs your code on a managed runtime, so the provider handles the OS, runtime, and scaling plumbing. IaaS would leave OS patching and load-balancer setup to the team, and SaaS provides finished software rather than hosting their code."
     },
     {
       "id": "cloud-computing-fundamentals-3",
       "type": "multiple_choice",
-      "prompt": "What best describes Elasticity?",
+      "difficulty": "BEGINNER",
+      "prompt": "An online store runs on two identical, stateless web servers behind a load balancer. Traffic triples on Black Friday for about 12 hours. What is the most cost-effective cloud approach?",
       "options": [
         {
           "id": "a",
-          "text": "allows capacity to expand or contract with workload demand"
+          "text": "Use an autoscaling group that adds instances as load rises and removes them afterward"
         },
         {
           "id": "b",
-          "text": "means data is never backed up"
+          "text": "Permanently resize both servers to instance types three times larger"
         },
         {
           "id": "c",
-          "text": "means every service is free"
+          "text": "Buy 3-year reservations for enough servers to cover the peak year-round"
         },
         {
           "id": "d",
-          "text": "means a server has no operating system"
+          "text": "Move the database to a bigger instance and leave the web tier unchanged"
         }
       ],
       "correctOptionId": "a",
-      "explanation": "Elasticity allows capacity to expand or contract with workload demand.",
-      "difficulty": "ADVANCED"
+      "explanation": "Stateless servers behind a load balancer can scale horizontally, and elasticity means paying for the extra capacity only during the 12-hour peak. Permanently sizing or reserving for the peak pays for idle capacity the rest of the year."
     },
     {
       "id": "cloud-computing-fundamentals-4",
-      "type": "true_false",
-      "prompt": "True or false: IaaS provides virtualized compute, storage, and networking that the customer manages.",
-      "correctAnswer": true,
-      "explanation": "IaaS provides virtualized compute, storage, and networking that the customer manages.",
-      "difficulty": "BEGINNER"
+      "type": "multiple_choice",
+      "difficulty": "BEGINNER",
+      "prompt": "An internal tool's HTTP endpoint is called about 200 times a day, and each request takes about 300 ms. It runs on a VM that is up 24/7 and idle more than 99% of the time. Which option most reduces cost while keeping it available on demand?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Move the VM to a larger instance type covered by a 3-year reservation"
+        },
+        {
+          "id": "b",
+          "text": "Add a second VM in another availability zone for redundancy"
+        },
+        {
+          "id": "c",
+          "text": "Keep the VM and enable autoscaling with a minimum of one instance"
+        },
+        {
+          "id": "d",
+          "text": "Move it to a serverless function (e.g., AWS Lambda), billed per request and run time"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Serverless functions bill per invocation and execution time, with no charge while idle, and here that's only about one minute of compute per day. Autoscaling with a minimum of one instance still pays for an always-on VM."
     },
     {
       "id": "cloud-computing-fundamentals-5",
-      "type": "short_answer",
-      "prompt": "What term describes this idea: allows capacity to expand or contract with workload demand?",
-      "acceptedAnswers": [
-        "Elasticity"
+      "type": "true_false",
+      "difficulty": "BEGINNER",
+      "prompt": "True or false: running VMs in three Availability Zones of a single region protects the application from an outage of that entire region.",
+      "correctAnswer": false,
+      "explanation": "Availability Zones are isolated data centers within one region, so spreading across them protects against a data-center-level failure. Surviving a regional outage requires deploying to a second region."
+    },
+    {
+      "id": "cloud-computing-fundamentals-6",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Four Linux VMs running a legacy content-management app must read and write the same directory tree at the same time, through ordinary POSIX file paths. Which AWS storage option fits?",
+      "options": [
+        {
+          "id": "a",
+          "text": "A single Amazon EBS gp3 volume attached to all four VMs"
+        },
+        {
+          "id": "b",
+          "text": "An Amazon S3 bucket the app reads and writes through its API"
+        },
+        {
+          "id": "c",
+          "text": "An Amazon EFS file system mounted on all four VMs"
+        },
+        {
+          "id": "d",
+          "text": "Local instance store volumes, one on each of the four VMs"
+        }
       ],
-      "explanation": "The term is Elasticity.",
-      "difficulty": "INTERMEDIATE"
+      "correctOptionId": "c",
+      "explanation": "EFS is a managed NFS file system built for concurrent shared access from many instances. A gp3 EBS volume attaches to only one instance at a time, and S3 is object storage accessed through an API, not POSIX paths."
+    },
+    {
+      "id": "cloud-computing-fundamentals-7",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Using the pricing below, which purchase option is cheaper for this one instance, and by how much per month?",
+      "code": {
+        "language": "plaintext",
+        "source": "Instance: 1 x general-purpose VM\nOn-demand:                 $0.20/hour, billed only while running\n1-year reserved, no upfront: $0.12/hour, billed for every hour of the term\nWorkload: runs 10 hours/day, every day\nAssume a 30-day month (720 hours)"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Reserved; it saves $24.00 per month"
+        },
+        {
+          "id": "b",
+          "text": "Reserved; it saves $57.60 per month"
+        },
+        {
+          "id": "c",
+          "text": "On-demand; it is $26.40 per month cheaper"
+        },
+        {
+          "id": "d",
+          "text": "Neither; both cost $60.00 per month"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "On-demand: 300 h x $0.20 = $60.00. Reserved bills every hour of the term: 720 h x $0.12 = $86.40, so on-demand is $26.40 cheaper. The $24.00 answer wrongly applies the reserved rate only to hours used; reservations pay off only for steady, high-utilization workloads."
+    },
+    {
+      "id": "cloud-computing-fundamentals-8",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Instances in this private subnet (no public IPs) must download OS patches from the internet but must not be reachable from it. Given the route table below, what should you add?",
+      "code": {
+        "language": "plaintext",
+        "source": "Route table: rtb-private  (associated with subnet-app-a)\nDestination      Target\n10.0.0.0/16      local"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "A 0.0.0.0/0 route to the VPC's internet gateway"
+        },
+        {
+          "id": "b",
+          "text": "A 0.0.0.0/0 route to a NAT gateway placed in a public subnet"
+        },
+        {
+          "id": "c",
+          "text": "A 0.0.0.0/0 route to a NAT gateway placed in this same private subnet"
+        },
+        {
+          "id": "d",
+          "text": "An inbound security group rule allowing 0.0.0.0/0 on port 443"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "A NAT gateway in a public subnet (which routes to the internet gateway) lets private instances start outbound connections while blocking unsolicited inbound ones. A NAT gateway inside the private subnet has no path to the internet gateway, and instances without public IPs can't use an internet gateway route directly."
+    },
+    {
+      "id": "cloud-computing-fundamentals-9",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "The web servers' security group allows inbound TCP 443, but clients' HTTPS connections time out. The subnet's network ACL is shown below. What is the cause?",
+      "code": {
+        "language": "plaintext",
+        "source": "Network ACL for subnet-web (public)\nInbound\n  Rule 100  TCP  port 443   0.0.0.0/0  ALLOW\n  Rule *    ALL  ALL        0.0.0.0/0  DENY\nOutbound\n  Rule 100  TCP  port 443   0.0.0.0/0  ALLOW\n  Rule *    ALL  ALL        0.0.0.0/0  DENY"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "NACLs are stateless; replies go to clients' ephemeral ports, which the outbound rules block"
+        },
+        {
+          "id": "b",
+          "text": "Security groups are stateless, so they also need an outbound rule for port 443"
+        },
+        {
+          "id": "c",
+          "text": "The `*` rule is evaluated first, so it denies all traffic before rule 100"
+        },
+        {
+          "id": "d",
+          "text": "Inbound rule 100 must match source port 443 instead of destination port 443"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Network ACLs don't track connections, so response traffic must be allowed explicitly: outbound TCP to ports 1024-65535 here. Security groups are the stateful layer, and NACL rules are evaluated in ascending number order with `*` last."
+    },
+    {
+      "id": "cloud-computing-fundamentals-10",
+      "type": "multi_select",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "Your company runs its application on Amazon EC2 instances. Under the AWS shared responsibility model, which of these are your company's responsibility? Select all that apply.",
+      "options": [
+        {
+          "id": "a",
+          "text": "Applying security patches to the guest operating system"
+        },
+        {
+          "id": "b",
+          "text": "Patching the hypervisor that runs the instances"
+        },
+        {
+          "id": "c",
+          "text": "Configuring security group rules"
+        },
+        {
+          "id": "d",
+          "text": "Physical security of the data center"
+        },
+        {
+          "id": "e",
+          "text": "Enabling encryption for sensitive data on EBS volumes and controlling key access"
+        },
+        {
+          "id": "f",
+          "text": "Replacing failed disks in the physical host"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "c",
+        "e"
+      ],
+      "explanation": "With IaaS the customer manages everything from the guest OS up, including network firewall configuration and data protection choices. AWS is responsible for security 'of' the cloud: the facilities, hardware, and virtualization layer."
+    },
+    {
+      "id": "cloud-computing-fundamentals-11",
+      "type": "multiple_choice",
+      "difficulty": "INTERMEDIATE",
+      "prompt": "A user whose only permissions come from this policy runs `aws s3 cp s3://reports-bucket/q3.csv .` successfully, but `aws s3 ls s3://reports-bucket` returns AccessDenied. Why?",
+      "code": {
+        "language": "json",
+        "source": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\"s3:GetObject\"],\n      \"Resource\": \"arn:aws:s3:::reports-bucket/*\"\n    }\n  ]\n}"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "The `/*` wildcard matches only one level, so listing nested prefixes is denied"
+        },
+        {
+          "id": "b",
+          "text": "Version 2012-10-17 is a legacy policy version that cannot allow list actions"
+        },
+        {
+          "id": "c",
+          "text": "`aws s3 ls` always requires `s3:ListAllMyBuckets` on every resource"
+        },
+        {
+          "id": "d",
+          "text": "Listing needs `s3:ListBucket` on the bucket ARN itself, which the policy never grants"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "Object actions like GetObject apply to `bucket/*`, but listing is a bucket-level action (s3:ListBucket) on `arn:aws:s3:::reports-bucket`. IAM's `*` matches across `/` characters, and ListAllMyBuckets is needed only for `aws s3 ls` with no bucket named."
+    },
+    {
+      "id": "cloud-computing-fundamentals-12",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Workers in private subnets download about 40 TB a month from Amazon S3 buckets in the same region through a NAT gateway, and NAT gateway data processing is now the largest line on the AWS bill. Which change removes that charge with the least effort?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Add an S3 gateway VPC endpoint to the private subnets' route tables"
+        },
+        {
+          "id": "b",
+          "text": "Add a second NAT gateway in another AZ to split the traffic"
+        },
+        {
+          "id": "c",
+          "text": "Enable S3 Transfer Acceleration on the source buckets"
+        },
+        {
+          "id": "d",
+          "text": "Turn on S3 Intelligent-Tiering for the objects being read"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "A gateway endpoint routes S3 traffic privately through route-table entries and carries no hourly or per-GB charge, so the traffic stops passing through the NAT gateway. More NAT gateways still bill per GB processed, and Transfer Acceleration adds cost for long-distance uploads."
+    },
+    {
+      "id": "cloud-computing-fundamentals-13",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "Using AWS's four disaster recovery strategies, which one meets the approved requirements below?",
+      "code": {
+        "language": "plaintext",
+        "source": "Order database - DR requirements (approved by the business)\nRPO:        <= 1 minute\nRTO:        <= 1 hour\nConstraint: lowest ongoing cost that meets both targets\n\nMeasured cross-region DB replication lag:  < 5 s\nTested app-tier rebuild from IaC:          ~25 min"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Backup and restore: nightly snapshots copied to a second region"
+        },
+        {
+          "id": "b",
+          "text": "Pilot light: continuous replication to a second region, app tier provisioned via IaC on failover"
+        },
+        {
+          "id": "c",
+          "text": "Warm standby: a scaled-down but fully running copy of the stack in a second region"
+        },
+        {
+          "id": "d",
+          "text": "Multi-site active/active: full capacity serving traffic in both regions"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "With replication lag under 5 seconds and a tested 25-minute app-tier rebuild, pilot light meets both targets while running only the replicated database day to day. Nightly snapshots risk up to 24 hours of data loss, and warm standby or active/active also meet the targets but cost more to keep running."
+    },
+    {
+      "id": "cloud-computing-fundamentals-14",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A worker fleet scales on average CPU above 70%. Each worker processes queue messages by calling a slow external API. Metrics are below. What change fixes the scaling behavior?",
+      "code": {
+        "language": "plaintext",
+        "source": "Time   Instances  Avg CPU  Queue depth  Oldest msg age\n09:00  4          22%       1,200        40 s\n10:00  4          25%      18,500        14 min\n11:00  4          24%      61,000        52 min"
+      },
+      "options": [
+        {
+          "id": "a",
+          "text": "Lower the CPU scaling threshold from 70% to 50% so it reacts sooner"
+        },
+        {
+          "id": "b",
+          "text": "Switch to larger instance types with more vCPUs per worker"
+        },
+        {
+          "id": "c",
+          "text": "Increase the queue's visibility timeout so messages wait longer"
+        },
+        {
+          "id": "d",
+          "text": "Scale on queue backlog per instance (or oldest-message age) instead of CPU"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "The workers are I/O-bound, waiting on the API, so CPU stays low while the backlog explodes; the metric doesn't reflect the actual bottleneck. AWS recommends scaling SQS consumers on backlog per instance, while a 50% CPU threshold would still never trigger at 25% CPU."
+    },
+    {
+      "id": "cloud-computing-fundamentals-15",
+      "type": "multiple_choice",
+      "difficulty": "ADVANCED",
+      "prompt": "A nightly 6-hour rendering job runs on one large Spot Instance. About twice a month it is interrupted late in the run and restarts from zero, missing the morning deadline. Which change keeps Spot's savings while reliably meeting the deadline?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Set a much higher maximum Spot price so AWS never reclaims the instance"
+        },
+        {
+          "id": "b",
+          "text": "Pin the request to one instance type in one AZ for consistent capacity"
+        },
+        {
+          "id": "c",
+          "text": "Split the job into checkpointed chunks spread across several instance types and AZs"
+        },
+        {
+          "id": "d",
+          "text": "Use a larger Spot instance so the job finishes before any interruption"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Spot capacity can be reclaimed at any time with a two-minute notice, so the fix is limiting lost work (checkpoints) and drawing from multiple capacity pools. Interruptions are driven mainly by capacity, so a higher max price doesn't prevent them, and a single pool raises the risk."
     }
   ]
 }
